@@ -1,0 +1,140 @@
+import { cn } from "@/lib/utils";
+import { type VariantProps, cva } from "class-variance-authority";
+import * as React from "react";
+
+// --- Variants ---
+
+const navbarVariants = cva(
+  "flex bg-aer-background border-aer-border z-40 transition-all duration-300 ease-in-out",
+  {
+    variants: {
+      position: {
+        top: "border-b inset-x-0 top-0",
+        bottom: "border-t inset-x-0 bottom-0",
+      },
+      mode: {
+        fixed: "fixed",
+        sticky: "sticky top-0",
+        static: "static",
+        absolute: "absolute",
+        floating:
+          "fixed m-4 rounded-aer-xl border shadow-xl w-[calc(100%-2rem)]",
+      },
+      size: {
+        default: "h-16 px-4",
+        sm: "h-14 px-3",
+        lg: "h-20 px-6",
+        auto: "h-auto p-4", // Useful for multiline mobile navs
+      },
+    },
+    compoundVariants: [
+      {
+        mode: "floating",
+        position: "top",
+        className: "top-0",
+      },
+      {
+        mode: "floating",
+        position: "bottom",
+        className: "bottom-0",
+      },
+    ],
+    defaultVariants: {
+      position: "top",
+      mode: "sticky",
+      size: "default",
+    },
+  }
+);
+
+// --- Types ---
+
+export interface NavbarProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof navbarVariants> {
+  align?: "start" | "center" | "end";
+}
+
+// --- Main Component ---
+
+const Navbar = React.forwardRef<HTMLDivElement, NavbarProps>(
+  (
+    { className, position, mode, size, align = "center", children, ...props },
+    ref
+  ) => {
+    return (
+      <header
+        ref={ref}
+        className={cn(navbarVariants({ position, mode, size }), className)}
+        {...props}
+      >
+        <div
+          className={cn(
+            "flex w-full items-center gap-2 mx-auto max-w-7xl",
+            align === "center" && "justify-center",
+            align === "start" && "justify-start",
+            align === "end" && "justify-end"
+          )}
+        >
+          {children}
+        </div>
+      </header>
+    );
+  }
+);
+Navbar.displayName = "Navbar";
+
+// --- Sub-components ---
+
+// NavbarItem - specifically designed for horizontal layouts
+interface NavbarItemProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  icon?: React.ReactNode;
+  active?: boolean;
+}
+
+const NavbarItem = React.forwardRef<HTMLButtonElement, NavbarItemProps>(
+  ({ className, icon, active, children, ...props }, ref) => {
+    return (
+      <button
+        ref={ref}
+        className={cn(
+          "group flex items-center gap-2 rounded-aer-md text-sm font-medium transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-aer-ring px-3 py-2",
+          active
+            ? "bg-aer-primary/10 text-aer-primary"
+            : "text-aer-muted-foreground hover:bg-aer-muted hover:text-aer-foreground",
+          className
+        )}
+        {...props}
+      >
+        {icon && (
+          <span
+            className={cn(
+              "flex items-center justify-center shrink-0 size-4 transition-transform duration-200",
+              !active && "group-hover:scale-110"
+            )}
+          >
+            {icon}
+          </span>
+        )}
+        {children && <span>{children}</span>}
+      </button>
+    );
+  }
+);
+NavbarItem.displayName = "NavbarItem";
+
+const NavbarSection = ({
+  className,
+  children,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div className={cn("flex items-center gap-1", className)} {...props}>
+    {children}
+  </div>
+);
+
+// Spacer to push content apart (e.g., logo left, nav right)
+const NavbarSpacer = () => <div className="flex-1" />;
+
+export { Navbar, NavbarItem, NavbarSection, NavbarSpacer };

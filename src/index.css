@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+@theme {
+  /* Aer Design HSL Tokens integrated into Tailwind 4 */
+  --color-aer-background: hsl(0 0% 100%);
+  --color-aer-foreground: hsl(222.2 84% 4.9%);
+
+  --color-aer-card: hsl(0 0% 100%);
+  --color-aer-card-foreground: hsl(222.2 84% 4.9%);
+
+  --color-aer-popover: hsl(0 0% 100%);
+  --color-aer-popover-foreground: hsl(222.2 84% 4.9%);
+
+  --color-aer-primary: hsl(221.2 83.2% 53.3%);
+  --color-aer-primary-foreground: hsl(210 40% 98%);
+
+  --color-aer-secondary: hsl(210 40% 96.1%);
+  --color-aer-secondary-foreground: hsl(222.2 47.4% 11.2%);
+
+  --color-aer-muted: hsl(210 40% 96.1%);
+  --color-aer-muted-foreground: hsl(215.4 16.3% 46.9%);
+
+  --color-aer-accent: hsl(210 40% 96.1%);
+  --color-aer-accent-foreground: hsl(222.2 47.4% 11.2%);
+
+  --color-aer-destructive: hsl(0 84.2% 60.2%);
+  --color-aer-destructive-foreground: hsl(210 40% 98%);
+
+  --color-aer-border: hsl(214.3 31.8% 91.4%);
+  --color-aer-input: hsl(214.3 31.8% 91.4%);
+  --color-aer-ring: hsl(221.2 83.2% 53.3%);
+
+  --radius-aer-lg: 0.5rem;
+  --radius-aer-md: calc(0.5rem - 2px);
+  --radius-aer-sm: calc(0.5rem - 4px);
+
+  /* Animations for weightless feel */
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+}
+
+@layer base {
+  :root {
+    --background: var(--color-aer-background);
+    --foreground: var(--color-aer-foreground);
+    --card: var(--color-aer-card);
+    --card-foreground: var(--color-aer-card-foreground);
+    --popover: var(--color-aer-popover);
+    --popover-foreground: var(--color-aer-popover-foreground);
+    --primary: var(--color-aer-primary);
+    --primary-foreground: var(--color-aer-primary-foreground);
+    --secondary: var(--color-aer-secondary);
+    --secondary-foreground: var(--color-aer-secondary-foreground);
+    --muted: var(--color-aer-muted);
+    --muted-foreground: var(--color-aer-muted-foreground);
+    --accent: var(--color-aer-accent);
+    --accent-foreground: var(--color-aer-accent-foreground);
+    --destructive: var(--color-aer-destructive);
+    --destructive-foreground: var(--color-aer-destructive-foreground);
+    --border: var(--color-aer-border);
+    --input: var(--color-aer-input);
+    --ring: var(--color-aer-ring);
+  }
+
+  .dark {
+    --color-aer-background: hsl(222.2 84% 4.9%);
+    --color-aer-foreground: hsl(210 40% 98%);
+    --color-aer-card: hsl(222.2 84% 4.9%);
+    --color-aer-card-foreground: hsl(210 40% 98%);
+    --color-aer-popover: hsl(222.2 84% 4.9%);
+    --color-aer-popover-foreground: hsl(210 40% 98%);
+    --color-aer-primary: hsl(217.2 91.2% 59.8%);
+    --color-aer-primary-foreground: hsl(222.2 47.4% 11.2%);
+    --color-aer-secondary: hsl(217.2 32.6% 17.5%);
+    --color-aer-secondary-foreground: hsl(210 40% 98%);
+    --color-aer-muted: hsl(217.2 32.6% 17.5%);
+    --color-aer-muted-foreground: hsl(215 20.2% 65.1%);
+    --color-aer-accent: hsl(217.2 32.6% 17.5%);
+    --color-aer-accent-foreground: hsl(210 40% 98%);
+    --color-aer-destructive: hsl(0 62.8% 30.6%);
+    --color-aer-destructive-foreground: hsl(210 40% 98%);
+    --color-aer-border: hsl(217.2 32.6% 17.5%);
+    --color-aer-input: hsl(217.2 32.6% 17.5%);
+    --color-aer-ring: hsl(224.3 76.3% 48%);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-aer-border;
+  }
+  body {
+    @apply bg-aer-background text-aer-foreground;
+  }
+}
