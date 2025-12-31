@@ -23,34 +23,6 @@ export function RadioDoc() {
       </DocSection>
 
       <DocSection
-        title="Layout Variants"
-        id="layout"
-        description="Radio items can be positioned and aligned just like checkboxes."
-      >
-        <RadioGroup
-          defaultValue="right"
-          className="grid grid-cols-2 gap-8 md:grid-cols-4"
-        >
-          <RadioItem
-            value="right"
-            label="Right (Default)"
-            labelPosition="right"
-          />
-          <RadioItem value="left" label="Left Side" labelPosition="left" />
-          <RadioItem value="top" label="Top Label" labelPosition="top" />
-          <RadioItem
-            value="bottom"
-            label="Bottom Label"
-            labelPosition="bottom"
-          />
-        </RadioGroup>
-        <CodeBlock
-          ts={`<RadioGroup className="grid grid-cols-4">\n  <RadioItem label="Right" labelPosition="right" />\n  <RadioItem label="Left" labelPosition="left" />\n</RadioGroup>`}
-          fullCode={`import { RadioGroup, RadioItem } from "aer-design";\n\nexport default function Layouts() {\n  return (\n    <RadioGroup defaultValue="right" className="grid grid-cols-2 gap-8">\n      <RadioItem value="right" label="Right" labelPosition="right" />\n      <RadioItem value="left" label="Left" labelPosition="left" />\n      <RadioItem value="top" label="Top" labelPosition="top" />\n      <RadioItem value="bottom" label="Bottom" labelPosition="bottom" />\n    </RadioGroup>\n  );\n}`}
-        />
-      </DocSection>
-
-      <DocSection
         title="Card Selection"
         id="cards"
         description="Create powerful selection interfaces with the card variant."
@@ -79,6 +51,34 @@ export function RadioDoc() {
         <CodeBlock
           ts={`<RadioGroup defaultValue="pro" className="grid grid-cols-3 gap-4">\n  <RadioItem variant="card" value="free" label="Free" description="..." />\n  <RadioItem variant="card" value="pro" label="Pro" description="..." />\n  <RadioItem variant="card" value="ent" label="Enterprise" disabled />\n</RadioGroup>`}
           fullCode={`import { RadioGroup, RadioItem } from "aer-design";\n\nexport default function CardSelection() {\n  return (\n    <RadioGroup defaultValue="pro" className="grid gap-4 md:grid-cols-3">\n      <RadioItem variant="card" value="free" label="Free" description="3 Projects" />\n      <RadioItem variant="card" value="pro" label="Pro" description="Unlimited" />\n      <RadioItem variant="card" value="ent" label="Enterprise" description="Custom" disabled />\n    </RadioGroup>\n  );\n}`}
+        />
+      </DocSection>
+
+      <DocSection
+        title="Layout Variants"
+        id="layout"
+        description="Radio items can be positioned and aligned just like checkboxes."
+      >
+        <RadioGroup
+          defaultValue="right"
+          className="grid grid-cols-2 gap-8 md:grid-cols-4"
+        >
+          <RadioItem
+            value="right"
+            label="Right (Default)"
+            labelPosition="right"
+          />
+          <RadioItem value="left" label="Left Side" labelPosition="left" />
+          <RadioItem value="top" label="Top Label" labelPosition="top" />
+          <RadioItem
+            value="bottom"
+            label="Bottom Label"
+            labelPosition="bottom"
+          />
+        </RadioGroup>
+        <CodeBlock
+          ts={`<RadioGroup className="grid grid-cols-4">\n  <RadioItem label="Right" labelPosition="right" />\n  <RadioItem label="Left" labelPosition="left" />\n</RadioGroup>`}
+          fullCode={`import { RadioGroup, RadioItem } from "aer-design";\n\nexport default function Layouts() {\n  return (\n    <RadioGroup defaultValue="right" className="grid grid-cols-2 gap-8">\n      <RadioItem value="right" label="Right" labelPosition="right" />\n      <RadioItem value="left" label="Left" labelPosition="left" />\n      <RadioItem value="top" label="Top" labelPosition="top" />\n      <RadioItem value="bottom" label="Bottom" labelPosition="bottom" />\n    </RadioGroup>\n  );\n}`}
         />
       </DocSection>
 
@@ -133,7 +133,7 @@ export function RadioDoc() {
         />
       </DocSection>
 
-      <DocSection title="Real World Validation" id="real-world-validation">
+      <DocSection title="Real World" id="real-world-validation">
         <RealWorldExample />
         <CodeBlock
           ts={`const [value, setValue] = useState("");\nconst [touched, setTouched] = useState(false);\nconst isInvalid = touched && !value;\n\n<RadioGroup \n  error={isInvalid ? "Please select a plan" : undefined}\n  value={value}\n  onChange={(val) => {\n    setValue(val);\n    setTouched(true);\n  }}\n>\n  <RadioItem value="free" label="Free Tier" required />\n  <RadioItem value="pro" label="Pro Tier" required />\n</RadioGroup>`}

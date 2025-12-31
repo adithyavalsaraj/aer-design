@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { useEffect, useState } from "react";
 import { DirectionProvider } from "./components/DirectionProvider";
 import { Sidebar } from "./docs/components/Sidebar";
 import { RightTableOfContents } from "./docs/components/TableOfContents";
-import { ThemeProvider } from "./docs/components/ThemeProvider";
 import { Topbar } from "./docs/components/Topbar";
 import { ButtonDoc } from "./docs/pages/ButtonDoc";
 import { CheckboxDoc } from "./docs/pages/CheckboxDoc";
@@ -16,8 +16,34 @@ import { SidebarDoc } from "./docs/pages/SidebarDoc";
 import { TextareaDoc } from "./docs/pages/TextareaDoc";
 
 function App() {
-  const [activePage, setActivePage] = useState("getting-started");
+  // Initialize state from URL hash
+  const getInitialPage = () => {
+    const hash = window.location.hash.replace("#/", "");
+    return hash || "getting-started";
+  };
+
+  const [activePage, setActivePage] = useState(getInitialPage);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  // Sync URL hash with activePage and handle scroll-to-top
+  useEffect(() => {
+    const hash = `#/${activePage}`;
+    if (window.location.hash !== hash) {
+      window.history.pushState(null, "", hash);
+    }
+    window.scrollTo(0, 0);
+  }, [activePage]);
+
+  // Handle browser back/forward buttons
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace("#/", "");
+      setActivePage(hash || "getting-started");
+    };
+
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
 
   // Define TOC items for each page
   const pageTOC: Record<string, { id: string; title: string }[]> = {
@@ -27,26 +53,26 @@ function App() {
       { id: "basic-usage", title: "Basic Usage" },
     ],
     button: [
-      { id: "basic", title: "Basic Variants" },
+      { id: "basic", title: "Basic" },
       { id: "aer", title: "Aer Variant" },
-      { id: "sizes", title: "Sizes" },
       { id: "states", title: "States" },
+      { id: "sizes", title: "Sizes" },
     ],
     input: [
-      { id: "variants", title: "Variants" },
-      { id: "floating-label", title: "Floating Label" },
       { id: "basic", title: "Basic" },
+      { id: "specialized", title: "Specialized" },
+      { id: "masking", title: "Masking" },
+      { id: "floating-label", title: "Floating Label" },
+      { id: "variants", title: "Variants" },
       { id: "icons", title: "Icons & Prefixes" },
       { id: "addons", title: "Addons" },
-      { id: "masking", title: "Masking" },
-      { id: "specialized", title: "Specialized" },
       { id: "validation", title: "Validation" },
       { id: "real-world-validation", title: "Real World" },
     ],
     textarea: [
-      { id: "variants", title: "Variants" },
-      { id: "floating-label", title: "Floating Label" },
       { id: "basic", title: "Basic" },
+      { id: "floating-label", title: "Floating Label" },
+      { id: "variants", title: "Variants" },
       { id: "sizes", title: "Sizes" },
       { id: "validation", title: "Validation" },
       { id: "real-world-validation", title: "Real World" },
@@ -54,18 +80,18 @@ function App() {
 
     checkbox: [
       { id: "basic", title: "Basic" },
-      { id: "basic", title: "Basic" },
+      { id: "checkbox-group", title: "Checkbox Group" },
+      { id: "states", title: "States" },
+      { id: "cards", title: "Card Variant" },
       { id: "positioning", title: "Label Positioning" },
       { id: "alignment", title: "Vertical Alignment" },
-      { id: "cards", title: "Card Variant" },
-      { id: "states", title: "States" },
       { id: "validation", title: "Validation" },
       { id: "real-world-validation", title: "Real World" },
     ],
     radio: [
       { id: "basic", title: "Basic" },
-      { id: "layout", title: "Layout Variants" },
       { id: "cards", title: "Card Selection" },
+      { id: "layout", title: "Layout Variants" },
       { id: "alignment", title: "Vertical Alignment" },
       { id: "validation", title: "Validation" },
       { id: "real-world-validation", title: "Real World" },
@@ -79,14 +105,17 @@ function App() {
       { id: "real-world-validation", title: "Real World" },
     ],
     sidebar: [
-      { id: "universal", title: "Universal Navigation" },
-      { id: "hoverable", title: "Rail / Hoverable" },
+      { id: "basic", title: "Basic" },
       { id: "floating", title: "Floating Island" },
-      { id: "overlay", title: "Overlay Mode" },
     ],
     navbar: [
-      { id: "top-nav", title: "Top Navigation" },
+      { id: "basic", title: "Basic" },
       { id: "bottom-nav", title: "Bottom Navigation" },
+    ],
+    "direction-provider": [
+      { id: "installation", title: "Installation" },
+      { id: "usage", title: "Usage" },
+      { id: "features", title: "Features" },
     ],
   };
 

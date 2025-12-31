@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Check, Copy, Eye, Play } from "lucide-react";
 import * as React from "react";
+import { createHighlighter, type Highlighter } from "shiki";
 
 // --- StackBlitz Integration ---
 
@@ -126,6 +127,50 @@ export function DocSection({ title, description, children, id }: SectionProps) {
   );
 }
 
+// --- Shiki Singleton & Hook ---
+let highlighterPromise: Promise<Highlighter> | null = null;
+
+const getHighlighter = () => {
+  if (!highlighterPromise) {
+    highlighterPromise = createHighlighter({
+      themes: ["dark-plus"],
+      langs: ["typescript", "tsx", "javascript", "jsx"],
+    });
+  }
+  return highlighterPromise;
+};
+
+function useSyntaxHighlighting(code: string, lang: string) {
+  const [html, setHtml] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    let mounted = true;
+
+    getHighlighter().then((highlighter) => {
+      // Ensure we use the correct lang equivalent for Shiki
+      const shikiLang = lang === "js" ? "javascript" : "tsx";
+
+      try {
+        const out = highlighter.codeToHtml(code, {
+          lang: shikiLang,
+          theme: "dark-plus",
+        });
+        if (mounted) setHtml(out);
+      } catch (e) {
+        // Fallback or error handling
+        console.error("Shiki error:", e);
+        if (mounted) setHtml(null); // Fallback to raw code
+      }
+    });
+
+    return () => {
+      mounted = false;
+    };
+  }, [code, lang]);
+
+  return html;
+}
+
 interface CodeBlockProps {
   ts: string;
   js?: string;
@@ -140,13 +185,22 @@ export function CodeBlock({ ts, js, fullCode }: CodeBlockProps) {
   // Simple type stripper for auto-generated JS
   const getJsCode = (tsCode: string) => {
     if (js) return js;
-    return tsCode
-      .replace(/:\s*[A-Z][a-zA-Z0-9<>\[\]]+/g, "") // Remove type annotations like : string
-      .replace(/<[A-Z][a-zA-Z0-9]+(\s+[^>]*)?>/g, (match) => match) // Keep JSX components
-      .replace(/as\s+[A-Z][a-zA-Z0-9]+/g, "") // Remove 'as Type' assertions
-      .replace(/interface\s+\w+\s*{[^}]*}/g, "") // Remove interfaces (rough)
-      .replace(/type\s+\w+\s*=[^;]*;/g, "") // Remove types (rough)
-      .trim();
+    return (
+      tsCode
+        // Remove interface and type definitions
+        .replace(/(export\s+)?(interface|type)\s+\w+[\s\S]*?}\n?/g, "")
+        .replace(/(export\s+)?type\s+\w+\s*=\s*[\s\S]*?;\n?/g, "")
+        // Remove generics in function calls: useState<boolean>(
+        .replace(/<[a-zA-Z0-9_]+>(?=\()/g, "")
+        // Remove 'as' assertions
+        .replace(/\s+as\s+[a-zA-Z0-9_.]+(<[^>]+>)?(\[\])?/g, "")
+        // Remove primitive type annotations
+        .replace(/:\s*(string|number|boolean|any|void|never|unknown)/g, "")
+        // Remove capitalized type annotations (likely custom types/interfaces)
+        // This regex attempts to match : Type<Generic>[] but stop before assignments
+        .replace(/:\s*[A-Z][a-zA-Z0-9_<>\[\]|.]*/g, "")
+        .trim()
+    );
   };
 
   const getDisplayCode = () => {
@@ -155,6 +209,7 @@ export function CodeBlock({ ts, js, fullCode }: CodeBlockProps) {
   };
 
   const currentCode = getDisplayCode();
+  const highlightedHtml = useSyntaxHighlighting(currentCode, lang);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(currentCode);
@@ -249,13 +304,20 @@ export function CodeBlock({ ts, js, fullCode }: CodeBlockProps) {
       {/* Main Code View */}
       <div className="relative font-mono text-sm leading-relaxed">
         <div className="max-h-[500px] overflow-auto scrollbar-thin scrollbar-thumb-aer-border scrollbar-track-transparent">
-          <pre className="p-4 bg-zinc-950 text-zinc-50 min-w-full float-left">
-            <code>{currentCode}</code>
-          </pre>
+          {highlightedHtml ? (
+            <div
+              className="[&>pre]:!p-4 [&>pre]:!bg-zinc-950 [&>pre]:min-w-full [&>pre]:whitespace-pre-wrap [&>pre]:break-words [&>pre]:font-mono"
+              dangerouslySetInnerHTML={{ __html: highlightedHtml }}
+            />
+          ) : (
+            <pre className="p-4 bg-zinc-950 text-zinc-50 min-w-full whitespace-pre-wrap break-words">
+              <code>{currentCode}</code>
+            </pre>
+          )}
         </div>
 
         {viewMode === "full" && (
-          <div className="absolute top-0 right-0 p-2 pointer-events-none">
+          <div className="absolute top-0 right-4 p-2 pointer-events-none">
             <span className="bg-aer-primary/10 text-aer-primary text-[10px] font-bold px-2 py-1 rounded-sm border border-aer-primary/20 backdrop-blur-md shadow-sm">
               FULL SOURCE
             </span>

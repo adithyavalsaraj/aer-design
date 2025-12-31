@@ -2,6 +2,7 @@ import { useDirection } from "@/components/DirectionProvider";
 import { AlignLeft, AlignRight, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { ModeToggle } from "./ModeToggle";
+import { ThemePicker } from "./ThemePicker";
 
 interface SettingsSheetProps {
   isOpen: boolean;
@@ -58,13 +59,17 @@ export function SettingsSheet({ isOpen, onClose }: SettingsSheetProps) {
 
         <div className="p-6 space-y-8">
           {/* Theme Section */}
-          <div className="space-y-3">
+          <div className="space-y-4">
             <h3 className="text-sm font-medium text-aer-muted-foreground uppercase tracking-wider">
               Appearance
             </h3>
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium">Theme</span>
+              <span className="text-sm font-medium">Mode</span>
               <ModeToggle />
+            </div>
+            <div className="space-y-2 pt-2">
+              <span className="text-sm font-medium">Theme</span>
+              <ThemePicker />
             </div>
           </div>
 

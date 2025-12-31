@@ -83,7 +83,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             addonAfter && !addonBefore && "rounded-l-aer-md",
             props.disabled && "opacity-50 cursor-not-allowed",
             error && "border-red-500 focus-within:ring-red-500",
-            floatingLabel && "pt-4" // Add top padding for label space
+            floatingLabel &&
+              "pt-4 pb-0 has-[:placeholder-shown:not(:focus)]:pt-2 has-[:placeholder-shown:not(:focus)]:pb-2" // Dynamic padding for floating label
           )}
         >
           {/* Left Elements Stack */}
@@ -120,9 +121,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                 className={cn(
                   "absolute left-0 top-0 text-sm text-aer-muted-foreground transition-all duration-200 pointer-events-none origin-left",
                   // Check for value (placeholder-shown) or focus
-                  "peer-placeholder-shown:top-0 peer-placeholder-shown:text-base",
-                  "peer-focus:-top-4 peer-focus:text-xs peer-focus:text-aer-primary",
-                  "peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-aer-primary"
+                  "peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base",
+                  "peer-focus:-top-4 peer-focus:translate-y-0 peer-focus:text-xs peer-focus:text-aer-primary",
+                  "peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:translate-y-0 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-aer-primary"
                 )}
               >
                 {label || placeholder}

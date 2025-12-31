@@ -515,8 +515,8 @@ export function SidebarDoc() {
   const overview = (
     <div className="space-y-12">
       <DocSection
-        title="Interactive Playground"
-        id="playground"
+        title="Basic"
+        id="basic"
         description="Configure the sidebar behavior and copy the code."
       >
         <SidebarPlayground />

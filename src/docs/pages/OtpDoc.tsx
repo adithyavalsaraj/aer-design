@@ -102,7 +102,7 @@ export function OtpDoc() {
         />
       </DocSection>
 
-      <DocSection title="Real World Validation" id="real-world-validation">
+      <DocSection title="Real World" id="real-world-validation">
         <RealWorldExample />
         <CodeBlock
           ts={`const [value, setValue] = useState("");\nconst [touched, setTouched] = useState(false);\nconst isInvalid = touched && value.length < 6;\n\n<label>Verification Code <span className="text-red-500">*</span></label>\n<OtpInput \n  value={value}\n  onChange={setValue}\n  onBlur={() => setTouched(true)}\n  error={isInvalid ? "Code must be 6 digits" : undefined}\n/>`}

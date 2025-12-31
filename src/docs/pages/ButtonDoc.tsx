@@ -41,21 +41,6 @@ export function ButtonDoc() {
         />
       </DocSection>
 
-      <DocSection title="Sizes" id="sizes">
-        <div className="flex flex-wrap items-end gap-4">
-          <Button size="sm">Small</Button>
-          <Button size="default">Default</Button>
-          <Button size="lg">Large</Button>
-          <Button size="icon" variant="outline">
-            <Mail className="size-4" />
-          </Button>
-        </div>
-        <CodeBlock
-          ts={`<Button size="sm">Small</Button>\n<Button size="default">Default</Button>\n<Button size="lg">Large</Button>\n<Button size="icon" variant="outline">\n  <Mail className="size-4" />\n</Button>`}
-          fullCode={`import { Button } from "aer-design";\nimport { Mail } from "lucide-react";\n\nexport default function ButtonSizes() {\n  return (\n    <div className="flex items-center gap-4">\n      <Button size="sm">Smaller Button</Button>\n      <Button>Standard Button</Button>\n      <Button size="lg">Jumbo Button</Button>\n      <Button size="icon" variant="outline"><Mail /></Button>\n    </div>\n  );\n}`}
-        />
-      </DocSection>
-
       <DocSection
         title="States"
         id="states"
@@ -74,6 +59,21 @@ export function ButtonDoc() {
         <CodeBlock
           ts={`<Button isLoading>Loading</Button>\n<Button disabled>Disabled</Button>\n<Button className="active:scale-90 transition-transform">Custom Scale</Button>`}
           fullCode={`import { Button } from "aer-design";\nimport { useState } from "react";\n\nexport default function ButtonStates() {\n  const [loading, setLoading] = useState(false);\n  \n  return (\n    <div className="flex gap-4">\n      <Button \n        isLoading={loading} \n        onClick={() => setLoading(true)}\n      >\n        Click to load\n      </Button>\n      <Button disabled>Can't touch this</Button>\n    </div>\n  );\n}`}
+        />
+      </DocSection>
+
+      <DocSection title="Sizes" id="sizes">
+        <div className="flex flex-wrap items-end gap-4">
+          <Button size="sm">Small</Button>
+          <Button size="default">Default</Button>
+          <Button size="lg">Large</Button>
+          <Button size="icon" variant="outline">
+            <Mail className="size-4" />
+          </Button>
+        </div>
+        <CodeBlock
+          ts={`<Button size="sm">Small</Button>\n<Button size="default">Default</Button>\n<Button size="lg">Large</Button>\n<Button size="icon" variant="outline">\n  <Mail className="size-4" />\n</Button>`}
+          fullCode={`import { Button } from "aer-design";\nimport { Mail } from "lucide-react";\n\nexport default function ButtonSizes() {\n  return (\n    <div className="flex items-center gap-4">\n      <Button size="sm">Smaller Button</Button>\n      <Button>Standard Button</Button>\n      <Button size="lg">Jumbo Button</Button>\n      <Button size="icon" variant="outline"><Mail /></Button>\n    </div>\n  );\n}`}
         />
       </DocSection>
     </div>

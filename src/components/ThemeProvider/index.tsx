@@ -1,21 +1,28 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import type { ThemeColor } from "./theme-utils";
 
 type Theme = "dark" | "light" | "system";
 
 type ThemeProviderProps = {
   children: React.ReactNode;
   defaultTheme?: Theme;
+  defaultThemeColor?: ThemeColor;
   storageKey?: string;
+  themeStorageKey?: string;
 };
 
 type ThemeProviderState = {
   theme: Theme;
   setTheme: (theme: Theme) => void;
+  themeColor: ThemeColor;
+  setThemeColor: (color: ThemeColor) => void;
 };
 
 const initialState: ThemeProviderState = {
   theme: "system",
   setTheme: () => null,
+  themeColor: "blue",
+  setThemeColor: () => null,
 };
 
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
@@ -23,10 +30,17 @@ const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 export function ThemeProvider({
   children,
   defaultTheme = "system",
+  defaultThemeColor = "blue",
   storageKey = "aer-ui-theme",
+  themeStorageKey = "aer-ui-theme-color",
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(
     () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
+  );
+
+  const [themeColor, setThemeColor] = useState<ThemeColor>(
+    () =>
+      (localStorage.getItem(themeStorageKey) as ThemeColor) || defaultThemeColor
   );
 
   useEffect(() => {
@@ -47,11 +61,21 @@ export function ThemeProvider({
     root.classList.add(theme);
   }, [theme]);
 
+  useEffect(() => {
+    const root = window.document.documentElement;
+    root.setAttribute("data-theme", themeColor);
+  }, [themeColor]);
+
   const value = {
     theme,
     setTheme: (theme: Theme) => {
       localStorage.setItem(storageKey, theme);
       setTheme(theme);
+    },
+    themeColor,
+    setThemeColor: (color: ThemeColor) => {
+      localStorage.setItem(themeStorageKey, color);
+      setThemeColor(color);
     },
   };
 

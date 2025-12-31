@@ -10,8 +10,8 @@ export function NavbarDoc() {
   const overview = (
     <div className="space-y-12">
       <DocSection
-        title="Top Navigation"
-        id="top-nav"
+        title="Basic"
+        id="basic"
         description="Standard top navigation bar for desktop and web applications."
       >
         <div className="border rounded-aer-xl overflow-hidden bg-aer-muted/5 relative h-32 flex flex-col">

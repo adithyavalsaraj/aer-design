@@ -50,6 +50,7 @@ export function DirectionProviderDoc() {
     <div className="space-y-12">
       <DocSection
         title="Installation"
+        id="installation"
         description="Wrap your application root with the DirectionProvider."
       >
         <CodeBlock
@@ -60,6 +61,7 @@ export function DirectionProviderDoc() {
 
       <DocSection
         title="Usage"
+        id="usage"
         description="Use the useDirection hook to access or control the text direction."
       >
         <div className="mb-6">
@@ -73,6 +75,7 @@ export function DirectionProviderDoc() {
 
       <DocSection
         title="Features"
+        id="features"
         description="Key capabilities of the provider."
       >
         <ul className="list-disc list-inside space-y-2 text-aer-muted-foreground">

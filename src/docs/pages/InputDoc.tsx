@@ -13,28 +13,46 @@ import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
 export function InputDoc() {
   const overview = (
     <div className="space-y-12">
-      <DocSection title="Variants" id="variants">
-        <div className="max-w-sm space-y-6">
-          <div>
-            <label className="text-sm font-medium mb-1.5 block">
-              Outline (Default)
-            </label>
-            <Input placeholder="Outline Style" />
-          </div>
-          <div>
-            <label className="text-sm font-medium mb-1.5 block">Filled</label>
-            <Input variant="filled" placeholder="Filled Style" />
-          </div>
-          <div>
-            <label className="text-sm font-medium mb-1.5 block">
-              Underlined
-            </label>
-            <Input variant="underlined" placeholder="Underlined Style" />
-          </div>
+      <DocSection title="Basic" id="basic">
+        <div className="max-w-sm space-y-4">
+          <Input placeholder="Enter your full name" />
+          <Input disabled placeholder="Account restricted" />
         </div>
         <CodeBlock
-          ts={`<Input placeholder="Outline" />\n<Input variant="filled" placeholder="Filled" />\n<Input variant="underlined" placeholder="Underlined" />`}
-          fullCode={`import { Input } from "aer-design";\n\nexport default function VariantExample() {\n  return (\n    <div className="max-w-sm space-y-6">\n      <Input placeholder="Outline (Default)" />\n      <Input variant="filled" placeholder="Filled" />\n      <Input variant="underlined" placeholder="Underlined" />\n    </div>\n  );\n}`}
+          ts={`<Input placeholder="Enter your full name" />\n<Input disabled placeholder="Account restricted" />`}
+          js={`<Input placeholder="Enter your full name" />\n<Input disabled placeholder="Account restricted" />`}
+          fullCode={`import { Input, Button } from "aer-design";\nimport { User, Lock } from "lucide-react";\n\nexport default function LoginForm() {\n  return (\n    <div className="max-w-md space-y-6 p-8 bg-zinc-900 rounded-2xl border border-white/5">\n      <h2 className="text-xl font-bold text-white mb-2">Welcome Back</h2>\n      <div className="space-y-4">\n        <Input \n          startIcon={<User />} \n          placeholder="Email address" \n          type="email" \n        />\n        <Input \n          startIcon={<Lock />} \n          placeholder="Password" \n          type="password" \n        />\n        <Button variant="aer" className="w-full">Sign In</Button>\n      </div>\n    </div>\n  );\n}`}
+        />
+      </DocSection>
+
+      <DocSection title="Specialized" id="specialized">
+        <div className="max-w-sm space-y-4">
+          <PasswordInput placeholder="Enter password" />
+          <EmailInput placeholder="johndoe@aer-design.com" />
+          <PhoneInput placeholder="+1 (555) 000-0000" />
+        </div>
+        <CodeBlock
+          ts={`<PasswordInput placeholder="Enter password" />\n<EmailInput placeholder="johndoe@aer-design.com" />\n<PhoneInput placeholder="+1 (555) 000-0000" />`}
+          fullCode={`import { PasswordInput, EmailInput, PhoneInput } from "aer-design";\n\nexport default function SpecializedInputs() {\n  return (\n    <div className="space-y-4">\n      <EmailInput label="Email address" />\n      <PasswordInput label="Secure Password" />\n      <PhoneInput label="Mobile Number" />\n    </div>\n  );\n}`}
+        />
+      </DocSection>
+
+      <DocSection
+        title="Masking"
+        id="masking"
+        description="Pattern-based masking for formatted data."
+      >
+        <div className="max-w-sm space-y-4">
+          <MaskedInput
+            mask="#### #### #### ####"
+            startIcon={<CreditCard />}
+            placeholder="Card Number"
+          />
+          <MaskedInput mask="## / ## / ####" placeholder="DD / MM / YYYY" />
+        </div>
+        <CodeBlock
+          ts={`<MaskedInput mask="#### #### #### ####" startIcon={<CreditCard />} />\n<MaskedInput mask="## / ## / ####" placeholder="DD / MM / YYYY" />`}
+          fullCode={`import { MaskedInput } from "aer-design";\nimport { CreditCard } from "lucide-react";\n\nexport default function CardForm() {\n  return (\n    <div className="p-6 bg-zinc-900 border border-white/5 rounded-2xl flex flex-col gap-4">\n      <h3 className="text-sm font-medium text-white">Payment Details</h3>\n      <MaskedInput \n        mask="#### #### #### ####" \n        startIcon={<CreditCard />} \n        placeholder="0000 0000 0000 0000" \n      />\n      <div className="grid grid-cols-2 gap-4">\n        <MaskedInput mask="##/##" placeholder="MM/YY" />\n        <MaskedInput mask="###" placeholder="CVC" />\n      </div>\n    </div>\n  );\n}`}
         />
       </DocSection>
 
@@ -61,15 +79,28 @@ export function InputDoc() {
         />
       </DocSection>
 
-      <DocSection title="Basic" id="basic">
-        <div className="max-w-sm space-y-4">
-          <Input placeholder="Enter your full name" />
-          <Input disabled placeholder="Account restricted" />
+      <DocSection title="Variants" id="variants">
+        <div className="max-w-sm space-y-6">
+          <div>
+            <label className="text-sm font-medium mb-1.5 block">
+              Outline (Default)
+            </label>
+            <Input placeholder="Outline Style" />
+          </div>
+          <div>
+            <label className="text-sm font-medium mb-1.5 block">Filled</label>
+            <Input variant="filled" placeholder="Filled Style" />
+          </div>
+          <div>
+            <label className="text-sm font-medium mb-1.5 block">
+              Underlined
+            </label>
+            <Input variant="underlined" placeholder="Underlined Style" />
+          </div>
         </div>
         <CodeBlock
-          ts={`<Input placeholder="Enter your full name" />\n<Input disabled placeholder="Account restricted" />`}
-          js={`<Input placeholder="Enter your full name" />\n<Input disabled placeholder="Account restricted" />`}
-          fullCode={`import { Input, Button } from "aer-design";\nimport { User, Lock } from "lucide-react";\n\nexport default function LoginForm() {\n  return (\n    <div className="max-w-md space-y-6 p-8 bg-zinc-900 rounded-2xl border border-white/5">\n      <h2 className="text-xl font-bold text-white mb-2">Welcome Back</h2>\n      <div className="space-y-4">\n        <Input \n          startIcon={<User />} \n          placeholder="Email address" \n          type="email" \n        />\n        <Input \n          startIcon={<Lock />} \n          placeholder="Password" \n          type="password" \n        />\n        <Button variant="aer" className="w-full">Sign In</Button>\n      </div>\n    </div>\n  );\n}`}
+          ts={`<Input placeholder="Outline" />\n<Input variant="filled" placeholder="Filled" />\n<Input variant="underlined" placeholder="Underlined" />`}
+          fullCode={`import { Input } from "aer-design";\n\nexport default function VariantExample() {\n  return (\n    <div className="max-w-sm space-y-6">\n      <Input placeholder="Outline (Default)" />\n      <Input variant="filled" placeholder="Filled" />\n      <Input variant="underlined" placeholder="Underlined" />\n    </div>\n  );\n}`}
         />
       </DocSection>
 
@@ -116,36 +147,6 @@ export function InputDoc() {
         />
       </DocSection>
 
-      <DocSection
-        title="Masking"
-        id="masking"
-        description="Pattern-based masking for formatted data."
-      >
-        <div className="max-w-sm space-y-4">
-          <MaskedInput
-            mask="#### #### #### ####"
-            startIcon={<CreditCard />}
-            placeholder="Card Number"
-          />
-          <MaskedInput mask="## / ## / ####" placeholder="DD / MM / YYYY" />
-        </div>
-        <CodeBlock
-          ts={`<MaskedInput mask="#### #### #### ####" startIcon={<CreditCard />} />\n<MaskedInput mask="## / ## / ####" placeholder="DD / MM / YYYY" />`}
-          fullCode={`import { MaskedInput } from "aer-design";\nimport { CreditCard } from "lucide-react";\n\nexport default function CardForm() {\n  return (\n    <div className="p-6 bg-zinc-900 border border-white/5 rounded-2xl flex flex-col gap-4">\n      <h3 className="text-sm font-medium text-white">Payment Details</h3>\n      <MaskedInput \n        mask="#### #### #### ####" \n        startIcon={<CreditCard />} \n        placeholder="0000 0000 0000 0000" \n      />\n      <div className="grid grid-cols-2 gap-4">\n        <MaskedInput mask="##/##" placeholder="MM/YY" />\n        <MaskedInput mask="###" placeholder="CVC" />\n      </div>\n    </div>\n  );\n}`}
-        />
-      </DocSection>
-
-      <DocSection title="Specialized" id="specialized">
-        <div className="max-w-sm space-y-4">
-          <PasswordInput placeholder="Enter password" />
-          <EmailInput placeholder="johndoe@aer-design.com" />
-          <PhoneInput placeholder="+1 (555) 000-0000" />
-        </div>
-        <CodeBlock
-          ts={`<PasswordInput placeholder="Enter password" />\n<EmailInput placeholder="johndoe@aer-design.com" />\n<PhoneInput placeholder="+1 (555) 000-0000" />`}
-          fullCode={`import { PasswordInput, EmailInput, PhoneInput } from "aer-design";\n\nexport default function SpecializedInputs() {\n  return (\n    <div className="space-y-4">\n      <EmailInput label="Email address" />\n      <PasswordInput label="Secure Password" />\n      <PhoneInput label="Mobile Number" />\n    </div>\n  );\n}`}
-        />
-      </DocSection>
       <DocSection title="Validation" id="validation">
         <div className="max-w-sm space-y-4">
           <Input placeholder="Error toggle" error />
@@ -157,7 +158,7 @@ export function InputDoc() {
         />
       </DocSection>
 
-      <DocSection title="Real World Validation" id="real-world-validation">
+      <DocSection title="Real World" id="real-world-validation">
         <RealWorldExample />
         <div className="mt-4">
           <p className="text-sm text-aer-muted-foreground mb-4">

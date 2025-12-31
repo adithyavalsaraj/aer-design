@@ -5,6 +5,32 @@ import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
 export function TextareaDoc() {
   const overview = (
     <div className="space-y-12">
+      <DocSection title="Basic" id="basic">
+        <div className="max-w-xl">
+          <Textarea placeholder="Type your message here..." />
+        </div>
+        <CodeBlock
+          ts={`<Textarea placeholder="Type your message here..." />`}
+          fullCode={`import { Textarea } from "aer-design";\n\nexport default function MessageForm() {\n  return (\n    <div className="grid w-full gap-2 p-6 bg-zinc-900 rounded-xl">\n      <label className="text-sm font-medium text-white">Your Message</label>\n      <Textarea placeholder="Write something amazing..." />\n      <p className="text-xs text-zinc-500 italic">Character limit: 500</p>\n    </div>\n  );\n}`}
+        />
+      </DocSection>
+
+      <DocSection title="Floating Label" id="floating-label">
+        <div className="max-w-xl space-y-6">
+          <Textarea floatingLabel label="Feedback" placeholder=" " />
+          <Textarea
+            variant="filled"
+            floatingLabel
+            label="Project Description"
+            placeholder=" "
+            className="min-h-[120px]"
+          />
+        </div>
+        <CodeBlock
+          ts={`<Textarea floatingLabel label="Feedback" placeholder=" " />\n\n<Textarea \n  variant="filled" \n  floatingLabel \n  label="Project Description" \n  placeholder=" " \n  className="min-h-[120px]" \n/>`}
+        />
+      </DocSection>
+
       <DocSection title="Variants" id="variants">
         <div className="max-w-xl space-y-6">
           <div>
@@ -26,32 +52,6 @@ export function TextareaDoc() {
         </div>
         <CodeBlock
           ts={`<Textarea placeholder="Outline" />\n<Textarea variant="filled" placeholder="Filled" />\n<Textarea variant="underlined" placeholder="Underlined" />`}
-        />
-      </DocSection>
-
-      <DocSection title="Floating Label" id="floating-label">
-        <div className="max-w-xl space-y-6">
-          <Textarea floatingLabel label="Feedback" placeholder=" " />
-          <Textarea
-            variant="filled"
-            floatingLabel
-            label="Project Description"
-            placeholder=" "
-            className="min-h-[120px]"
-          />
-        </div>
-        <CodeBlock
-          ts={`<Textarea floatingLabel label="Feedback" placeholder=" " />\n\n<Textarea \n  variant="filled" \n  floatingLabel \n  label="Project Description" \n  placeholder=" " \n  className="min-h-[120px]" \n/>`}
-        />
-      </DocSection>
-
-      <DocSection title="Basic" id="basic">
-        <div className="max-w-xl">
-          <Textarea placeholder="Type your message here..." />
-        </div>
-        <CodeBlock
-          ts={`<Textarea placeholder="Type your message here..." />`}
-          fullCode={`import { Textarea } from "aer-design";\n\nexport default function MessageForm() {\n  return (\n    <div className="grid w-full gap-2 p-6 bg-zinc-900 rounded-xl">\n      <label className="text-sm font-medium text-white">Your Message</label>\n      <Textarea placeholder="Write something amazing..." />\n      <p className="text-xs text-zinc-500 italic">Character limit: 500</p>\n    </div>\n  );\n}`}
         />
       </DocSection>
 
@@ -79,7 +79,7 @@ export function TextareaDoc() {
         <CodeBlock ts={`<Textarea placeholder="Error state" error />`} />
       </DocSection>
 
-      <DocSection title="Real World Validation" id="real-world-validation">
+      <DocSection title="Real World" id="real-world-validation">
         <RealWorldExample />
         <CodeBlock
           ts={`const [value, setValue] = useState("");\nconst [touched, setTouched] = useState(false);\nconst isInvalid = touched && value.trim().length < 10;\n\n<label>Description <span className="text-red-500">*</span></label>\n<Textarea \n  value={value}\n  onChange={(e) => setValue(e.target.value)}\n  onBlur={() => setTouched(true)}\n  error={isInvalid}\n/>`}

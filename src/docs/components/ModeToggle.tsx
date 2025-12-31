@@ -1,5 +1,5 @@
+import { useTheme } from "@/components/ThemeProvider";
 import { Monitor, Moon, Sun } from "lucide-react";
-import { useTheme } from "./ThemeProvider";
 
 export function ModeToggle() {
   const { theme, setTheme } = useTheme();

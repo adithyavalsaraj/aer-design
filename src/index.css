@@ -83,6 +83,240 @@
     --color-aer-input: hsl(217.2 32.6% 17.5%);
     --color-aer-ring: hsl(224.3 76.3% 48%);
   }
+
+  /* --- Themes (Refined) --- */
+
+  /* Zinc (Carbon) */
+  [data-theme="zinc"] {
+    --color-aer-primary: hsl(240 5.9% 10%);
+    --color-aer-primary-foreground: hsl(0 0% 98%);
+    --color-aer-secondary: hsl(240 4.8% 95.9%);
+    --color-aer-secondary-foreground: hsl(240 5.9% 10%);
+    --color-aer-muted: hsl(240 4.8% 95.9%);
+    --color-aer-muted-foreground: hsl(240 3.8% 46.1%);
+    --color-aer-accent: hsl(240 4.8% 95.9%);
+    --color-aer-accent-foreground: hsl(240 5.9% 10%);
+    --color-aer-ring: hsl(240 10% 3.9%);
+  }
+  .dark[data-theme="zinc"] {
+    --color-aer-primary: hsl(0 0% 98%);
+    --color-aer-primary-foreground: hsl(240 5.9% 10%);
+    --color-aer-secondary: hsl(240 3.7% 15.9%);
+    --color-aer-secondary-foreground: hsl(0 0% 98%);
+    --color-aer-muted: hsl(240 3.7% 15.9%);
+    --color-aer-muted-foreground: hsl(240 5% 64.9%);
+    --color-aer-accent: hsl(240 3.7% 15.9%);
+    --color-aer-accent-foreground: hsl(0 0% 98%);
+    --color-aer-ring: hsl(240 4.9% 83.9%);
+  }
+
+  /* Red (Ruby) */
+  [data-theme="red"] {
+    --color-aer-primary: hsl(0 72.2% 50.6%);
+    --color-aer-primary-foreground: hsl(0 85.7% 97.3%);
+    --color-aer-secondary: hsl(0 100% 97%);
+    --color-aer-secondary-foreground: hsl(0 72.2% 50.6%);
+    --color-aer-muted: hsl(0 100% 97%);
+    --color-aer-muted-foreground: hsl(0 50% 45%);
+    --color-aer-accent: hsl(0 100% 97%);
+    --color-aer-accent-foreground: hsl(0 72.2% 50.6%);
+    --color-aer-ring: hsl(0 72.2% 50.6%);
+  }
+  .dark[data-theme="red"] {
+    --color-aer-primary: hsl(0 72.2% 50.6%);
+    --color-aer-primary-foreground: hsl(0 85.7% 97.3%);
+    --color-aer-secondary: hsl(0 40% 18%);
+    --color-aer-secondary-foreground: hsl(0 100% 97.3%);
+    --color-aer-muted: hsl(0 40% 18%);
+    --color-aer-muted-foreground: hsl(0 30% 65%);
+    --color-aer-accent: hsl(0 40% 18%);
+    --color-aer-accent-foreground: hsl(0 100% 97.3%);
+    --color-aer-ring: hsl(0 72.2% 50.6%);
+  }
+
+  /* Orange (Amber) */
+  [data-theme="orange"] {
+    --color-aer-primary: hsl(24.6 95% 53.1%);
+    --color-aer-primary-foreground: hsl(60 9.1% 97.8%);
+    --color-aer-secondary: hsl(30 100% 97%);
+    --color-aer-secondary-foreground: hsl(24.6 95% 53.1%);
+    --color-aer-muted: hsl(30 100% 97%);
+    --color-aer-muted-foreground: hsl(24.6 40% 45%);
+    --color-aer-accent: hsl(30 100% 97%);
+    --color-aer-accent-foreground: hsl(24.6 95% 53.1%);
+    --color-aer-ring: hsl(24.6 95% 53.1%);
+  }
+  .dark[data-theme="orange"] {
+    --color-aer-primary: hsl(20.5 90.2% 48.2%);
+    --color-aer-primary-foreground: hsl(60 9.1% 97.8%);
+    --color-aer-secondary: hsl(24 40% 18%);
+    --color-aer-secondary-foreground: hsl(60 9.1% 97.8%);
+    --color-aer-muted: hsl(24 40% 18%);
+    --color-aer-muted-foreground: hsl(24 30% 65%);
+    --color-aer-accent: hsl(24 40% 18%);
+    --color-aer-accent-foreground: hsl(60 9.1% 97.8%);
+    --color-aer-ring: hsl(24.6 95% 53.1%);
+  }
+
+  /* Green (Emerald) */
+  [data-theme="green"] {
+    --color-aer-primary: hsl(142.1 76.2% 36.3%);
+    --color-aer-primary-foreground: hsl(355.7 100% 97.3%);
+    --color-aer-secondary: hsl(142 60% 96%);
+    --color-aer-secondary-foreground: hsl(142.1 76.2% 36.3%);
+    --color-aer-muted: hsl(142 60% 96%);
+    --color-aer-muted-foreground: hsl(142 40% 45%);
+    --color-aer-accent: hsl(142 60% 96%);
+    --color-aer-accent-foreground: hsl(142.1 76.2% 36.3%);
+    --color-aer-ring: hsl(142.1 76.2% 36.3%);
+  }
+  .dark[data-theme="green"] {
+    --color-aer-primary: hsl(142.1 70.6% 45.3%);
+    --color-aer-primary-foreground: hsl(144.9 80.4% 10%);
+    --color-aer-secondary: hsl(142 40% 16%);
+    --color-aer-secondary-foreground: hsl(355.7 100% 97.3%);
+    --color-aer-muted: hsl(142 40% 16%);
+    --color-aer-muted-foreground: hsl(142 30% 65%);
+    --color-aer-accent: hsl(142 40% 16%);
+    --color-aer-accent-foreground: hsl(355.7 100% 97.3%);
+    --color-aer-ring: hsl(142.4 71.8% 29.2%);
+  }
+
+  /* Blue (Sapphire) */
+  [data-theme="blue"] {
+    --color-aer-primary: hsl(221.2 83.2% 53.3%);
+    --color-aer-primary-foreground: hsl(210 40% 98%);
+    --color-aer-secondary: hsl(221 80% 97%);
+    --color-aer-secondary-foreground: hsl(221.2 83.2% 53.3%);
+    --color-aer-muted: hsl(221 80% 97%);
+    --color-aer-muted-foreground: hsl(221 40% 45%);
+    --color-aer-accent: hsl(221 80% 97%);
+    --color-aer-accent-foreground: hsl(221.2 83.2% 53.3%);
+    --color-aer-ring: hsl(221.2 83.2% 53.3%);
+  }
+  .dark[data-theme="blue"] {
+    --color-aer-primary: hsl(217.2 91.2% 59.8%);
+    --color-aer-primary-foreground: hsl(222.2 47.4% 11.2%);
+    --color-aer-secondary: hsl(217 40% 18%);
+    --color-aer-secondary-foreground: hsl(210 40% 98%);
+    --color-aer-muted: hsl(217 40% 18%);
+    --color-aer-muted-foreground: hsl(217 30% 65%);
+    --color-aer-accent: hsl(217 40% 18%);
+    --color-aer-accent-foreground: hsl(210 40% 98%);
+    --color-aer-ring: hsl(224.3 76.3% 48%);
+  }
+
+  /* Violet (Amethyst) */
+  [data-theme="violet"] {
+    --color-aer-primary: hsl(262.1 83.3% 57.8%);
+    --color-aer-primary-foreground: hsl(210 40% 98%);
+    --color-aer-secondary: hsl(262 70% 97%);
+    --color-aer-secondary-foreground: hsl(262.1 83.3% 57.8%);
+    --color-aer-muted: hsl(262 70% 97%);
+    --color-aer-muted-foreground: hsl(262 40% 45%);
+    --color-aer-accent: hsl(262 70% 97%);
+    --color-aer-accent-foreground: hsl(262.1 83.3% 57.8%);
+    --color-aer-ring: hsl(262.1 83.3% 57.8%);
+  }
+  .dark[data-theme="violet"] {
+    --color-aer-primary: hsl(263.4 70% 50.4%);
+    --color-aer-primary-foreground: hsl(210 40% 98%);
+    --color-aer-secondary: hsl(263 40% 20%);
+    --color-aer-secondary-foreground: hsl(210 40% 98%);
+    --color-aer-muted: hsl(263 40% 20%);
+    --color-aer-muted-foreground: hsl(263 30% 65%);
+    --color-aer-accent: hsl(263 40% 20%);
+    --color-aer-accent-foreground: hsl(210 40% 98%);
+    --color-aer-ring: hsl(263.4 70% 50.4%);
+  }
+
+  /* Sunset (Funky Gradient) */
+  [data-theme="sunset"] {
+    --color-aer-primary: hsl(24.6 95% 53.1%);
+    --color-aer-primary-foreground: hsl(0 0% 98%);
+    --color-aer-secondary: hsl(20 80% 97%);
+    --color-aer-secondary-foreground: hsl(24.6 95% 53.1%);
+    --color-aer-muted: hsl(20 80% 97%);
+    --color-aer-muted-foreground: hsl(24.6 40% 45%);
+    --color-aer-accent: hsl(20 80% 97%);
+    --color-aer-accent-foreground: hsl(24.6 95% 53.1%);
+    --color-aer-ring: hsl(24.6 95% 53.1%);
+  }
+  .dark[data-theme="sunset"] {
+    --color-aer-primary: hsl(24.6 95% 53.1%);
+    --color-aer-primary-foreground: hsl(0 0% 98%);
+    --color-aer-secondary: hsl(340 40% 18%);
+    --color-aer-secondary-foreground: hsl(0 0% 98%);
+    --color-aer-muted: hsl(340 40% 18%);
+    --color-aer-muted-foreground: hsl(340 30% 65%);
+    --color-aer-accent: hsl(340 40% 18%);
+    --color-aer-accent-foreground: hsl(0 0% 98%);
+    --color-aer-ring: hsl(24.6 95% 53.1%);
+  }
+  [data-theme="sunset"] .bg-aer-primary {
+    background-image: linear-gradient(
+      to bottom right,
+      hsl(24.6 95% 53.1%),
+      hsl(330 81% 60%)
+    );
+    background-color: transparent;
+    border: none;
+  }
+  [data-theme="sunset"] .text-aer-primary {
+    background: linear-gradient(
+      to bottom right,
+      hsl(24.6 95% 53.1%),
+      hsl(330 81% 60%)
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent; /* Fallback */
+  }
+
+  /* Ocean (Funky Gradient) */
+  [data-theme="ocean"] {
+    --color-aer-primary: hsl(221.2 83.2% 53.3%);
+    --color-aer-primary-foreground: hsl(0 0% 98%);
+    --color-aer-secondary: hsl(190 70% 97%);
+    --color-aer-secondary-foreground: hsl(221.2 83.2% 53.3%);
+    --color-aer-muted: hsl(190 70% 97%);
+    --color-aer-muted-foreground: hsl(221.2 40% 45%);
+    --color-aer-accent: hsl(190 70% 97%);
+    --color-aer-accent-foreground: hsl(221.2 83.2% 53.3%);
+    --color-aer-ring: hsl(221.2 83.2% 53.3%);
+  }
+  .dark[data-theme="ocean"] {
+    --color-aer-primary: hsl(221.2 83.2% 53.3%);
+    --color-aer-primary-foreground: hsl(0 0% 98%);
+    --color-aer-secondary: hsl(200 40% 18%);
+    --color-aer-secondary-foreground: hsl(0 0% 98%);
+    --color-aer-muted: hsl(200 40% 18%);
+    --color-aer-muted-foreground: hsl(200 30% 65%);
+    --color-aer-accent: hsl(200 40% 18%);
+    --color-aer-accent-foreground: hsl(0 0% 98%);
+    --color-aer-ring: hsl(221.2 83.2% 53.3%);
+  }
+  [data-theme="ocean"] .bg-aer-primary {
+    background-image: linear-gradient(
+      to bottom right,
+      hsl(221.2 83.2% 53.3%),
+      hsl(188.7 94.5% 42.7%)
+    );
+    background-color: transparent;
+    border: none;
+  }
+  [data-theme="ocean"] .text-aer-primary {
+    background: linear-gradient(
+      to bottom right,
+      hsl(221.2 83.2% 53.3%),
+      hsl(188.7 94.5% 42.7%)
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
 }
 
 @layer base {

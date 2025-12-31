@@ -7,29 +7,65 @@ interface TOCItem {
 }
 
 export function RightTableOfContents({ items }: { items: TOCItem[] }) {
-  const [activeId, setActiveId] = useState<string>("");
+  const [activeId, setActiveId] = useState<string>(items[0]?.id || "");
   const isManualScrolling = useRef(false);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (isManualScrolling.current) return;
+    setActiveId(items[0]?.id || "");
+    isManualScrolling.current = false;
+  }, [items]);
 
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (isManualScrolling.current) return;
+
+      const headings = items
+        .map((item) => ({
+          id: item.id,
+          element: document.getElementById(item.id),
+        }))
+        .filter((h) => h.element);
+
+      if (headings.length === 0) return;
+
+      // Logic: Find the heading that is closest to the top of the viewport
+      // but not too far down (e.g., has crossed a threshold).
+      const scrollPosition = window.scrollY;
+      const headerOffset = 100; // Trigger point 100px from top
+
+      // Find the last heading that is above the threshold
+      // Or if we are at the bottom of the page, highlight the last one
+      let currentActiveId = items[0]?.id;
+
+      // check if we are at the bottom of the page
+      if (
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 50
+      ) {
+        currentActiveId = items[items.length - 1]?.id;
+      } else {
+        for (const heading of headings) {
+          if (!heading.element) continue;
+          const top =
+            heading.element.getBoundingClientRect().top + window.scrollY;
+
+          // If the heading is above the threshold (current scroll position + offset)
+          if (top - headerOffset <= scrollPosition) {
+            currentActiveId = heading.id;
           }
-        });
-      },
-      { rootMargin: "-80px 0% -80% 0%", threshold: 0.1 }
-    );
+        }
+      }
 
-    items.forEach((item) => {
-      const el = document.getElementById(item.id);
-      if (el) observer.observe(el);
-    });
+      setActiveId((prev) =>
+        prev !== currentActiveId ? currentActiveId : prev
+      );
+    };
 
-    return () => observer.disconnect();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    // Trigger once on mount to set initial state correctly
+    handleScroll();
+
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [items]);
 
   const handleClick = (id: string) => {
@@ -38,7 +74,14 @@ export function RightTableOfContents({ items }: { items: TOCItem[] }) {
 
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
+      const offset = 80; // Topbar height + padding
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.scrollY - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
 
       // Re-enable observer after smooth scroll completes (approx 800ms)
       setTimeout(() => {

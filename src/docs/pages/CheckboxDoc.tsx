@@ -1,9 +1,10 @@
-import { Checkbox } from "@/components/Checkbox";
+import { Checkbox, CheckboxGroup } from "@/components/Checkbox";
 import * as React from "react";
 import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
 
 export function CheckboxDoc() {
   const [checked, setChecked] = React.useState(false);
+  const [selectedGroup, setSelectedGroup] = React.useState(["opt1"]);
 
   const overview = (
     <div className="space-y-12">
@@ -11,11 +12,64 @@ export function CheckboxDoc() {
         <Checkbox
           label="Accept terms and conditions"
           checked={checked}
-          onChange={(e) => setChecked(e.target.checked)}
+          onCheckedChange={(c) => setChecked(c === true)}
         />
         <CodeBlock
           ts={`<Checkbox label="Accept terms and conditions" />`}
           fullCode={`import { Checkbox } from "aer-design";\n\nexport default function Example() {\n  return <Checkbox label="Accept terms and conditions" />;\n}`}
+        />
+      </DocSection>
+
+      <DocSection
+        title="Checkbox Group"
+        id="checkbox-group"
+        description="Manage a group of checkboxes with an optional 'Select All' parent."
+      >
+        <CheckboxGroup
+          label="Select Options"
+          options={[
+            { label: "Option 1", value: "opt1" },
+            { label: "Option 2", value: "opt2" },
+            { label: "Option 3", value: "opt3" },
+          ]}
+          value={selectedGroup}
+          onChange={setSelectedGroup}
+        />
+        <CodeBlock
+          ts={`<CheckboxGroup\n  label="Select Options"\n  options={[{ label: "Option 1", value: "opt1" }, ...]}\n  value={selected}\n  onChange={setSelected}\n/>`}
+          fullCode={`import { CheckboxGroup } from "aer-design";\nimport { useState } from "react";\n\nexport default function GroupExample() {\n  const [selected, setSelected] = useState(["opt1"]);\n\n  return (\n    <CheckboxGroup\n      label="Select Options"\n      options={[\n        { label: "Option 1", value: "opt1" },\n        { label: "Option 2", value: "opt2" },\n        { label: "Option 3", value: "opt3" },\n      ]}\n      value={selected}\n      onChange={setSelected}\n    />\n  );\n}`}
+        />
+      </DocSection>
+
+      <DocSection title="States" id="states">
+        <div className="flex flex-col gap-4">
+          <Checkbox label="Disabled Unchecked" disabled />
+          <Checkbox label="Disabled Checked" disabled defaultChecked />
+          <Checkbox label="Indeterminate" checked="indeterminate" />
+        </div>
+        <CodeBlock
+          ts={`<Checkbox disabled />\n<Checkbox disabled defaultChecked />\n<Checkbox checked="indeterminate" />`}
+          fullCode={`import { Checkbox } from "aer-design";\n\nexport default function States() {\n  return (\n    <div className="flex flex-col gap-4">\n      <Checkbox disabled label="Disabled" />\n      <Checkbox disabled defaultChecked label="Disabled Checked" />\n      <Checkbox checked="indeterminate" label="Indeterminate" />\n    </div>\n  );\n}`}
+        />
+      </DocSection>
+
+      <DocSection
+        title="Card Variant"
+        id="cards"
+        description="Turn checkboxes into selectable cards."
+      >
+        <div className="grid gap-4 md:grid-cols-2">
+          <Checkbox
+            variant="card"
+            label="Standard Plan"
+            description="$10/month"
+            defaultChecked
+          />
+          <Checkbox variant="card" label="Pro Plan" description="$20/month" />
+        </div>
+        <CodeBlock
+          ts={`<Checkbox variant="card" label="Standard Plan" description="$10/mo" />`}
+          fullCode={`import { Checkbox } from "aer-design";\n\nexport default function Cards() {\n  return (\n    <div className="grid gap-4 md:grid-cols-2">\n      <Checkbox variant="card" label="Standard" description="$10/mo" defaultChecked />\n      <Checkbox variant="card" label="Pro" description="$20/mo" />\n    </div>\n  );\n}`}
         />
       </DocSection>
 
@@ -76,37 +130,6 @@ export function CheckboxDoc() {
         />
       </DocSection>
 
-      <DocSection
-        title="Card Variant"
-        id="cards"
-        description="Turn checkboxes into selectable cards."
-      >
-        <div className="grid gap-4 md:grid-cols-2">
-          <Checkbox
-            variant="card"
-            label="Standard Plan"
-            description="$10/month"
-            defaultChecked
-          />
-          <Checkbox variant="card" label="Pro Plan" description="$20/month" />
-        </div>
-        <CodeBlock
-          ts={`<Checkbox variant="card" label="Standard Plan" description="$10/mo" />`}
-          fullCode={`import { Checkbox } from "aer-design";\n\nexport default function Cards() {\n  return (\n    <div className="grid gap-4 md:grid-cols-2">\n      <Checkbox variant="card" label="Standard" description="$10/mo" defaultChecked />\n      <Checkbox variant="card" label="Pro" description="$20/mo" />\n    </div>\n  );\n}`}
-        />
-      </DocSection>
-
-      <DocSection title="States" id="states">
-        <div className="flex flex-col gap-4">
-          <Checkbox label="Disabled Unchecked" disabled />
-          <Checkbox label="Disabled Checked" disabled defaultChecked />
-        </div>
-        <CodeBlock
-          ts={`<Checkbox disabled />\n<Checkbox disabled defaultChecked />`}
-          fullCode={`import { Checkbox } from "aer-design";\n\nexport default function States() {\n  return (\n    <div className="flex flex-col gap-4">\n      <Checkbox disabled label="Disabled" />\n      <Checkbox disabled defaultChecked label="Disabled Checked" />\n    </div>\n  );\n}`}
-        />
-      </DocSection>
-
       <DocSection title="Validation" id="validation">
         <div className="flex flex-col gap-4">
           <Checkbox
@@ -121,11 +144,11 @@ export function CheckboxDoc() {
         />
       </DocSection>
 
-      <DocSection title="Real World Validation" id="real-world-validation">
+      <DocSection title="Real World" id="real-world-validation">
         <RealWorldExample />
         <CodeBlock
-          ts={`const [checked, setChecked] = useState(false);\nconst [touched, setTouched] = useState(false);\nconst isInvalid = touched && !checked;\n\n<Checkbox \n  label="I accept the Terms of Service"\n  required\n  checked={checked}\n  onChange={(e) => {\n    setChecked(e.target.checked);\n    setTouched(true);\n  }}\n  error={isInvalid ? "You must accept the terms" : undefined}\n/>`}
-          fullCode={`import { Checkbox } from "aer-design";\nimport { useState } from "react";\n\nexport default function TermsAgreement() {\n  const [checked, setChecked] = useState(false);\n  const [touched, setTouched] = useState(false);\n  const isInvalid = touched && !checked;\n\n  return (\n    <div className="max-w-md space-y-4 p-6 border rounded-xl">\n      <h4 className="font-semibold">Review & Accept</h4>\n      <Checkbox \n        label="I accept the Terms of Service"\n        required\n        checked={checked}\n        onChange={(e) => {\n          setChecked(e.target.checked);\n          setTouched(true);\n        }}\n        error={isInvalid ? "You must accept the terms" : undefined}\n      />\n      <div className="text-xs text-muted-foreground">\n        Status: {isInvalid ? "Error" : "Valid"}\n      </div>\n    </div>\n  );\n}`}
+          ts={`const [checked, setChecked] = useState(false);\nconst [touched, setTouched] = useState(false);\nconst isInvalid = touched && !checked;\n\n<Checkbox \n  label="I accept the Terms of Service"\n  required\n  checked={checked}\n  onCheckedChange={(c) => {\n    setChecked(c === true);\n    setTouched(true);\n  }}\n  error={isInvalid ? "You must accept the terms" : undefined}\n/>`}
+          fullCode={`import { Checkbox } from "aer-design";\nimport { useState } from "react";\n\nexport default function TermsAgreement() {\n  const [checked, setChecked] = useState(false);\n  const [touched, setTouched] = useState(false);\n  const isInvalid = touched && !checked;\n\n  return (\n    <div className="max-w-md space-y-4 p-6 border rounded-xl">\n      <h4 className="font-semibold">Review & Accept</h4>\n      <Checkbox \n        label="I accept the Terms of Service"\n        required\n        checked={checked}\n        onCheckedChange={(c) => {\n          setChecked(c === true);\n          setTouched(true);\n        }}\n        error={isInvalid ? "You must accept the terms" : undefined}\n      />\n      <div className="text-xs text-muted-foreground">\n        Status: {isInvalid ? "Error" : "Valid"}\n      </div>\n    </div>\n  );\n}`}
         />
       </DocSection>
     </div>
@@ -148,8 +171,8 @@ export function CheckboxDoc() {
             label="I accept the Terms of Service and Privacy Policy"
             required // Adds red asterisk
             checked={checked}
-            onChange={(e) => {
-              setChecked(e.target.checked);
+            onCheckedChange={(c) => {
+              setChecked(c === true);
               setTouched(true);
             }}
             error={isInvalid ? "You must accept the terms" : undefined}
@@ -174,6 +197,18 @@ export function CheckboxDoc() {
         <h4 className="text-lg font-bold mb-4">CheckboxProps</h4>
         <ApiTable
           data={[
+            {
+              prop: "checked",
+              type: "boolean | 'indeterminate'",
+              default: "false",
+              description: "Checked state",
+            },
+            {
+              prop: "onCheckedChange",
+              type: "(checked: boolean | 'indeterminate') => void",
+              default: "-",
+              description: "Callback when state changes",
+            },
             {
               prop: "label",
               type: "ReactNode",
@@ -237,6 +272,56 @@ export function CheckboxDoc() {
           ]}
         />
       </div>
+
+      <div>
+        <h4 className="text-lg font-bold mb-4">CheckboxGroupProps</h4>
+        <ApiTable
+          data={[
+            {
+              prop: "options",
+              type: "CheckboxOption[]",
+              default: "-",
+              description: "Array of options to display",
+            },
+            {
+              prop: "value",
+              type: "string[]",
+              default: "[]",
+              description: "Array of selected values",
+            },
+            {
+              prop: "onChange",
+              type: "(value: string[]) => void",
+              default: "-",
+              description: "Callback when selection changes",
+            },
+            {
+              prop: "label",
+              type: "ReactNode",
+              default: "'Select All'",
+              description: "Title for the group / parent checkbox",
+            },
+            {
+              prop: "enableSelectAll",
+              type: "boolean",
+              default: "true",
+              description: "Whether to show the parent 'Select All' checkbox",
+            },
+            {
+              prop: "orientation",
+              type: "'horizontal' | 'vertical'",
+              default: "'vertical'",
+              description: "Layout direction of the options",
+            },
+            {
+              prop: "listClassName",
+              type: "string",
+              default: "-",
+              description: "Class name for the options container",
+            },
+          ]}
+        />
+      </div>
     </div>
   );
 
@@ -260,7 +345,7 @@ export function CheckboxDoc() {
         </h1>
         <p className="text-xl text-aer-muted-foreground">
           Interactive control to toggle between checked and unchecked states,
-          featuring advanced layout capabilities.
+          featuring advanced layout capabilities and group management.
         </p>
       </header>
 

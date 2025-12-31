@@ -38,7 +38,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           "relative group/input w-full cursor-text transition-all",
           variantStyles[variant],
           error && "border-red-500 focus-within:ring-red-500",
-          floatingLabel && "pt-6"
+          floatingLabel && "pt-4"
         )}
       >
         <textarea
@@ -58,7 +58,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             className={cn(
               "absolute left-3 top-2 text-sm text-aer-muted-foreground transition-all duration-200 pointer-events-none origin-left bg-aer-background/0 px-1",
               // Check for value (placeholder-shown) or focus
-              "peer-placeholder-shown:top-6 peer-placeholder-shown:text-base",
+              "peer-placeholder-shown:top-4 peer-placeholder-shown:text-base",
               "peer-focus:top-1 peer-focus:text-xs peer-focus:text-aer-primary",
               "peer-[:not(:placeholder-shown)]:top-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-aer-primary",
               variant === "underlined" && "left-0 px-0"

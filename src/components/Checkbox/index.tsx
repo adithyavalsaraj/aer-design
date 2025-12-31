@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { type VariantProps, cva } from "class-variance-authority";
-import { Check } from "lucide-react";
+import { Check, Minus } from "lucide-react";
 import * as React from "react";
 
 // --- Variants ---
@@ -48,8 +48,9 @@ const checkboxContainerVariants = cva(
 // --- Types ---
 
 export interface CheckboxProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size">,
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size" | "checked">,
     VariantProps<typeof checkboxContainerVariants> {
+  checked?: boolean | "indeterminate";
   label?: React.ReactNode;
   description?: React.ReactNode;
   /** Error message or boolean state */
@@ -58,6 +59,8 @@ export interface CheckboxProps
   contentClassName?: string;
   /** Class name for the label text */
   labelClassName?: string;
+  /** Callback when state changes */
+  onCheckedChange?: (checked: boolean | "indeterminate") => void;
 }
 
 // --- Component ---
@@ -95,17 +98,38 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
           <input
             type="checkbox"
             id={checkboxId}
-            ref={ref}
             className="peer sr-only"
-            {...props}
+            onChange={(e) => {
+              props.onCheckedChange?.(e.target.checked);
+              props.onChange?.(e);
+            }}
+            checked={props.checked === true}
+            ref={(input) => {
+              if (input) {
+                input.indeterminate = props.checked === "indeterminate";
+              }
+              if (typeof ref === "function") {
+                ref(input);
+              } else if (ref) {
+                (
+                  ref as React.MutableRefObject<HTMLInputElement | null>
+                ).current = input;
+              }
+            }}
           />
           <div
             className={cn(
               "flex items-center justify-center size-5 rounded-aer-md border-2 border-aer-muted-foreground/30 bg-aer-background text-aer-background transition-all duration-200 peer-focus-visible:ring-2 peer-focus-visible:ring-aer-ring peer-focus-visible:ring-offset-2 peer-checked:border-aer-primary peer-checked:bg-aer-primary peer-checked:text-aer-primary-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
+              props.checked === "indeterminate" &&
+                "bg-aer-primary border-aer-primary text-aer-primary-foreground",
               error && "border-red-500"
             )}
           >
-            <Check className="size-3.5 stroke-[3]" />
+            {props.checked === "indeterminate" ? (
+              <Minus className="size-3.5 stroke-[3]" />
+            ) : (
+              <Check className="size-3.5 stroke-[3]" />
+            )}
           </div>
         </div>
 
@@ -158,4 +182,5 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
 );
 Checkbox.displayName = "Checkbox";
 
+export * from "./CheckboxGroup";
 export { Checkbox };
