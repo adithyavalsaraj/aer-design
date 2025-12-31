@@ -1,3 +1,4 @@
+import { useAerConfig } from "@/components/AerConfigProvider";
 import { cn } from "@/lib/utils";
 import { type VariantProps, cva } from "class-variance-authority";
 import { Check, Minus } from "lucide-react";
@@ -59,6 +60,8 @@ export interface CheckboxProps
   contentClassName?: string;
   /** Class name for the label text */
   labelClassName?: string;
+  /** Size of the checkbox and label */
+  size?: "sm" | "default" | "lg";
   /** Callback when state changes */
   onCheckedChange?: (checked: boolean | "indeterminate") => void;
 }
@@ -78,13 +81,40 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
       contentClassName,
       labelClassName,
       id,
+      size: sizeProp,
       ...props
     },
     ref
   ) => {
+    const { size: globalSize } = useAerConfig();
+    const size = sizeProp || globalSize;
+
     const uniqueId = React.useId();
     const checkboxId = id || uniqueId;
     const isVertical = labelPosition === "top" || labelPosition === "bottom";
+
+    const sizeStyles = {
+      sm: {
+        box: "size-4",
+        icon: "size-3",
+        text: "text-xs",
+        desc: "text-[10px]",
+      },
+      default: {
+        box: "size-5",
+        icon: "size-3.5",
+        text: "text-sm",
+        desc: "text-xs",
+      },
+      lg: {
+        box: "size-6",
+        icon: "size-4",
+        text: "text-base",
+        desc: "text-sm",
+      },
+    };
+
+    const sizes = sizeStyles[size] || sizeStyles.default;
 
     return (
       <label
@@ -119,16 +149,17 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
           />
           <div
             className={cn(
-              "flex items-center justify-center size-5 rounded-aer-md border-2 border-aer-muted-foreground/30 bg-aer-background text-aer-background transition-all duration-200 peer-focus-visible:ring-2 peer-focus-visible:ring-aer-ring peer-focus-visible:ring-offset-2 peer-checked:border-aer-primary peer-checked:bg-aer-primary peer-checked:text-aer-primary-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
+              "flex items-center justify-center rounded-aer-md border-2 border-aer-muted-foreground/30 bg-aer-background text-aer-background transition-all duration-200 peer-focus-visible:ring-2 peer-focus-visible:ring-aer-ring peer-focus-visible:ring-offset-2 peer-checked:border-aer-primary peer-checked:bg-aer-primary peer-checked:text-aer-primary-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
+              sizes.box,
               props.checked === "indeterminate" &&
                 "bg-aer-primary border-aer-primary text-aer-primary-foreground",
               error && "border-red-500"
             )}
           >
             {props.checked === "indeterminate" ? (
-              <Minus className="size-3.5 stroke-[3]" />
+              <Minus className={cn("stroke-[3]", sizes.icon)} />
             ) : (
-              <Check className="size-3.5 stroke-[3]" />
+              <Check className={cn("stroke-[3]", sizes.icon)} />
             )}
           </div>
         </div>
@@ -148,7 +179,8 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
             {label && (
               <span
                 className={cn(
-                  "font-medium text-sm leading-5",
+                  "font-medium leading-5",
+                  sizes.text,
                   props.disabled && "opacity-70",
                   labelClassName
                 )}
@@ -162,7 +194,8 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
             {description && (
               <span
                 className={cn(
-                  "text-xs text-aer-muted-foreground mt-0 leading-normal",
+                  "text-aer-muted-foreground mt-0 leading-normal",
+                  sizes.desc,
                   props.disabled && "opacity-50"
                 )}
               >

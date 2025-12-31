@@ -1,8 +1,8 @@
 import "./index.css";
 
+export * from "./components/AerConfigProvider";
 export * from "./components/Button";
 export * from "./components/Checkbox";
-export * from "./components/DirectionProvider";
 export * from "./components/Input";
 export * from "./components/Navbar";
 export * from "./components/OtpInput";

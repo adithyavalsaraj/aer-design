@@ -1,6 +1,14 @@
+import { useEffect } from "react";
 import { CodeBlock, DocSection } from "../components/shared";
+import { useTOC } from "../context/TOCContext";
 
 export function GetStartedDoc() {
+  const { setTocItems } = useTOC();
+
+  useEffect(() => {
+    setTocItems(null);
+  }, [setTocItems]);
+
   return (
     <div className="space-y-12">
       <header className="space-y-4">

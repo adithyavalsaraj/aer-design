@@ -73,6 +73,32 @@ export function CheckboxDoc() {
         />
       </DocSection>
 
+      <DocSection title="Sizes" id="sizes">
+        <div className="flex items-end gap-x-8">
+          <div className="space-y-2">
+            <span className="text-xs font-semibold uppercase text-aer-muted-foreground tracking-wider">
+              Small
+            </span>
+            <Checkbox size="sm" label="Small Checkbox" defaultChecked />
+          </div>
+          <div className="space-y-2">
+            <span className="text-xs font-semibold uppercase text-aer-muted-foreground tracking-wider">
+              Default
+            </span>
+            <Checkbox size="default" label="Default Checkbox" defaultChecked />
+          </div>
+          <div className="space-y-2">
+            <span className="text-xs font-semibold uppercase text-aer-muted-foreground tracking-wider">
+              Large
+            </span>
+            <Checkbox size="lg" label="Large Checkbox" defaultChecked />
+          </div>
+        </div>
+        <CodeBlock
+          ts={`<Checkbox size="sm" label="Small" />\n<Checkbox size="default" label="Default" />\n<Checkbox size="lg" label="Large" />`}
+        />
+      </DocSection>
+
       <DocSection
         title="Label Positioning"
         id="positioning"
@@ -194,7 +220,9 @@ export function CheckboxDoc() {
   const api = (
     <div className="space-y-12">
       <div>
-        <h4 className="text-lg font-bold mb-4">CheckboxProps</h4>
+        <h4 id="checkbox-props" className="text-lg font-bold mb-4">
+          CheckboxProps
+        </h4>
         <ApiTable
           data={[
             {
@@ -269,12 +297,20 @@ export function CheckboxDoc() {
               default: "-",
               description: "Shows error styling/message",
             },
+            {
+              prop: "size",
+              type: "'sm' | 'default' | 'lg'",
+              default: "'default' (or global config)",
+              description: "Size of the checkbox",
+            },
           ]}
         />
       </div>
 
       <div>
-        <h4 className="text-lg font-bold mb-4">CheckboxGroupProps</h4>
+        <h4 id="checkbox-group-props" className="text-lg font-bold mb-4">
+          CheckboxGroupProps
+        </h4>
         <ApiTable
           data={[
             {
@@ -328,6 +364,7 @@ export function CheckboxDoc() {
   const theming = (
     <DocSection
       title="CSS Variables"
+      id="css-variables"
       description="Customize checkbox appearance using CSS variables."
     >
       <CodeBlock
@@ -351,9 +388,37 @@ export function CheckboxDoc() {
 
       <DocTabs
         tabs={[
-          { id: "overview", label: "Overview", content: overview },
-          { id: "api", label: "API", content: api },
-          { id: "theming", label: "Theming", content: theming },
+          {
+            id: "overview",
+            label: "Overview",
+            content: overview,
+            toc: [
+              { id: "basic", title: "Basic" },
+              { id: "checkbox-group", title: "Checkbox Group" },
+              { id: "states", title: "States" },
+              { id: "cards", title: "Card Variant" },
+              { id: "sizes", title: "Sizes" },
+              { id: "positioning", title: "Label Positioning" },
+              { id: "alignment", title: "Vertical Alignment" },
+              { id: "validation", title: "Validation" },
+              { id: "real-world-validation", title: "Real World" },
+            ],
+          },
+          {
+            id: "api",
+            label: "API",
+            content: api,
+            toc: [
+              { id: "checkbox-props", title: "CheckboxProps" },
+              { id: "checkbox-group-props", title: "CheckboxGroupProps" },
+            ],
+          },
+          {
+            id: "theming",
+            label: "Theming",
+            content: theming,
+            toc: [{ id: "css-variables", title: "CSS Variables" }],
+          },
         ]}
       />
     </div>

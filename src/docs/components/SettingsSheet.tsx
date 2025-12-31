@@ -1,4 +1,4 @@
-import { useDirection } from "@/components/DirectionProvider";
+import { useAerConfig } from "@/components/AerConfigProvider";
 import { AlignLeft, AlignRight, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { ModeToggle } from "./ModeToggle";
@@ -10,7 +10,7 @@ interface SettingsSheetProps {
 }
 
 export function SettingsSheet({ isOpen, onClose }: SettingsSheetProps) {
-  const { direction, setDirection } = useDirection();
+  const { direction, setDirection, size, setSize } = useAerConfig();
   const [isVisible, setIsVisible] = useState(false);
 
   // Handle animation states
@@ -104,6 +104,34 @@ export function SettingsSheet({ isOpen, onClose }: SettingsSheetProps) {
                   RTL
                 </button>
               </div>
+            </div>
+          </div>
+
+          {/* Size Section */}
+          <div className="space-y-3">
+            <h3 className="text-sm font-medium text-aer-muted-foreground uppercase tracking-wider">
+              Dimensions
+            </h3>
+            <div className="space-y-2">
+              <span className="text-sm font-medium block">Global Size</span>
+              <div className="grid grid-cols-3 gap-1 p-1 bg-aer-muted/50 rounded-aer-md border border-aer-border/50">
+                {(["sm", "default", "lg"] as const).map((s) => (
+                  <button
+                    key={s}
+                    onClick={() => setSize(s)}
+                    className={`flex items-center justify-center py-1.5 text-xs font-medium rounded-sm transition-all capitalize ${
+                      size === s
+                        ? "bg-aer-background text-aer-foreground shadow-sm"
+                        : "text-aer-muted-foreground hover:text-aer-foreground"
+                    }`}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+              <p className="text-xs text-aer-muted-foreground">
+                Sets default size for all inputs
+              </p>
             </div>
           </div>
         </div>

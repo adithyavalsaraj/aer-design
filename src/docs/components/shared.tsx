@@ -368,14 +368,25 @@ export function ApiTable({
   );
 }
 
+import { useTOC, type TOCItem } from "@/docs/context/TOCContext"; // Adjust import path as needed
+
 interface TabItem {
   id: string;
   label: string;
   content: React.ReactNode;
+  toc?: TOCItem[];
 }
 
 export function DocTabs({ tabs }: { tabs: TabItem[] }) {
   const [activeTab, setActiveTab] = React.useState(tabs[0].id);
+  const { setTocItems } = useTOC();
+
+  // Sync TOC when active tab changes
+  React.useEffect(() => {
+    const currentTab = tabs.find((t) => t.id === activeTab);
+    // If toc is defined (even empty array), use it. If undefined, set to null to trigger App.tsx fallback.
+    setTocItems(currentTab?.toc ?? null);
+  }, [activeTab, tabs, setTocItems]);
 
   return (
     <div className="space-y-6">

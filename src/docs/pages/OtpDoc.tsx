@@ -21,6 +21,32 @@ export function OtpDoc() {
         />
       </DocSection>
 
+      <DocSection title="Sizes" id="sizes">
+        <div className="flex flex-col gap-6">
+          <div className="space-y-1.5">
+            <span className="text-xs font-semibold uppercase text-aer-muted-foreground tracking-wider">
+              Small
+            </span>
+            <OtpInput size="sm" length={4} />
+          </div>
+          <div className="space-y-1.5">
+            <span className="text-xs font-semibold uppercase text-aer-muted-foreground tracking-wider">
+              Default
+            </span>
+            <OtpInput size="default" length={4} />
+          </div>
+          <div className="space-y-1.5">
+            <span className="text-xs font-semibold uppercase text-aer-muted-foreground tracking-wider">
+              Large
+            </span>
+            <OtpInput size="lg" length={4} />
+          </div>
+        </div>
+        <CodeBlock
+          ts={`<OtpInput size="sm" length={4} />\n<OtpInput size="default" length={4} />\n<OtpInput size="lg" length={4} />`}
+        />
+      </DocSection>
+
       <DocSection
         title="Custom Length"
         id="length"
@@ -155,7 +181,9 @@ export function OtpDoc() {
   const api = (
     <div className="space-y-8">
       <div>
-        <h3 className="text-lg font-bold mb-4">OtpInputProps</h3>
+        <h3 id="otp-input-props" className="text-lg font-bold mb-4">
+          OtpInputProps
+        </h3>
         <ApiTable
           data={[
             {
@@ -218,6 +246,12 @@ export function OtpDoc() {
               default: "-",
               description: "Additional CSS classes",
             },
+            {
+              prop: "size",
+              type: "'sm' | 'default' | 'lg'",
+              default: "'default' (or global config)",
+              description: "Size of slots",
+            },
           ]}
         />
       </div>
@@ -227,6 +261,7 @@ export function OtpDoc() {
   const theming = (
     <DocSection
       title="CSS Variables"
+      id="css-variables"
       description="Customize OTP input appearance using CSS variables."
     >
       <CodeBlock
@@ -250,9 +285,32 @@ export function OtpDoc() {
 
       <DocTabs
         tabs={[
-          { id: "overview", label: "Overview", content: overview },
-          { id: "api", label: "API", content: api },
-          { id: "theming", label: "Theming", content: theming },
+          {
+            id: "overview",
+            label: "Overview",
+            content: overview,
+            toc: [
+              { id: "basic", title: "Basic" },
+              { id: "sizes", title: "Sizes" },
+              { id: "length", title: "Custom Length" },
+              { id: "alphanumeric", title: "Alphanumeric" },
+              { id: "security", title: "Security" },
+              { id: "validation", title: "Validation" },
+              { id: "real-world-validation", title: "Real World" },
+            ],
+          },
+          {
+            id: "api",
+            label: "API",
+            content: api,
+            toc: [{ id: "otp-input-props", title: "OtpInputProps" }],
+          },
+          {
+            id: "theming",
+            label: "Theming",
+            content: theming,
+            toc: [{ id: "css-variables", title: "CSS Variables" }],
+          },
         ]}
       />
     </div>

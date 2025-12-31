@@ -32,6 +32,7 @@ export const NAV_ITEMS = [
     category: "Inputs",
   },
   { id: "input", label: "Input", icon: Type, category: "Inputs" },
+  { id: "dropdown", label: "Dropdown", icon: Boxes, category: "Inputs" },
   { id: "textarea", label: "Textarea", icon: Layout, category: "Inputs" },
 
   { id: "checkbox", label: "Checkbox", icon: CheckSquare, category: "Inputs" },
@@ -40,8 +41,8 @@ export const NAV_ITEMS = [
   { id: "sidebar", label: "Sidebar", icon: Layout, category: "Layout" },
   { id: "navbar", label: "Navbar", icon: Layout, category: "Layout" },
   {
-    id: "direction-provider",
-    label: "Direction Provider",
+    id: "utilities",
+    label: "Utilities",
     icon: Boxes,
     category: "Utilities",
   },
@@ -102,7 +103,12 @@ export function Sidebar({
         <SidebarItem
           icon={<Github className="size-4" />}
           className="bg-aer-muted/30 text-aer-muted-foreground hover:text-aer-foreground"
-          onClick={() => window.open("https://github.com", "_blank")}
+          onClick={() =>
+            window.open(
+              "https://github.com/adithyavalsaraj/aer-design",
+              "_blank"
+            )
+          }
         >
           Open Source
         </SidebarItem>

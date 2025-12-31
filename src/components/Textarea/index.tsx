@@ -1,3 +1,4 @@
+import { useAerConfig } from "@/components/AerConfigProvider";
 import { cn } from "@/lib/utils";
 import * as React from "react";
 
@@ -7,6 +8,7 @@ export interface TextareaProps
   label?: string;
   floatingLabel?: boolean;
   variant?: "outline" | "filled" | "underlined";
+  size?: "sm" | "default" | "lg";
 }
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
@@ -18,10 +20,14 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       floatingLabel,
       variant = "outline",
       placeholder,
+      size: sizeProp,
       ...props
     },
     ref
   ) => {
+    const { size: globalSize } = useAerConfig();
+    const size = sizeProp || globalSize;
+
     // Variant styles
     const variantStyles = {
       outline:
@@ -30,6 +36,12 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         "border-b-2 border-aer-input/20 bg-aer-muted/30 focus-within:border-aer-primary focus-within:bg-aer-muted/50 rounded-t-md rounded-b-none",
       underlined:
         "border-b border-aer-input bg-transparent rounded-none px-0 focus-within:border-aer-primary",
+    };
+
+    const sizeStyles = {
+      sm: "text-xs px-2 py-1.5 min-h-[60px]",
+      default: "text-sm px-3 py-2 min-h-[80px]",
+      lg: "text-base px-4 py-3 min-h-[100px]",
     };
 
     return (
@@ -43,7 +55,8 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       >
         <textarea
           className={cn(
-            "flex min-h-[80px] w-full bg-transparent px-3 py-2 text-sm placeholder:text-aer-muted-foreground focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 peer resize-y",
+            "flex w-full bg-transparent placeholder:text-aer-muted-foreground focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 peer resize-y",
+            sizeStyles[size],
             // Floating label adjustments
             floatingLabel && "placeholder-transparent pt-0",
             variant === "underlined" && "px-0",
@@ -59,8 +72,8 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
               "absolute left-3 top-2 text-sm text-aer-muted-foreground transition-all duration-200 pointer-events-none origin-left bg-aer-background/0 px-1",
               // Check for value (placeholder-shown) or focus
               "peer-placeholder-shown:top-4 peer-placeholder-shown:text-base",
-              "peer-focus:top-1 peer-focus:text-xs peer-focus:text-aer-primary",
-              "peer-[:not(:placeholder-shown)]:top-1 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-aer-primary",
+              "peer-focus:top-1.5 peer-focus:text-xs peer-focus:text-aer-primary",
+              "peer-[:not(:placeholder-shown)]:top-1.5 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-aer-primary",
               variant === "underlined" && "left-0 px-0"
             )}
           >

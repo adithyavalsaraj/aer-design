@@ -29,15 +29,15 @@ yarn add aer-design
 1.  **Wrap your application** in the `ThemeProvider` AND `DirectionProvider`:
 
 ```tsx
-import { ThemeProvider, DirectionProvider } from "aer-design/components";
+import { ThemeProvider, AerConfigProvider } from "aer-design/components";
 import "aer-design/style.css"; // Import global styles
 
 function App() {
   return (
     <ThemeProvider defaultTheme="system" defaultThemeColor="blue">
-      <DirectionProvider>
+      <AerConfigProvider>
         <YourApp />
-      </DirectionProvider>
+      </AerConfigProvider>
     </ThemeProvider>
   );
 }
@@ -67,6 +67,7 @@ export function LoginForm() {
 | :------------ | :------------------------------------------------------------------------------------- |
 | **Button**    | Highly interactive buttons with variants (primary, outline, ghost) and loading states. |
 | **Input**     | Enhanced text inputs with floating labels, icons, masking, and validation.             |
+| **Dropdown**  | Virtualized select menus with search, multi-select, and custom rendering.              |
 | **Checkbox**  | Tri-state checkboxes with rich layout options (card mode, descriptions).               |
 | **Radio**     | Radio groups for single-selection, supporting card layouts.                            |
 | **Sidebar**   | Responsive, collapsible navigation sidebar with overlay and rail modes.                |

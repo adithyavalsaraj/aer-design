@@ -574,7 +574,9 @@ export function SidebarDoc() {
   const api = (
     <div className="space-y-12">
       <div>
-        <h4 className="text-lg font-bold mb-4">SidebarProps</h4>
+        <h4 id="sidebar-props" className="text-lg font-bold mb-4">
+          SidebarProps
+        </h4>
         <ApiTable
           data={[
             {
@@ -656,7 +658,9 @@ export function SidebarDoc() {
       </div>
 
       <div>
-        <h4 className="text-lg font-bold mb-4">SidebarItem Props</h4>
+        <h4 id="sidebar-item-props" className="text-lg font-bold mb-4">
+          SidebarItem Props
+        </h4>
         <ApiTable
           data={[
             {
@@ -686,6 +690,7 @@ export function SidebarDoc() {
   const theming = (
     <DocSection
       title="CSS Variables"
+      id="css-variables"
       description="Customize sidebar appearance using CSS variables."
     >
       <CodeBlock
@@ -707,9 +712,30 @@ export function SidebarDoc() {
       </header>
       <DocTabs
         tabs={[
-          { id: "overview", label: "Overview", content: overview },
-          { id: "api", label: "API", content: api },
-          { id: "theming", label: "Theming", content: theming },
+          {
+            id: "overview",
+            label: "Overview",
+            content: overview,
+            toc: [
+              { id: "basic", title: "Basic" },
+              { id: "floating", title: "Floating Island" },
+            ],
+          },
+          {
+            id: "api",
+            label: "API",
+            content: api,
+            toc: [
+              { id: "sidebar-props", title: "SidebarProps" },
+              { id: "sidebar-item-props", title: "SidebarItem Props" },
+            ],
+          },
+          {
+            id: "theming",
+            label: "Theming",
+            content: theming,
+            toc: [{ id: "css-variables", title: "CSS Variables" }],
+          },
         ]}
       />
     </div>

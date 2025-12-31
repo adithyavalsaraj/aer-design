@@ -104,6 +104,31 @@ export function InputDoc() {
         />
       </DocSection>
 
+      <DocSection title="Sizes" id="sizes">
+        <div className="max-w-sm space-y-6">
+          <div>
+            <label className="text-sm font-medium mb-1.5 block">Small</label>
+            <Input size="sm" placeholder="Small Input" startIcon={<Search />} />
+          </div>
+          <div>
+            <label className="text-sm font-medium mb-1.5 block">Default</label>
+            <Input
+              size="default"
+              placeholder="Default Input"
+              startIcon={<Search />}
+            />
+          </div>
+          <div>
+            <label className="text-sm font-medium mb-1.5 block">Large</label>
+            <Input size="lg" placeholder="Large Input" startIcon={<Search />} />
+          </div>
+        </div>
+        <CodeBlock
+          ts={`<Input size="sm" placeholder="Small" />\n<Input size="default" placeholder="Default" />\n<Input size="lg" placeholder="Large" />`}
+          fullCode={`import { Input } from "aer-design";\nimport { Search } from "lucide-react";\n\nexport default function SizesExample() {\n  return (\n    <div className="max-w-sm space-y-6">\n      <Input size="sm" placeholder="Small Input" startIcon={<Search />} />\n      <Input size="default" placeholder="Default Input" startIcon={<Search />} />\n      <Input size="lg" placeholder="Large Input" startIcon={<Search />} />\n    </div>\n  );\n}`}
+        />
+      </DocSection>
+
       <DocSection
         title="Icons & Prefixes"
         id="icons"
@@ -221,7 +246,9 @@ export function InputDoc() {
   const api = (
     <div className="space-y-8">
       <div>
-        <h3 className="text-lg font-bold mb-4">InputProps</h3>
+        <h3 id="input-props" className="text-lg font-bold mb-4">
+          InputProps
+        </h3>
         <ApiTable
           data={[
             {
@@ -267,6 +294,12 @@ export function InputDoc() {
               description: "Triggers error styling",
             },
             {
+              prop: "size",
+              type: '"sm" | "default" | "lg"',
+              default: '"default" (or global config)',
+              description: "Input size",
+            },
+            {
               prop: "variant",
               type: '"outline" | "filled" | "underlined"',
               default: '"outline"',
@@ -294,7 +327,9 @@ export function InputDoc() {
         />
       </div>
       <div>
-        <h3 className="text-lg font-bold mb-4">MaskedInputProps</h3>
+        <h3 id="masked-input-props" className="text-lg font-bold mb-4">
+          MaskedInputProps
+        </h3>
         <ApiTable
           data={[
             {
@@ -324,6 +359,7 @@ export function InputDoc() {
   const theming = (
     <DocSection
       title="CSS Variables"
+      id="css-variables"
       description="Customize input appearance using CSS variables."
     >
       <CodeBlock
@@ -346,9 +382,38 @@ export function InputDoc() {
 
       <DocTabs
         tabs={[
-          { id: "overview", label: "Overview", content: overview },
-          { id: "api", label: "API", content: api },
-          { id: "theming", label: "Theming", content: theming },
+          {
+            id: "overview",
+            label: "Overview",
+            content: overview,
+            toc: [
+              { id: "basic", title: "Basic" },
+              { id: "specialized", title: "Specialized" },
+              { id: "masking", title: "Masking" },
+              { id: "floating-label", title: "Floating Label" },
+              { id: "variants", title: "Variants" },
+              { id: "sizes", title: "Sizes" },
+              { id: "icons", title: "Icons & Prefixes" },
+              { id: "addons", title: "Addons" },
+              { id: "validation", title: "Validation" },
+              { id: "real-world-validation", title: "Real World" },
+            ],
+          },
+          {
+            id: "api",
+            label: "API",
+            content: api,
+            toc: [
+              { id: "input-props", title: "InputProps" },
+              { id: "masked-input-props", title: "MaskedInputProps" },
+            ],
+          },
+          {
+            id: "theming",
+            label: "Theming",
+            content: theming,
+            toc: [{ id: "css-variables", title: "CSS Variables" }],
+          },
         ]}
       />
     </div>

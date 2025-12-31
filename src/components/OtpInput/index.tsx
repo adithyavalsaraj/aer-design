@@ -1,3 +1,4 @@
+import { useAerConfig } from "@/components/AerConfigProvider";
 import { cn } from "@/lib/utils";
 import * as React from "react";
 import { Input } from "../Input";
@@ -16,6 +17,7 @@ export interface OtpInputProps {
   pattern?: RegExp;
   error?: boolean | string;
   onBlur?: () => void;
+  size?: "sm" | "default" | "lg";
 }
 
 const OtpInput = React.forwardRef<HTMLDivElement, OtpInputProps>(
@@ -31,12 +33,25 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpInputProps>(
       pattern = /^\d$/,
       error,
       onBlur,
+
+      size: sizeProp,
       ...props
     },
     ref
   ) => {
+    const { size: globalSize } = useAerConfig();
+    const size = sizeProp || globalSize;
+
     const [internalValue, setInternalValue] = React.useState(propsValue || "");
     const inputRefs = React.useRef<(HTMLInputElement | null)[]>([]);
+
+    const sizeStyles = {
+      sm: { container: "w-9 h-9", text: "text-sm" },
+      default: { container: "w-10 h-10", text: "text-base" },
+      lg: { container: "w-12 h-12", text: "text-lg pt-0.5" }, // slight offset adjustment if needed
+    };
+
+    const sizes = sizeStyles[size] || sizeStyles.default;
 
     // Sync internal value with props value
     React.useEffect(() => {
@@ -166,9 +181,10 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpInputProps>(
               ref={(el) => {
                 inputRefs.current[i] = el;
               }}
-              containerClassName="w-12 h-12 p-0 flex-shrink-0"
+              containerClassName={cn("p-0 flex-shrink-0", sizes.container)}
               className={cn(
-                "text-center text-lg font-bold h-full w-full",
+                "text-center font-bold h-full w-full",
+                sizes.text,
                 type === "password" &&
                   maskChar &&
                   "text-transparent select-none",

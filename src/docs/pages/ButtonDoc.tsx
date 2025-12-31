@@ -82,7 +82,9 @@ export function ButtonDoc() {
   const api = (
     <div className="space-y-8">
       <div>
-        <h3 className="text-lg font-bold mb-4">ButtonProps</h3>
+        <h3 id="button-props" className="text-lg font-bold mb-4">
+          ButtonProps
+        </h3>
         <ApiTable
           data={[
             {
@@ -131,6 +133,7 @@ export function ButtonDoc() {
   const theming = (
     <DocSection
       title="CSS Variables"
+      id="css-variables"
       description="Customize button appearance using CSS variables."
     >
       <CodeBlock
@@ -153,9 +156,29 @@ export function ButtonDoc() {
 
       <DocTabs
         tabs={[
-          { id: "overview", label: "Overview", content: overview },
-          { id: "api", label: "API", content: api },
-          { id: "theming", label: "Theming", content: theming },
+          {
+            id: "overview",
+            label: "Overview",
+            content: overview,
+            toc: [
+              { id: "basic", title: "Basic" },
+              { id: "aer", title: "The Aer Variant" },
+              { id: "states", title: "States" },
+              { id: "sizes", title: "Sizes" },
+            ],
+          },
+          {
+            id: "api",
+            label: "API",
+            content: api,
+            toc: [{ id: "button-props", title: "ButtonProps" }],
+          },
+          {
+            id: "theming",
+            label: "Theming",
+            content: theming,
+            toc: [{ id: "css-variables", title: "CSS Variables" }],
+          },
         ]}
       />
     </div>

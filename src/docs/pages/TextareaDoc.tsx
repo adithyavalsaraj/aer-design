@@ -57,18 +57,22 @@ export function TextareaDoc() {
 
       <DocSection title="Sizes" id="sizes">
         <div className="max-w-xl space-y-4">
-          <Textarea
-            placeholder="Short description..."
-            className="min-h-[100px]"
-          />
-          <Textarea
-            placeholder="Detailed project requirements and feedback..."
-            className="min-h-[200px]"
-          />
+          <div>
+            <label className="text-sm font-medium mb-1.5 block">Small</label>
+            <Textarea size="sm" placeholder="Small textarea" />
+          </div>
+          <div>
+            <label className="text-sm font-medium mb-1.5 block">Default</label>
+            <Textarea size="default" placeholder="Default textarea" />
+          </div>
+          <div>
+            <label className="text-sm font-medium mb-1.5 block">Large</label>
+            <Textarea size="lg" placeholder="Large textarea" />
+          </div>
         </div>
         <CodeBlock
-          ts={`<Textarea placeholder="Short description..." className="min-h-[100px]" />\n<Textarea placeholder="Detailed requirements..." className="min-h-[200px]" />`}
-          fullCode={`import { Textarea } from "aer-design";\n\nexport default function VariableHeights() {\n  return (\n    <div className="space-y-4">\n      <Textarea className="min-h-[80px]" placeholder="Compact" />\n      <Textarea className="min-h-[300px]" placeholder="Expansion Area" />\n    </div>\n  );\n}`}
+          ts={`<Textarea size="sm" placeholder="Small" />\n<Textarea size="default" placeholder="Default" />\n<Textarea size="lg" placeholder="Large" />`}
+          fullCode={`import { Textarea } from "aer-design";\n\nexport default function SizesDemo() {\n  return (\n    <div className="space-y-4">\n      <Textarea size="sm" placeholder="Small" />\n      <Textarea size="default" placeholder="Default" />\n      <Textarea size="lg" placeholder="Large" />\n    </div>\n  );\n}`}
         />
       </DocSection>
 
@@ -124,7 +128,9 @@ export function TextareaDoc() {
   const api = (
     <div className="space-y-8">
       <div>
-        <h3 className="text-lg font-bold mb-4">TextareaProps</h3>
+        <h3 id="textarea-props" className="text-lg font-bold mb-4">
+          TextareaProps
+        </h3>
         <ApiTable
           data={[
             {
@@ -169,6 +175,12 @@ export function TextareaDoc() {
               default: "-",
               description: "Label text for floating label",
             },
+            {
+              prop: "size",
+              type: '"sm" | "default" | "lg"',
+              default: '"default" (or global config)',
+              description: "Textarea size",
+            },
           ]}
         />
       </div>
@@ -178,6 +190,7 @@ export function TextareaDoc() {
   const theming = (
     <DocSection
       title="CSS Variables"
+      id="css-variables"
       description="Customize textarea appearance using CSS variables."
     >
       <CodeBlock
@@ -200,9 +213,31 @@ export function TextareaDoc() {
 
       <DocTabs
         tabs={[
-          { id: "overview", label: "Overview", content: overview },
-          { id: "api", label: "API", content: api },
-          { id: "theming", label: "Theming", content: theming },
+          {
+            id: "overview",
+            label: "Overview",
+            content: overview,
+            toc: [
+              { id: "basic", title: "Basic" },
+              { id: "floating-label", title: "Floating Label" },
+              { id: "variants", title: "Variants" },
+              { id: "sizes", title: "Sizes" },
+              { id: "validation", title: "Validation" },
+              { id: "real-world-validation", title: "Real World" },
+            ],
+          },
+          {
+            id: "api",
+            label: "API",
+            content: api,
+            toc: [{ id: "textarea-props", title: "TextareaProps" }],
+          },
+          {
+            id: "theming",
+            label: "Theming",
+            content: theming,
+            toc: [{ id: "css-variables", title: "CSS Variables" }],
+          },
         ]}
       />
     </div>

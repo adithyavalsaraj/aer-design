@@ -112,7 +112,9 @@ export function NavbarDoc() {
   const api = (
     <div className="space-y-12">
       <div>
-        <h4 className="text-lg font-bold mb-4">NavbarProps</h4>
+        <h4 id="navbar-props" className="text-lg font-bold mb-4">
+          NavbarProps
+        </h4>
         <ApiTable
           data={[
             {
@@ -155,6 +157,7 @@ export function NavbarDoc() {
   const theming = (
     <DocSection
       title="CSS Variables"
+      id="css-variables"
       description="Customize navbar appearance using CSS variables."
     >
       <CodeBlock
@@ -177,9 +180,27 @@ export function NavbarDoc() {
       </header>
       <DocTabs
         tabs={[
-          { id: "overview", label: "Overview", content: overview },
-          { id: "api", label: "API", content: api },
-          { id: "theming", label: "Theming", content: theming },
+          {
+            id: "overview",
+            label: "Overview",
+            content: overview,
+            toc: [
+              { id: "basic", title: "Basic" },
+              { id: "bottom-nav", title: "Bottom Navigation" },
+            ],
+          },
+          {
+            id: "api",
+            label: "API",
+            content: api,
+            toc: [{ id: "navbar-props", title: "NavbarProps" }],
+          },
+          {
+            id: "theming",
+            label: "Theming",
+            content: theming,
+            toc: [{ id: "css-variables", title: "CSS Variables" }],
+          },
         ]}
       />
     </div>

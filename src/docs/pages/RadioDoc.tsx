@@ -54,6 +54,23 @@ export function RadioDoc() {
         />
       </DocSection>
 
+      <DocSection title="Sizes" id="sizes">
+        <div className="flex items-start gap-x-8">
+          <RadioGroup size="sm" defaultValue="1">
+            <RadioItem value="1" label="Small Radio" />
+          </RadioGroup>
+          <RadioGroup size="default" defaultValue="1">
+            <RadioItem value="1" label="Default Radio" />
+          </RadioGroup>
+          <RadioGroup size="lg" defaultValue="1">
+            <RadioItem value="1" label="Large Radio" />
+          </RadioGroup>
+        </div>
+        <CodeBlock
+          ts={`<RadioGroup size="sm">\n  <RadioItem value="1" label="Small" />\n</RadioGroup>`}
+        />
+      </DocSection>
+
       <DocSection
         title="Layout Variants"
         id="layout"
@@ -205,7 +222,9 @@ export function RadioDoc() {
   const api = (
     <div className="space-y-12">
       <div>
-        <h4 className="text-lg font-bold mb-4">RadioGroup Props</h4>
+        <h4 id="radio-group-props" className="text-lg font-bold mb-4">
+          RadioGroup Props
+        </h4>
         <ApiTable
           data={[
             {
@@ -244,11 +263,19 @@ export function RadioDoc() {
               default: "-",
               description: "Additional CSS classes",
             },
+            {
+              prop: "size",
+              type: "'sm' | 'default' | 'lg'",
+              default: "'default' (or global config)",
+              description: "Size of all radio items in group",
+            },
           ]}
         />
       </div>
       <div>
-        <h4 className="text-lg font-bold mb-4">RadioItem Props</h4>
+        <h4 id="radio-item-props" className="text-lg font-bold mb-4">
+          RadioItem Props
+        </h4>
         <ApiTable
           data={[
             {
@@ -305,6 +332,12 @@ export function RadioDoc() {
               default: "-",
               description: "Error state for individual item",
             },
+            {
+              prop: "size",
+              type: "'sm' | 'default' | 'lg'",
+              default: "inherited",
+              description: "Override size for specific item",
+            },
           ]}
         />
       </div>
@@ -314,6 +347,7 @@ export function RadioDoc() {
   const theming = (
     <DocSection
       title="CSS Variables"
+      id="css-variables"
       description="Customize radio appearance using CSS variables."
     >
       <CodeBlock
@@ -338,9 +372,35 @@ export function RadioDoc() {
 
       <DocTabs
         tabs={[
-          { id: "overview", label: "Overview", content: overview },
-          { id: "api", label: "API", content: api },
-          { id: "theming", label: "Theming", content: theming },
+          {
+            id: "overview",
+            label: "Overview",
+            content: overview,
+            toc: [
+              { id: "basic", title: "Basic" },
+              { id: "cards", title: "Card Selection" },
+              { id: "sizes", title: "Sizes" },
+              { id: "layout", title: "Layout Variants" },
+              { id: "alignment", title: "Vertical Alignment" },
+              { id: "validation", title: "Validation" },
+              { id: "real-world-validation", title: "Real World" },
+            ],
+          },
+          {
+            id: "api",
+            label: "API",
+            content: api,
+            toc: [
+              { id: "radio-group-props", title: "RadioGroup Props" },
+              { id: "radio-item-props", title: "RadioItem Props" },
+            ],
+          },
+          {
+            id: "theming",
+            label: "Theming",
+            content: theming,
+            toc: [{ id: "css-variables", title: "CSS Variables" }],
+          },
         ]}
       />
     </div>

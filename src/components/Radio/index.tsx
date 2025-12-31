@@ -1,3 +1,4 @@
+import { useAerConfig } from "@/components/AerConfigProvider";
 import { cn } from "@/lib/utils";
 import { type VariantProps, cva } from "class-variance-authority";
 import * as React from "react";
@@ -10,6 +11,7 @@ interface RadioGroupContextValue {
   onChange?: (value: string) => void;
   disabled?: boolean;
   error?: boolean | string;
+  size?: "sm" | "default" | "lg";
 }
 
 const RadioGroupContext = React.createContext<RadioGroupContextValue>({});
@@ -24,6 +26,7 @@ export interface RadioGroupProps
   onChange?: (value: string) => void;
   disabled?: boolean;
   error?: boolean | string;
+  size?: "sm" | "default" | "lg";
 }
 
 const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(
@@ -36,6 +39,7 @@ const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(
       onChange,
       disabled,
       error,
+      size,
       children,
       ...props
     },
@@ -60,6 +64,7 @@ const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(
           onChange: handleValueChange,
           disabled,
           error,
+          size,
         }}
       >
         <div
@@ -130,9 +135,9 @@ export interface RadioItemProps
   label?: React.ReactNode;
   description?: React.ReactNode;
   /** Class name for the text content container */
-  /** Class name for the text content container */
   contentClassName?: string;
   error?: boolean | string;
+  size?: "sm" | "default" | "lg";
 }
 
 const RadioItem = React.forwardRef<HTMLInputElement, RadioItemProps>(
@@ -149,16 +154,43 @@ const RadioItem = React.forwardRef<HTMLInputElement, RadioItemProps>(
       disabled,
       contentClassName,
       error,
+      size: sizeProp,
       ...props
     },
     ref
   ) => {
+    const { size: globalSize } = useAerConfig();
     const context = React.useContext(RadioGroupContext);
+    const size = sizeProp || context.size || globalSize;
+
     const uniqueId = React.useId();
     const radioId = id || uniqueId;
     const isChecked = context.value === value;
     const isDisabled = disabled || context.disabled;
     const isVertical = labelPosition === "top" || labelPosition === "bottom";
+
+    const sizeStyles = {
+      sm: {
+        circle: "size-4",
+        dot: "size-2",
+        text: "text-xs",
+        desc: "text-[10px]",
+      },
+      default: {
+        circle: "size-5",
+        dot: "size-2.5",
+        text: "text-sm",
+        desc: "text-xs",
+      },
+      lg: {
+        circle: "size-6",
+        dot: "size-3",
+        text: "text-base",
+        desc: "text-sm",
+      },
+    };
+
+    const sizes = sizeStyles[size] || sizeStyles.default;
 
     return (
       <label
@@ -188,7 +220,8 @@ const RadioItem = React.forwardRef<HTMLInputElement, RadioItemProps>(
           />
           <div
             className={cn(
-              "flex items-center justify-center size-5 rounded-full border-2 border-aer-muted-foreground/30 bg-aer-background text-aer-primary transition-all duration-200 peer-focus-visible:ring-2 peer-focus-visible:ring-aer-ring peer-focus-visible:ring-offset-2 peer-checked:border-aer-primary",
+              "flex items-center justify-center rounded-full border-2 border-aer-muted-foreground/30 bg-aer-background text-aer-primary transition-all duration-200 peer-focus-visible:ring-2 peer-focus-visible:ring-aer-ring peer-focus-visible:ring-offset-2 peer-checked:border-aer-primary",
+              sizes.circle,
               (context.error || error) &&
                 "border-red-500 peer-checked:border-red-500"
             )}
@@ -196,7 +229,8 @@ const RadioItem = React.forwardRef<HTMLInputElement, RadioItemProps>(
             {/* The Dot */}
             <div
               className={cn(
-                "size-2.5 rounded-full bg-current scale-0 transition-transform duration-200",
+                "rounded-full bg-current scale-0 transition-transform duration-200",
+                sizes.dot,
                 isChecked && "scale-100"
               )}
             />
@@ -216,7 +250,7 @@ const RadioItem = React.forwardRef<HTMLInputElement, RadioItemProps>(
             )}
           >
             {label && (
-              <span className="font-medium text-sm leading-5">
+              <span className={cn("font-medium leading-5", sizes.text)}>
                 {label}
                 {props.required && (
                   <span className="text-red-500 ml-0.5">*</span>
@@ -224,7 +258,12 @@ const RadioItem = React.forwardRef<HTMLInputElement, RadioItemProps>(
               </span>
             )}
             {description && (
-              <span className="text-xs text-aer-muted-foreground mt-0 leading-normal">
+              <span
+                className={cn(
+                  "text-aer-muted-foreground mt-0 leading-normal",
+                  sizes.desc
+                )}
+              >
                 {description}
               </span>
             )}
