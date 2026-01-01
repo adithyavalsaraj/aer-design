@@ -477,7 +477,7 @@ const SidebarItem = React.forwardRef<HTMLButtonElement, SidebarItemProps>(
           {(!collapsed || isHorizontal) && (
             <span
               className={cn(
-                "truncate animate-in fade-in ltr:slide-in-from-left-2 rtl:slide-in-from-right-2 duration-300 leading-none",
+                "truncate animate-in fade-in ltr:slide-in-from-left-2 rtl:slide-in-from-right-2 duration-300 leading-tight",
                 isHorizontal && "whitespace-nowrap"
               )}
             >
