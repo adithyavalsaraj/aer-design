@@ -1,15 +1,487 @@
 import { Button } from "@/components/Button";
-import { Mail, Sparkles } from "lucide-react";
+import { Download, Mail, Plus, Save, Sparkles, Trash2, X } from "lucide-react";
+import * as React from "react";
 import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
 
 export function ButtonDoc() {
   const overview = (
     <div className="space-y-12">
       <DocSection
-        title="Basic"
-        id="basic"
-        description="The standard button variants."
+        id="introduction"
+        title="Introduction"
+        description="A versatile button component for user interactions."
       >
+        <div className="prose prose-sm max-w-none">
+          <p className="text-aer-muted-foreground">
+            The Button component is the primary way users interact with your
+            application. It supports multiple visual styles, sizes, and states
+            to accommodate different use cases and design requirements.
+          </p>
+          <ul className="list-disc pl-6 space-y-2 text-aer-muted-foreground">
+            <li>
+              <strong>7 variants</strong> for different contexts (default, aer,
+              secondary, outline, ghost, link, destructive)
+            </li>
+            <li>
+              <strong>4 sizes</strong> including an icon-only variant
+            </li>
+            <li>
+              <strong>Loading states</strong> with built-in spinner animation
+            </li>
+            <li>
+              <strong>Full accessibility</strong> with proper ARIA attributes
+            </li>
+            <li>
+              <strong>Composable</strong> with icons, text, and custom content
+            </li>
+          </ul>
+        </div>
+      </DocSection>
+
+      <DocSection
+        id="when-to-use"
+        title="When to Use"
+        description="Choose the right button variant for your use case."
+      >
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
+            <h4 className="font-semibold mb-3 text-aer-foreground">
+              Primary Actions
+            </h4>
+            <p className="text-sm text-aer-muted-foreground mb-3">
+              Use{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                default
+              </code>{" "}
+              or{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                aer
+              </code>{" "}
+              variants for:
+            </p>
+            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
+              <li>Form submissions (Save, Submit, Continue)</li>
+              <li>Primary call-to-action buttons</li>
+              <li>Confirming important actions</li>
+              <li>Hero section CTAs</li>
+            </ul>
+          </div>
+
+          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
+            <h4 className="font-semibold mb-3 text-aer-foreground">
+              Secondary Actions
+            </h4>
+            <p className="text-sm text-aer-muted-foreground mb-3">
+              Use{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                secondary
+              </code>
+              ,{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                outline
+              </code>
+              , or{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                ghost
+              </code>{" "}
+              for:
+            </p>
+            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
+              <li>Cancel or back actions</li>
+              <li>Secondary options in dialogs</li>
+              <li>Toolbar actions</li>
+              <li>Less prominent interactions</li>
+            </ul>
+          </div>
+
+          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
+            <h4 className="font-semibold mb-3 text-aer-foreground">
+              Destructive Actions
+            </h4>
+            <p className="text-sm text-aer-muted-foreground mb-3">
+              Use{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                destructive
+              </code>{" "}
+              for:
+            </p>
+            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
+              <li>Delete or remove actions</li>
+              <li>Permanent data changes</li>
+              <li>Actions that cannot be undone</li>
+              <li>Warning confirmations</li>
+            </ul>
+          </div>
+
+          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
+            <h4 className="font-semibold mb-3 text-aer-foreground">
+              Navigation
+            </h4>
+            <p className="text-sm text-aer-muted-foreground mb-3">
+              Use{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                link
+              </code>{" "}
+              or{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                ghost
+              </code>{" "}
+              for:
+            </p>
+            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
+              <li>In-text navigation links</li>
+              <li>Breadcrumb navigation</li>
+              <li>Subtle navigation options</li>
+              <li>Footer links</li>
+            </ul>
+          </div>
+        </div>
+      </DocSection>
+
+      <DocSection
+        id="basic"
+        title="Basic Variants"
+        description="All available button styles for different contexts."
+      >
+        <BasicVariantsExample />
+        <CodeBlock
+          ts={`<Button>Default</Button>
+<Button variant="secondary">Secondary</Button>
+<Button variant="outline">Outline</Button>
+<Button variant="ghost">Ghost</Button>
+<Button variant="link">Link</Button>
+<Button variant="destructive">Destructive</Button>`}
+          fullCode={`import { Button } from "aer-design";
+
+export default function ButtonVariants() {
+  return (
+    <div className="flex flex-wrap gap-4">
+      <Button>Save Changes</Button>
+      <Button variant="secondary">Cancel</Button>
+      <Button variant="outline">Learn More</Button>
+      <Button variant="ghost">Settings</Button>
+      <Button variant="link">Privacy Policy</Button>
+      <Button variant="destructive">Delete Account</Button>
+    </div>
+  );
+}`}
+        />
+      </DocSection>
+
+      <DocSection
+        id="aer-variant"
+        title="The Aer Variant"
+        description="Our signature glassmorphism effect for premium CTAs."
+      >
+        <AerVariantExample />
+        <CodeBlock
+          ts={`<Button variant="aer" size="lg">
+  <Sparkles className="w-4 h-4 mr-2" />
+  Get Started
+</Button>`}
+          fullCode={`import { Button } from "aer-design";
+import { Sparkles } from "lucide-react";
+
+export default function AerButton() {
+  return (
+    <div className="flex items-center justify-center p-12 bg-gradient-to-br from-zinc-900 to-zinc-950 rounded-2xl border border-white/10">
+      <Button variant="aer" size="lg">
+        <Sparkles className="w-4 h-4 mr-2" />
+        Join the Movement
+      </Button>
+    </div>
+  );
+}`}
+        />
+        <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+          <p className="text-sm text-blue-700 dark:text-blue-400">
+            <strong>Pro tip:</strong> The Aer variant works best on dark
+            backgrounds and for hero CTAs. It features a subtle glassmorphism
+            effect with animated gradients.
+          </p>
+        </div>
+      </DocSection>
+
+      <DocSection
+        id="with-icons"
+        title="With Icons"
+        description="Combine buttons with icons for better visual communication."
+      >
+        <IconButtonsExample />
+        <CodeBlock
+          ts={`// Icon with text
+<Button>
+  <Mail className="w-4 h-4 mr-2" />
+  Send Email
+</Button>
+
+// Icon only
+<Button size="icon" variant="outline">
+  <Plus className="w-4 h-4" />
+</Button>
+
+// Icon on right
+<Button>
+  Download
+  <Download className="w-4 h-4 ml-2" />
+</Button>`}
+          fullCode={`import { Button } from "aer-design";
+import { Mail, Plus, Download, Save } from "lucide-react";
+
+export default function IconButtons() {
+  return (
+    <div className="flex flex-wrap gap-4">
+      {/* Icon with text */}
+      <Button>
+        <Mail className="w-4 h-4 mr-2" />
+        Send Email
+      </Button>
+
+      {/* Icon only */}
+      <Button size="icon" variant="outline">
+        <Plus className="w-4 h-4" />
+      </Button>
+
+      {/* Icon on right */}
+      <Button variant="secondary">
+        Download Report
+        <Download className="w-4 h-4 ml-2" />
+      </Button>
+
+      {/* Multiple icons */}
+      <Button variant="outline">
+        <Save className="w-4 h-4 mr-2" />
+        Save Draft
+      </Button>
+    </div>
+  );
+}`}
+        />
+      </DocSection>
+
+      <DocSection
+        id="loading-state"
+        title="Loading State"
+        description="Show loading feedback during async operations."
+      >
+        <LoadingStateExample />
+        <CodeBlock
+          ts={`const [isLoading, setIsLoading] = useState(false);
+
+<Button 
+  isLoading={isLoading}
+  onClick={() => setIsLoading(true)}
+>
+  Submit Form
+</Button>`}
+          fullCode={`import { Button } from "aer-design";
+import { useState } from "react";
+
+export default function LoadingButton() {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    setIsLoading(false);
+    alert("Form submitted!");
+  };
+
+  return (
+    <Button isLoading={isLoading} onClick={handleSubmit}>
+      {isLoading ? "Submitting..." : "Submit Form"}
+    </Button>
+  );
+}`}
+        />
+        <div className="mt-4 p-4 bg-amber-500/10 border border-amber-500/20 rounded-lg">
+          <p className="text-sm text-amber-700 dark:text-amber-400">
+            <strong>Best practice:</strong> Always disable the button during
+            loading (handled automatically) and provide clear feedback about
+            what's happening.
+          </p>
+        </div>
+      </DocSection>
+
+      <DocSection
+        id="sizes"
+        title="Sizes"
+        description="Four size variants to fit different layouts."
+      >
+        <SizesExample />
+        <CodeBlock
+          ts={`<Button size="sm">Small</Button>
+<Button size="default">Default</Button>
+<Button size="lg">Large</Button>
+<Button size="icon"><Mail /></Button>`}
+          fullCode={`import { Button } from "aer-design";
+import { Mail } from "lucide-react";
+
+export default function ButtonSizes() {
+  return (
+    <div className="flex items-center gap-4">
+      <Button size="sm">Small Button</Button>
+      <Button>Default Button</Button>
+      <Button size="lg">Large Button</Button>
+      <Button size="icon" variant="outline">
+        <Mail className="w-4 h-4" />
+      </Button>
+    </div>
+  );
+}`}
+        />
+      </DocSection>
+
+      <DocSection
+        id="disabled-state"
+        title="Disabled State"
+        description="Prevent interaction when actions are unavailable."
+      >
+        <DisabledStateExample />
+        <CodeBlock
+          ts={`<Button disabled>Cannot Click</Button>
+<Button variant="outline" disabled>
+  Disabled Outline
+</Button>`}
+          fullCode={`import { Button } from "aer-design";
+
+export default function DisabledButtons() {
+  const [agreed, setAgreed] = useState(false);
+
+  return (
+    <div className="space-y-4">
+      <label className="flex items-center gap-2">
+        <input 
+          type="checkbox" 
+          checked={agreed}
+          onChange={(e) => setAgreed(e.target.checked)}
+        />
+        I agree to the terms
+      </label>
+      
+      <Button disabled={!agreed}>
+        Continue
+      </Button>
+    </div>
+  );
+}`}
+        />
+      </DocSection>
+
+      <DocSection
+        id="real-world"
+        title="Real World Example"
+        description="Complete form with multiple button variants and states."
+      >
+        <RealWorldExample />
+        <CodeBlock
+          ts={`// Form with primary, secondary, and destructive actions`}
+          fullCode={`import { Button } from "aer-design";
+import { Save, X, Trash2 } from "lucide-react";
+import { useState } from "react";
+
+export default function UserProfileForm() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "John Doe",
+    email: "john@example.com",
+  });
+  const [hasChanges, setHasChanges] = useState(false);
+
+  const handleSave = async () => {
+    setIsLoading(true);
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    setIsLoading(false);
+    setHasChanges(false);
+    alert("Profile saved!");
+  };
+
+  const handleReset = () => {
+    setFormData({ name: "John Doe", email: "john@example.com" });
+    setHasChanges(false);
+  };
+
+  const handleDelete = () => {
+    if (confirm("Are you sure you want to delete your account?")) {
+      alert("Account deleted");
+    }
+  };
+
+  return (
+    <div className="max-w-md p-6 border border-aer-border rounded-lg bg-aer-background">
+      <h3 className="text-lg font-semibold mb-4">Profile Settings</h3>
+      
+      <div className="space-y-4 mb-6">
+        <div>
+          <label className="block text-sm font-medium mb-1">Name</label>
+          <input
+            type="text"
+            value={formData.name}
+            onChange={(e) => {
+              setFormData({ ...formData, name: e.target.value });
+              setHasChanges(true);
+            }}
+            className="w-full px-3 py-2 border rounded-md"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-1">Email</label>
+          <input
+            type="email"
+            value={formData.email}
+            onChange={(e) => {
+              setFormData({ ...formData, email: e.target.value });
+              setHasChanges(true);
+            }}
+            className="w-full px-3 py-2 border rounded-md"
+          />
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between">
+        <div className="flex gap-2">
+          <Button
+            isLoading={isLoading}
+            disabled={!hasChanges}
+            onClick={handleSave}
+          >
+            <Save className="w-4 h-4 mr-2" />
+            Save Changes
+          </Button>
+          <Button
+            variant="outline"
+            disabled={!hasChanges}
+            onClick={handleReset}
+          >
+            <X className="w-4 h-4 mr-2" />
+            Cancel
+          </Button>
+        </div>
+        
+        <Button
+          variant="destructive"
+          size="sm"
+          onClick={handleDelete}
+        >
+          <Trash2 className="w-4 h-4 mr-2" />
+          Delete Account
+        </Button>
+      </div>
+    </div>
+  );
+}`}
+        />
+      </DocSection>
+    </div>
+  );
+
+  // Example Components
+  function BasicVariantsExample() {
+    return (
+      <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5">
         <div className="flex flex-wrap gap-4">
           <Button>Default</Button>
           <Button variant="secondary">Secondary</Button>
@@ -18,66 +490,201 @@ export function ButtonDoc() {
           <Button variant="link">Link</Button>
           <Button variant="destructive">Destructive</Button>
         </div>
-        <CodeBlock
-          ts={`<Button>Default</Button>\n<Button variant="secondary">Secondary</Button>\n<Button variant="outline">Outline</Button>\n<Button variant="ghost">Ghost</Button>\n<Button variant="link">Link</Button>\n<Button variant="destructive">Destructive</Button>`}
-          fullCode={`import { Button } from "aer-design";\n\nexport default function ButtonExample() {\n  return (\n    <div className="flex flex-wrap gap-4 p-8 bg-zinc-900 rounded-xl">\n      <Button variant="default">Save Changes</Button>\n      <Button variant="secondary">Cancel</Button>\n      <Button variant="outline">Learn More</Button>\n      <Button variant="ghost">Settings</Button>\n      <Button variant="link">Privacy Policy</Button>\n      <Button variant="destructive">Delete Account</Button>\n    </div>\n  );\n}`}
-        />
-      </DocSection>
+      </div>
+    );
+  }
 
-      <DocSection
-        title="The Aer Variant"
-        id="aer"
-        description="Our signature weightless glassmorphism effect."
-      >
+  function AerVariantExample() {
+    return (
+      <div className="flex items-center justify-center p-12 bg-gradient-to-br from-zinc-900 to-zinc-950 rounded-2xl border border-white/10">
+        <Button variant="aer" size="lg">
+          <Sparkles className="w-4 h-4 mr-2" />
+          Join the Movement
+        </Button>
+      </div>
+    );
+  }
+
+  function IconButtonsExample() {
+    return (
+      <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5">
         <div className="flex flex-wrap gap-4">
-          <Button variant="aer" size="lg">
-            <Sparkles className="size-4" />
-            Join the movement
+          <Button>
+            <Mail className="w-4 h-4 mr-2" />
+            Send Email
+          </Button>
+          <Button size="icon" variant="outline">
+            <Plus className="w-4 h-4" />
+          </Button>
+          <Button variant="secondary">
+            Download Report
+            <Download className="w-4 h-4 ml-2" />
+          </Button>
+          <Button variant="outline">
+            <Save className="w-4 h-4 mr-2" />
+            Save Draft
           </Button>
         </div>
-        <CodeBlock
-          ts={`<Button variant="aer" size="lg">\n  <Sparkles className="size-4" />\n  Join the movement\n</Button>`}
-          fullCode={`import { Button } from "aer-design";\nimport { Sparkles } from "lucide-react";\n\nexport default function AerButtonDemo() {\n  return (\n    <div className="flex items-center justify-center p-12 bg-zinc-950 rounded-2xl border border-white/10">\n      <Button variant="aer" size="lg">\n        <Sparkles className="size-4 mr-2" />\n        Get Started\n      </Button>\n    </div>\n  );\n}`}
-        />
-      </DocSection>
+      </div>
+    );
+  }
 
-      <DocSection
-        title="States"
-        id="states"
-        description="Loading, disabled, and active states."
-      >
-        <div className="flex flex-wrap gap-4">
-          <Button isLoading>Loading</Button>
-          <Button disabled>Disabled</Button>
-          <Button
-            variant="outline"
-            className="active:scale-90 transition-transform"
-          >
-            Custom Scale
+  function LoadingStateExample() {
+    const [isLoading, setIsLoading] = React.useState(false);
+
+    const handleClick = () => {
+      setIsLoading(true);
+      setTimeout(() => setIsLoading(false), 2000);
+    };
+
+    return (
+      <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5">
+        <div className="flex gap-4">
+          <Button isLoading={isLoading} onClick={handleClick}>
+            {isLoading ? "Submitting..." : "Submit Form"}
+          </Button>
+          <Button variant="outline" isLoading={isLoading}>
+            Processing
           </Button>
         </div>
-        <CodeBlock
-          ts={`<Button isLoading>Loading</Button>\n<Button disabled>Disabled</Button>\n<Button className="active:scale-90 transition-transform">Custom Scale</Button>`}
-          fullCode={`import { Button } from "aer-design";\nimport { useState } from "react";\n\nexport default function ButtonStates() {\n  const [loading, setLoading] = useState(false);\n  \n  return (\n    <div className="flex gap-4">\n      <Button \n        isLoading={loading} \n        onClick={() => setLoading(true)}\n      >\n        Click to load\n      </Button>\n      <Button disabled>Can't touch this</Button>\n    </div>\n  );\n}`}
-        />
-      </DocSection>
+      </div>
+    );
+  }
 
-      <DocSection title="Sizes" id="sizes">
-        <div className="flex flex-wrap items-end gap-4">
+  function SizesExample() {
+    return (
+      <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5">
+        <div className="flex items-center flex-wrap gap-4">
           <Button size="sm">Small</Button>
-          <Button size="default">Default</Button>
+          <Button>Default</Button>
           <Button size="lg">Large</Button>
           <Button size="icon" variant="outline">
-            <Mail className="size-4" />
+            <Mail className="w-4 h-4" />
           </Button>
         </div>
-        <CodeBlock
-          ts={`<Button size="sm">Small</Button>\n<Button size="default">Default</Button>\n<Button size="lg">Large</Button>\n<Button size="icon" variant="outline">\n  <Mail className="size-4" />\n</Button>`}
-          fullCode={`import { Button } from "aer-design";\nimport { Mail } from "lucide-react";\n\nexport default function ButtonSizes() {\n  return (\n    <div className="flex items-center gap-4">\n      <Button size="sm">Smaller Button</Button>\n      <Button>Standard Button</Button>\n      <Button size="lg">Jumbo Button</Button>\n      <Button size="icon" variant="outline"><Mail /></Button>\n    </div>\n  );\n}`}
-        />
-      </DocSection>
-    </div>
-  );
+      </div>
+    );
+  }
+
+  function DisabledStateExample() {
+    const [agreed, setAgreed] = React.useState(false);
+
+    return (
+      <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5 space-y-4">
+        <label className="flex items-center gap-2 text-sm">
+          <input
+            type="checkbox"
+            checked={agreed}
+            onChange={(e) => setAgreed(e.target.checked)}
+            className="w-4 h-4"
+          />
+          I agree to the terms and conditions
+        </label>
+        <div className="flex gap-4">
+          <Button disabled={!agreed}>Continue</Button>
+          <Button variant="outline" disabled>
+            Always Disabled
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  function RealWorldExample() {
+    const [isLoading, setIsLoading] = React.useState(false);
+    const [formData, setFormData] = React.useState({
+      name: "John Doe",
+      email: "john@example.com",
+    });
+    const [hasChanges, setHasChanges] = React.useState(false);
+
+    const handleSave = () => {
+      setIsLoading(true);
+      setTimeout(() => {
+        setIsLoading(false);
+        setHasChanges(false);
+        alert("Profile saved!");
+      }, 1500);
+    };
+
+    const handleReset = () => {
+      setFormData({ name: "John Doe", email: "john@example.com" });
+      setHasChanges(false);
+    };
+
+    const handleDelete = () => {
+      if (confirm("Are you sure you want to delete your account?")) {
+        alert("Account deleted");
+      }
+    };
+
+    return (
+      <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5">
+        <div className="max-w-md">
+          <h3 className="text-lg font-semibold mb-4 text-aer-foreground">
+            Profile Settings
+          </h3>
+
+          <div className="space-y-4 mb-6">
+            <div>
+              <label className="block text-sm font-medium mb-1.5 text-aer-foreground">
+                Name
+              </label>
+              <input
+                type="text"
+                value={formData.name}
+                onChange={(e) => {
+                  setFormData({ ...formData, name: e.target.value });
+                  setHasChanges(true);
+                }}
+                className="w-full px-3 py-2 border border-aer-border rounded-md bg-aer-background text-aer-foreground"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1.5 text-aer-foreground">
+                Email
+              </label>
+              <input
+                type="email"
+                value={formData.email}
+                onChange={(e) => {
+                  setFormData({ ...formData, email: e.target.value });
+                  setHasChanges(true);
+                }}
+                className="w-full px-3 py-2 border border-aer-border rounded-md bg-aer-background text-aer-foreground"
+              />
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="flex gap-2">
+              <Button
+                isLoading={isLoading}
+                disabled={!hasChanges}
+                onClick={handleSave}
+              >
+                <Save className="w-4 h-4 mr-2" />
+                Save Changes
+              </Button>
+              <Button
+                variant="outline"
+                disabled={!hasChanges}
+                onClick={handleReset}
+              >
+                <X className="w-4 h-4 mr-2" />
+                Cancel
+              </Button>
+            </div>
+
+            <Button variant="destructive" size="sm" onClick={handleDelete}>
+              <Trash2 className="w-4 h-4 mr-2" />
+              Delete
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const api = (
     <div className="space-y-8">
@@ -85,47 +692,119 @@ export function ButtonDoc() {
         <h3 id="button-props" className="text-lg font-bold mb-4">
           ButtonProps
         </h3>
+        <p className="text-sm text-aer-muted-foreground mb-4">
+          The Button component extends native HTML button attributes and adds
+          additional props for styling and behavior.
+        </p>
         <ApiTable
           data={[
             {
               prop: "variant",
-              type: "'default' | 'aer' | 'secondary' | 'outline' | 'ghost' | 'link' | 'destructive'",
-              default: "'default'",
-              description: "Visual style of the button",
+              type: '"default" | "aer" | "secondary" | "outline" | "ghost" | "link" | "destructive"',
+              default: '"default"',
+              description:
+                "Visual style variant. Use 'default' or 'aer' for primary actions, 'destructive' for dangerous actions.",
             },
             {
               prop: "size",
-              type: "'default' | 'sm' | 'lg' | 'icon'",
-              default: "'default'",
-              description: "Size of the button",
+              type: '"sm" | "default" | "lg" | "icon"',
+              default: '"default"',
+              description:
+                "Button size. Use 'icon' for icon-only buttons (square shape).",
             },
             {
               prop: "isLoading",
               type: "boolean",
               default: "false",
-              description: "Shows a loading spinner",
+              description:
+                "Shows loading spinner and disables the button. Automatically adds spinner before children.",
             },
             {
               prop: "disabled",
               type: "boolean",
               default: "false",
-              description: "Disables the button",
+              description:
+                "Disables button interaction. Also triggered when isLoading is true.",
             },
             {
               prop: "asChild",
               type: "boolean",
               default: "false",
               description:
-                "Whether to render as a child component (unimplemented)",
+                "Renders button as a child component using Radix Slot. Useful for rendering as a link.",
             },
             {
               prop: "className",
               type: "string",
               default: "-",
-              description: "Additional CSS classes",
+              description:
+                "Additional CSS classes to apply. Merged with variant styles.",
+            },
+            {
+              prop: "children",
+              type: "ReactNode",
+              default: "-",
+              description:
+                "Button content. Can include text, icons, or any React elements.",
             },
           ]}
         />
+      </div>
+
+      <div>
+        <h3 id="variant-guide" className="text-lg font-bold mb-4">
+          Variant Usage Guide
+        </h3>
+        <div className="space-y-4">
+          <div className="p-4 border border-aer-border rounded-lg">
+            <h4 className="font-semibold mb-2">default</h4>
+            <p className="text-sm text-aer-muted-foreground">
+              Solid background with primary color. Use for main CTAs and form
+              submissions.
+            </p>
+          </div>
+          <div className="p-4 border border-aer-border rounded-lg">
+            <h4 className="font-semibold mb-2">aer</h4>
+            <p className="text-sm text-aer-muted-foreground">
+              Signature glassmorphism effect. Best for hero sections and premium
+              CTAs on dark backgrounds.
+            </p>
+          </div>
+          <div className="p-4 border border-aer-border rounded-lg">
+            <h4 className="font-semibold mb-2">secondary</h4>
+            <p className="text-sm text-aer-muted-foreground">
+              Muted background. Use for secondary actions like Cancel or Back.
+            </p>
+          </div>
+          <div className="p-4 border border-aer-border rounded-lg">
+            <h4 className="font-semibold mb-2">outline</h4>
+            <p className="text-sm text-aer-muted-foreground">
+              Border only, transparent background. Good for less prominent
+              actions.
+            </p>
+          </div>
+          <div className="p-4 border border-aer-border rounded-lg">
+            <h4 className="font-semibold mb-2">ghost</h4>
+            <p className="text-sm text-aer-muted-foreground">
+              No background or border, hover effect only. Use in toolbars and
+              menus.
+            </p>
+          </div>
+          <div className="p-4 border border-aer-border rounded-lg">
+            <h4 className="font-semibold mb-2">link</h4>
+            <p className="text-sm text-aer-muted-foreground">
+              Styled as a link with underline on hover. Use for in-text
+              navigation.
+            </p>
+          </div>
+          <div className="p-4 border border-aer-border rounded-lg">
+            <h4 className="font-semibold mb-2">destructive</h4>
+            <p className="text-sm text-aer-muted-foreground">
+              Red/danger color. Use for delete, remove, or other destructive
+              actions.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -136,10 +815,53 @@ export function ButtonDoc() {
       id="css-variables"
       description="Customize button appearance using CSS variables."
     >
-      <CodeBlock
-        ts={`:root {\n  --aer-primary: 221.2 83.2% 53.3%;\n  --aer-primary-foreground: 210 40% 98%;\n  --aer-secondary: 240 4.8% 95.9%;\n}`}
-        fullCode={`/* styles/globals.css */\n:root {\n  --aer-primary: 221.2 83.2% 53.3%;\n  --aer-primary-foreground: 210 40% 98%;\n  --aer-secondary: 240 4.8% 95.9%;\n  /* Add other overridden variables here */\n}`}
-      />
+      <div className="space-y-4">
+        <p className="text-sm text-aer-muted-foreground">
+          Buttons use the following CSS variables from your theme:
+        </p>
+        <CodeBlock
+          ts={`:root {
+  --aer-primary: 221.2 83.2% 53.3%;
+  --aer-primary-foreground: 210 40% 98%;
+  --aer-secondary: 240 4.8% 95.9%;
+  --aer-secondary-foreground: 222.2 47.4% 11.2%;
+  --aer-destructive: 0 84.2% 60.2%;
+  --aer-destructive-foreground: 210 40% 98%;
+}`}
+          fullCode={`/* styles/globals.css or your theme file */
+:root {
+  /* Primary button colors */
+  --aer-primary: 221.2 83.2% 53.3%;
+  --aer-primary-foreground: 210 40% 98%;
+  
+  /* Secondary button colors */
+  --aer-secondary: 240 4.8% 95.9%;
+  --aer-secondary-foreground: 222.2 47.4% 11.2%;
+  
+  /* Destructive button colors */
+  --aer-destructive: 0 84.2% 60.2%;
+  --aer-destructive-foreground: 210 40% 98%;
+  
+  /* Border and ring colors for outline/ghost */
+  --aer-border: 214.3 31.8% 91.4%;
+  --aer-ring: 221.2 83.2% 53.3%;
+}
+
+/* Dark mode */
+.dark {
+  --aer-primary: 217.2 91.2% 59.8%;
+  --aer-primary-foreground: 222.2 47.4% 11.2%;
+  /* ... other dark mode overrides */
+}`}
+        />
+        <div className="mt-4 p-4 bg-purple-500/10 border border-purple-500/20 rounded-lg">
+          <p className="text-sm text-purple-700 dark:text-purple-400">
+            <strong>Tip:</strong> Use the ThemeProvider to switch between 8
+            built-in themes, or customize these variables to match your brand
+            colors.
+          </p>
+        </div>
+      </div>
     </DocSection>
   );
 
@@ -150,7 +872,8 @@ export function ButtonDoc() {
           Button
         </h1>
         <p className="text-xl text-aer-muted-foreground">
-          A flexible button component with multiple variants, sizes, and states.
+          A versatile button component with multiple variants, sizes, and states
+          for all your interaction needs.
         </p>
       </header>
 
@@ -161,17 +884,25 @@ export function ButtonDoc() {
             label: "Overview",
             content: overview,
             toc: [
-              { id: "basic", title: "Basic" },
-              { id: "aer", title: "The Aer Variant" },
-              { id: "states", title: "States" },
+              { id: "introduction", title: "Introduction" },
+              { id: "when-to-use", title: "When to Use" },
+              { id: "basic", title: "Basic Variants" },
+              { id: "aer-variant", title: "The Aer Variant" },
+              { id: "with-icons", title: "With Icons" },
+              { id: "loading-state", title: "Loading State" },
               { id: "sizes", title: "Sizes" },
+              { id: "disabled-state", title: "Disabled State" },
+              { id: "real-world", title: "Real World Example" },
             ],
           },
           {
             id: "api",
             label: "API",
             content: api,
-            toc: [{ id: "button-props", title: "ButtonProps" }],
+            toc: [
+              { id: "button-props", title: "ButtonProps" },
+              { id: "variant-guide", title: "Variant Usage Guide" },
+            ],
           },
           {
             id: "theming",
