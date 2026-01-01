@@ -13,7 +13,142 @@ import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
 export function InputDoc() {
   const overview = (
     <div className="space-y-12">
-      <DocSection title="Basic" id="basic">
+      <DocSection
+        id="introduction"
+        title="Introduction"
+        description="Flexible text input component for collecting user data."
+      >
+        <div className="prose prose-sm max-w-none">
+          <p className="text-aer-muted-foreground">
+            The Input component is a highly customizable text input with support
+            for various input types, icons, prefixes, suffixes, and validation
+            states. It's designed to handle everything from simple text fields
+            to complex formatted inputs.
+          </p>
+          <ul className="list-disc pl-6 space-y-2 text-aer-muted-foreground">
+            <li>
+              <strong>3 visual variants</strong> (outline, filled, underlined)
+              for different design aesthetics
+            </li>
+            <li>
+              <strong>Specialized inputs</strong> for email, password, and phone
+              with built-in validation
+            </li>
+            <li>
+              <strong>Pattern masking</strong> for credit cards, dates, and
+              custom formats
+            </li>
+            <li>
+              <strong>Floating labels</strong> for modern, space-efficient forms
+            </li>
+            <li>
+              <strong>Icons and addons</strong> for enhanced visual context
+            </li>
+            <li>
+              <strong>Full accessibility</strong> with proper ARIA attributes
+              and keyboard support
+            </li>
+          </ul>
+        </div>
+      </DocSection>
+
+      <DocSection
+        id="when-to-use"
+        title="When to Use"
+        description="Choose the right input variant and features for your use case."
+      >
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
+            <h4 className="font-semibold mb-3 text-aer-foreground">
+              Standard Inputs
+            </h4>
+            <p className="text-sm text-aer-muted-foreground mb-3">
+              Use basic{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                Input
+              </code>{" "}
+              for:
+            </p>
+            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
+              <li>Name, address, and general text fields</li>
+              <li>Search boxes with icon indicators</li>
+              <li>Simple form inputs without special formatting</li>
+              <li>Custom input types (number, date, etc.)</li>
+            </ul>
+          </div>
+
+          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
+            <h4 className="font-semibold mb-3 text-aer-foreground">
+              Specialized Inputs
+            </h4>
+            <p className="text-sm text-aer-muted-foreground mb-3">
+              Use{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                PasswordInput
+              </code>
+              ,{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                EmailInput
+              </code>
+              , or{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                PhoneInput
+              </code>{" "}
+              for:
+            </p>
+            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
+              <li>Login and registration forms</li>
+              <li>Password fields with show/hide toggle</li>
+              <li>Email validation with proper formatting</li>
+              <li>Phone numbers with country codes</li>
+            </ul>
+          </div>
+
+          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
+            <h4 className="font-semibold mb-3 text-aer-foreground">
+              Masked Inputs
+            </h4>
+            <p className="text-sm text-aer-muted-foreground mb-3">
+              Use{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                MaskedInput
+              </code>{" "}
+              for:
+            </p>
+            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
+              <li>Credit card numbers (#### #### #### ####)</li>
+              <li>Dates and times (DD/MM/YYYY, HH:MM)</li>
+              <li>Phone numbers with specific formats</li>
+              <li>Custom patterns (SSN, license plates, etc.)</li>
+            </ul>
+          </div>
+
+          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
+            <h4 className="font-semibold mb-3 text-aer-foreground">
+              Floating Labels
+            </h4>
+            <p className="text-sm text-aer-muted-foreground mb-3">
+              Use{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                floatingLabel
+              </code>{" "}
+              when:
+            </p>
+            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
+              <li>You need space-efficient forms</li>
+              <li>Creating modern, Material Design-style UIs</li>
+              <li>Building compact mobile interfaces</li>
+              <li>You want animated label transitions</li>
+            </ul>
+          </div>
+        </div>
+      </DocSection>
+
+      <DocSection
+        title="Basic Usage"
+        id="basic"
+        description="Simple text inputs for common use cases."
+      >
         <div className="max-w-sm space-y-4">
           <Input placeholder="Enter your full name" />
           <Input disabled placeholder="Account restricted" />
@@ -25,7 +160,11 @@ export function InputDoc() {
         />
       </DocSection>
 
-      <DocSection title="Specialized" id="specialized">
+      <DocSection
+        title="Specialized Inputs"
+        id="specialized"
+        description="Pre-configured inputs for email, password, and phone with built-in features."
+      >
         <div className="max-w-sm space-y-4">
           <PasswordInput placeholder="Enter password" />
           <EmailInput placeholder="johndoe@aer-design.com" />
@@ -56,7 +195,11 @@ export function InputDoc() {
         />
       </DocSection>
 
-      <DocSection title="Floating Label" id="floating-label">
+      <DocSection
+        title="Floating Label"
+        id="floating-label"
+        description="Modern animated labels that float above the input on focus."
+      >
         <div className="max-w-sm space-y-6">
           <Input floatingLabel label="Username" placeholder=" " />
           <Input
@@ -79,7 +222,11 @@ export function InputDoc() {
         />
       </DocSection>
 
-      <DocSection title="Variants" id="variants">
+      <DocSection
+        title="Visual Variants"
+        id="variants"
+        description="Three distinct visual styles for different design aesthetics."
+      >
         <div className="max-w-sm space-y-6">
           <div>
             <label className="text-sm font-medium mb-1.5 block">
@@ -104,7 +251,11 @@ export function InputDoc() {
         />
       </DocSection>
 
-      <DocSection title="Sizes" id="sizes">
+      <DocSection
+        title="Size Variants"
+        id="sizes"
+        description="Three size options to fit different layouts and use cases."
+      >
         <div className="max-w-sm space-y-6">
           <div>
             <label className="text-sm font-medium mb-1.5 block">Small</label>
@@ -172,7 +323,11 @@ export function InputDoc() {
         />
       </DocSection>
 
-      <DocSection title="Validation" id="validation">
+      <DocSection
+        title="Validation States"
+        id="validation"
+        description="Error states and validation feedback for form inputs."
+      >
         <div className="max-w-sm space-y-4">
           <Input placeholder="Error toggle" error />
           <Input placeholder="With valid state" />
@@ -183,7 +338,11 @@ export function InputDoc() {
         />
       </DocSection>
 
-      <DocSection title="Real World" id="real-world-validation">
+      <DocSection
+        title="Real World Example"
+        id="real-world-validation"
+        description="Complete validation pattern with state management and error handling."
+      >
         <RealWorldExample />
         <div className="mt-4">
           <p className="text-sm text-aer-muted-foreground mb-4">
@@ -249,109 +408,213 @@ export function InputDoc() {
         <h3 id="input-props" className="text-lg font-bold mb-4">
           InputProps
         </h3>
+        <p className="text-sm text-aer-muted-foreground mb-4">
+          The Input component extends native HTML input attributes and adds
+          additional props for enhanced functionality and styling.
+        </p>
         <ApiTable
           data={[
             {
-              prop: "startIcon",
-              type: "ReactNode",
-              default: "-",
-              description: "Icon displayed at the start of input",
-            },
-            {
-              prop: "endIcon",
-              type: "ReactNode",
-              default: "-",
-              description: "Icon displayed at the end of input",
-            },
-            {
-              prop: "prefix",
-              type: "ReactNode",
-              default: "-",
-              description: "Text or element before the input value",
-            },
-            {
-              prop: "suffix",
-              type: "ReactNode",
-              default: "-",
-              description: "Text or element after the input value",
-            },
-            {
-              prop: "addonBefore",
-              type: "ReactNode",
-              default: "-",
-              description: "Fixed element attached to the left",
-            },
-            {
-              prop: "addonAfter",
-              type: "ReactNode",
-              default: "-",
-              description: "Fixed element attached to the right",
-            },
-            {
-              prop: "error",
-              type: "boolean | string",
-              default: "-",
-              description: "Triggers error styling",
+              prop: "variant",
+              type: '"outline" | "filled" | "underlined"',
+              default: '"outline"',
+              description:
+                "Visual style variant. 'outline' has border, 'filled' has background, 'underlined' has bottom border only.",
             },
             {
               prop: "size",
               type: '"sm" | "default" | "lg"',
               default: '"default" (or global config)',
-              description: "Input size",
+              description:
+                "Input size affecting height and padding. Can be overridden globally via AerConfigProvider.",
             },
             {
-              prop: "variant",
-              type: '"outline" | "filled" | "underlined"',
-              default: '"outline"',
-              description: "Visual style variant",
+              prop: "startIcon",
+              type: "ReactNode",
+              default: "-",
+              description:
+                "Icon displayed at the start of input. Typically used for search, user, or contextual icons.",
+            },
+            {
+              prop: "endIcon",
+              type: "ReactNode",
+              default: "-",
+              description:
+                "Icon displayed at the end of input. Useful for clear buttons or status indicators.",
+            },
+            {
+              prop: "prefix",
+              type: "ReactNode",
+              default: "-",
+              description:
+                "Text or element before the input value (inside input). Common for URLs (https://) or currency symbols.",
+            },
+            {
+              prop: "suffix",
+              type: "ReactNode",
+              default: "-",
+              description:
+                "Text or element after the input value (inside input). Useful for units (kg, %, etc.).",
+            },
+            {
+              prop: "addonBefore",
+              type: "ReactNode",
+              default: "-",
+              description:
+                "Fixed element attached to the left (outside input). Can contain buttons or labels.",
+            },
+            {
+              prop: "addonAfter",
+              type: "ReactNode",
+              default: "-",
+              description:
+                "Fixed element attached to the right (outside input). Often used for action buttons.",
             },
             {
               prop: "floatingLabel",
               type: "boolean",
               default: "false",
-              description: "Enables floating label animation",
+              description:
+                "Enables floating label animation. Label moves up when input is focused or has value.",
             },
             {
               prop: "label",
               type: "string",
               default: "-",
-              description: "Label text for floating label",
+              description:
+                "Label text for floating label. Required when floatingLabel is true.",
+            },
+            {
+              prop: "error",
+              type: "boolean | string",
+              default: "-",
+              description:
+                "Triggers error styling with red border. If string provided, can be used for error message.",
+            },
+            {
+              prop: "disabled",
+              type: "boolean",
+              default: "false",
+              description: "Disables the input and applies disabled styling.",
             },
             {
               prop: "containerClassName",
               type: "string",
               default: "-",
-              description: "ClassName for the outer container",
+              description:
+                "Additional CSS classes for the outer container wrapper.",
+            },
+            {
+              prop: "className",
+              type: "string",
+              default: "-",
+              description:
+                "Additional CSS classes for the input element itself.",
             },
           ]}
         />
       </div>
+
+      <div>
+        <h3 id="specialized-inputs" className="text-lg font-bold mb-4">
+          Specialized Input Components
+        </h3>
+        <div className="space-y-4">
+          <div className="p-4 border border-aer-border rounded-lg">
+            <h4 className="font-semibold mb-2">PasswordInput</h4>
+            <p className="text-sm text-aer-muted-foreground">
+              Pre-configured password input with show/hide toggle button.
+              Automatically sets type="password" and includes an eye icon for
+              visibility control.
+            </p>
+          </div>
+          <div className="p-4 border border-aer-border rounded-lg">
+            <h4 className="font-semibold mb-2">EmailInput</h4>
+            <p className="text-sm text-aer-muted-foreground">
+              Email input with @ icon and type="email" for built-in browser
+              validation. Includes proper autocomplete attributes.
+            </p>
+          </div>
+          <div className="p-4 border border-aer-border rounded-lg">
+            <h4 className="font-semibold mb-2">PhoneInput</h4>
+            <p className="text-sm text-aer-muted-foreground">
+              Phone number input with phone icon and type="tel". Optimized for
+              mobile keyboards.
+            </p>
+          </div>
+        </div>
+      </div>
+
       <div>
         <h3 id="masked-input-props" className="text-lg font-bold mb-4">
           MaskedInputProps
         </h3>
+        <p className="text-sm text-aer-muted-foreground mb-4">
+          MaskedInput applies pattern-based formatting as the user types. Use
+          '#' for any digit in the mask pattern.
+        </p>
         <ApiTable
           data={[
             {
               prop: "mask",
               type: "string",
               default: "-",
-              description: "Pattern format (e.g. '#### ####')",
+              description:
+                "Pattern format using '#' for digits. Example: '#### #### #### ####' for credit cards, '##/##/####' for dates.",
             },
             {
               prop: "value",
               type: "string",
               default: "-",
-              description: "Controlled input value",
+              description:
+                "Controlled input value (unmasked). Store only the digits, not the formatted string.",
             },
             {
               prop: "onChange",
               type: "(val: string) => void",
               default: "-",
-              description: "Change callback",
+              description:
+                "Change callback receiving the unmasked value (digits only).",
             },
           ]}
         />
+        <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+          <p className="text-sm text-blue-700 dark:text-blue-400">
+            <strong>Pro tip:</strong> MaskedInput automatically formats as you
+            type and returns only the digits in onChange, making it easy to
+            store clean data.
+          </p>
+        </div>
+      </div>
+
+      <div>
+        <h3 id="variant-guide" className="text-lg font-bold mb-4">
+          Variant Usage Guide
+        </h3>
+        <div className="space-y-4">
+          <div className="p-4 border border-aer-border rounded-lg">
+            <h4 className="font-semibold mb-2">outline (default)</h4>
+            <p className="text-sm text-aer-muted-foreground">
+              Traditional bordered input. Best for forms with clear field
+              separation. Works well on any background.
+            </p>
+          </div>
+          <div className="p-4 border border-aer-border rounded-lg">
+            <h4 className="font-semibold mb-2">filled</h4>
+            <p className="text-sm text-aer-muted-foreground">
+              Material Design style with background fill. Creates visual
+              hierarchy and works great with floating labels. Ideal for modern,
+              clean interfaces.
+            </p>
+          </div>
+          <div className="p-4 border border-aer-border rounded-lg">
+            <h4 className="font-semibold mb-2">underlined</h4>
+            <p className="text-sm text-aer-muted-foreground">
+              Minimalist style with only bottom border. Perfect for compact
+              forms and inline editing. Pairs excellently with floating labels.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -362,10 +625,86 @@ export function InputDoc() {
       id="css-variables"
       description="Customize input appearance using CSS variables."
     >
-      <CodeBlock
-        ts={`:root {\n  --aer-input: 240 5.9% 90%;\n  --aer-ring: 240 5.9% 10%;\n  --aer-background: 0 0% 100%;\n}`}
-        fullCode={`/* app.css */\n:root {\n  --aer-input: 240 5.9% 90%;\n  --aer-ring: 240 5.9% 10%;\n  --aer-background: 0 0% 100%;\n}`}
-      />
+      <div className="space-y-4">
+        <p className="text-sm text-aer-muted-foreground">
+          Input components use the following CSS variables from your theme:
+        </p>
+        <CodeBlock
+          ts={`:root {
+  --aer-input: 240 5.9% 90%;
+  --aer-ring: 221.2 83.2% 53.3%;
+  --aer-border: 214.3 31.8% 91.4%;
+  --aer-background: 0 0% 100%;
+  --aer-foreground: 222.2 47.4% 11.2%;
+}`}
+          fullCode={`/* styles/globals.css or your theme file */
+:root {
+  /* Input background and border colors */
+  --aer-input: 240 5.9% 90%;
+  --aer-border: 214.3 31.8% 91.4%;
+  
+  /* Focus ring color (outline variant) */
+  --aer-ring: 221.2 83.2% 53.3%;
+  
+  /* Text colors */
+  --aer-foreground: 222.2 47.4% 11.2%;
+  --aer-muted-foreground: 215.4 16.3% 46.9%;
+  
+  /* Background colors */
+  --aer-background: 0 0% 100%;
+  --aer-muted: 210 40% 96.1%;
+  
+  /* Error state */
+  --aer-destructive: 0 84.2% 60.2%;
+}
+
+/* Dark mode */
+.dark {
+  --aer-input: 240 3.7% 15.9%;
+  --aer-border: 240 3.7% 15.9%;
+  --aer-ring: 217.2 91.2% 59.8%;
+  --aer-foreground: 210 40% 98%;
+  --aer-muted-foreground: 215 20.2% 65.1%;
+  --aer-background: 222.2 84% 4.9%;
+  --aer-muted: 217.2 32.6% 17.5%;
+  --aer-destructive: 0 62.8% 30.6%;
+}
+
+/* Variant-specific variables */
+.input-filled {
+  background-color: hsl(var(--aer-muted));
+}
+
+.input-underlined {
+  border-bottom-color: hsl(var(--aer-border));
+}
+
+.input-error {
+  border-color: hsl(var(--aer-destructive));
+  --aer-ring: var(--aer-destructive);
+}`}
+        />
+        <div className="mt-4 space-y-4">
+          <div className="p-4 bg-purple-500/10 border border-purple-500/20 rounded-lg">
+            <p className="text-sm text-purple-700 dark:text-purple-400">
+              <strong>Tip:</strong> Use the ThemeProvider to switch between 8
+              built-in themes (Sapphire, Carbon, Ruby, Amber, Emerald, Amethyst,
+              Sunset, Ocean), or customize these variables to match your brand
+              colors.
+            </p>
+          </div>
+          <div className="p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+            <p className="text-sm text-blue-700 dark:text-blue-400">
+              <strong>Pro tip:</strong> The{" "}
+              <code className="text-xs bg-blue-500/20 px-1.5 py-0.5 rounded">
+                --aer-ring
+              </code>{" "}
+              variable controls the focus ring color. Set it to your primary
+              brand color for consistent focus states across all inputs.
+            </p>
+          </div>
+        </div>
+      </div>
     </DocSection>
   );
 
@@ -387,16 +726,18 @@ export function InputDoc() {
             label: "Overview",
             content: overview,
             toc: [
-              { id: "basic", title: "Basic" },
-              { id: "specialized", title: "Specialized" },
+              { id: "introduction", title: "Introduction" },
+              { id: "when-to-use", title: "When to Use" },
+              { id: "basic", title: "Basic Usage" },
+              { id: "specialized", title: "Specialized Inputs" },
               { id: "masking", title: "Masking" },
               { id: "floating-label", title: "Floating Label" },
-              { id: "variants", title: "Variants" },
-              { id: "sizes", title: "Sizes" },
+              { id: "variants", title: "Visual Variants" },
+              { id: "sizes", title: "Size Variants" },
               { id: "icons", title: "Icons & Prefixes" },
               { id: "addons", title: "Addons" },
-              { id: "validation", title: "Validation" },
-              { id: "real-world-validation", title: "Real World" },
+              { id: "validation", title: "Validation States" },
+              { id: "real-world-validation", title: "Real World Example" },
             ],
           },
           {
@@ -405,7 +746,9 @@ export function InputDoc() {
             content: api,
             toc: [
               { id: "input-props", title: "InputProps" },
+              { id: "specialized-inputs", title: "Specialized Inputs" },
               { id: "masked-input-props", title: "MaskedInputProps" },
+              { id: "variant-guide", title: "Variant Usage Guide" },
             ],
           },
           {
