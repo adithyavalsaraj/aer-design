@@ -96,6 +96,127 @@ export function DropdownDoc() {
         />
       </DocSection>
 
+      <DocSection
+        title="Grouped Dropdown"
+        id="grouped"
+        description="Organize options into logical groups with labels and separators for better UX."
+      >
+        <div className="max-w-sm space-y-4">
+          <Dropdown
+            label="Select Category"
+            options={[
+              {
+                type: "group",
+                label: "Fruits",
+                items: [
+                  { label: "Apple", value: "apple" },
+                  { label: "Banana", value: "banana" },
+                  { label: "Orange", value: "orange" },
+                ],
+              },
+              { type: "separator" },
+              {
+                type: "group",
+                label: "Vegetables",
+                items: [
+                  { label: "Carrot", value: "carrot" },
+                  { label: "Lettuce", value: "lettuce" },
+                  { label: "Tomato", value: "tomato" },
+                ],
+              },
+            ]}
+            placeholder="Choose a category..."
+          />
+
+          <Dropdown
+            label="Select Framework"
+            searchable
+            options={[
+              {
+                type: "group",
+                label: "Frontend",
+                items: [
+                  { label: "React", value: "react" },
+                  { label: "Vue", value: "vue" },
+                  { label: "Angular", value: "angular" },
+                  { label: "Svelte", value: "svelte" },
+                ],
+              },
+              { type: "separator" },
+              {
+                type: "group",
+                label: "Backend",
+                items: [
+                  { label: "Node.js", value: "node" },
+                  { label: "Django", value: "django" },
+                  { label: "Laravel", value: "laravel" },
+                ],
+              },
+              { type: "separator" },
+              { label: "Other", value: "other" },
+            ]}
+            placeholder="Search frameworks..."
+          />
+        </div>
+        <CodeBlock
+          ts={`const options = [
+  { 
+    type: "group", 
+    label: "Fruits", 
+    items: [
+      { label: "Apple", value: "apple" },
+      { label: "Banana", value: "banana" },
+    ]
+  },
+  { type: "separator" },
+  { 
+    type: "group", 
+    label: "Vegetables", 
+    items: [
+      { label: "Carrot", value: "carrot" },
+      { label: "Lettuce", value: "lettuce" },
+    ]
+  },
+];
+
+<Dropdown options={options} placeholder="Choose..." />`}
+          fullCode={`import { Dropdown } from "aer-design";
+
+const groupedOptions = [
+  { 
+    type: "group", 
+    label: "Fruits", 
+    items: [
+      { label: "Apple", value: "apple" },
+      { label: "Banana", value: "banana" },
+      { label: "Orange", value: "orange" },
+    ]
+  },
+  { type: "separator" },
+  { 
+    type: "group", 
+    label: "Vegetables", 
+    items: [
+      { label: "Carrot", value: "carrot" },
+      { label: "Lettuce", value: "lettuce" },
+      { label: "Tomato", value: "tomato" },
+    ]
+  },
+];
+
+export default function GroupedDropdown() {
+  return (
+    <div className="max-w-xs p-8 bg-zinc-900 rounded-xl">
+      <Dropdown 
+        options={groupedOptions} 
+        placeholder="Choose a category..." 
+      />
+    </div>
+  );
+}`}
+        />
+      </DocSection>
+
       <DocSection title="Search & Filter" id="search">
         <div className="max-w-sm space-y-4">
           <Dropdown
@@ -576,6 +697,12 @@ export default function UserSettings() {
         <h3 id="dropdown-option-type" className="text-lg font-bold mb-4">
           DropdownOption Type
         </h3>
+        <p className="text-sm text-aer-muted-foreground mb-4">
+          The <code>DropdownOption</code> type is a discriminated union that
+          supports regular options, grouped options, and separators.
+        </p>
+
+        <h4 className="text-md font-semibold mb-2 mt-6">Regular Option</h4>
         <ApiTable
           data={[
             {
@@ -595,6 +722,42 @@ export default function UserSettings() {
               type: "boolean",
               default: "false",
               description: "Disable selection of this option",
+            },
+          ]}
+        />
+
+        <h4 className="text-md font-semibold mb-2 mt-6">Group Option</h4>
+        <ApiTable
+          data={[
+            {
+              prop: "type",
+              type: '"group"',
+              default: "-",
+              description: "Identifies this as a group",
+            },
+            {
+              prop: "label",
+              type: "string",
+              default: "-",
+              description: "Group label displayed above items",
+            },
+            {
+              prop: "items",
+              type: "DropdownOptionItem[]",
+              default: "-",
+              description: "Array of options within this group",
+            },
+          ]}
+        />
+
+        <h4 className="text-md font-semibold mb-2 mt-6">Separator</h4>
+        <ApiTable
+          data={[
+            {
+              prop: "type",
+              type: '"separator"',
+              default: "-",
+              description: "Renders a horizontal divider line",
             },
           ]}
         />
@@ -653,6 +816,7 @@ export default function UserSettings() {
               { id: "multi-select", title: "Multi-select" },
               { id: "specialized", title: "Specialized" },
               { id: "clearable", title: "Clearable" },
+              { id: "grouped", title: "Grouped Dropdown" },
               { id: "search", title: "Search & Filter" },
               { id: "virtualization", title: "Virtualization" },
               { id: "lazy-loading", title: "Lazy Loading" },

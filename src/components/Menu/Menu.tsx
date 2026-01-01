@@ -1,3 +1,4 @@
+import { calculateOptimalPosition } from "@/hooks";
 import { cn } from "@/lib/utils";
 import { Slot } from "@radix-ui/react-slot";
 import { ChevronRight } from "lucide-react";
@@ -186,124 +187,24 @@ export const MenuContent = React.forwardRef<HTMLDivElement, MenuContentProps>(
         const menuRect = contentRef.current.getBoundingClientRect();
         const triggerRect =
           contentRef.current.parentElement?.getBoundingClientRect();
-        const { innerWidth, innerHeight } = window;
 
         if (!triggerRect) return;
 
-        if (!triggerRect) return;
+        // Use shared positioning utility
+        const result = calculateOptimalPosition({
+          referenceRect: triggerRect,
+          floatingRect: menuRect,
+          side,
+          align,
+          sideOffset,
+        });
 
-        const sides: Array<NonNullable<MenuContentProps["side"]>> = [
-          "top",
-          "bottom",
-          "left",
-          "right",
-        ];
-
-        // Unified Best Fit Search: Side + Alignment
-        // We search for a Side that fits on the main axis AND has at least one Alignment that fits on the cross axis.
-
-        // Priority list for sides
-        const getSidePriority = (preferred: string) => {
-          if (preferred === "top")
-            return ["top", "bottom", "right", "left"] as const;
-          if (preferred === "bottom")
-            return ["bottom", "top", "right", "left"] as const;
-          if (preferred === "left")
-            return ["left", "right", "bottom", "top"] as const;
-          if (preferred === "right")
-            return ["right", "left", "bottom", "top"] as const;
-          return sides; // fallback
-        };
-
-        const checkSideMainAxisFit = (s: string) => {
-          if (s === "top")
-            return triggerRect.top - menuRect.height - sideOffset >= 0;
-          if (s === "bottom")
-            return (
-              triggerRect.bottom + menuRect.height + sideOffset <= innerHeight
-            );
-          if (s === "left")
-            return triggerRect.left - menuRect.width - sideOffset >= 0;
-          if (s === "right")
-            return (
-              triggerRect.right + menuRect.width + sideOffset <= innerWidth
-            );
-          return false;
-        };
-
-        const checkAlignCrossAxisFit = (a: string, s: string) => {
-          // 1px tolerance
-          if (s === "left" || s === "right") {
-            let top = 0;
-            if (a === "start") top = triggerRect.top;
-            else if (a === "center")
-              top =
-                triggerRect.top + triggerRect.height / 2 - menuRect.height / 2;
-            else if (a === "end") top = triggerRect.bottom - menuRect.height;
-            return top >= -1 && top + menuRect.height <= innerHeight + 1;
-          } else {
-            let left = 0;
-            if (a === "start") left = triggerRect.left;
-            else if (a === "center")
-              left =
-                triggerRect.left + triggerRect.width / 2 - menuRect.width / 2;
-            else if (a === "end") left = triggerRect.right - menuRect.width;
-            return left >= -1 && left + menuRect.width <= innerWidth + 1;
-          }
-        };
-
-        const getAlignPriority = (preferred: string) => {
-          if (preferred === "start") return ["start", "end", "center"] as const;
-          if (preferred === "end") return ["end", "start", "center"] as const;
-          return ["center", "start", "end"] as const;
-        };
-
-        let bestSide = effectiveSide; // Stick to current if possible for stability?
-        let bestAlign = effectiveAlign;
-        // Actually, for responsiveness, we should re-evaluate from PREFERENCE base if current is bad.
-        // But if current is GOOD, stick to it.
-
-        // Check if effective config is still valid (Stability Check)
-        const isStable =
-          checkSideMainAxisFit(effectiveSide) &&
-          checkAlignCrossAxisFit(effectiveAlign, effectiveSide);
-
-        if (!isStable) {
-          // Need to find new position. Start from User Preference.
-          const sidePriority = getSidePriority(side);
-          let matchFound = false;
-
-          for (const s of sidePriority) {
-            if (!checkSideMainAxisFit(s)) continue;
-
-            const alignPriority = getAlignPriority(align);
-            for (const a of alignPriority) {
-              if (checkAlignCrossAxisFit(a, s)) {
-                bestSide = s as NonNullable<MenuContentProps["side"]>;
-                bestAlign = a as NonNullable<MenuContentProps["align"]>;
-                matchFound = true;
-                break;
-              }
-            }
-            if (matchFound) break;
-          }
-          // If no matchFound, bestSide/bestAlign remain as effectiveSide/Align (or we could revert into preferred defaults)
-          // But existing behavior usually leaves it as last known or preference.
-          // Ideally if nothing fits, revert to Preference to behave predictably in chaos.
-          if (!matchFound) {
-            // Fallback: If absolutely nothing fits, go back to requested Props.
-            // This ensures we don't get stuck in a weird derived state.
-            bestSide = side;
-            bestAlign = align;
-          }
-        }
-
-        if (bestSide !== effectiveSide || bestAlign !== effectiveAlign) {
-          setEffectiveSide(bestSide);
-          setEffectiveAlign(bestAlign);
+        if (result.side !== effectiveSide || result.align !== effectiveAlign) {
+          setEffectiveSide(result.side);
+          setEffectiveAlign(result.align);
         }
       }
-    }, [isOpen, side, align, effectiveSide, effectiveAlign]);
+    }, [isOpen, side, align, sideOffset, effectiveSide, effectiveAlign]);
 
     // Focus Management
     const handleContentKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -334,6 +235,43 @@ export const MenuContent = React.forwardRef<HTMLDivElement, MenuContentProps>(
       } else if (e.key === "End") {
         e.preventDefault();
         items[items.length - 1]?.focus();
+      } else if (e.key === "ArrowRight") {
+        // Open submenu if current item has one, or focus into it if already open
+        e.preventDefault();
+        // Check if the focused element itself is a submenu trigger
+        if (activeElement.hasAttribute("data-submenu-trigger")) {
+          // Check if submenu is already open
+          const submenu = activeElement.querySelector('[role="menu"]');
+          if (submenu) {
+            // Submenu is already open, just focus first item
+            const firstSubmenuItem = submenu.querySelector(
+              '[role="menuitem"]:not([data-disabled])'
+            ) as HTMLElement;
+            firstSubmenuItem?.focus();
+          } else {
+            // Submenu is closed, open it
+            activeElement.click();
+            // Focus first item in submenu after a brief delay
+            setTimeout(() => {
+              const submenu = activeElement.querySelector('[role="menu"]');
+              const firstSubmenuItem = submenu?.querySelector(
+                '[role="menuitem"]:not([data-disabled])'
+              ) as HTMLElement;
+              firstSubmenuItem?.focus();
+            }, 50);
+          }
+        }
+      } else if (e.key === "ArrowLeft") {
+        // Close submenu if we're in one
+        e.preventDefault();
+        const parentMenu = activeElement.closest("[data-submenu-content]");
+        if (parentMenu) {
+          const trigger = parentMenu.parentElement?.querySelector(
+            "[data-submenu-trigger]"
+          ) as HTMLElement;
+          trigger?.focus();
+          trigger?.click(); // Close submenu
+        }
       }
 
       props.onKeyDown?.(e);
@@ -431,7 +369,11 @@ export const MenuItem = React.forwardRef<HTMLDivElement, MenuItemProps>(
     { className, inset, variant, disabled, onClick, asChild = false, ...props },
     ref
   ) => {
+    const { closeMenu } = useMenu();
     const Comp = asChild ? Slot : "div";
+    const innerRef = React.useRef<HTMLDivElement>(null);
+
+    React.useImperativeHandle(ref, () => innerRef.current as HTMLDivElement);
 
     // Accessibility: Enter/Space to click
     const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -445,12 +387,19 @@ export const MenuItem = React.forwardRef<HTMLDivElement, MenuItemProps>(
 
     return (
       <Comp
-        ref={ref}
+        ref={innerRef}
         role="menuitem"
         className={cn(menuItemVariants({ inset, variant, className }))}
         onClick={(e) => {
           if (disabled) return;
           onClick?.(e);
+          // Don't close menu if this is a submenu trigger
+          const isSubmenuTrigger = innerRef.current?.hasAttribute(
+            "data-submenu-trigger"
+          );
+          if (!isSubmenuTrigger) {
+            closeMenu();
+          }
         }}
         onKeyDown={handleKeyDown}
         data-disabled={disabled ? "" : undefined}
@@ -560,6 +509,11 @@ export const SubMenu = React.forwardRef<HTMLDivElement, SubMenuProps>(
           aria-haspopup="true"
           aria-expanded={isOpen}
           disabled={disabled}
+          data-submenu-trigger=""
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsOpen(!isOpen);
+          }}
         >
           {trigger}
           <ChevronRight className="ml-auto h-4 w-4" />
@@ -579,6 +533,7 @@ export const SubMenu = React.forwardRef<HTMLDivElement, SubMenuProps>(
             )}
             style={positionStyle}
             role="menu"
+            data-submenu-content=""
           >
             {children}
           </div>

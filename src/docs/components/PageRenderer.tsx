@@ -6,6 +6,7 @@ import { InputDoc } from "../pages/InputDoc";
 import { MenuDoc } from "../pages/MenuDoc";
 import { NavbarDoc } from "../pages/NavbarDoc";
 import { OtpDoc } from "../pages/OtpDoc";
+import { PositioningDoc } from "../pages/PositioningDoc";
 import { RadioDoc } from "../pages/RadioDoc";
 import { SidebarDoc } from "../pages/SidebarDoc";
 import { TextareaDoc } from "../pages/TextareaDoc";
@@ -42,6 +43,8 @@ export function PageRenderer({ activePage }: PageRendererProps) {
       return <MenuDoc />;
     case "utilities":
       return <UtilitiesDoc />;
+    case "positioning":
+      return <PositioningDoc />;
     default:
       return <GetStartedDoc />;
   }

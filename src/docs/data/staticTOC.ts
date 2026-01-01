@@ -87,4 +87,13 @@ export const staticTOC: Record<string, { id: string; title: string }[]> = {
     { id: "sizing", title: "Global Sizing" },
     { id: "use-aer-config", title: "useAerConfig" },
   ],
+  positioning: [
+    { id: "introduction", title: "Introduction" },
+    { id: "when-to-use", title: "When to Use" },
+    { id: "calculate-position", title: "calculateOptimalPosition" },
+    { id: "use-auto-position", title: "useAutoPosition Hook" },
+    { id: "custom-tooltip", title: "Custom Tooltip" },
+    { id: "custom-popover", title: "Custom Popover" },
+    { id: "real-world", title: "Real World Example" },
+  ],
 };

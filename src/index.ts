@@ -10,5 +10,6 @@ export * from "./components/Radio";
 export * from "./components/Sidebar";
 export * from "./components/Textarea";
 export * from "./components/ThemeProvider";
+export * from "./hooks";
 export * from "./lib/utils";
 export * from "./theme/plugin";

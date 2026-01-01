@@ -1,4 +1,5 @@
 import { useAerConfig } from "@/components/AerConfigProvider";
+import { calculateOptimalPosition } from "@/hooks";
 import { cn } from "@/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Check, ChevronDown, Loader2, Search, X } from "lucide-react";
@@ -44,12 +45,17 @@ const dropdownTriggerVariants = cva(
 
 // --- Types ---
 
-export type DropdownOption = {
+export type DropdownOptionItem = {
   label: React.ReactNode;
   value: string | number;
   disabled?: boolean;
   [key: string]: any;
 };
+
+export type DropdownOption =
+  | DropdownOptionItem
+  | { type: "group"; label: string; items: DropdownOptionItem[] }
+  | { type: "separator" };
 
 export interface DropdownProps
   extends Omit<
@@ -83,6 +89,32 @@ export interface DropdownProps
   size?: "sm" | "default" | "lg";
   menuClassName?: string;
 }
+
+// --- Helper Functions ---
+
+// Flatten groups into a list of all selectable items
+const flattenOptions = (options: DropdownOption[]): DropdownOptionItem[] => {
+  const flattened: DropdownOptionItem[] = [];
+  options.forEach((opt) => {
+    if (isGroup(opt)) {
+      flattened.push(...opt.items);
+    } else if (isOptionItem(opt)) {
+      flattened.push(opt);
+    }
+    // Separators are skipped
+  });
+  return flattened;
+};
+
+// Type guards
+const isOptionItem = (opt: DropdownOption): opt is DropdownOptionItem =>
+  !("type" in opt);
+const isGroup = (
+  opt: DropdownOption
+): opt is { type: "group"; label: string; items: DropdownOptionItem[] } =>
+  "type" in opt && opt.type === "group";
+const isSeparator = (opt: DropdownOption): opt is { type: "separator" } =>
+  "type" in opt && opt.type === "separator";
 
 // --- Components ---
 
@@ -133,18 +165,67 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
 
     const [isOpen, setIsOpen] = React.useState(false);
     const [searchQuery, setSearchQuery] = React.useState("");
+    const [focusedIndex, setFocusedIndex] = React.useState<number>(-1);
     const containerRef = React.useRef<HTMLDivElement>(null);
     const listRef = React.useRef<HTMLDivElement>(null);
+    const menuRef = React.useRef<HTMLDivElement>(null);
 
-    // Filter options locally if not using external search
-    const displayedOptions = React.useMemo(() => {
-      if (!searchable || onSearch) return options;
-      return options.filter((opt) => {
-        const labelText =
-          typeof opt.label === "string" ? opt.label : String(opt.value);
-        return labelText.toLowerCase().includes(searchQuery.toLowerCase());
+    // Auto-positioning state
+    const [menuPosition, setMenuPosition] = React.useState<{
+      side: "top" | "bottom";
+      align: "start" | "center" | "end";
+    }>({ side: "bottom", align: "start" });
+
+    // Flatten all selectable options from groups
+    const allSelectableOptions = React.useMemo(
+      () => flattenOptions(options),
+      [options]
+    );
+
+    // Build renderable list (includes groups, separators, and items)
+    // For search, we filter items but keep group structure
+    const renderableItems = React.useMemo(() => {
+      if (!searchable || !searchQuery) {
+        // No search - return all options as-is
+        return options;
+      }
+
+      // With search - filter items and only show groups that have matching items
+      const filtered: DropdownOption[] = [];
+      options.forEach((opt) => {
+        if (isGroup(opt)) {
+          const matchingItems = opt.items.filter((item) => {
+            const labelText =
+              typeof item.label === "string" ? item.label : String(item.value);
+            return labelText.toLowerCase().includes(searchQuery.toLowerCase());
+          });
+          if (matchingItems.length > 0) {
+            filtered.push({
+              type: "group",
+              label: opt.label,
+              items: matchingItems,
+            });
+          }
+        } else if (isSeparator(opt)) {
+          // Keep separators for now (could be removed if adjacent groups are filtered out)
+          filtered.push(opt);
+        } else {
+          // Regular item
+          const labelText =
+            typeof opt.label === "string" ? opt.label : String(opt.value);
+          if (labelText.toLowerCase().includes(searchQuery.toLowerCase())) {
+            filtered.push(opt);
+          }
+        }
       });
-    }, [options, searchQuery, searchable, onSearch]);
+      return filtered;
+    }, [options, searchQuery, searchable]);
+
+    // Flatten renderable items to get only selectable options for keyboard navigation
+    const selectableItems = React.useMemo(
+      () => flattenOptions(renderableItems),
+      [renderableItems]
+    );
 
     // Check if a value is selected
     const isSelected = (optionValue: string | number) => {
@@ -169,7 +250,7 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
         }
 
         const selectedLabels = currentValue.map((val) => {
-          const opt = options.find((o) => o.value === val);
+          const opt = allSelectableOptions.find((o) => o.value === val);
           return opt?.label || val;
         });
 
@@ -181,7 +262,7 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
           currentValue === ""
         )
           return null;
-        const opt = options.find((o) => o.value === currentValue);
+        const opt = allSelectableOptions.find((o) => o.value === currentValue);
         return opt ? opt.label : currentValue;
       }
     };
@@ -221,6 +302,27 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
       onChange?.(newValue);
     };
 
+    // Auto-positioning logic
+    React.useLayoutEffect(() => {
+      if (isOpen && containerRef.current && menuRef.current) {
+        const triggerRect = containerRef.current.getBoundingClientRect();
+        const menuRect = menuRef.current.getBoundingClientRect();
+
+        const result = calculateOptimalPosition({
+          referenceRect: triggerRect,
+          floatingRect: menuRect,
+          side: "bottom",
+          align: "start",
+          sideOffset: 4,
+        });
+
+        setMenuPosition({
+          side: result.side as "top" | "bottom",
+          align: result.align,
+        });
+      }
+    }, [isOpen]);
+
     // Close on outside click
     React.useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
@@ -236,14 +338,14 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
         document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
-    // Virtualization Logic
+    // Virtualization Logic (disabled for now with groups - will implement later)
     const [scrollTop, setScrollTop] = React.useState(0);
-    const listHeight = Math.min(displayedOptions.length * itemHeight, 250);
+    const listHeight = Math.min(selectableItems.length * itemHeight, 250);
     const visibleCount = Math.ceil(listHeight / itemHeight) + 2;
     const startIndex = Math.floor(scrollTop / itemHeight);
     const endIndex = Math.min(
       startIndex + visibleCount,
-      displayedOptions.length
+      selectableItems.length
     );
 
     const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
@@ -260,13 +362,6 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
         }
       }
     };
-
-    const renderedOptions = virtualized
-      ? displayedOptions.slice(startIndex, endIndex).map((opt, index) => ({
-          ...opt,
-          virtualIndex: startIndex + index,
-        }))
-      : displayedOptions;
 
     const iconSizes = {
       sm: "w-3.5 h-3.5",
@@ -301,11 +396,59 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
           tabIndex={disabled ? -1 : 0}
           onKeyDown={(e) => {
             if (disabled) return;
-            if (e.key === "Enter" || e.key === " ") {
+
+            // Handle Space key
+            if (e.key === " ") {
               e.preventDefault();
-              setIsOpen(!isOpen);
+              if (isOpen && focusedIndex >= 0) {
+                // Select focused option
+                const option = selectableItems[focusedIndex];
+                if (option && !option.disabled) {
+                  handleSelect(option.value);
+                }
+              } else {
+                // Toggle dropdown
+                setIsOpen(!isOpen);
+              }
+              return;
             }
+
+            // Handle Enter key
+            if (e.key === "Enter") {
+              e.preventDefault();
+              if (isOpen && focusedIndex >= 0) {
+                const option = selectableItems[focusedIndex];
+                if (option && !option.disabled) {
+                  handleSelect(option.value);
+                }
+              } else {
+                setIsOpen(!isOpen);
+              }
+              return;
+            }
+
             if (e.key === "Escape") setIsOpen(false);
+
+            // Arrow key navigation when open
+            if (isOpen && selectableItems.length > 0) {
+              if (e.key === "ArrowDown") {
+                e.preventDefault();
+                setFocusedIndex((prev) =>
+                  prev < selectableItems.length - 1 ? prev + 1 : 0
+                );
+              } else if (e.key === "ArrowUp") {
+                e.preventDefault();
+                setFocusedIndex((prev) =>
+                  prev > 0 ? prev - 1 : selectableItems.length - 1
+                );
+              } else if (e.key === "Home") {
+                e.preventDefault();
+                setFocusedIndex(0);
+              } else if (e.key === "End") {
+                e.preventDefault();
+                setFocusedIndex(selectableItems.length - 1);
+              }
+            }
           }}
           {...(props as any)}
         >
@@ -393,8 +536,12 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
         {/* Dropdown Menu */}
         {isOpen && (
           <div
+            ref={menuRef}
             className={cn(
-              "absolute z-50 w-full mt-1 bg-aer-background border border-aer-border rounded-aer-md shadow-lg overflow-hidden animate-in fade-in-0 zoom-in-95",
+              "absolute z-50 w-full bg-aer-background border border-aer-border rounded-aer-md shadow-lg overflow-hidden animate-in fade-in-0 zoom-in-95",
+              menuPosition.side === "top"
+                ? "bottom-full mb-1"
+                : "top-full mt-1",
               menuClassName
             )}
           >
@@ -433,73 +580,120 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
                   <Loader2 className="w-4 h-4 animate-spin mr-2" />
                   Loading...
                 </div>
-              ) : displayedOptions.length === 0 ? (
+              ) : selectableItems.length === 0 ? (
                 <div className="py-6 text-center text-sm text-aer-muted-foreground">
                   No options found.
                 </div>
               ) : (
-                <div
-                  style={
-                    virtualized
-                      ? {
-                          height: `${displayedOptions.length * itemHeight}px`,
-                          position: "relative",
-                        }
-                      : undefined
-                  }
-                >
-                  {renderedOptions.map((option, index) => {
-                    const realIndex = virtualized
-                      ? (option as any).virtualIndex
-                      : index;
-                    const isOptSelected = isSelected(option.value);
+                <div className="p-1">
+                  {renderableItems.map((item, itemIndex) => {
+                    if (isGroup(item)) {
+                      // Render group label + its items
+                      return (
+                        <div key={`group-${itemIndex}`}>
+                          <div className="px-2 py-1.5 text-xs font-semibold text-aer-muted-foreground uppercase tracking-wide">
+                            {item.label}
+                          </div>
+                          {item.items.map((option) => {
+                            // Find this option's index in selectableItems for keyboard navigation
+                            const selectableIndex = selectableItems.findIndex(
+                              (si) => si.value === option.value
+                            );
+                            const isOptSelected = isSelected(option.value);
 
-                    return (
-                      <div
-                        key={option.value}
-                        onClick={() =>
-                          !option.disabled && handleSelect(option.value)
-                        }
-                        className={cn(
-                          "flex items-center gap-2 px-3 py-2 text-sm cursor-pointer transition-colors select-none",
-                          isOptSelected &&
-                            !multiple &&
-                            "bg-aer-primary/10 text-aer-primary font-medium",
-                          isOptSelected && multiple && "bg-transparent", // Checkbox handles style
-                          !isOptSelected && "hover:bg-aer-muted/50",
-                          option.disabled &&
-                            "opacity-50 cursor-not-allowed pointer-events-none"
-                        )}
-                        style={
-                          virtualized
-                            ? {
-                                position: "absolute",
-                                top: 0,
-                                left: 0,
-                                width: "100%",
-                                height: `${itemHeight}px`,
-                                transform: `translateY(${
-                                  realIndex * itemHeight
-                                }px)`,
-                              }
-                            : undefined
-                        }
-                      >
-                        {multiple && (
-                          <Checkbox
-                            checked={isOptSelected}
-                            className="pointer-events-none w-auto"
-                            readOnly
-                          />
-                        )}
-                        <span className="truncate flex-1 text-aer-foreground">
-                          {option.label}
-                        </span>
-                        {!multiple && isOptSelected && (
-                          <Check className="w-4 h-4 text-aer-primary ml-auto" />
-                        )}
-                      </div>
-                    );
+                            return (
+                              <div
+                                key={option.value}
+                                onClick={() =>
+                                  !option.disabled && handleSelect(option.value)
+                                }
+                                className={cn(
+                                  "flex items-center gap-2 px-3 py-2 text-sm cursor-pointer transition-colors select-none rounded-sm",
+                                  isOptSelected &&
+                                    !multiple &&
+                                    "bg-aer-primary/10 text-aer-primary font-medium",
+                                  isOptSelected && multiple && "bg-transparent",
+                                  !isOptSelected &&
+                                    selectableIndex === focusedIndex &&
+                                    "bg-aer-accent",
+                                  !isOptSelected &&
+                                    selectableIndex !== focusedIndex &&
+                                    "hover:bg-aer-muted/50",
+                                  option.disabled &&
+                                    "opacity-50 cursor-not-allowed pointer-events-none"
+                                )}
+                              >
+                                {multiple && (
+                                  <Checkbox
+                                    checked={isOptSelected}
+                                    className="pointer-events-none w-auto"
+                                    readOnly
+                                  />
+                                )}
+                                <span className="truncate flex-1 text-aer-foreground">
+                                  {option.label}
+                                </span>
+                                {!multiple && isOptSelected && (
+                                  <Check className="w-4 h-4 text-aer-primary ml-auto" />
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      );
+                    } else if (isSeparator(item)) {
+                      // Render separator
+                      return (
+                        <div
+                          key={`separator-${itemIndex}`}
+                          className="my-1 h-px bg-aer-border"
+                        />
+                      );
+                    } else {
+                      // Render regular option
+                      const selectableIndex = selectableItems.findIndex(
+                        (si) => si.value === item.value
+                      );
+                      const isOptSelected = isSelected(item.value);
+
+                      return (
+                        <div
+                          key={item.value}
+                          onClick={() =>
+                            !item.disabled && handleSelect(item.value)
+                          }
+                          className={cn(
+                            "flex items-center gap-2 px-3 py-2 text-sm cursor-pointer transition-colors select-none rounded-sm",
+                            isOptSelected &&
+                              !multiple &&
+                              "bg-aer-primary/10 text-aer-primary font-medium",
+                            isOptSelected && multiple && "bg-transparent",
+                            !isOptSelected &&
+                              selectableIndex === focusedIndex &&
+                              "bg-aer-accent",
+                            !isOptSelected &&
+                              selectableIndex !== focusedIndex &&
+                              "hover:bg-aer-muted/50",
+                            item.disabled &&
+                              "opacity-50 cursor-not-allowed pointer-events-none"
+                          )}
+                        >
+                          {multiple && (
+                            <Checkbox
+                              checked={isOptSelected}
+                              className="pointer-events-none w-auto"
+                              readOnly
+                            />
+                          )}
+                          <span className="truncate flex-1 text-aer-foreground">
+                            {item.label}
+                          </span>
+                          {!multiple && isOptSelected && (
+                            <Check className="w-4 h-4 text-aer-primary ml-auto" />
+                          )}
+                        </div>
+                      );
+                    }
                   })}
                 </div>
               )}

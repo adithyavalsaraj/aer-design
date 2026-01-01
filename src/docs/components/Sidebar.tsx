@@ -41,16 +41,22 @@ export const NAV_ITEMS = [
   { id: "sidebar", label: "Sidebar", icon: Layout, category: "Layout" },
   { id: "navbar", label: "Navbar", icon: Layout, category: "Layout" },
   {
+    id: "menu",
+    label: "Menu",
+    icon: Layout,
+    category: "Overlay",
+  },
+  {
     id: "utilities",
     label: "Utilities",
     icon: Boxes,
     category: "Utilities",
   },
   {
-    id: "menu",
-    label: "Menu",
-    icon: Layout,
-    category: "Overlay",
+    id: "positioning",
+    label: "Positioning",
+    icon: MousePointer2,
+    category: "Utilities",
   },
 ];
 
