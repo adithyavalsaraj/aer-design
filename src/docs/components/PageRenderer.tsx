@@ -3,6 +3,7 @@ import { CheckboxDoc } from "../pages/CheckboxDoc";
 import { DropdownDoc } from "../pages/DropdownDoc";
 import { GetStartedDoc } from "../pages/GetStarted";
 import { InputDoc } from "../pages/InputDoc";
+import { MenuDoc } from "../pages/MenuDoc";
 import { NavbarDoc } from "../pages/NavbarDoc";
 import { OtpDoc } from "../pages/OtpDoc";
 import { RadioDoc } from "../pages/RadioDoc";
@@ -37,6 +38,8 @@ export function PageRenderer({ activePage }: PageRendererProps) {
       return <SidebarDoc />;
     case "navbar":
       return <NavbarDoc />;
+    case "menu":
+      return <MenuDoc />;
     case "utilities":
       return <UtilitiesDoc />;
     default:

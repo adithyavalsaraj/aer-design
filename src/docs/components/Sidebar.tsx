@@ -46,6 +46,12 @@ export const NAV_ITEMS = [
     icon: Boxes,
     category: "Utilities",
   },
+  {
+    id: "menu",
+    label: "Menu",
+    icon: Layout,
+    category: "Overlay",
+  },
 ];
 
 interface SidebarProps {

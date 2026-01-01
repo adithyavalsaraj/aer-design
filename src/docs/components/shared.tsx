@@ -109,9 +109,16 @@ interface SectionProps {
   description?: string;
   children: React.ReactNode;
   id?: string;
+  className?: string; // Allow overriding container styles
 }
 
-export function DocSection({ title, description, children, id }: SectionProps) {
+export function DocSection({
+  title,
+  description,
+  children,
+  id,
+  className,
+}: SectionProps) {
   return (
     <div className="space-y-4 pt-10 first:pt-0" id={id}>
       <div className="space-y-1">
@@ -120,7 +127,12 @@ export function DocSection({ title, description, children, id }: SectionProps) {
           <p className="text-aer-muted-foreground text-sm">{description}</p>
         )}
       </div>
-      <div className="p-6 rounded-aer-lg border bg-card/50 backdrop-blur-sm border-aer-border/50">
+      <div
+        className={cn(
+          "p-6 rounded-aer-lg border bg-card/50 border-aer-border/50",
+          className
+        )}
+      >
         {children}
       </div>
     </div>

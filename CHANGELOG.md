@@ -2,6 +2,14 @@
 
 All notable changes to the Aer Design project will be documented in this file.
 
+## [v0.6.0] - 2026-01-01
+
+### Menu Enhancements
+
+- **360-Degree Positioning**: Implemented robust auto-positioning that intelligently flips the menu to any side (Top, Bottom, Left, Right) and adjusts alignments to ensure full visibility within the viewport.
+- **Adaptive SubMenus**: SubMenu widths now match their parent trigger width by default (via CSS variables) while respecting custom width classes.
+- **Documentation**: Comprehensive API reference update for all Menu components.
+
 ## [v0.5.0] - 2025-12-31
 
 ### Documentation System Overhaul
