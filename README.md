@@ -83,6 +83,8 @@ export function LoginForm() {
 | :--------------------------- | :------------------------------------------------------------------------------ |
 | **calculateOptimalPosition** | Function for manual position calculation with 360° collision detection.         |
 | **useAutoPosition**          | React hook for automatic positioning of floating elements (tooltips, popovers). |
+| **useShortcut**              | React hook for scoped, customizable keyboard shortcuts.                         |
+| **ShortcutRecorder**         | UI component for recording and customizing user shortcuts.                      |
 | **AerConfigProvider**        | Global configuration provider for RTL support and component sizing.             |
 
 ## Theming System

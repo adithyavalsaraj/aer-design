@@ -2,6 +2,18 @@
 
 All notable changes to the Aer Design project will be documented in this file.
 
+## [v0.8.0] - 2026-01-02
+
+### Customizable Shortcuts
+
+- **Shortcut System**: Introduced a robust system for handling keyboard shortcuts.
+  - **`ShortcutProvider`**: Centralized manager for all shortcuts and user overrides.
+  - **`useShortcut`**: Hook for developers to easily bind actions to keys with conflict handling.
+  - **`ShortcutRecorder`**: UI component allowing users to customize and record their own keybindings.
+  - **Scoped Shortcuts**: Support for restricting shortcuts to specific containers via `scopeRef`.
+  - **Persistence**: User customizations are automatically saved to `localStorage`.
+  - **Conflict Handling**: Intelligent handling of browser reserved keys and cross-platform modifier normalization (Mac vs Windows).
+
 ## [v0.7.0] - 2026-01-02
 
 ### Architecture

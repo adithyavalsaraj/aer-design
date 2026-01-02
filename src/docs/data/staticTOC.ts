@@ -114,6 +114,16 @@ export const staticTOC: Record<string, { id: string; title: string }[]> = {
     { id: "sizing", title: "Global Sizing" },
     { id: "use-aer-config", title: "useAerConfig" },
   ],
+  shortcuts: [
+    { id: "introduction", title: "Introduction" },
+    { id: "setup", title: "Setup" },
+    { id: "basic-usage", title: "Basic Usage" },
+    { id: "scoped", title: "Scoped Shortcuts" },
+    { id: "customization", title: "User Customization" },
+    { id: "conflicts", title: "System Conflicts" },
+    { id: "use-shortcut", title: "useShortcut Hook" },
+    { id: "shortcut-recorder", title: "ShortcutRecorder" },
+  ],
   positioning: [
     { id: "introduction", title: "Introduction" },
     { id: "when-to-use", title: "When to Use" },

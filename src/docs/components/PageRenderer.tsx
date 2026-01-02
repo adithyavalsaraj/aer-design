@@ -9,6 +9,7 @@ import { OtpDoc } from "../pages/OtpDoc";
 import { OverlayDoc } from "../pages/OverlayDoc";
 import { PositioningDoc } from "../pages/PositioningDoc";
 import { RadioDoc } from "../pages/RadioDoc";
+import { ShortcutDoc } from "../pages/ShortcutDoc";
 import { SidebarDoc } from "../pages/SidebarDoc";
 import { TextareaDoc } from "../pages/TextareaDoc";
 import { TooltipDoc } from "../pages/TooltipDoc";
@@ -50,6 +51,8 @@ export function PageRenderer({ activePage }: PageRendererProps) {
       return <UtilitiesDoc />;
     case "positioning":
       return <PositioningDoc />;
+    case "shortcuts":
+      return <ShortcutDoc />;
     default:
       return <GetStartedDoc />;
   }

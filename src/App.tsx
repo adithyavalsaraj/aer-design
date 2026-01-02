@@ -1,4 +1,5 @@
 import { AerConfigProvider } from "@/components/AerConfigProvider";
+import { ShortcutProvider } from "@/components/Shortcut";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { DocsLayout } from "@/docs/components/DocsLayout";
 import { PageRenderer } from "@/docs/components/PageRenderer";
@@ -14,15 +15,17 @@ function InnerApp() {
   return (
     <AerConfigProvider>
       <ThemeProvider defaultTheme="dark" storageKey="aer-theme">
-        <DocsLayout
-          activePage={activePage}
-          onPageChange={setActivePage}
-          isSidebarOpen={isSidebarOpen}
-          setIsSidebarOpen={setIsSidebarOpen}
-          tocItems={tocItems}
-        >
-          <PageRenderer activePage={activePage} />
-        </DocsLayout>
+        <ShortcutProvider>
+          <DocsLayout
+            activePage={activePage}
+            onPageChange={setActivePage}
+            isSidebarOpen={isSidebarOpen}
+            setIsSidebarOpen={setIsSidebarOpen}
+            tocItems={tocItems}
+          >
+            <PageRenderer activePage={activePage} />
+          </DocsLayout>
+        </ShortcutProvider>
       </ThemeProvider>
     </AerConfigProvider>
   );

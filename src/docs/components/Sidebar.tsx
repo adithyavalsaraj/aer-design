@@ -65,6 +65,12 @@ export const NAV_ITEMS = [
     category: "Utilities",
   },
   {
+    id: "shortcuts",
+    label: "Shortcuts",
+    icon: Layout,
+    category: "Utilities",
+  },
+  {
     id: "positioning",
     label: "Positioning",
     icon: MousePointer2,
