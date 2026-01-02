@@ -63,6 +63,16 @@ export default function App() {
     </ShortcutProvider>
   );
 }`}
+          fullCode={`import { ShortcutProvider } from "aer-design";
+
+export default function App() {
+  return (
+    <ShortcutProvider>
+      // Your application root
+      <YourApp />
+    </ShortcutProvider>
+  );
+}`}
         />
       </DocSection>
 
@@ -86,17 +96,35 @@ export function SaveButton() {
       alert("Saved!");
     },
     {
-      defaultKeys: ["Meta", "S"], // Meta = Cmd on Mac, Ctrl on Windows usually handled by normalization? 
-      // Actually our utils handle "Meta" as "Command" logic.
-      // For cross-platform default consistency, using "Meta" usually maps to Command on Mac and Win key on Windows?
-      // Wait, "Meta" is Command on Mac, but Windows key on Windows.
-      // "Control" is Control on both.
-      // To support "Cmd+S" (Mac) and "Ctrl+S" (Windows), you might need platform logic or just bind both?
-      // Our system supports simple matching. 
+      defaultKeys: ["Meta", "S"], 
     }
   );
 
   return <button>Save (Cmd+S)</button>;
+}`}
+          fullCode={`import { useShortcut, Button } from "aer-design";
+import { Save } from "lucide-react";
+
+export function SaveButton() {
+  // Listen for Cmd+S (or Ctrl+S on Windows)
+  useShortcut(
+    "save-document", 
+    (e) => {
+      e.preventDefault(); // Prevent browser save
+      alert("Document Saved!");
+    },
+    {
+      defaultKeys: ["Meta", "S"], 
+      preventDefault: true
+    }
+  );
+
+  return (
+    <Button onClick={() => alert("Document Saved!")}>
+        <Save className="w-4 h-4 mr-2"/>
+        Save (Cmd+S)
+    </Button>
+  );
 }`}
         />
         <div className="flex items-start gap-3 p-4 rounded-md bg-amber-500/10 text-amber-500 text-sm mt-4">
@@ -148,6 +176,40 @@ export function ScopedForm() {
     </div>
   );
 }`}
+          fullCode={`import { useShortcut } from "aer-design";
+import * as React from "react";
+
+export function ScopedForm() {
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
+  // Only works when focus is inside this div (e.g. input focused)
+  useShortcut(
+    "submit-form",
+    () => alert("Form Submitted!"),
+    {
+      defaultKeys: ["Meta", "Enter"],
+      scopeRef: containerRef, // <--- Scoping: Pass RefObject<HTMLElement>
+    }
+  );
+
+  return (
+    <div ref={containerRef} className="p-6 border rounded-lg bg-white dark:bg-zinc-900">
+      <h3 className="font-bold mb-4">Scoped Form</h3>
+      <div className="flex gap-2">
+        <input 
+            className="border p-2 rounded w-full bg-transparent"
+            placeholder="Focus me and press Cmd+Enter" 
+        />
+        <button 
+            className="px-4 py-2 bg-blue-500 text-white rounded"
+            onClick={() => alert("Form Submitted!")}
+        >
+            Submit
+        </button>
+      </div>
+    </div>
+  );
+}`}
         />
       </DocSection>
 
@@ -180,6 +242,30 @@ export function ScopedForm() {
   <span>Save Action</span>
   <ShortcutRecorder actionId="save-document" />
 </div>`}
+          fullCode={`import { ShortcutRecorder } from "aer-design";
+
+export default function SettingsPage() {
+  return (
+    <div className="p-6 border rounded-lg max-w-md mx-auto space-y-4">
+      <h3 className="font-bold border-b pb-2">Keyboard Shortcuts</h3>
+      
+      <div className="flex items-center justify-between">
+        <span className="text-sm font-medium">Save Document</span>
+        <ShortcutRecorder 
+            actionId="save-document" 
+            placeholder="Record..."
+        />
+      </div>
+
+      <div className="flex items-center justify-between">
+        <span className="text-sm font-medium">Toggle Theme</span>
+        <ShortcutRecorder 
+            actionId="toggle-theme" 
+        />
+      </div>
+    </div>
+  );
+}`}
         />
       </DocSection>
 
