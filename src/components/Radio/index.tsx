@@ -132,10 +132,23 @@ export interface RadioItemProps
       "size" | "onChange"
     >,
     VariantProps<typeof radioItemVariants> {
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
   label?: React.ReactNode;
   description?: React.ReactNode;
-  /** Class name for the text content container */
+  /** CSS classes for the root container element */
+  className?: string;
+  /** Class name for the text content container (label + description) */
   contentClassName?: string;
+  /** Class name for the label text */
+  labelClassName?: string;
+  /** Class name for the description text */
+  descriptionClassName?: string;
+  /** Class name for the radio circle indicator */
+  radioClassName?: string;
+  /** Class name for the inner dot indicator */
+  dotClassName?: string;
+  /** Class name for the error message text */
+  errorClassName?: string;
   error?: boolean | string;
   size?: "sm" | "default" | "lg";
 }
@@ -153,8 +166,15 @@ const RadioItem = React.forwardRef<HTMLInputElement, RadioItemProps>(
       value,
       disabled,
       contentClassName,
+      labelClassName,
+      descriptionClassName,
+      radioClassName,
+      dotClassName,
+      errorClassName,
       error,
       size: sizeProp,
+      onChange,
+      checked,
       ...props
     },
     ref
@@ -203,6 +223,7 @@ const RadioItem = React.forwardRef<HTMLInputElement, RadioItemProps>(
       >
         <div className="relative flex items-center shrink-0">
           <input
+            {...props}
             type="radio"
             id={radioId}
             ref={ref}
@@ -214,16 +235,17 @@ const RadioItem = React.forwardRef<HTMLInputElement, RadioItemProps>(
               if (e.target.checked) {
                 context.onChange?.(value as string);
               }
+              onChange?.(e);
             }}
             className="peer sr-only"
-            {...props}
           />
           <div
             className={cn(
               "flex items-center justify-center rounded-full border-2 border-aer-muted-foreground/30 bg-aer-background text-aer-primary transition-all duration-200 peer-focus-visible:ring-2 peer-focus-visible:ring-aer-ring peer-focus-visible:ring-offset-2 peer-checked:border-aer-primary",
               sizes.circle,
               (context.error || error) &&
-                "border-red-500 peer-checked:border-red-500"
+                "border-red-500 peer-checked:border-red-500",
+              radioClassName
             )}
           >
             {/* The Dot */}
@@ -231,7 +253,8 @@ const RadioItem = React.forwardRef<HTMLInputElement, RadioItemProps>(
               className={cn(
                 "rounded-full bg-current scale-0 transition-transform duration-200",
                 sizes.dot,
-                isChecked && "scale-100"
+                isChecked && "scale-100",
+                dotClassName
               )}
             />
           </div>
@@ -250,7 +273,13 @@ const RadioItem = React.forwardRef<HTMLInputElement, RadioItemProps>(
             )}
           >
             {label && (
-              <span className={cn("font-medium leading-5", sizes.text)}>
+              <span
+                className={cn(
+                  "font-medium leading-5",
+                  sizes.text,
+                  labelClassName
+                )}
+              >
                 {label}
                 {props.required && (
                   <span className="text-red-500 ml-0.5">*</span>
@@ -261,7 +290,8 @@ const RadioItem = React.forwardRef<HTMLInputElement, RadioItemProps>(
               <span
                 className={cn(
                   "text-aer-muted-foreground mt-0 leading-normal",
-                  sizes.desc
+                  sizes.desc,
+                  descriptionClassName
                 )}
               >
                 {description}

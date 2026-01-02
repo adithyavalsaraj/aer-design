@@ -8,13 +8,16 @@ export interface OtpInputProps {
   value?: string;
   onChange?: (value: string) => void;
   disabled?: boolean;
-  className?: string;
   type?: "text" | "password";
   /** Custom character or icon to show when masked. Only used if type is "password" */
   maskChar?: React.ReactNode;
-  /** Regex pattern for validation. Defaults to /^\d$/ (numbers only) */
-  /** Regex pattern for validation. Defaults to /^\d$/ (numbers only) */
   pattern?: RegExp;
+  /** CSS classes for the root container element */
+  className?: string;
+  /** CSS classes for each individual input cell */
+  cellClassName?: string;
+  /** CSS classes for the error message text */
+  errorClassName?: string;
   error?: boolean | string;
   onBlur?: () => void;
   size?: "sm" | "default" | "lg";
@@ -27,13 +30,14 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpInputProps>(
       value: propsValue,
       onChange,
       disabled,
-      className,
       type = "text",
       maskChar,
       pattern = /^\d$/,
+      className,
+      cellClassName,
+      errorClassName,
       error,
       onBlur,
-
       size: sizeProp,
       ...props
     },
@@ -48,7 +52,7 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpInputProps>(
     const sizeStyles = {
       sm: { container: "w-9 h-9", text: "text-sm" },
       default: { container: "w-10 h-10", text: "text-base" },
-      lg: { container: "w-12 h-12", text: "text-lg pt-0.5" }, // slight offset adjustment if needed
+      lg: { container: "w-12 h-12", text: "text-lg pt-0.5" },
     };
 
     const sizes = sizeStyles[size] || sizeStyles.default;
@@ -78,23 +82,19 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpInputProps>(
         const newValue = value.split("");
 
         if (value[index]) {
-          // If value exists, delete it and move back
           newValue.splice(index, 1);
         } else if (index > 0) {
-          // If empty, delete previous and move back
           newValue.splice(index - 1, 1);
         } else {
           return;
         }
 
-        // Pad with empty strings
         while (newValue.length < length) newValue.push("");
 
         const finalValue = newValue.join("").slice(0, length);
         if (propsValue === undefined) setInternalValue(finalValue);
         onChange?.(finalValue);
 
-        // Move focus back logic
         if (index > 0) {
           focusInput(index - 1);
         } else {
@@ -103,17 +103,14 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpInputProps>(
       } else if (e.key === "Delete") {
         e.preventDefault();
         const newValue = value.split("");
-        // Delete current (shift all subsequent left)
         newValue.splice(index, 1);
 
-        // Pad
         while (newValue.length < length) newValue.push("");
 
         const finalValue = newValue.join("").slice(0, length);
         if (propsValue === undefined) setInternalValue(finalValue);
         onChange?.(finalValue);
 
-        // Maintain focus at current index
         focusInput(index);
       } else if (e.key === "ArrowLeft" && index > 0) {
         e.preventDefault();
@@ -131,7 +128,6 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpInputProps>(
       const char = e.target.value.slice(-1);
       if (!char || pattern.test(char)) {
         const newValue = value.split("");
-        // Ensure array is long enough
         for (let i = 0; i < length; i++) {
           if (newValue[i] === undefined) newValue[i] = "";
         }
@@ -154,7 +150,6 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpInputProps>(
     const handlePaste = (e: React.ClipboardEvent) => {
       e.preventDefault();
       const pasteData = e.clipboardData.getData("text").trim().slice(0, length);
-      // Validate paste - every character must match the pattern
       if (pasteData.split("").every((char) => pattern.test(char))) {
         if (propsValue === undefined) {
           setInternalValue(pasteData);
@@ -168,7 +163,7 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpInputProps>(
       <div
         ref={ref}
         className={cn(
-          "flex gap-2 items-center justify-center relative pb-6", // Add padding bottom for error message absolute positioning
+          "flex gap-2 items-center justify-center relative pb-6",
           className
         )}
         onPaste={handlePaste}
@@ -181,14 +176,15 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpInputProps>(
               ref={(el) => {
                 inputRefs.current[i] = el;
               }}
-              containerClassName={cn("p-0 flex-shrink-0", sizes.container)}
-              className={cn(
+              className={cn("p-0 flex-shrink-0", sizes.container)}
+              inputClassName={cn(
                 "text-center font-bold h-full w-full",
                 sizes.text,
                 type === "password" &&
                   maskChar &&
                   "text-transparent select-none",
-                error && "border-red-500 focus-visible:ring-red-500"
+                error && "border-red-500 focus-visible:ring-red-500",
+                cellClassName
               )}
               type={type === "password" && maskChar ? "text" : type}
               value={value[i] || ""}
@@ -207,8 +203,13 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpInputProps>(
             )}
           </div>
         ))}
-        {typeof error === "string" && (
-          <div className="absolute bottom-0 left-0 w-full text-center text-xs text-red-500 font-medium">
+        {error && typeof error === "string" && (
+          <div
+            className={cn(
+              "absolute bottom-0 left-0 w-full text-center text-xs text-red-500 font-medium",
+              errorClassName
+            )}
+          >
             {error}
           </div>
         )}

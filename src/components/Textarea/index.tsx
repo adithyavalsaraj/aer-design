@@ -9,12 +9,20 @@ export interface TextareaProps
   floatingLabel?: boolean;
   variant?: "outline" | "filled" | "underlined";
   size?: "sm" | "default" | "lg";
+  /** CSS classes for the root container element */
+  className?: string;
+  /** CSS classes for the textarea element itself */
+  textareaClassName?: string;
+  /** CSS classes for the label element */
+  labelClassName?: string;
 }
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   (
     {
       className,
+      textareaClassName,
+      labelClassName,
       error,
       label,
       floatingLabel,
@@ -63,7 +71,8 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             sizeStyles[size],
             // Floating label adjustments
             floatingLabel && "placeholder-transparent pt-0",
-            variant === "underlined" && "px-0"
+            variant === "underlined" && "px-0",
+            textareaClassName
           )}
           placeholder={floatingLabel ? placeholder || label : placeholder}
           ref={ref}
@@ -77,7 +86,8 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
               "peer-placeholder-shown:top-6 peer-placeholder-shown:text-base",
               "peer-focus:top-1.5 peer-focus:text-xs peer-focus:text-aer-primary",
               "peer-[:not(:placeholder-shown)]:top-1.5 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-aer-primary",
-              variant === "underlined" && "left-0 px-0"
+              variant === "underlined" && "left-0 px-0",
+              labelClassName
             )}
           >
             {label || placeholder}

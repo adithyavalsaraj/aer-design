@@ -324,6 +324,80 @@ export function InputDoc() {
       </DocSection>
 
       <DocSection
+        title="Granular Styling"
+        id="granular-styling"
+        description="Precise control over styling with element-specific className props."
+      >
+        <div className="max-w-sm space-y-6">
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-aer-muted-foreground">
+              className - Root container (spacing/layout)
+            </p>
+            <Input
+              className="mb-4 w-full"
+              placeholder="Spacing and layout"
+              startIcon={<Search />}
+            />
+          </div>
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-aer-muted-foreground">
+              inputClassName - Input element (text styling)
+            </p>
+            <Input
+              inputClassName="text-lg font-bold text-purple-600"
+              placeholder="Custom text styling"
+            />
+          </div>
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-aer-muted-foreground">
+              iconClassName - Icon containers
+            </p>
+            <Input
+              startIcon={<Search />}
+              iconClassName="text-emerald-500"
+              placeholder="Custom icon color"
+            />
+          </div>
+        </div>
+        <CodeBlock
+          ts={`// Root container styling (spacing/layout)
+<Input className="mb-4 w-full" placeholder="Spacing" />
+
+// Input element styling (text)
+<Input inputClassName="text-lg font-bold" placeholder="Text style" />
+
+// Icon styling
+<Input 
+  startIcon={<Search />} 
+  iconClassName="text-emerald-500" 
+  placeholder="Icon color" 
+/>`}
+          fullCode={`import { Input } from "aer-design";
+import { Search } from "lucide-react";
+
+export default function GranularStyling() {
+  return (
+    <div className="space-y-6">
+      <Input 
+        className="mb-4 w-full" 
+        placeholder="Spacing and layout" 
+      />
+      <Input 
+        inputClassName="text-lg font-bold text-purple-600" 
+        placeholder="Custom text styling" 
+      />
+      <Input 
+        startIcon={<Search />} 
+        iconClassName="text-emerald-500" 
+        placeholder="Custom icon color" 
+      />
+    </div>
+  );
+}`}
+        />
+      </DocSection>
+
+      <DocSection
         title="Validation States"
         id="validation"
         description="Error states and validation feedback for form inputs."
@@ -498,18 +572,46 @@ export function InputDoc() {
               description: "Disables the input and applies disabled styling.",
             },
             {
-              prop: "containerClassName",
-              type: "string",
-              default: "-",
-              description:
-                "Additional CSS classes for the outer container wrapper.",
-            },
-            {
               prop: "className",
               type: "string",
               default: "-",
               description:
-                "Additional CSS classes for the input element itself.",
+                "CSS classes for the root container element. Use for spacing (margin, padding) and layout (width, flex, grid).",
+            },
+            {
+              prop: "inputClassName",
+              type: "string",
+              default: "-",
+              description:
+                "CSS classes for the input element itself. Use for text styling (font-size, color, text-align).",
+            },
+            {
+              prop: "labelClassName",
+              type: "string",
+              default: "-",
+              description:
+                "CSS classes for the label element (when using floatingLabel).",
+            },
+            {
+              prop: "iconClassName",
+              type: "string",
+              default: "-",
+              description:
+                "CSS classes for icon containers (startIcon and endIcon).",
+            },
+            {
+              prop: "addonClassName",
+              type: "string",
+              default: "-",
+              description:
+                "CSS classes for addon containers (addonBefore and addonAfter).",
+            },
+            {
+              prop: "containerClassName",
+              type: "string",
+              default: "-",
+              description:
+                "DEPRECATED: Use className instead. Additional CSS classes for the outer container wrapper.",
             },
           ]}
         />

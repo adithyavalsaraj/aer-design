@@ -88,9 +88,25 @@ export interface DropdownProps
   addonBefore?: React.ReactNode;
   addonAfter?: React.ReactNode;
   maxDisplayCount?: number;
+  /** CSS classes for the root container element */
+  className?: string;
+  /** DEPRECATED: Use className instead. */
   containerClassName?: string;
-  size?: "sm" | "default" | "lg";
+  /** CSS classes for the clickable trigger element */
+  triggerClassName?: string;
+  /** CSS classes for the label text */
+  labelClassName?: string;
+  /** CSS classes for the dropdown menu container */
   menuClassName?: string;
+  /** CSS classes for individual dropdown items */
+  itemClassName?: string;
+  /** CSS classes for icons (startIcon and endIcon) */
+  iconClassName?: string;
+  /** CSS classes for addon containers */
+  addonClassName?: string;
+  /** CSS classes for the error message text */
+  errorClassName?: string;
+  size?: "sm" | "default" | "lg";
 }
 
 // --- Helper Functions ---
@@ -126,7 +142,13 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
     {
       className,
       containerClassName,
+      triggerClassName,
+      labelClassName,
       menuClassName,
+      itemClassName,
+      iconClassName,
+      addonClassName,
+      errorClassName,
       variant = "outline",
       options = [],
       value,
@@ -372,12 +394,20 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
 
     return (
       <div
-        className={cn("relative w-full group/dropdown", containerClassName)}
+        className={cn(
+          "relative w-full group/dropdown",
+          className || containerClassName
+        )}
         ref={containerRef}
       >
         <div className="flex items-stretch w-full">
           {addonBefore && (
-            <div className="flex items-center px-3 border border-r-0 rounded-l-aer-md bg-aer-muted text-aer-muted-foreground text-sm shrink-0 whitespace-nowrap">
+            <div
+              className={cn(
+                "flex items-center px-3 border border-r-0 rounded-l-aer-md bg-aer-muted text-aer-muted-foreground text-sm shrink-0 whitespace-nowrap",
+                addonClassName
+              )}
+            >
               {addonBefore}
             </div>
           )}
@@ -397,7 +427,7 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
               addonAfter && "border-r-0 rounded-r-none",
               addonBefore && !addonAfter && "rounded-r-aer-md",
               addonAfter && !addonBefore && "rounded-l-aer-md",
-              className
+              triggerClassName
             )}
             onClick={() => !disabled && setIsOpen(!isOpen)}
             tabIndex={disabled ? -1 : 0}
@@ -472,7 +502,8 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
                   <div
                     className={cn(
                       "flex items-center justify-center",
-                      iconSizes[size]
+                      iconSizes[size],
+                      iconClassName
                     )}
                   >
                     {startIcon}
@@ -499,7 +530,8 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
                       "absolute left-0 transition-all duration-200 pointer-events-none origin-left text-aer-muted-foreground z-10",
                       isFloating
                         ? "top-1 text-xs text-aer-primary scale-90" // Active state - positioned at top
-                        : "top-1/2 -translate-y-1/2 text-sm" // Placeholder state
+                        : "top-1/2 -translate-y-1/2 text-sm", // Placeholder state
+                      labelClassName
                     )}
                   >
                     {label || placeholder}
@@ -530,7 +562,8 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
                 <span
                   className={cn(
                     "text-aer-muted-foreground flex items-center justify-center",
-                    iconSizes[size]
+                    iconSizes[size],
+                    iconClassName
                   )}
                 >
                   {endIcon}
@@ -555,7 +588,12 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
           </div>
 
           {addonAfter && (
-            <div className="flex items-center px-3 border border-l-0 rounded-r-aer-md bg-aer-muted text-aer-muted-foreground text-sm shrink-0 whitespace-nowrap">
+            <div
+              className={cn(
+                "flex items-center px-3 border border-l-0 rounded-r-aer-md bg-aer-muted text-aer-muted-foreground text-sm shrink-0 whitespace-nowrap",
+                addonClassName
+              )}
+            >
               {addonAfter}
             </div>
           )}
@@ -648,7 +686,8 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
                                     selectableIndex !== focusedIndex &&
                                     "hover:bg-aer-muted/50",
                                   option.disabled &&
-                                    "opacity-50 cursor-not-allowed pointer-events-none"
+                                    "opacity-50 cursor-not-allowed pointer-events-none",
+                                  itemClassName
                                 )}
                               >
                                 {multiple && (
@@ -662,7 +701,12 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
                                   {option.label}
                                 </span>
                                 {!multiple && isOptSelected && (
-                                  <Check className="w-4 h-4 text-aer-primary ml-auto" />
+                                  <Check
+                                    className={cn(
+                                      "w-4 h-4 text-aer-primary ml-auto",
+                                      iconClassName
+                                    )}
+                                  />
                                 )}
                               </div>
                             );
@@ -703,7 +747,8 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
                               selectableIndex !== focusedIndex &&
                               "hover:bg-aer-muted/50",
                             item.disabled &&
-                              "opacity-50 cursor-not-allowed pointer-events-none"
+                              "opacity-50 cursor-not-allowed pointer-events-none",
+                            itemClassName
                           )}
                         >
                           {multiple && (
@@ -717,7 +762,12 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
                             {item.label}
                           </span>
                           {!multiple && isOptSelected && (
-                            <Check className="w-4 h-4 text-aer-primary ml-auto" />
+                            <Check
+                              className={cn(
+                                "w-4 h-4 text-aer-primary ml-auto",
+                                iconClassName
+                              )}
+                            />
                           )}
                         </div>
                       );
@@ -731,6 +781,16 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
                 </div>
               )}
             </div>
+          </div>
+        )}
+        {typeof error === "string" && (
+          <div
+            className={cn(
+              "text-xs text-red-500 font-medium mt-1.5 ml-1",
+              errorClassName
+            )}
+          >
+            {error}
           </div>
         )}
       </div>

@@ -56,10 +56,20 @@ export interface CheckboxProps
   description?: React.ReactNode;
   /** Error message or boolean state */
   error?: boolean | string;
-  /** Class name for the text content container */
+  /** CSS classes for the root container element */
+  className?: string;
+  /** Class name for the text content container (label + description) */
   contentClassName?: string;
   /** Class name for the label text */
   labelClassName?: string;
+  /** Class name for the description text */
+  descriptionClassName?: string;
+  /** Class name for the custom checkbox square */
+  checkboxClassName?: string;
+  /** Class name for the check icon */
+  iconClassName?: string;
+  /** Class name for the error text */
+  errorClassName?: string;
   /** Size of the checkbox and label */
   size?: "sm" | "default" | "lg";
   /** Callback when state changes */
@@ -80,8 +90,16 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
       error,
       contentClassName,
       labelClassName,
+      descriptionClassName,
+      checkboxClassName,
+      iconClassName,
+      errorClassName,
       id,
       size: sizeProp,
+      checked: controlledChecked,
+      defaultChecked,
+      onChange,
+      onCheckedChange,
       ...props
     },
     ref
@@ -126,17 +144,20 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
       >
         <div className="relative flex items-center shrink-0">
           <input
+            {...props}
             type="checkbox"
             id={checkboxId}
             className="peer sr-only"
+            {...(controlledChecked !== undefined
+              ? { checked: controlledChecked === true }
+              : { defaultChecked })}
             onChange={(e) => {
-              props.onCheckedChange?.(e.target.checked);
-              props.onChange?.(e);
+              onCheckedChange?.(e.target.checked);
+              onChange?.(e);
             }}
-            checked={props.checked === true}
             ref={(input) => {
               if (input) {
-                input.indeterminate = props.checked === "indeterminate";
+                input.indeterminate = controlledChecked === "indeterminate";
               }
               if (typeof ref === "function") {
                 ref(input);
@@ -151,15 +172,16 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
             className={cn(
               "flex items-center justify-center rounded-aer-md border-2 border-aer-muted-foreground/30 bg-aer-background text-aer-background transition-all duration-200 peer-focus-visible:ring-2 peer-focus-visible:ring-aer-ring peer-focus-visible:ring-offset-2 peer-checked:border-aer-primary peer-checked:bg-aer-primary peer-checked:text-aer-primary-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
               sizes.box,
-              props.checked === "indeterminate" &&
+              controlledChecked === "indeterminate" &&
                 "bg-aer-primary border-aer-primary text-aer-primary-foreground",
-              error && "border-red-500"
+              error && "border-red-500",
+              checkboxClassName
             )}
           >
-            {props.checked === "indeterminate" ? (
-              <Minus className={cn("stroke-[3]", sizes.icon)} />
+            {controlledChecked === "indeterminate" ? (
+              <Minus className={cn("stroke-[3]", sizes.icon, iconClassName)} />
             ) : (
-              <Check className={cn("stroke-[3]", sizes.icon)} />
+              <Check className={cn("stroke-[3]", sizes.icon, iconClassName)} />
             )}
           </div>
         </div>
@@ -196,14 +218,20 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
                 className={cn(
                   "text-aer-muted-foreground mt-0 leading-normal",
                   sizes.desc,
-                  props.disabled && "opacity-50"
+                  props.disabled && "opacity-50",
+                  descriptionClassName
                 )}
               >
                 {description}
               </span>
             )}
             {typeof error === "string" && (
-              <span className="text-xs text-red-500 font-medium mt-1">
+              <span
+                className={cn(
+                  "text-xs text-red-500 font-medium mt-1",
+                  errorClassName
+                )}
+              >
                 {error}
               </span>
             )}

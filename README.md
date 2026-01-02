@@ -161,13 +161,14 @@ All components follow WAI-ARIA guidelines with proper keyboard navigation, focus
 
 ## Comparison
 
-| Feature         | Aer Design                | Traditional UI Libs       |
-| :-------------- | :------------------------ | :------------------------ |
-| **Styling**     | Tailwind CSS 4            | CSS-in-JS (Runtime heavy) |
-| **Bundle Size** | Minimal (Tree-shakable)   | Large (often monolithic)  |
-| **Theming**     | Native CSS Variables      | JS Context Providers      |
-| **RTL**         | Native Logical Properties | Complex JS Logic          |
-| **TypeScript**  | Full type safety          | Varies                    |
+| Feature              | Aer Design                | Traditional UI Libs       |
+| :------------------- | :------------------------ | :------------------------ |
+| **Styling**          | Tailwind CSS 4            | CSS-in-JS (Runtime heavy) |
+| **Bundle Size**      | Minimal (Tree-shakable)   | Large (often monolithic)  |
+| **Theming**          | Native CSS Variables      | JS Context Providers      |
+| **RTL**              | Native Logical Properties | Complex JS Logic          |
+| **Granular Styling** | Yes (sub-element props)   | Limited (global only)     |
+| **TypeScript**       | Full type safety          | Varies                    |
 
 ## Contributing
 

@@ -2,6 +2,27 @@
 
 All notable changes to the Aer Design project will be documented in this file.
 
+## [v0.7.0] - 2026-01-02
+
+### Architecture
+
+- **Granular Styling Engine**: Modernized the className architecture across all interactive components (`Input`, `Textarea`, `Checkbox`, `Radio`, `OtpInput`, `Dropdown`).
+  - Added specific className props for every sub-element (e.g., `labelClassName`, `iconClassName`, `checkboxClassName`).
+  - Deprecated `containerClassName` in favor of standard `className` for root elements.
+  - Improved CSS variable usage for more consistent theming.
+
+### Bug Fixes
+
+- **Checkbox/Radio**: Resolved interaction failure where internal state handlers were being overwritten by spread props.
+- **Checkbox**: Restored support for uncontrolled state (`defaultChecked`) which was previously forced to a controlled state.
+- **Dropdown**: Fixed `addonAfter` styling inconsistency.
+- **OtpInput**: Resolved "Duplicate identifier" TypeScript errors through a clean internal rewrite.
+
+### Documentation
+
+- **Updated API Tables**: Reflected all new granular styling props across all component pages.
+- **New Examples**: Added "Granular Styling" sections to documentation demonstrating how to style specific parts of components.
+
 ## [v0.6.2] - 2026-01-02
 
 ### New Features

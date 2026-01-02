@@ -146,6 +146,56 @@ export function TextareaDoc() {
         />
       </DocSection>
 
+      <DocSection
+        title="Granular Styling"
+        id="granular-styling"
+        description="Precise control over styling with element-specific className props."
+      >
+        <div className="max-w-sm space-y-6">
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-aer-muted-foreground">
+              className - Root container (spacing/layout)
+            </p>
+            <Textarea
+              className="mb-4 w-full"
+              placeholder="Spacing and layout"
+            />
+          </div>
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-aer-muted-foreground">
+              textareaClassName - Textarea element (text styling)
+            </p>
+            <Textarea
+              textareaClassName="text-lg font-bold text-purple-600"
+              placeholder="Custom text styling"
+            />
+          </div>
+        </div>
+        <CodeBlock
+          ts={`// Root container styling (spacing/layout)
+<Textarea className="mb-4 w-full" placeholder="Spacing" />
+
+// Textarea element styling (text)
+<Textarea textareaClassName="text-lg font-bold text-purple-600" placeholder="Text style" />`}
+          fullCode={`import { Textarea } from "aer-design";
+
+export default function GranularStyling() {
+  return (
+    <div className="space-y-6">
+      <Textarea 
+        className="mb-4 w-full" 
+        placeholder="Spacing and layout" 
+      />
+      <Textarea 
+        textareaClassName="text-lg font-bold text-purple-600" 
+        placeholder="Custom text styling" 
+      />
+    </div>
+  );
+}`}
+        />
+      </DocSection>
+
       <DocSection title="Validation" id="validation">
         <div className="max-w-xl">
           <Textarea placeholder="Error state" error />
@@ -284,14 +334,28 @@ export function TextareaDoc() {
               prop: "className",
               type: "string",
               default: "-",
-              description: "Additional CSS classes for the textarea element.",
+              description:
+                "CSS classes for the root container element. Use for spacing (margin, padding) and layout (width, flex, grid).",
+            },
+            {
+              prop: "textareaClassName",
+              type: "string",
+              default: "-",
+              description:
+                "CSS classes for the textarea element itself. Use for text styling (font-size, color, text-align).",
+            },
+            {
+              prop: "labelClassName",
+              type: "string",
+              default: "-",
+              description: "CSS classes for the label element.",
             },
             {
               prop: "containerClassName",
               type: "string",
               default: "-",
               description:
-                "Additional CSS classes for the wrapper element (useful for positioning).",
+                "DEPRECATED: Use className instead. Additional CSS classes for the wrapper element.",
             },
           ]}
         />
@@ -401,6 +465,7 @@ export function TextareaDoc() {
               { id: "floating-label", title: "Floating Label" },
               { id: "variants", title: "Variants" },
               { id: "sizes", title: "Sizes" },
+              { id: "granular-styling", title: "Granular Styling" },
               { id: "validation", title: "Validation" },
               { id: "real-world-validation", title: "Real World Example" },
             ],

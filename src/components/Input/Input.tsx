@@ -12,7 +12,18 @@ export type InputProps = Omit<
   suffix?: React.ReactNode;
   addonBefore?: React.ReactNode;
   addonAfter?: React.ReactNode;
+  /** @deprecated Use className instead - applies to root container */
   containerClassName?: string;
+  /** CSS classes for root container (spacing, layout) */
+  className?: string;
+  /** CSS classes for the input element (text styling) */
+  inputClassName?: string;
+  /** CSS classes for the label element */
+  labelClassName?: string;
+  /** CSS classes for icon containers */
+  iconClassName?: string;
+  /** CSS classes for addon containers */
+  addonClassName?: string;
   error?: boolean | string;
   label?: string;
   floatingLabel?: boolean;
@@ -32,6 +43,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       addonBefore,
       addonAfter,
       containerClassName,
+      inputClassName,
+      labelClassName,
+      iconClassName,
+      addonClassName,
       error,
       label,
       floatingLabel,
@@ -77,12 +92,17 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       <div
         className={cn(
           "flex items-stretch group/input",
-          !containerClassName?.includes("w-") && "w-full",
-          containerClassName
+          !(className || containerClassName)?.includes("w-") && "w-full",
+          className || containerClassName
         )}
       >
         {addonBefore && (
-          <div className="flex items-center px-3 border border-r-0 rounded-l-aer-md bg-aer-muted text-aer-muted-foreground text-sm shrink-0 whitespace-nowrap">
+          <div
+            className={cn(
+              "flex items-center px-3 border border-r-0 rounded-l-aer-md bg-aer-muted text-aer-muted-foreground text-sm shrink-0 whitespace-nowrap",
+              addonClassName
+            )}
+          >
             {addonBefore}
           </div>
         )}
@@ -91,16 +111,15 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           className={cn(
             "relative flex items-center gap-2 transition-all cursor-text",
             variantStyles[variant],
-            !containerClassName?.includes("px-") &&
-              !containerClassName?.includes("p-") &&
+            !(className || containerClassName)?.includes("px-") &&
+              !(className || containerClassName)?.includes("p-") &&
               variant !== "underlined" &&
               "px-3",
-            !containerClassName?.includes("w-") && "w-full",
+            !(className || containerClassName)?.includes("w-") && "w-full",
             !hasAddon && variant === "outline" && "rounded-aer-md",
             addonBefore && "border-l-0",
             addonAfter && "border-r-0",
             addonBefore && !addonAfter && "rounded-r-aer-md",
-            addonAfter && !addonBefore && "rounded-l-aer-md",
             addonAfter && !addonBefore && "rounded-l-aer-md",
             props.disabled && "opacity-50 cursor-not-allowed",
             error && "border-red-500 focus-within:ring-red-500"
@@ -111,7 +130,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             <span
               className={cn(
                 "text-aer-muted-foreground transition-colors group-focus-within/input:text-aer-primary flex items-center justify-center shrink-0",
-                iconSizes[size]
+                iconSizes[size],
+                iconClassName
               )}
             >
               {startIcon}
@@ -136,8 +156,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                 "flex w-full bg-transparent py-2 file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-aer-muted-foreground focus:outline-none disabled:cursor-not-allowed peer",
                 sizeStyles[size],
                 floatingLabel && "placeholder-transparent h-6 pt-0 pb-1",
-                // Adjust text size for floating label state if needed, but usually keep it consistent
-                className
+                inputClassName
               )}
               placeholder={floatingLabel ? placeholder || label : placeholder}
               ref={inputRef}
@@ -150,7 +169,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                   // Check for value (placeholder-shown) or focus
                   "peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base",
                   "peer-focus:-top-3 peer-focus:translate-y-0 peer-focus:text-xs peer-focus:text-aer-primary",
-                  "peer-[:not(:placeholder-shown)]:-top-3 peer-[:not(:placeholder-shown)]:translate-y-0 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-aer-primary"
+                  "peer-[:not(:placeholder-shown)]:-top-3 peer-[:not(:placeholder-shown)]:translate-y-0 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-aer-primary",
+                  labelClassName
                 )}
               >
                 {label || placeholder}
@@ -168,7 +188,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             <span
               className={cn(
                 "text-aer-muted-foreground transition-colors group-focus-within/input:text-aer-primary flex items-center justify-center shrink-0",
-                iconSizes[size]
+                iconSizes[size],
+                iconClassName
               )}
             >
               {endIcon}
@@ -176,7 +197,12 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           )}
         </div>
         {addonAfter && (
-          <div className="flex items-center px-3 border border-l-0 rounded-r-aer-md bg-aer-muted text-aer-muted-foreground text-sm shrink-0 whitespace-nowrap">
+          <div
+            className={cn(
+              "flex items-center px-3 border border-l-0 rounded-r-aer-md bg-aer-muted text-aer-muted-foreground text-sm shrink-0 whitespace-nowrap",
+              addonClassName
+            )}
+          >
             {addonAfter}
           </div>
         )}

@@ -217,6 +217,43 @@ export function RadioDoc() {
         />
       </DocSection>
 
+      <DocSection
+        title="Granular Styling"
+        id="granular-styling"
+        description="Precise control over styling with element-specific className props."
+      >
+        <div className="space-y-6 max-w-sm">
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-aer-muted-foreground">
+              className - Root container (spacing)
+            </p>
+            <RadioGroup defaultValue="1">
+              <RadioItem
+                className="mb-4 p-4 border rounded-xl bg-aer-primary/5"
+                value="1"
+                label="Spaced and styled container"
+              />
+            </RadioGroup>
+          </div>
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-aer-muted-foreground">
+              radioClassName - Custom indicator
+            </p>
+            <RadioGroup defaultValue="1">
+              <RadioItem
+                radioClassName="bg-purple-600 border-purple-600"
+                dotClassName="bg-white"
+                value="1"
+                label="Purple radio with white dot"
+              />
+            </RadioGroup>
+          </div>
+        </div>
+        <CodeBlock
+          ts={`<RadioItem className="mb-4 p-4 border rounded-xl" label="Root style" />\n\n<RadioItem \n  radioClassName="bg-purple-600 border-purple-600" \n  dotClassName="bg-white" \n  label="Custom colors" \n/>`}
+        />
+      </DocSection>
+
       <DocSection title="Validation" id="validation">
         <RadioGroup
           defaultValue="1"
@@ -424,11 +461,48 @@ export function RadioDoc() {
               description: "Disables this specific item.",
             },
             {
+              prop: "className",
+              type: "string",
+              default: "-",
+              description:
+                "CSS classes for the root container element. Use for spacing (margin, padding) and layout.",
+            },
+            {
+              prop: "radioClassName",
+              type: "string",
+              default: "-",
+              description: "CSS classes for the custom radio circle indicator.",
+            },
+            {
+              prop: "dotClassName",
+              type: "string",
+              default: "-",
+              description: "CSS classes for the inner selected dot.",
+            },
+            {
+              prop: "labelClassName",
+              type: "string",
+              default: "-",
+              description: "CSS classes for the label text.",
+            },
+            {
+              prop: "descriptionClassName",
+              type: "string",
+              default: "-",
+              description: "CSS classes for the description text.",
+            },
+            {
               prop: "contentClassName",
               type: "string",
               default: "-",
               description:
-                "Additional CSS classes for the label content container.",
+                "CSS classes for the text container (label + description).",
+            },
+            {
+              prop: "errorClassName",
+              type: "string",
+              default: "-",
+              description: "CSS classes for the error message text.",
             },
             {
               prop: "id",
@@ -543,6 +617,7 @@ export function RadioDoc() {
               { id: "sizes", title: "Sizes" },
               { id: "layout", title: "Layout Variants" },
               { id: "alignment", title: "Vertical Alignment" },
+              { id: "granular-styling", title: "Granular Styling" },
               { id: "validation", title: "Validation" },
               { id: "real-world-validation", title: "Real World Example" },
             ],

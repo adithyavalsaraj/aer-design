@@ -242,6 +242,62 @@ export function CheckboxDoc() {
         />
       </DocSection>
 
+      <DocSection
+        title="Granular Styling"
+        id="granular-styling"
+        description="Precise control over styling with element-specific className props."
+      >
+        <div className="space-y-6 max-w-sm">
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-aer-muted-foreground">
+              className - Root container (spacing)
+            </p>
+            <Checkbox
+              className="mb-8 p-4 border rounded-xl bg-aer-primary/5"
+              label="Spaced and styled container"
+            />
+          </div>
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-aer-muted-foreground">
+              checkboxClassName - Custom indicator
+            </p>
+            <Checkbox
+              checkboxClassName="bg-purple-600 border-purple-600 rounded-full"
+              label="Rounded purple checkbox"
+              defaultChecked
+            />
+          </div>
+        </div>
+        <CodeBlock
+          ts={`// Root container styling
+<Checkbox className="mb-8 p-4 border rounded-xl" label="Root style" />
+
+// Indicator styling
+<Checkbox 
+  checkboxClassName="bg-purple-600 border-purple-600 rounded-full" 
+  label="Custom circle" 
+  defaultChecked 
+/>`}
+          fullCode={`import { Checkbox } from "aer-design";
+
+export default function GranularStyling() {
+  return (
+    <div className="space-y-6">
+      <Checkbox 
+        className="mb-8 p-4 border rounded-xl bg-aer-primary/5" 
+        label="Spaced and styled container" 
+      />
+      <Checkbox 
+        checkboxClassName="bg-purple-600 border-purple-600 rounded-full" 
+        label="Rounded purple checkbox" 
+        defaultChecked 
+      />
+    </div>
+  );
+}`}
+        />
+      </DocSection>
+
       <DocSection title="Validation" id="validation">
         <div className="flex flex-col gap-4">
           <Checkbox
@@ -393,11 +449,48 @@ export function CheckboxDoc() {
                 "Vertical alignment of the checkbox relative to multiline labels.",
             },
             {
+              prop: "className",
+              type: "string",
+              default: "-",
+              description:
+                "CSS classes for the root container element. Use for spacing (margin, padding) and layout.",
+            },
+            {
+              prop: "checkboxClassName",
+              type: "string",
+              default: "-",
+              description: "CSS classes for the custom checkbox indicator box.",
+            },
+            {
+              prop: "labelClassName",
+              type: "string",
+              default: "-",
+              description: "CSS classes for the label text.",
+            },
+            {
+              prop: "descriptionClassName",
+              type: "string",
+              default: "-",
+              description: "CSS classes for the description text.",
+            },
+            {
               prop: "contentClassName",
               type: "string",
               default: "-",
               description:
-                "Additional CSS classes for the label content container.",
+                "CSS classes for the text container (label + description).",
+            },
+            {
+              prop: "iconClassName",
+              type: "string",
+              default: "-",
+              description: "CSS classes for the check/indeterminate icon.",
+            },
+            {
+              prop: "errorClassName",
+              type: "string",
+              default: "-",
+              description: "CSS classes for the error message text.",
             },
             {
               prop: "id",
@@ -590,6 +683,7 @@ export function CheckboxDoc() {
               { id: "sizes", title: "Sizes" },
               { id: "positioning", title: "Label Positioning" },
               { id: "alignment", title: "Vertical Alignment" },
+              { id: "granular-styling", title: "Granular Styling" },
               { id: "validation", title: "Validation" },
               { id: "real-world-validation", title: "Real World Example" },
             ],

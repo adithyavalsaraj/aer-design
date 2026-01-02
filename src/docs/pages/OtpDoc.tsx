@@ -337,7 +337,19 @@ export function OtpDoc() {
               prop: "className",
               type: "string",
               default: "-",
-              description: "Additional CSS classes for the container.",
+              description: "CSS classes for the root container element.",
+            },
+            {
+              prop: "cellClassName",
+              type: "string",
+              default: "-",
+              description: "CSS classes for each individual input cell.",
+            },
+            {
+              prop: "errorClassName",
+              type: "string",
+              default: "-",
+              description: "CSS classes for the error message text.",
             },
             {
               prop: "size",

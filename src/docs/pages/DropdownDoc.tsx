@@ -530,6 +530,41 @@ export default function GroupedDropdown() {
         />
       </DocSection>
 
+      <DocSection
+        title="Granular Styling"
+        id="granular-styling"
+        description="Precise control over styling with element-specific className props."
+      >
+        <div className="space-y-6 max-w-sm">
+          <div className="space-y-4">
+            <p className="text-sm font-medium text-aer-muted-foreground">
+              className & triggerClassName
+            </p>
+            <Dropdown
+              className="p-4 border rounded-2xl bg-aer-primary/5"
+              triggerClassName="bg-white rounded-full border-2 border-aer-primary"
+              options={basicOptions}
+              placeholder="Custom root and trigger"
+            />
+          </div>
+          <div className="space-y-4">
+            <p className="text-sm font-medium text-aer-muted-foreground">
+              itemClassName & iconClassName
+            </p>
+            <Dropdown
+              itemClassName="hover:bg-purple-500 hover:text-white rounded-none"
+              iconClassName="text-purple-500"
+              startIcon={<User className="w-4 h-4" />}
+              options={basicOptions}
+              placeholder="Custom items and icons"
+            />
+          </div>
+        </div>
+        <CodeBlock
+          ts={`<Dropdown \n  className="p-4 border rounded-2xl bg-aer-primary/5" \n  triggerClassName="bg-white rounded-full border-2 border-aer-primary" \n  options={options} \n/>\n\n<Dropdown \n  itemClassName="hover:bg-purple-500 hover:text-white rounded-none" \n  iconClassName="text-purple-500" \n  options={options} \n/>`}
+        />
+      </DocSection>
+
       <DocSection title="Validation" id="validation">
         <div className="max-w-sm space-y-4">
           <Dropdown error options={basicOptions} placeholder="Error state" />
@@ -897,18 +932,59 @@ export default function UserSettings() {
               description: "Callback for custom search logic on input change.",
             },
             {
-              prop: "containerClassName",
+              prop: "className",
               type: "string",
               default: "-",
               description:
-                "Additional CSS classes for the root container element.",
+                "CSS classes for the root container element. Use for spacing (margin, padding) and layout.",
+            },
+            {
+              prop: "containerClassName",
+              type: "string",
+              default: "-",
+              description: "DEPRECATED: Use className instead.",
+            },
+            {
+              prop: "triggerClassName",
+              type: "string",
+              default: "-",
+              description: "CSS classes for the clickable trigger element.",
+            },
+            {
+              prop: "labelClassName",
+              type: "string",
+              default: "-",
+              description: "CSS classes for the floating label text.",
             },
             {
               prop: "menuClassName",
               type: "string",
               default: "-",
-              description:
-                "Additional CSS classes for the dropdown menu popover.",
+              description: "CSS classes for the dropdown menu popover.",
+            },
+            {
+              prop: "itemClassName",
+              type: "string",
+              default: "-",
+              description: "CSS classes for individual dropdown items.",
+            },
+            {
+              prop: "iconClassName",
+              type: "string",
+              default: "-",
+              description: "CSS classes for start/end icons and checkmarks.",
+            },
+            {
+              prop: "addonClassName",
+              type: "string",
+              default: "-",
+              description: "CSS classes for addon containers.",
+            },
+            {
+              prop: "errorClassName",
+              type: "string",
+              default: "-",
+              description: "CSS classes for the error message text.",
             },
           ]}
         />
@@ -1124,6 +1200,7 @@ export default function UserSettings() {
               { id: "variants", title: "Variants" },
               { id: "sizes", title: "Sizes" },
               { id: "floating-label", title: "Floating Label" },
+              { id: "granular-styling", title: "Granular Styling" },
               { id: "validation", title: "Validation" },
               { id: "real-world", title: "Real World Example" },
             ],

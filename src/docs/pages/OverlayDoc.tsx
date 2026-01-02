@@ -485,9 +485,7 @@ export default function CloseBehaviors() {
                   This overlay prevents body scroll and traps focus. Try
                   scrolling the page!
                 </p>
-                <div className="mb-4">
-                  <Input placeholder="Focus is trapped here" />
-                </div>
+                <Input placeholder="Focus is trapped here" className="mb-4" />
                 <div className="flex gap-2">
                   <Button size="sm">Action</Button>
                   <Button size="sm" variant="outline">
