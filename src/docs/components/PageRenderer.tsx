@@ -6,11 +6,12 @@ import { InputDoc } from "../pages/InputDoc";
 import { MenuDoc } from "../pages/MenuDoc";
 import { NavbarDoc } from "../pages/NavbarDoc";
 import { OtpDoc } from "../pages/OtpDoc";
+import { OverlayDoc } from "../pages/OverlayDoc";
 import { PositioningDoc } from "../pages/PositioningDoc";
 import { RadioDoc } from "../pages/RadioDoc";
 import { SidebarDoc } from "../pages/SidebarDoc";
 import { TextareaDoc } from "../pages/TextareaDoc";
-
+import { TooltipDoc } from "../pages/TooltipDoc";
 import { UtilitiesDoc } from "../pages/UtilitiesDoc";
 
 interface PageRendererProps {
@@ -41,6 +42,10 @@ export function PageRenderer({ activePage }: PageRendererProps) {
       return <NavbarDoc />;
     case "menu":
       return <MenuDoc />;
+    case "overlay":
+      return <OverlayDoc />;
+    case "tooltip":
+      return <TooltipDoc />;
     case "utilities":
       return <UtilitiesDoc />;
     case "positioning":

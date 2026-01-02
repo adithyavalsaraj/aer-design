@@ -47,6 +47,18 @@ export const NAV_ITEMS = [
     category: "Overlay",
   },
   {
+    id: "overlay",
+    label: "Overlay",
+    icon: Layout,
+    category: "Overlay",
+  },
+  {
+    id: "tooltip",
+    label: "Tooltip",
+    icon: MousePointer2,
+    category: "Overlay",
+  },
+  {
     id: "utilities",
     label: "Utilities",
     icon: Boxes,
