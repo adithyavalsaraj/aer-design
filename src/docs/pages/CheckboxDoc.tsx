@@ -8,7 +8,93 @@ export function CheckboxDoc() {
 
   const overview = (
     <div className="space-y-12">
-      <DocSection title="Basic" id="basic">
+      <DocSection
+        id="introduction"
+        title="Introduction"
+        description="Versatile selection control with support for groups, cards, and custom layouts."
+      >
+        <div className="prose prose-sm max-w-none">
+          <p className="text-aer-muted-foreground">
+            The Checkbox component allows users to select one or more items from
+            a set. It goes far beyond the native input by offering rich "Card"
+            variants, built-in group management, indeterminate states, and
+            flexible label positioning.
+          </p>
+          <ul className="list-disc pl-6 space-y-2 text-aer-muted-foreground">
+            <li>
+              <strong>Checkbox Groups</strong> - Manage array-based selection
+              with ease
+            </li>
+            <li>
+              <strong>Card Variant</strong> - Turn checkboxes into rich,
+              selectable cards
+            </li>
+            <li>
+              <strong>Label Positioning</strong> - Place labels on any side
+              (top, right, bottom, left)
+            </li>
+            <li>
+              <strong>Tri-state Support</strong> - Full support for
+              indeterminate (partial) selection
+            </li>
+          </ul>
+        </div>
+      </DocSection>
+
+      <DocSection
+        id="when-to-use"
+        title="When to Use"
+        description="Choose the right configuration for your selection needs."
+      >
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
+            <h4 className="font-semibold mb-3 text-aer-foreground">
+              Single Options
+            </h4>
+            <p className="text-sm text-aer-muted-foreground mb-3">
+              Use a standalone Checkbox for:
+            </p>
+            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
+              <li>"Accept Terms" agreements</li>
+              <li>"Remember Me" toggles</li>
+              <li>Enabling/disabling a specific feature</li>
+              <li>Binary choices (Yes/No)</li>
+            </ul>
+          </div>
+
+          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
+            <h4 className="font-semibold mb-3 text-aer-foreground">
+              Multiple Choices
+            </h4>
+            <p className="text-sm text-aer-muted-foreground mb-3">
+              Use CheckboxGroup for:
+            </p>
+            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
+              <li>Category filters (e.g., e-commerce)</li>
+              <li>Permission assignment (e.g., Read, Write, Delete)</li>
+              <li>User lists</li>
+              <li>Any multi-select scenario</li>
+            </ul>
+          </div>
+
+          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
+            <h4 className="font-semibold mb-3 text-aer-foreground">
+              Rich Selection
+            </h4>
+            <p className="text-sm text-aer-muted-foreground mb-3">
+              Use `variant="card"` for:
+            </p>
+            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
+              <li>Pricing plan selection</li>
+              <li>Payment method options</li>
+              <li>Feature add-ons</li>
+              <li>Prominent configuration choices</li>
+            </ul>
+          </div>
+        </div>
+      </DocSection>
+
+      <DocSection title="Basic Usage" id="basic">
         <Checkbox
           label="Accept terms and conditions"
           checked={checked}
@@ -170,7 +256,7 @@ export function CheckboxDoc() {
         />
       </DocSection>
 
-      <DocSection title="Real World" id="real-world-validation">
+      <DocSection title="Real World Example" id="real-world-validation">
         <RealWorldExample />
         <CodeBlock
           ts={`const [checked, setChecked] = useState(false);\nconst [touched, setTouched] = useState(false);\nconst isInvalid = touched && !checked;\n\n<Checkbox \n  label="I accept the Terms of Service"\n  required\n  checked={checked}\n  onCheckedChange={(c) => {\n    setChecked(c === true);\n    setTouched(true);\n  }}\n  error={isInvalid ? "You must accept the terms" : undefined}\n/>`}
@@ -223,85 +309,102 @@ export function CheckboxDoc() {
         <h4 id="checkbox-props" className="text-lg font-bold mb-4">
           CheckboxProps
         </h4>
+        <p className="text-sm text-aer-muted-foreground mb-4">
+          Props for the individual Checkbox component.
+        </p>
         <ApiTable
           data={[
             {
               prop: "checked",
               type: "boolean | 'indeterminate'",
               default: "false",
-              description: "Checked state",
+              description:
+                "The controlled checked state. 'indeterminate' shows a dash.",
+            },
+            {
+              prop: "defaultChecked",
+              type: "boolean | 'indeterminate'",
+              default: "false",
+              description: "The default initial state for uncontrolled usage.",
             },
             {
               prop: "onCheckedChange",
               type: "(checked: boolean | 'indeterminate') => void",
               default: "-",
-              description: "Callback when state changes",
+              description: "Callback fired when the state changes.",
             },
             {
               prop: "label",
               type: "ReactNode",
               default: "-",
-              description: "Primary label text",
-            },
-            {
-              prop: "labelPosition",
-              type: "'left' | 'right' | 'top' | 'bottom'",
-              default: "'right'",
-              description: "Where the label sits relative to the box",
-            },
-            {
-              prop: "align",
-              type: "'start' | 'center' | 'end'",
-              default: "'start'",
-              description: "Vertical alignment for multiline content",
-            },
-            {
-              prop: "variant",
-              type: "'default' | 'card'",
-              default: "'default'",
-              description: "Visual style variant",
+              description:
+                "The primary label text displayed next to the checkbox.",
             },
             {
               prop: "description",
               type: "ReactNode",
               default: "-",
-              description: "Secondary helper text",
-            },
-            {
-              prop: "contentClassName",
-              type: "string",
-              default: "-",
-              description: "Class for the label/description container",
+              description: "Additional helper text displayed below the label.",
             },
             {
               prop: "disabled",
               type: "boolean",
               default: "false",
-              description: "Disables interaction",
+              description: "Disables interaction and dims the component.",
             },
             {
               prop: "required",
               type: "boolean",
               default: "false",
-              description: "Marks as required (adds asterisk)",
-            },
-            {
-              prop: "id",
-              type: "string",
-              default: "-",
-              description: "HTML ID attribute",
+              description:
+                "Marks the field as required (adds an asterisk to label).",
             },
             {
               prop: "error",
               type: "boolean | string",
               default: "-",
-              description: "Shows error styling/message",
+              description:
+                "Indicates an error state. Pass a string to display an error message.",
+            },
+            {
+              prop: "variant",
+              type: "'default' | 'card'",
+              default: "'default'",
+              description:
+                "Visual style variant. 'card' renders a large clickable box.",
             },
             {
               prop: "size",
               type: "'sm' | 'default' | 'lg'",
-              default: "'default' (or global config)",
-              description: "Size of the checkbox",
+              default: "'default'",
+              description: "Size of the checkbox indicator.",
+            },
+            {
+              prop: "labelPosition",
+              type: "'left' | 'right' | 'top' | 'bottom'",
+              default: "'right'",
+              description: "Position of the label relative to the checkbox.",
+            },
+            {
+              prop: "align",
+              type: "'start' | 'center' | 'end'",
+              default: "'start'",
+              description:
+                "Vertical alignment of the checkbox relative to multiline labels.",
+            },
+            {
+              prop: "contentClassName",
+              type: "string",
+              default: "-",
+              description:
+                "Additional CSS classes for the label content container.",
+            },
+            {
+              prop: "id",
+              type: "string",
+              default: "-",
+              description:
+                "HTML ID attribute. If not provided, one is generated automatically.",
             },
           ]}
         />
@@ -311,52 +414,94 @@ export function CheckboxDoc() {
         <h4 id="checkbox-group-props" className="text-lg font-bold mb-4">
           CheckboxGroupProps
         </h4>
+        <p className="text-sm text-aer-muted-foreground mb-4">
+          Props for the CheckboxGroup component, used for managing multiple
+          selections.
+        </p>
         <ApiTable
           data={[
             {
               prop: "options",
               type: "CheckboxOption[]",
-              default: "-",
-              description: "Array of options to display",
+              default: "[]",
+              description:
+                "Array of options to display. Each option has label, value, etc.",
             },
             {
               prop: "value",
               type: "string[]",
               default: "[]",
-              description: "Array of selected values",
+              description: "Controlled array of selected values.",
+            },
+            {
+              prop: "defaultValue",
+              type: "string[]",
+              default: "[]",
+              description: "Default initial selected values.",
             },
             {
               prop: "onChange",
               type: "(value: string[]) => void",
               default: "-",
-              description: "Callback when selection changes",
+              description:
+                "Callback fired when selection changes with the new array of values.",
             },
             {
               prop: "label",
               type: "ReactNode",
               default: "'Select All'",
-              description: "Title for the group / parent checkbox",
+              description:
+                "Title/Legend for the group. Acts as 'Select All' if enabled.",
             },
             {
               prop: "enableSelectAll",
               type: "boolean",
               default: "true",
-              description: "Whether to show the parent 'Select All' checkbox",
+              description:
+                "Whether to render the parent 'Select All' checkbox.",
             },
             {
               prop: "orientation",
               type: "'horizontal' | 'vertical'",
               default: "'vertical'",
-              description: "Layout direction of the options",
+              description: "Layout direction of the options list.",
             },
             {
               prop: "listClassName",
               type: "string",
               default: "-",
-              description: "Class name for the options container",
+              description: "Additional CSS classes for the options container.",
+            },
+            {
+              prop: "disabled",
+              type: "boolean",
+              default: "false",
+              description: "Disables all checkboxes in the group.",
             },
           ]}
         />
+      </div>
+      <div>
+        <h3 id="feature-guide" className="text-lg font-bold mb-4">
+          Feature Usage Guide
+        </h3>
+        <div className="space-y-4">
+          <div className="p-4 border border-aer-border rounded-lg">
+            <h4 className="font-semibold mb-2">Indeterminate State</h4>
+            <p className="text-sm text-aer-muted-foreground">
+              The{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                indeterminate
+              </code>{" "}
+              state is purely visual. It's strictly controlled via the{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                checked
+              </code>{" "}
+              prop (set to "indeterminate"). It's commonly used in "Select All"
+              logic implementation.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -367,10 +512,53 @@ export function CheckboxDoc() {
       id="css-variables"
       description="Customize checkbox appearance using CSS variables."
     >
-      <CodeBlock
-        ts={`:root {\n  --aer-primary: 240 5.9% 10%;\n  --aer-ring: 240 5.9% 10%;\n}`}
-        fullCode={`/* app.css */\n:root {\n  --aer-primary: 240 5.9% 10%;\n  --aer-ring: 240 5.9% 10%;\n}`}
-      />
+      <div className="space-y-4">
+        <p className="text-sm text-aer-muted-foreground">
+          Checkbox uses the following CSS variables from your theme:
+        </p>
+        <CodeBlock
+          ts={`:root {
+  --aer-primary: 221.2 83.2% 53.3%;
+  --aer-primary-foreground: 210 40% 98%;
+  --aer-border: 214.3 31.8% 91.4%;
+  --aer-ring: 221.2 83.2% 53.3%;
+}`}
+          fullCode={`/* styles/globals.css */
+:root {
+  /* Checked Background */
+  --aer-primary: 221.2 83.2% 53.3%;
+  
+  /* Checkmark Color */
+  --aer-primary-foreground: 210 40% 98%;
+  
+  /* Unchecked Border */
+  --aer-border: 214.3 31.8% 91.4%;
+  
+  /* Focus Ring */
+  --aer-ring: 221.2 83.2% 53.3%;
+  
+  /* Card Variant Hover */
+  --aer-muted: 210 40% 96.1%;
+}
+
+.dark {
+  --aer-primary: 217.2 91.2% 59.8%;
+  --aer-primary-foreground: 222.2 47.4% 11.2%;
+  --aer-border: 217.2 32.6% 17.5%;
+  --aer-ring: 217.2 91.2% 59.8%;
+  --aer-muted: 217.2 32.6% 17.5%;
+}`}
+        />
+        <div className="mt-4 space-y-4">
+          <div className="p-4 bg-purple-500/10 border border-purple-500/20 rounded-lg">
+            <p className="text-sm text-purple-700 dark:text-purple-400">
+              <strong>Tip:</strong> The Card variant uses{" "}
+              <code>--aer-muted</code> for its hover state and background.
+              Ensure this variable is defined in your theme.
+            </p>
+          </div>
+        </div>
+      </div>
     </DocSection>
   );
 
@@ -393,7 +581,9 @@ export function CheckboxDoc() {
             label: "Overview",
             content: overview,
             toc: [
-              { id: "basic", title: "Basic" },
+              { id: "introduction", title: "Introduction" },
+              { id: "when-to-use", title: "When to Use" },
+              { id: "basic", title: "Basic Usage" },
               { id: "checkbox-group", title: "Checkbox Group" },
               { id: "states", title: "States" },
               { id: "cards", title: "Card Variant" },
@@ -401,7 +591,7 @@ export function CheckboxDoc() {
               { id: "positioning", title: "Label Positioning" },
               { id: "alignment", title: "Vertical Alignment" },
               { id: "validation", title: "Validation" },
-              { id: "real-world-validation", title: "Real World" },
+              { id: "real-world-validation", title: "Real World Example" },
             ],
           },
           {
@@ -411,6 +601,7 @@ export function CheckboxDoc() {
             toc: [
               { id: "checkbox-props", title: "CheckboxProps" },
               { id: "checkbox-group-props", title: "CheckboxGroupProps" },
+              { id: "feature-guide", title: "Feature Usage Guide" },
             ],
           },
           {

@@ -28,10 +28,10 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     const { size: globalSize } = useAerConfig();
     const size = sizeProp || globalSize;
 
-    // Variant styles
+    // Variant styles matching Input component
     const variantStyles = {
       outline:
-        "border border-aer-input bg-aer-background focus-within:ring-2 focus-within:ring-aer-ring focus-within:ring-offset-2 ring-offset-aer-background rounded-aer-md",
+        "border border-aer-input bg-aer-background focus-within:ring-2 focus-within:ring-aer-ring focus-within:ring-offset-2 ring-offset-aer-background",
       filled:
         "border-b-2 border-aer-input/20 bg-aer-muted/30 focus-within:border-aer-primary focus-within:bg-aer-muted/50 rounded-t-md rounded-b-none",
       underlined:
@@ -39,18 +39,22 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     };
 
     const sizeStyles = {
-      sm: "text-xs px-2 py-1.5 min-h-[60px]",
-      default: "text-sm px-3 py-2 min-h-[80px]",
-      lg: "text-base px-4 py-3 min-h-[100px]",
+      sm: "text-xs min-h-[60px]",
+      default: "text-sm min-h-[80px]",
+      lg: "text-base min-h-[100px]",
     };
 
     return (
       <div
         className={cn(
-          "relative group/input w-full cursor-text transition-all",
+          "relative group/input w-full cursor-text transition-all flex flex-col",
           variantStyles[variant],
+          // Apply padding based on variant and size, matching Input's logic
+          variant !== "underlined" && "px-3 py-2",
+          variant === "outline" && "rounded-aer-md",
           error && "border-red-500 focus-within:ring-red-500",
-          floatingLabel && "pt-4"
+          floatingLabel && "pt-4",
+          className
         )}
       >
         <textarea
@@ -59,8 +63,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             sizeStyles[size],
             // Floating label adjustments
             floatingLabel && "placeholder-transparent pt-0",
-            variant === "underlined" && "px-0",
-            className
+            variant === "underlined" && "px-0"
           )}
           placeholder={floatingLabel ? placeholder || label : placeholder}
           ref={ref}
@@ -69,9 +72,9 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         {floatingLabel && (
           <label
             className={cn(
-              "absolute left-3 top-2 text-sm text-aer-muted-foreground transition-all duration-200 pointer-events-none origin-left bg-aer-background/0 px-1",
+              "absolute left-3 top-2 text-sm text-aer-muted-foreground transition-all duration-200 pointer-events-none origin-left bg-transparent px-1",
               // Check for value (placeholder-shown) or focus
-              "peer-placeholder-shown:top-4 peer-placeholder-shown:text-base",
+              "peer-placeholder-shown:top-6 peer-placeholder-shown:text-base",
               "peer-focus:top-1.5 peer-focus:text-xs peer-focus:text-aer-primary",
               "peer-[:not(:placeholder-shown)]:top-1.5 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-aer-primary",
               variant === "underlined" && "left-0 px-0"

@@ -10,7 +10,78 @@ export function NavbarDoc() {
   const overview = (
     <div className="space-y-12">
       <DocSection
-        title="Basic"
+        title="Introduction"
+        id="introduction"
+        description="A specialized structured component for top and bottom navigation bars."
+      >
+        <div className="prose prose-sm max-w-none">
+          <p className="text-aer-muted-foreground">
+            The Navbar provides a consistent container for application titles,
+            navigation links, and actions. It is designed to be paired with the
+            Sidebar or used as the primary navigation in simpler apps. It
+            natively supports mobile "Bottom Navigation" patterns.
+          </p>
+          <ul className="list-disc pl-6 space-y-2 text-aer-muted-foreground">
+            <li>
+              <strong>Top or Bottom</strong> - Switch effortlessly between
+              desktop header and mobile footer layouts
+            </li>
+            <li>
+              <strong>Flexible Modes</strong> - Sticky, fixed, floating, or
+              standard static positioning
+            </li>
+            <li>
+              <strong>Pre-styled Items</strong> - Includes{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                NavbarItem
+              </code>{" "}
+              and{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                NavbarSpacer
+              </code>{" "}
+              components
+            </li>
+          </ul>
+        </div>
+      </DocSection>
+
+      <DocSection
+        title="When to Use"
+        id="when-to-use"
+        description="Determine the best navigation pattern for your context."
+      >
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
+            <h4 className="font-semibold mb-3 text-aer-foreground">
+              Desktop Headers
+            </h4>
+            <p className="text-sm text-aer-muted-foreground mb-3">
+              Use{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                position="top"
+              </code>{" "}
+              for the main site header containing logo, links, and profile
+              actions.
+            </p>
+          </div>
+          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
+            <h4 className="font-semibold mb-3 text-aer-foreground">
+              Mobile Tab Bars
+            </h4>
+            <p className="text-sm text-aer-muted-foreground mb-3">
+              Use{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                position="bottom"
+              </code>{" "}
+              on small screens to create an app-like navigation experience with
+              icons.
+            </p>
+          </div>
+        </div>
+      </DocSection>
+
+      <DocSection
+        title="Basic Usage"
         id="basic"
         description="Standard top navigation bar for desktop and web applications."
       >
@@ -115,38 +186,77 @@ export function NavbarDoc() {
         <h4 id="navbar-props" className="text-lg font-bold mb-4">
           NavbarProps
         </h4>
+        <p className="text-sm text-aer-muted-foreground mb-4">
+          Component props for configurations.
+        </p>
         <ApiTable
           data={[
             {
               prop: "position",
               type: "'top' | 'bottom'",
               default: "'top'",
-              description: "Where the navbar is fixed/positioned",
+              description:
+                "Where the navbar is fixed/positioned. 'top' adds a bottom border, 'bottom' adds a top border.",
             },
             {
               prop: "mode",
-              type: "'fixed' | 'sticky' | 'static' | 'floating'",
+              type: "'fixed' | 'sticky' | 'static' | 'floating' | 'absolute'",
               default: "'sticky'",
-              description: "CSS positioning strategy",
+              description:
+                "CSS positioning strategy. 'floating' adds a margin and shadow effects.",
             },
             {
               prop: "size",
               type: "'default' | 'sm' | 'lg' | 'auto'",
               default: "'default'",
-              description: "Height and padding preset",
+              description:
+                "Height and padding preset. Use 'auto' for content-based sizing (common for bottom tabs).",
             },
             {
               prop: "align",
               type: "'start' | 'center' | 'end'",
               default: "'center'",
-              description: "Content alignment",
+              description: "Horizontal alignment of the navbar content.",
             },
-
             {
               prop: "className",
               type: "string",
               default: "-",
-              description: "Additional CSS classes",
+              description: "Additional CSS classes.",
+            },
+          ]}
+        />
+      </div>
+
+      <div>
+        <h4 id="navbar-item-props" className="text-lg font-bold mb-4">
+          NavbarItem Props
+        </h4>
+        <ApiTable
+          data={[
+            {
+              prop: "active",
+              type: "boolean",
+              default: "false",
+              description: "Highlights the item as current/active.",
+            },
+            {
+              prop: "icon",
+              type: "ReactNode",
+              default: "-",
+              description: "Icon element to display (useful for mobile tabs).",
+            },
+            {
+              prop: "onClick",
+              type: "() => void",
+              default: "-",
+              description: "Click handler.",
+            },
+            {
+              prop: "className",
+              type: "string",
+              default: "-",
+              description: "Additional CSS classes.",
             },
           ]}
         />
@@ -160,10 +270,40 @@ export function NavbarDoc() {
       id="css-variables"
       description="Customize navbar appearance using CSS variables."
     >
-      <CodeBlock
-        ts={`:root {\n  --aer-background: 240 10% 3.9%;\n  --aer-foreground: 0 0% 98%;\n  --aer-muted: 240 3.7% 15.9%;\n}`}
-        fullCode={`/* app.css */\n:root {\n  --aer-background: 240 10% 3.9%;\n  --aer-foreground: 0 0% 98%;\n  --aer-muted: 240 3.7% 15.9%;\n}`}
-      />
+      <div className="space-y-4">
+        <p className="text-sm text-aer-muted-foreground">
+          Navbar uses the following CSS variables from your theme:
+        </p>
+        <CodeBlock
+          ts={`:root {
+  --aer-background: 0 0% 100%;
+  --aer-foreground: 222.2 47.4% 11.2%;
+  --aer-muted: 210 40% 96.1%;
+  --aer-border: 214.3 31.8% 91.4%;
+}`}
+          fullCode={`/* styles/globals.css */
+:root {
+  /* Background Color */
+  --aer-background: 0 0% 100%;
+  
+  /* Text Color */
+  --aer-foreground: 222.2 47.4% 11.2%;
+  
+  /* Border Color */
+  --aer-border: 214.3 31.8% 91.4%;
+  
+  /* Active/Hover Item Background */
+  --aer-muted: 210 40% 96.1%;
+}
+
+.dark {
+  --aer-background: 222.2 84% 4.9%;
+  --aer-foreground: 210 40% 98%;
+  --aer-border: 217.2 32.6% 17.5%;
+  --aer-muted: 217.2 32.6% 17.5%;
+}`}
+        />
+      </div>
     </DocSection>
   );
 
@@ -185,7 +325,9 @@ export function NavbarDoc() {
             label: "Overview",
             content: overview,
             toc: [
-              { id: "basic", title: "Basic" },
+              { id: "introduction", title: "Introduction" },
+              { id: "when-to-use", title: "When to Use" },
+              { id: "basic", title: "Basic Usage" },
               { id: "bottom-nav", title: "Bottom Navigation" },
             ],
           },
@@ -193,7 +335,10 @@ export function NavbarDoc() {
             id: "api",
             label: "API",
             content: api,
-            toc: [{ id: "navbar-props", title: "NavbarProps" }],
+            toc: [
+              { id: "navbar-props", title: "NavbarProps" },
+              { id: "navbar-item-props", title: "NavbarItem Props" },
+            ],
           },
           {
             id: "theming",

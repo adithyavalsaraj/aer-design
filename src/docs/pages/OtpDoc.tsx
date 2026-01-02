@@ -8,7 +8,75 @@ export function OtpDoc() {
 
   const overview = (
     <div className="space-y-12">
-      <DocSection title="Basic" id="basic">
+      <DocSection
+        id="introduction"
+        title="Introduction"
+        description="Focused input for variable length one-time passwords and verification codes."
+      >
+        <div className="prose prose-sm max-w-none">
+          <p className="text-aer-muted-foreground">
+            The OTP Input component streamlines the entry of security codes. It
+            manages focus automatically, moving to the next field as digits are
+            entered, and supports pasting entire codes from the clipboard.
+          </p>
+          <ul className="list-disc pl-6 space-y-2 text-aer-muted-foreground">
+            <li>
+              <strong>Ease of Use</strong> - Auto-focus rules and keyboard
+              navigation (Arrow keys, Backspace)
+            </li>
+            <li>
+              <strong>Paste Support</strong> - Intelligent handling of pasted
+              content across multiple fields
+            </li>
+            <li>
+              <strong>Flexible Security</strong> - Support for password masking
+              and custom characters
+            </li>
+            <li>
+              <strong>Validation</strong> - regex patterns to restrict input
+              (e.g., numbers only)
+            </li>
+          </ul>
+        </div>
+      </DocSection>
+
+      <DocSection
+        id="when-to-use"
+        title="When to Use"
+        description="Best practices for using OTP inputs."
+      >
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
+            <h4 className="font-semibold mb-3 text-aer-foreground">
+              Verification Flows
+            </h4>
+            <p className="text-sm text-aer-muted-foreground mb-3">
+              Use this component whenever you need to verify:
+            </p>
+            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
+              <li>Email verification links</li>
+              <li>SMS 2FA codes</li>
+              <li>Device authorization pins</li>
+            </ul>
+          </div>
+
+          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
+            <h4 className="font-semibold mb-3 text-aer-foreground">
+              Segmented Data
+            </h4>
+            <p className="text-sm text-aer-muted-foreground mb-3">
+              Also useful for fixed-format data entry:
+            </p>
+            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
+              <li>Credit card expiry (MM / YY)</li>
+              <li>License keys</li>
+              <li>Coupon codes</li>
+            </ul>
+          </div>
+        </div>
+      </DocSection>
+
+      <DocSection title="Basic Usage" id="basic">
         <div className="flex flex-col items-start gap-4">
           <OtpInput value={otp} onChange={setOtp} />
           <div className="text-sm font-mono p-2 bg-aer-muted rounded-md border">
@@ -128,7 +196,7 @@ export function OtpDoc() {
         />
       </DocSection>
 
-      <DocSection title="Real World" id="real-world-validation">
+      <DocSection title="Real World Example" id="real-world-validation">
         <RealWorldExample />
         <CodeBlock
           ts={`const [value, setValue] = useState("");\nconst [touched, setTouched] = useState(false);\nconst isInvalid = touched && value.length < 6;\n\n<label>Verification Code <span className="text-red-500">*</span></label>\n<OtpInput \n  value={value}\n  onChange={setValue}\n  onBlur={() => setTouched(true)}\n  error={isInvalid ? "Code must be 6 digits" : undefined}\n/>`}
@@ -179,78 +247,103 @@ export function OtpDoc() {
   }
 
   const api = (
-    <div className="space-y-8">
+    <div className="space-y-12">
       <div>
         <h3 id="otp-input-props" className="text-lg font-bold mb-4">
           OtpInputProps
         </h3>
+        <p className="text-sm text-aer-muted-foreground mb-4">
+          Component props for configuring the OTP input behavior.
+        </p>
         <ApiTable
           data={[
-            {
-              prop: "length",
-              type: "number",
-              default: "6",
-              description: "Number of OTP boxes",
-            },
             {
               prop: "value",
               type: "string",
               default: "''",
-              description: "Controlled value",
+              description: "The controlled value of the OTP input.",
             },
             {
               prop: "onChange",
               type: "(val: string) => void",
               default: "-",
-              description: "Value change callback",
+              description: "Callback fired when the value changes.",
+            },
+            {
+              prop: "length",
+              type: "number",
+              default: "6",
+              description: "Number of OTP input slots to render.",
             },
             {
               prop: "type",
-              type: "'text' | 'password'",
+              type: "'text' | 'password' | 'tel'",
               default: "'text'",
-              description: "Input type",
+              description:
+                "Input type. Use 'password' for masking, 'tel' for mobile numeric keypads.",
             },
             {
               prop: "maskChar",
               type: "ReactNode",
               default: "-",
-              description: "Custom masking character/icon",
-            },
-            {
-              prop: "disabled",
-              type: "boolean",
-              default: "false",
-              description: "Disable all inputs",
+              description:
+                "Custom character or icon to render when type is 'password'.",
             },
             {
               prop: "pattern",
               type: "RegExp",
               default: "/^\\d$/",
-              description: "Validation pattern",
+              description:
+                "Validation pattern for each character. Defaults to digits only.",
             },
             {
-              prop: "onBlur",
-              type: "() => void",
-              default: "-",
-              description: "Blur handler",
+              prop: "autoFocus",
+              type: "boolean",
+              default: "false",
+              description: "Whether to auto-focus the first input on mount.",
+            },
+            {
+              prop: "disabled",
+              type: "boolean",
+              default: "false",
+              description: "Disables all input slots.",
+            },
+            {
+              prop: "readOnly",
+              type: "boolean",
+              default: "false",
+              description: "Makes all inputs read-only.",
             },
             {
               prop: "error",
               type: "boolean | string",
               default: "-",
-              description: "Error state or message",
+              description:
+                "Indicates an error state, changing the border color.",
+            },
+            {
+              prop: "onBlur",
+              type: "() => void",
+              default: "-",
+              description: "Callback when the input loses focus.",
+            },
+            {
+              prop: "onFocus",
+              type: "() => void",
+              default: "-",
+              description: "Callback when the input gains focus.",
             },
             {
               prop: "className",
               type: "string",
               default: "-",
-              description: "Additional CSS classes",
+              description: "Additional CSS classes for the container.",
             },
             {
               prop: "size",
               type: "'sm' | 'default' | 'lg'",
-              default: "'default' (or global config)",
-              description: "Size of slots",
+              default: "'default'",
+              description: "Size of the input slots.",
             },
           ]}
         />
@@ -264,10 +357,42 @@ export function OtpDoc() {
       id="css-variables"
       description="Customize OTP input appearance using CSS variables."
     >
-      <CodeBlock
-        ts={`:root {\n  --aer-input: 240 5.9% 90%;\n  --aer-ring: 240 5.9% 10%;\n}`}
-        fullCode={`/* app.css */\n:root {\n  --aer-input: 240 5.9% 90%;\n  --aer-ring: 240 5.9% 10%;\n}`}
-      />
+      <div className="space-y-4">
+        <p className="text-sm text-aer-muted-foreground">
+          OTP Input uses the following CSS variables from your theme:
+        </p>
+        <CodeBlock
+          ts={`:root {
+  --aer-input: 214.3 31.8% 91.4%;
+  --aer-ring: 221.2 83.2% 53.3%;
+  --aer-background: 0 0% 100%;
+  --aer-foreground: 222.2 47.4% 11.2%;
+}`}
+          fullCode={`/* styles/globals.css */
+:root {
+  /* Border Color */
+  --aer-input: 214.3 31.8% 91.4%; 
+  
+  /* Focus Ring */
+  --aer-ring: 221.2 83.2% 53.3%;
+  
+  /* Slot Background */
+  --aer-background: 0 0% 100%;
+  
+  /* Text Color */
+  --aer-foreground: 222.2 47.4% 11.2%;
+  
+  /* Error State */
+  --aer-destructive: 0 84.2% 60.2%;
+}
+
+.dark {
+  --aer-input: 217.2 32.6% 17.5%;
+  --aer-ring: 217.2 91.2% 59.8%;
+  --aer-background: 222.2 84% 4.9%;
+}`}
+        />
+      </div>
     </DocSection>
   );
 
@@ -290,13 +415,15 @@ export function OtpDoc() {
             label: "Overview",
             content: overview,
             toc: [
-              { id: "basic", title: "Basic" },
+              { id: "introduction", title: "Introduction" },
+              { id: "when-to-use", title: "When to Use" },
+              { id: "basic", title: "Basic Usage" },
               { id: "sizes", title: "Sizes" },
               { id: "length", title: "Custom Length" },
               { id: "alphanumeric", title: "Alphanumeric" },
               { id: "security", title: "Security" },
               { id: "validation", title: "Validation" },
-              { id: "real-world-validation", title: "Real World" },
+              { id: "real-world-validation", title: "Real World Example" },
             ],
           },
           {

@@ -30,11 +30,72 @@ import {
 } from "lucide-react";
 
 export function MenuDoc() {
+  /* Introduction and When to Use sections */
   const overview = (
     <div className="space-y-12">
       <DocSection
+        id="introduction"
+        title="Introduction"
+        description="A flexible menu component for displaying actions and options."
+      >
+        <div className="prose prose-sm max-w-none">
+          <p className="text-aer-muted-foreground">
+            Menus are temporary surfaces that display a list of choices or
+            actions. They appear when users interact with a button, action, or
+            other control. The Menu component is highly composable, supporting
+            nested submenus, keyboard navigation, and rich item content like
+            icons and shortcuts.
+          </p>
+          <ul className="list-disc pl-6 space-y-2 text-aer-muted-foreground">
+            <li>
+              <strong>Accessible</strong>: Full keyboard support (arrows,
+              home/end, type-ahead).
+            </li>
+            <li>
+              <strong>Smart Positioning</strong>: Automatically calls collision
+              detection to fit in the viewport.
+            </li>
+            <li>
+              <strong>Nested Submenus</strong>: Unlimited levels of nesting with
+              hover/click interactions.
+            </li>
+            <li>
+              <strong>Rich Content</strong>: Support for icons, shortcuts,
+              checkboxes, and radio items.
+            </li>
+          </ul>
+        </div>
+      </DocSection>
+
+      <DocSection
+        id="when-to-use"
+        title="When to Use"
+        description="Scenarios where a Menu is the right choice."
+      >
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
+            <h4 className="font-semibold mb-2 text-aer-foreground">
+              Action Menus
+            </h4>
+            <p className="text-sm text-aer-muted-foreground mb-3">
+              Use for a list of actions related to a specific element (e.g.,
+              "Edit," "Delete," "Share").
+            </p>
+          </div>
+          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
+            <h4 className="font-semibold mb-2 text-aer-foreground">
+              Navigation
+            </h4>
+            <p className="text-sm text-aer-muted-foreground mb-3">
+              Use for dropdown navigation menus in headers or sidebars.
+            </p>
+          </div>
+        </div>
+      </DocSection>
+
+      <DocSection
         id="basic"
-        title="Basic"
+        title="Basic Usage"
         description="A simple menu with text items."
       >
         <div className="flex gap-4 mb-4">
@@ -966,11 +1027,11 @@ export default function UserMenu() {
             label: "Overview",
             content: overview,
             toc: [
-              { id: "basic", title: "Basic" },
+              { id: "basic", title: "Basic Usage" },
               { id: "icons", title: "Icons & Shortcuts" },
               { id: "nested", title: "Nested Submenus" },
               { id: "positioning", title: "Positioning" },
-              { id: "real-world", title: "Real World" },
+              { id: "real-world", title: "Real World Example" },
             ],
           },
           {

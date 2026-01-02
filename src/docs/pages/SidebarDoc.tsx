@@ -515,7 +515,100 @@ export function SidebarDoc() {
   const overview = (
     <div className="space-y-12">
       <DocSection
-        title="Basic"
+        title="Introduction"
+        id="introduction"
+        description="A robust, responsive navigation drawer with multiple layout modes."
+      >
+        <div className="prose prose-sm max-w-none">
+          <p className="text-aer-muted-foreground">
+            The Sidebar allows you to build complex application shells. It
+            handles the heavy lifting of responsive behavior, offering modes
+            like <strong>Fixed</strong> (always visible),{" "}
+            <strong>Overlay</strong> (mobile drawers),
+            <strong>Sticky</strong> (documentation style), and{" "}
+            <strong>Floating</strong> (islands).
+          </p>
+          <ul className="list-disc pl-6 space-y-2 text-aer-muted-foreground">
+            <li>
+              <strong>6 Layout Modes</strong> - Fixed, Sticky, Absolute,
+              Floating, Overlay, Icon
+            </li>
+            <li>
+              <strong>Responsive by Design</strong> - Built-in toggle states and
+              mobile-first patterns
+            </li>
+            <li>
+              <strong>Collapsible</strong> - "Icon Mode" support with
+              auto-expanding rails
+            </li>
+            <li>
+              <strong>Accessible</strong> - ARIA attributes, focus trapping (in
+              overlay), and keyboard support
+            </li>
+          </ul>
+        </div>
+      </DocSection>
+
+      <DocSection
+        title="When to Use"
+        id="when-to-use"
+        description="Choose the right layout strategy for your app."
+      >
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
+            <h4 className="font-semibold mb-3 text-aer-foreground">
+              Application Shells
+            </h4>
+            <p className="text-sm text-aer-muted-foreground mb-3">
+              Use{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                mode="fixed"
+              </code>{" "}
+              for standard dashboards where navigation is always present.
+            </p>
+          </div>
+          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
+            <h4 className="font-semibold mb-3 text-aer-foreground">
+              Mobile Drawers
+            </h4>
+            <p className="text-sm text-aer-muted-foreground mb-3">
+              Use{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                mode="overlay"
+              </code>{" "}
+              for hidden menus triggered by a hamburger button.
+            </p>
+          </div>
+          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
+            <h4 className="font-semibold mb-3 text-aer-foreground">
+              Documentation
+            </h4>
+            <p className="text-sm text-aer-muted-foreground mb-3">
+              Use{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                mode="sticky"
+              </code>{" "}
+              for lists that should scroll with the page but stick to the
+              viewport.
+            </p>
+          </div>
+          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
+            <h4 className="font-semibold mb-3 text-aer-foreground">
+              Modern / SaaS
+            </h4>
+            <p className="text-sm text-aer-muted-foreground mb-3">
+              Use{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                mode="floating"
+              </code>{" "}
+              for a distinct, island-style look.
+            </p>
+          </div>
+        </div>
+      </DocSection>
+
+      <DocSection
+        title="Basic Usage"
         id="basic"
         description="Configure the sidebar behavior and copy the code."
       >
@@ -577,112 +670,124 @@ export function SidebarDoc() {
         <h4 id="sidebar-props" className="text-lg font-bold mb-4">
           SidebarProps
         </h4>
+        <p className="text-sm text-aer-muted-foreground mb-4">
+          Configuration props for the valid Sidebar container.
+        </p>
         <ApiTable
           data={[
-            {
-              prop: "position",
-              type: "'left' | 'right' | 'top' | 'bottom'",
-              default: "'left'",
-              description: "Where the sidebar is fixed/positioned",
-            },
             {
               prop: "mode",
               type: "'fixed' | 'sticky' | 'absolute' | 'floating' | 'overlay' | 'icon'",
               default: "'fixed'",
-              description: "CSS positioning strategy",
+              description:
+                "Controls the positioning strategy. 'fixed' stays on screen, 'absolute' stays in container, 'overlay' sits on top.",
+            },
+            {
+              prop: "position",
+              type: "'left' | 'right' | 'top' | 'bottom'",
+              default: "'left'",
+              description: "Anchor position of the sidebar.",
             },
             {
               prop: "collapsed",
               type: "boolean",
               default: "false",
-              description: "Whether to show only icons",
+              description: "If true, reduces width to show only icons.",
             },
             {
               prop: "hoverable",
               type: "boolean",
               default: "false",
               description:
-                "If collapsed, expands automatically on hover (Rail pattern)",
+                "If true and collapsed, sidebar expands on hover (Rail pattern).",
             },
             {
               prop: "overlay",
               type: "boolean",
               default: "false",
-              description: "Enables overlay mode (z-index + backdrop support)",
-            },
-            {
-              prop: "backdrop",
-              type: "boolean",
-              default: "true",
-              description: "Shows a backdrop when in overlay mode",
-            },
-            {
-              prop: "onBackdropClick",
-              type: "() => void",
-              default: "-",
-              description: "Callback when backdrop is clicked",
+              description:
+                "Force overlay mode regardless of screen size. Recommended for mobile.",
             },
             {
               prop: "isOpen",
               type: "boolean",
               default: "true",
-              description: "Controls visibility (useful for mobile drawers)",
+              description: "Controls visibility in overlay mode.",
             },
             {
               prop: "onOpenChange",
               type: "(isOpen: boolean) => void",
               default: "-",
-              description: "Callback when open state changes",
+              description: "Callback when open state changes.",
+            },
+            {
+              prop: "backdrop",
+              type: "boolean",
+              default: "true",
+              description: "Whether to render a dark backdrop in overlay mode.",
             },
             {
               prop: "closeOnBackdropClick",
               type: "boolean",
               default: "true",
-              description: "Closes sidebar when backdrop is clicked (Overlay)",
+              description: "Close sidebar when clicking the backdrop.",
             },
             {
               prop: "closeOnEscape",
               type: "boolean",
               default: "true",
-              description:
-                "Closes sidebar when Escape key is pressed (Overlay)",
+              description: "Close sidebar when pressing Escape.",
             },
             {
               prop: "className",
               type: "string",
               default: "-",
-              description: "Additional CSS classes",
+              description: "Additional CSS classes for styling.",
             },
           ]}
         />
       </div>
 
       <div>
-        <h4 id="sidebar-item-props" className="text-lg font-bold mb-4">
-          SidebarItem Props
-        </h4>
-        <ApiTable
-          data={[
-            {
-              prop: "active",
-              type: "boolean",
-              default: "false",
-              description: "Highlights the item as currently selected",
-            },
-            {
-              prop: "icon",
-              type: "ReactNode",
-              default: "-",
-              description: "Icon element to display",
-            },
-            {
-              prop: "onClick",
-              type: "() => void",
-              default: "-",
-              description: "Click handler",
-            },
-          ]}
-        />
+        <h3 id="feature-guide" className="text-lg font-bold mb-4">
+          Feature Usage Guide
+        </h3>
+        <div className="space-y-4">
+          <div className="p-4 border border-aer-border rounded-lg">
+            <h4 className="font-semibold mb-2">Responsive Logic</h4>
+            <p className="text-sm text-aer-muted-foreground">
+              The Sidebar is unopinionated about breakpoints. You should use a
+              media query hook (like{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                useMediaQuery
+              </code>
+              ) to toggle the{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                mode="overlay"
+              </code>{" "}
+              and{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                isOpen
+              </code>{" "}
+              props based on screen width.
+            </p>
+          </div>
+          <div className="p-4 border border-aer-border rounded-lg">
+            <h4 className="font-semibold mb-2">Rail Pattern</h4>
+            <p className="text-sm text-aer-muted-foreground">
+              Combine{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                collapsed={true}
+              </code>{" "}
+              with{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                hoverable={true}
+              </code>{" "}
+              to create a rail sidebar that expands when the user hovers over
+              it, preserving valid screen real estate.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -693,10 +798,40 @@ export function SidebarDoc() {
       id="css-variables"
       description="Customize sidebar appearance using CSS variables."
     >
-      <CodeBlock
-        ts={`:root {\n  --aer-background: 240 10% 3.9%;\n  --aer-border: 240 3.7% 15.9%;\n  --aer-muted: 240 3.7% 15.9%;\n}`}
-        fullCode={`/* app.css */\n:root {\n  --aer-background: 240 10% 3.9%;\n  --aer-border: 240 3.7% 15.9%;\n  --aer-muted: 240 3.7% 15.9%;\n}`}
-      />
+      <div className="space-y-4">
+        <p className="text-sm text-aer-muted-foreground">
+          Sidebar uses the following CSS variables from your theme:
+        </p>
+        <CodeBlock
+          ts={`:root {
+  --aer-background: 0 0% 100%;
+  --aer-foreground: 222.2 47.4% 11.2%;
+  --aer-border: 214.3 31.8% 91.4%;
+  --aer-muted: 210 40% 96.1%;
+}`}
+          fullCode={`/* styles/globals.css */
+:root {
+  /* Sidebar Background */
+  --aer-background: 0 0% 100%;
+  
+  /* Text Color */
+  --aer-foreground: 222.2 47.4% 11.2%;
+  
+  /* Border Color */
+  --aer-border: 214.3 31.8% 91.4%;
+  
+  /* Hover/Active Item Background */
+  --aer-muted: 210 40% 96.1%;
+}
+
+.dark {
+  --aer-background: 222.2 84% 4.9%;
+  --aer-foreground: 210 40% 98%;
+  --aer-border: 217.2 32.6% 17.5%;
+  --aer-muted: 217.2 32.6% 17.5%;
+}`}
+        />
+      </div>
     </DocSection>
   );
 
@@ -717,7 +852,9 @@ export function SidebarDoc() {
             label: "Overview",
             content: overview,
             toc: [
-              { id: "basic", title: "Basic" },
+              { id: "introduction", title: "Introduction" },
+              { id: "when-to-use", title: "When to Use" },
+              { id: "basic", title: "Basic Usage" },
               { id: "floating", title: "Floating Island" },
             ],
           },
@@ -727,7 +864,7 @@ export function SidebarDoc() {
             content: api,
             toc: [
               { id: "sidebar-props", title: "SidebarProps" },
-              { id: "sidebar-item-props", title: "SidebarItem Props" },
+              { id: "feature-guide", title: "Feature Usage Guide" },
             ],
           },
           {

@@ -1,3 +1,4 @@
+import { useAerConfig } from "@/components/AerConfigProvider";
 import { Slot } from "@radix-ui/react-slot";
 import { Loader2 } from "lucide-react";
 import * as React from "react";
@@ -22,9 +23,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     const Comp = asChild ? Slot : "button";
 
+    const { size: globalSize } = useAerConfig();
+    const computedSize = size || globalSize;
+
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={cn(
+          buttonVariants({ variant, size: computedSize, className })
+        )}
         ref={ref}
         disabled={isLoading || disabled}
         {...props}

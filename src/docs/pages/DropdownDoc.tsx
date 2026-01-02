@@ -15,7 +15,125 @@ export function DropdownDoc() {
 
   const overview = (
     <div className="space-y-12">
-      <DocSection title="Basic" id="basic">
+      <DocSection
+        id="introduction"
+        title="Introduction"
+        description="Advanced select component with search, virtualization, and multi-select capabilities."
+      >
+        <div className="prose prose-sm max-w-none">
+          <p className="text-aer-muted-foreground">
+            The Dropdown component is a powerful select menu with advanced
+            features for handling large datasets, complex selections, and rich
+            user interactions. It automatically positions itself to stay within
+            the viewport.
+          </p>
+          <ul className="list-disc pl-6 space-y-2 text-aer-muted-foreground">
+            <li>
+              <strong>Virtualization</strong> - Efficiently render thousands of
+              options
+            </li>
+            <li>
+              <strong>Search & filter</strong> - Built-in search with custom
+              filtering
+            </li>
+            <li>
+              <strong>Multi-select</strong> - Select multiple options with
+              badges
+            </li>
+            <li>
+              <strong>Grouping</strong> - Organize options into labeled groups
+            </li>
+            <li>
+              <strong>Lazy loading</strong> - Load options on demand
+            </li>
+            <li>
+              <strong>Auto-positioning</strong> - Smart collision detection
+            </li>
+          </ul>
+        </div>
+      </DocSection>
+
+      <DocSection
+        id="when-to-use"
+        title="When to Use"
+        description="Choose the right dropdown configuration for your use case."
+      >
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
+            <h4 className="font-semibold mb-3 text-aer-foreground">
+              Single Selection
+            </h4>
+            <p className="text-sm text-aer-muted-foreground mb-3">
+              Use basic dropdown for:
+            </p>
+            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
+              <li>Country, state, or category selection</li>
+              <li>Status or priority pickers</li>
+              <li>Language or theme selectors</li>
+              <li>Any single-choice selection</li>
+            </ul>
+          </div>
+
+          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
+            <h4 className="font-semibold mb-3 text-aer-foreground">
+              Multi-Select
+            </h4>
+            <p className="text-sm text-aer-muted-foreground mb-3">
+              Use{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                multiple
+              </code>{" "}
+              for:
+            </p>
+            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
+              <li>Tag or label selection</li>
+              <li>Permission or role assignment</li>
+              <li>Filter selections</li>
+              <li>Multiple category choices</li>
+            </ul>
+          </div>
+
+          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
+            <h4 className="font-semibold mb-3 text-aer-foreground">
+              Large Datasets
+            </h4>
+            <p className="text-sm text-aer-muted-foreground mb-3">
+              Use{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                virtualized
+              </code>{" "}
+              for:
+            </p>
+            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
+              <li>Lists with 100+ options</li>
+              <li>User or customer selection</li>
+              <li>Product catalogs</li>
+              <li>Performance-critical scenarios</li>
+            </ul>
+          </div>
+
+          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
+            <h4 className="font-semibold mb-3 text-aer-foreground">
+              Searchable Options
+            </h4>
+            <p className="text-sm text-aer-muted-foreground mb-3">
+              Use{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                searchable
+              </code>{" "}
+              for:
+            </p>
+            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
+              <li>Long option lists</li>
+              <li>User needs to find specific items quickly</li>
+              <li>Autocomplete-style selections</li>
+              <li>Improving accessibility</li>
+            </ul>
+          </div>
+        </div>
+      </DocSection>
+
+      <DocSection title="Basic Usage" id="basic">
         <div className="max-w-sm space-y-4">
           <Dropdown options={basicOptions} placeholder="Select an option" />
           <Dropdown
@@ -51,28 +169,95 @@ export function DropdownDoc() {
         />
       </DocSection>
 
-      <DocSection title="Specialized" id="specialized">
-        <div className="max-w-sm space-y-4">
-          <Dropdown
-            startIcon={<User className="w-4 h-4" />}
-            options={basicOptions}
-            placeholder="With start icon"
-          />
-          <Dropdown
-            prefix="US"
-            options={basicOptions}
-            placeholder="With prefix"
-          />
-          <Dropdown
-            startIcon={<Globe className="w-4 h-4" />}
-            floatingLabel
-            label="Region"
-            options={basicOptions}
-          />
+      <DocSection title="Addons & Icons" id="addons-icons">
+        <div className="max-w-sm space-y-6">
+          <div className="space-y-4">
+            <h4 className="text-sm font-medium text-aer-muted-foreground">
+              Icons
+            </h4>
+            <Dropdown
+              startIcon={<User className="w-4 h-4" />}
+              options={basicOptions}
+              placeholder="Start Icon"
+            />
+            <Dropdown
+              endIcon={<Globe className="w-4 h-4" />}
+              options={basicOptions}
+              placeholder="End Icon"
+            />
+          </div>
+
+          <div className="space-y-4">
+            <h4 className="text-sm font-medium text-aer-muted-foreground">
+              Prefix & Suffix
+            </h4>
+            <Dropdown prefix="US" options={basicOptions} placeholder="Prefix" />
+            <Dropdown
+              suffix="USD"
+              options={basicOptions}
+              placeholder="Suffix"
+            />
+          </div>
+
+          <div className="space-y-4">
+            <h4 className="text-sm font-medium text-aer-muted-foreground">
+              Addons
+            </h4>
+            <Dropdown
+              addonBefore="https://"
+              options={basicOptions}
+              placeholder="Addon Before"
+            />
+            <Dropdown
+              addonAfter=".com"
+              options={basicOptions}
+              placeholder="Addon After"
+            />
+          </div>
         </div>
         <CodeBlock
-          ts={`<Dropdown startIcon={<User />} placeholder="With start icon" />\n<Dropdown prefix="US" placeholder="With prefix" />\n<Dropdown floatingLabel startIcon={<Globe />} label="Region" />`}
-          fullCode={`import { Dropdown } from "aer-design";\nimport { User, Globe } from "lucide-react";\n\nexport default function SpecializedDemo() {\n  return (\n    <div className="space-y-4">\n      <Dropdown startIcon={<User className="w-4 h-4" />} options={opts} placeholder="With start icon" />\n      <Dropdown prefix="US" options={opts} placeholder="With prefix" />\n      <Dropdown floatingLabel startIcon={<Globe className="w-4 h-4" />} label="Region" options={opts} />\n    </div>\n  );\n}`}
+          ts={`// Icons
+<Dropdown startIcon={<User />} placeholder="Start Icon" />
+<Dropdown endIcon={<Globe />} placeholder="End Icon" />
+
+// Prefix & Suffix
+<Dropdown prefix="US" placeholder="Prefix" />
+<Dropdown suffix="USD" placeholder="Suffix" />
+
+// Addons
+<Dropdown addonBefore="https://" placeholder="Addon Before" />
+<Dropdown addonAfter=".com" placeholder="Addon After" />`}
+          fullCode={`import { Dropdown } from "aer-design";
+import { User, Globe } from "lucide-react";
+
+export default function AddonsDemo() {
+  const options = [
+    { label: "Option 1", value: "1" }, 
+    { label: "Option 2", value: "2" }
+  ];
+
+  return (
+    <div className="space-y-6 max-w-sm">
+      {/* Icons */}
+      <div className="space-y-2">
+        <Dropdown startIcon={<User className="w-4 h-4" />} options={options} placeholder="Start Icon" />
+        <Dropdown endIcon={<Globe className="w-4 h-4" />} options={options} placeholder="End Icon" />
+      </div>
+
+      {/* Prefix & Suffix */}
+      <div className="space-y-2">
+        <Dropdown prefix="US" options={options} placeholder="Prefix" />
+        <Dropdown suffix="USD" options={options} placeholder="Suffix" />
+      </div>
+
+      {/* Addons */}
+      <div className="space-y-2">
+        <Dropdown addonBefore="https://" options={options} placeholder="Addon Before" />
+        <Dropdown addonAfter=".com" options={options} placeholder="Addon After" />
+      </div>
+    </div>
+  );
+}`}
         />
       </DocSection>
 
@@ -355,7 +540,7 @@ export default function GroupedDropdown() {
         />
       </DocSection>
 
-      <DocSection title="Real World" id="real-world">
+      <DocSection title="Real World Example" id="real-world">
         <RealWorldExample />
         <div className="mt-4">
           <p className="text-sm text-aer-muted-foreground mb-4">
@@ -556,139 +741,174 @@ export default function UserSettings() {
         <h3 id="dropdown-props" className="text-lg font-bold mb-4">
           DropdownProps
         </h3>
+        <p className="text-sm text-aer-muted-foreground mb-4">
+          The Dropdown component accepts the following props to control its
+          behavior, appearance, and data handling.
+        </p>
         <ApiTable
           data={[
             {
               prop: "options",
               type: "DropdownOption[]",
               default: "[]",
-              description: "Array of options to display",
+              description:
+                "Array of options to display. Supports sections, grouping, and disabling specific items.",
             },
             {
               prop: "value",
-              type: "string | number | []",
+              type: "string | string[] | null",
               default: "-",
-              description: "Controlled value",
+              description:
+                "Controlled value(s) of the selected option(s). Pass an array for multi-select mode.",
             },
             {
               prop: "onChange",
               type: "(value: any) => void",
               default: "-",
-              description: "Callback when selection changes",
-            },
-            {
-              prop: "multiple",
-              type: "boolean",
-              default: "false",
-              description: "Enable multi-selection",
-            },
-            {
-              prop: "searchable",
-              type: "boolean",
-              default: "false",
-              description: "Enable search functionality",
-            },
-            {
-              prop: "clearable",
-              type: "boolean",
-              default: "false",
-              description: "Show clear button when value selected",
-            },
-            {
-              prop: "virtualized",
-              type: "boolean",
-              default: "false",
-              description: "Enable internal virtualization for large lists",
-            },
-            {
-              prop: "loading",
-              type: "boolean",
-              default: "false",
-              description: "Show loading state (spinners)",
-            },
-            {
-              prop: "onLoadMore",
-              type: "() => void",
-              default: "-",
-              description: "Callback when scrolling to bottom",
-            },
-            {
-              prop: "floatingLabel",
-              type: "boolean",
-              default: "false",
-              description: "Use floating label style",
-            },
-            {
-              prop: "variant",
-              type: '"outline" | "filled" | "underlined"',
-              default: '"outline"',
-              description: "Visual style variant",
-            },
-            {
-              prop: "size",
-              type: '"sm" | "default" | "lg"',
-              default: '"default" (or global config)',
-              description: "Trigger size",
-            },
-            {
-              prop: "error",
-              type: "boolean | string",
-              default: "false",
-              description: "Highlight with error color",
+              description:
+                "Callback fired when selection changes. Returns array for multi-select, single value otherwise.",
             },
             {
               prop: "placeholder",
               type: "string",
               default: '"Select..."',
-              description: "Placeholder text",
+              description:
+                "Placeholder text displayed when no option is selected.",
+            },
+            {
+              prop: "multiple",
+              type: "boolean",
+              default: "false",
+              description:
+                "Enables selection of multiple options. Selected items are shown as badges.",
+            },
+            {
+              prop: "searchable",
+              type: "boolean",
+              default: "false",
+              description:
+                "Enables a search input within the dropdown menu to filter options.",
+            },
+            {
+              prop: "virtualized",
+              type: "boolean",
+              default: "false",
+              description:
+                "Enables virtual scrolling for performance with large datasets (1000+ items).",
+            },
+            {
+              prop: "clearable",
+              type: "boolean",
+              default: "false",
+              description:
+                "Shows a clear button (x) to reset the selection when a value is present.",
             },
             {
               prop: "disabled",
               type: "boolean",
               default: "false",
-              description: "Disable interaction",
+              description: "Disables all interaction with the dropdown.",
+            },
+            {
+              prop: "loading",
+              type: "boolean",
+              default: "false",
+              description:
+                "Shows a loading spinner. Useful for async data fetching.",
+            },
+            {
+              prop: "floatingLabel",
+              type: "boolean",
+              default: "false",
+              description:
+                "Enables floating label style. Label moves up when value is selected.",
+            },
+            {
+              prop: "label",
+              type: "string",
+              default: "-",
+              description:
+                "Label text for floating label mode. Required if floatingLabel is true.",
+            },
+            {
+              prop: "variant",
+              type: '"outline" | "filled" | "underlined"',
+              default: '"outline"',
+              description: "Visual style variant of the input trigger.",
+            },
+            {
+              prop: "size",
+              type: '"sm" | "default" | "lg"',
+              default: '"default"',
+              description:
+                "Size of the dropdown trigger, affecting height and padding.",
             },
             {
               prop: "startIcon",
               type: "ReactNode",
               default: "-",
-              description: "Icon displayed at the start",
+              description: "Icon displayed at the start of the trigger button.",
+            },
+            {
+              prop: "endIcon",
+              type: "ReactNode",
+              default: "-",
+              description: "Icon displayed at the end of the trigger button.",
             },
             {
               prop: "prefix",
               type: "ReactNode",
               default: "-",
-              description: "Text/Element prefix",
+              description:
+                "Fixed text or element displayed before the selected value.",
             },
             {
-              prop: "onSearch",
-              type: "(query: string) => void",
+              prop: "suffix",
+              type: "ReactNode",
               default: "-",
-              description: "External search handler",
+              description:
+                "Fixed text or element displayed after the selected value.",
+            },
+            {
+              prop: "addonBefore",
+              type: "ReactNode",
+              default: "-",
+              description:
+                "Content to display before the dropdown trigger (outside the border).",
+            },
+            {
+              prop: "addonAfter",
+              type: "ReactNode",
+              default: "-",
+              description:
+                "Content to display after the dropdown trigger (outside the border).",
             },
             {
               prop: "maxDisplayCount",
               type: "number",
               default: "-",
-              description: "Max items to show before grouping",
+              description:
+                "Maximum number of selected items to show before condensing (e.g., '+3 more').",
             },
             {
-              prop: "itemHeight",
-              type: "number",
-              default: "36",
-              description: "Height of items for virtualization",
+              prop: "onSearch",
+              type: "(query: string) => void",
+              default: "-",
+              description: "Callback for custom search logic on input change.",
             },
             {
               prop: "containerClassName",
               type: "string",
               default: "-",
-              description: "ClassName for root element",
+              description:
+                "Additional CSS classes for the root container element.",
             },
             {
               prop: "menuClassName",
               type: "string",
               default: "-",
-              description: "ClassName for dropdown menu",
+              description:
+                "Additional CSS classes for the dropdown menu popover.",
             },
           ]}
         />
@@ -762,6 +982,50 @@ export default function UserSettings() {
           ]}
         />
       </div>
+
+      <div>
+        <h3 id="feature-guide" className="text-lg font-bold mb-4">
+          Feature Usage Guide
+        </h3>
+        <div className="space-y-4">
+          <div className="p-4 border border-aer-border rounded-lg">
+            <h4 className="font-semibold mb-2">Virtualization</h4>
+            <p className="text-sm text-aer-muted-foreground">
+              Use{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                virtualized
+              </code>{" "}
+              for lists exceeding 100 items. It renders only visible items,
+              maintaining high performance even with 10,000+ options.
+            </p>
+          </div>
+          <div className="p-4 border border-aer-border rounded-lg">
+            <h4 className="font-semibold mb-2">Search & Filtering</h4>
+            <p className="text-sm text-aer-muted-foreground">
+              Enable{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                searchable
+              </code>{" "}
+              to allow users to filter options. Combine with{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                onSearch
+              </code>{" "}
+              for server-side filtering logic.
+            </p>
+          </div>
+          <div className="p-4 border border-aer-border rounded-lg">
+            <h4 className="font-semibold mb-2">Floating Label</h4>
+            <p className="text-sm text-aer-muted-foreground">
+              Use{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                floatingLabel
+              </code>{" "}
+              for a modern, compact Material Design look. Great for dense forms
+              where saving vertical space is important.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 
@@ -771,25 +1035,60 @@ export default function UserSettings() {
       id="css-variables"
       description="Customize dropdown appearance using CSS variables."
     >
-      <CodeBlock
-        ts={`:root {
-  --aer-input: 240 5.9% 90%;
-  --aer-ring: 240 5.9% 10%;
-  --aer-background: 0 0% 100%;
-  --aer-muted: 240 4.8% 95.9%;
-  --aer-muted-foreground: 240 3.8% 46.1%;
-  --aer-border: 240 5.9% 90%;
+      <div className="space-y-4">
+        <p className="text-sm text-aer-muted-foreground">
+          Dropdown uses the following CSS variables from your theme:
+        </p>
+        <CodeBlock
+          ts={`:root {
+  --aer-dropdown-bg: 0 0% 100%;
+  --aer-dropdown-border: 214.3 31.8% 91.4%;
+  --aer-item-hover: 210 40% 96.1%;
+  --aer-primary: 221.2 83.2% 53.3%;
+  /* See full list below */
 }`}
-        fullCode={`/* app.css */
+          fullCode={`/* styles/globals.css or your theme file */
 :root {
-  --aer-input: 240 5.9% 90%;
-  --aer-ring: 240 5.9% 10%;
+  /* Trigger & Menu Background */
   --aer-background: 0 0% 100%;
-  --aer-muted: 240 4.8% 95.9%;
-  --aer-muted-foreground: 240 3.8% 46.1%;
-  --aer-border: 240 5.9% 90%;
+  
+  /* Borders */
+  --aer-border: 214.3 31.8% 91.4%;
+  
+  /* Text Colors */
+  --aer-foreground: 222.2 47.4% 11.2%;
+  --aer-muted-foreground: 215.4 16.3% 46.9%;
+  
+  /* Selection & Hover States */
+  --aer-primary: 221.2 83.2% 53.3%; /* Selected item background/text */
+  --aer-primary-foreground: 210 40% 98%;
+  --aer-muted: 210 40% 96.1%; /* Item hover background */
+  
+  /* Focus Ring */
+  --aer-ring: 221.2 83.2% 53.3%;
+}
+
+/* Dark mode */
+.dark {
+  --aer-background: 222.2 84% 4.9%;
+  --aer-border: 217.2 32.6% 17.5%;
+  --aer-foreground: 210 40% 98%;
+  --aer-muted-foreground: 215 20.2% 65.1%;
+  --aer-primary: 217.2 91.2% 59.8%;
+  --aer-muted: 217.2 32.6% 17.5%;
+  --aer-ring: 217.2 91.2% 59.8%;
 }`}
-      />
+        />
+        <div className="mt-4 space-y-4">
+          <div className="p-4 bg-purple-500/10 border border-purple-500/20 rounded-lg">
+            <p className="text-sm text-purple-700 dark:text-purple-400">
+              <strong>Tip:</strong> Use the ThemeProvider to switch themes
+              globally, or override these variables in a specific scope to
+              customize just the dropdowns.
+            </p>
+          </div>
+        </div>
+      </div>
     </DocSection>
   );
 
@@ -812,9 +1111,11 @@ export default function UserSettings() {
             label: "Overview",
             content: overview,
             toc: [
-              { id: "basic", title: "Basic" },
+              { id: "introduction", title: "Introduction" },
+              { id: "when-to-use", title: "When to Use" },
+              { id: "basic", title: "Basic Usage" },
               { id: "multi-select", title: "Multi-select" },
-              { id: "specialized", title: "Specialized" },
+              { id: "addons-icons", title: "Addons & Icons" },
               { id: "clearable", title: "Clearable" },
               { id: "grouped", title: "Grouped Dropdown" },
               { id: "search", title: "Search & Filter" },
@@ -824,7 +1125,7 @@ export default function UserSettings() {
               { id: "sizes", title: "Sizes" },
               { id: "floating-label", title: "Floating Label" },
               { id: "validation", title: "Validation" },
-              { id: "real-world", title: "Real World" },
+              { id: "real-world", title: "Real World Example" },
             ],
           },
           {
@@ -834,6 +1135,7 @@ export default function UserSettings() {
             toc: [
               { id: "dropdown-props", title: "DropdownProps" },
               { id: "dropdown-option-type", title: "DropdownOption Type" },
+              { id: "feature-guide", title: "Feature Usage Guide" },
             ],
           },
           {

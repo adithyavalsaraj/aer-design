@@ -7,7 +7,89 @@ export function RadioDoc() {
 
   const overview = (
     <div className="space-y-12">
-      <DocSection title="Basic" id="basic">
+      <DocSection
+        id="introduction"
+        title="Introduction"
+        description="Mutually exclusive selection control with support for cards and custom layouts."
+      >
+        <div className="prose prose-sm max-w-none">
+          <p className="text-aer-muted-foreground">
+            The Radio component allows users to select a single item from a list
+            of mutually exclusive options. It is designed to be accessible,
+            keyboard navigable, and visually flexible, supporting standard list
+            views, grid layouts, and rich content cards.
+          </p>
+          <ul className="list-disc pl-6 space-y-2 text-aer-muted-foreground">
+            <li>
+              <strong>Accessible</strong> - Full keyboard navigation and ARIA
+              support
+            </li>
+            <li>
+              <strong>Card Variant</strong> - Easily create pricing tables or
+              rich selection grids
+            </li>
+            <li>
+              <strong>Flexible Layout</strong> - Vertical stacks, horizontal
+              rows, or responsive grids
+            </li>
+            <li>
+              <strong>Validation</strong> - Built-in error states for the entire
+              group
+            </li>
+          </ul>
+        </div>
+      </DocSection>
+
+      <DocSection
+        id="when-to-use"
+        title="When to Use"
+        description="Guidance on when to use Radio buttons versus other selection controls."
+      >
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
+            <h4 className="font-semibold mb-3 text-aer-foreground">
+              Few Options (&lt; 5)
+            </h4>
+            <p className="text-sm text-aer-muted-foreground mb-3">
+              Use Radio buttons when you have a small list of options and want
+              them all visible:
+            </p>
+            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
+              <li>Shipping speed (Standard, Express, Overnight)</li>
+              <li>Size selection (S, M, L, XL)</li>
+              <li>Yes/No questions</li>
+            </ul>
+          </div>
+
+          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
+            <h4 className="font-semibold mb-3 text-aer-foreground">
+              Rich Comparisons
+            </h4>
+            <p className="text-sm text-aer-muted-foreground mb-3">
+              Use `variant="card"` when options need explanations or visual
+              weight:
+            </p>
+            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
+              <li>Subscription tiers (features, price)</li>
+              <li>Payment methods (Icon + Name)</li>
+              <li>Layout options (Grid vs List)</li>
+            </ul>
+          </div>
+
+          <div className="md:col-span-2 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+            <h4 className="font-semibold mb-2 text-blue-700 dark:text-blue-400">
+              Radio vs Dropdown
+            </h4>
+            <p className="text-sm text-blue-700/80 dark:text-blue-400/80">
+              If you have more than 5-7 options, consider using a{" "}
+              <strong>Dropdown</strong> (Select) to save screen space. Radio
+              buttons are best when users need to compare options side-by-side.
+            </p>
+          </div>
+        </div>
+      </DocSection>
+
+      <DocSection title="Basic Usage" id="basic">
         <RadioGroup value={flavor} onChange={setFlavor}>
           <RadioItem value="vanilla" label="Vanilla" />
           <RadioItem value="chocolate" label="Chocolate" />
@@ -150,7 +232,7 @@ export function RadioDoc() {
         />
       </DocSection>
 
-      <DocSection title="Real World" id="real-world-validation">
+      <DocSection title="Real World Example" id="real-world-validation">
         <RealWorldExample />
         <CodeBlock
           ts={`const [value, setValue] = useState("");\nconst [touched, setTouched] = useState(false);\nconst isInvalid = touched && !value;\n\n<RadioGroup \n  error={isInvalid ? "Please select a plan" : undefined}\n  value={value}\n  onChange={(val) => {\n    setValue(val);\n    setTouched(true);\n  }}\n>\n  <RadioItem value="free" label="Free Tier" required />\n  <RadioItem value="pro" label="Pro Tier" required />\n</RadioGroup>`}
@@ -225,49 +307,65 @@ export function RadioDoc() {
         <h4 id="radio-group-props" className="text-lg font-bold mb-4">
           RadioGroup Props
         </h4>
+        <p className="text-sm text-aer-muted-foreground mb-4">
+          The container component that manages the state of the radio buttons.
+        </p>
         <ApiTable
           data={[
             {
               prop: "value",
               type: "string",
               default: "-",
-              description: "Controlled value",
+              description: "The controlled value of the selected radio item.",
             },
             {
               prop: "defaultValue",
               type: "string",
               default: "-",
-              description: "Initial value (uncontrolled)",
+              description: "The initial value for uncontrolled usage.",
             },
             {
               prop: "onChange",
               type: "(value: string) => void",
               default: "-",
-              description: "Change handler",
+              description: "Callback fired when the selection changes.",
             },
             {
               prop: "name",
               type: "string",
               default: "-",
-              description: "Native input name attribute",
+              description:
+                "Native input name attribute. Useful for form submission.",
+            },
+            {
+              prop: "orientation",
+              type: "'horizontal' | 'vertical'",
+              default: "'vertical'",
+              description: "Layout direction (affects keyboard navigation).",
             },
             {
               prop: "disabled",
               type: "boolean",
               default: "false",
-              description: "Disable entire group",
+              description: "Disables all radio items in the group.",
+            },
+            {
+              prop: "error",
+              type: "boolean | string",
+              default: "-",
+              description: "Indicates an error state for the group.",
             },
             {
               prop: "className",
               type: "string",
               default: "-",
-              description: "Additional CSS classes",
+              description: "Additional CSS classes for the group container.",
             },
             {
               prop: "size",
               type: "'sm' | 'default' | 'lg'",
-              default: "'default' (or global config)",
-              description: "Size of all radio items in group",
+              default: "'default'",
+              description: "Size of all radio items in the group.",
             },
           ]}
         />
@@ -276,70 +374,90 @@ export function RadioDoc() {
         <h4 id="radio-item-props" className="text-lg font-bold mb-4">
           RadioItem Props
         </h4>
+        <p className="text-sm text-aer-muted-foreground mb-4">
+          The individual radio button component.
+        </p>
         <ApiTable
           data={[
             {
               prop: "value",
               type: "string",
               default: "-",
-              description: "Value of this item",
+              description: "Unique value for this item.",
             },
             {
               prop: "label",
               type: "ReactNode",
               default: "-",
-              description: "Primary label text",
+              description: "Primary label text.",
             },
             {
               prop: "description",
               type: "ReactNode",
               default: "-",
-              description: "Helper text",
+              description: "Helper text displayed below the label.",
             },
             {
               prop: "variant",
               type: "'default' | 'card'",
               default: "'default'",
-              description: "Card style variant",
+              description:
+                "Visual style variant. 'card' renders a large clickable box.",
             },
             {
               prop: "labelPosition",
               type: "'left' | 'right' | 'top' | 'bottom'",
               default: "'right'",
-              description: "Label placement",
+              description:
+                "Position of the label relative to the radio circle.",
             },
             {
               prop: "align",
               type: "'start' | 'center' | 'end'",
               default: "'start'",
-              description: "Vertical alignment",
+              description: "Vertical alignment for multiline labels.",
             },
             {
               prop: "disabled",
               type: "boolean",
               default: "false",
-              description: "Disables the item",
+              description: "Disables this specific item.",
             },
             {
               prop: "contentClassName",
               type: "string",
               default: "-",
-              description: "Class for label/description container",
+              description:
+                "Additional CSS classes for the label content container.",
             },
             {
-              prop: "error",
-              type: "boolean | string",
+              prop: "id",
+              type: "string",
               default: "-",
-              description: "Error state for individual item",
-            },
-            {
-              prop: "size",
-              type: "'sm' | 'default' | 'lg'",
-              default: "inherited",
-              description: "Override size for specific item",
+              description: "HTML ID attribute.",
             },
           ]}
         />
+      </div>
+
+      <div>
+        <h3 id="feature-guide" className="text-lg font-bold mb-4">
+          Feature Usage Guide
+        </h3>
+        <div className="space-y-4">
+          <div className="p-4 border border-aer-border rounded-lg">
+            <h4 className="font-semibold mb-2">Keyboard Navigation</h4>
+            <p className="text-sm text-aer-muted-foreground">
+              Radio groups support full keyboard navigation. Users can Tab into
+              the group and use Arrow keys to change selection. Ensure you set
+              the{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                orientation
+              </code>{" "}
+              prop correctly if you are using a horizontal layout.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -350,11 +468,52 @@ export function RadioDoc() {
       id="css-variables"
       description="Customize radio appearance using CSS variables."
     >
-      <CodeBlock
-        // css
-        ts={`:root {\n  --aer-primary: 240 5.9% 10%;\n  --aer-ring: 240 5.9% 10%;\n}`}
-        fullCode={`/* app.css */\n:root {\n  --aer-primary: 240 5.9% 10%;\n  --aer-ring: 240 5.9% 10%;\n}`}
-      />
+      <div className="space-y-4">
+        <p className="text-sm text-aer-muted-foreground">
+          Radio uses the following CSS variables from your theme:
+        </p>
+        <CodeBlock
+          ts={`:root {
+  --aer-primary: 221.2 83.2% 53.3%;
+  --aer-primary-foreground: 210 40% 98%;
+  --aer-border: 214.3 31.8% 91.4%;
+  --aer-ring: 221.2 83.2% 53.3%;
+}`}
+          fullCode={`/* styles/globals.css */
+:root {
+  /* Checked Circle Background & Border */
+  --aer-primary: 221.2 83.2% 53.3%;
+  
+  /* Inner Dot Color */
+  --aer-primary-foreground: 210 40% 98%;
+  
+  /* Unchecked Border */
+  --aer-border: 214.3 31.8% 91.4%;
+  
+  /* Focus Ring */
+  --aer-ring: 221.2 83.2% 53.3%;
+  
+  /* Card Variant Hover */
+  --aer-muted: 210 40% 96.1%;
+}
+
+.dark {
+  --aer-primary: 217.2 91.2% 59.8%;
+  --aer-primary-foreground: 222.2 47.4% 11.2%;
+  --aer-border: 217.2 32.6% 17.5%;
+  --aer-ring: 217.2 91.2% 59.8%;
+  --aer-muted: 217.2 32.6% 17.5%;
+}`}
+        />
+        <div className="mt-4 space-y-4">
+          <div className="p-4 bg-purple-500/10 border border-purple-500/20 rounded-lg">
+            <p className="text-sm text-purple-700 dark:text-purple-400">
+              <strong>Tip:</strong> The Card variant uses{" "}
+              <code>--aer-muted</code> for its hover state.
+            </p>
+          </div>
+        </div>
+      </div>
     </DocSection>
   );
 
@@ -377,13 +536,15 @@ export function RadioDoc() {
             label: "Overview",
             content: overview,
             toc: [
-              { id: "basic", title: "Basic" },
+              { id: "introduction", title: "Introduction" },
+              { id: "when-to-use", title: "When to Use" },
+              { id: "basic", title: "Basic Usage" },
               { id: "cards", title: "Card Selection" },
               { id: "sizes", title: "Sizes" },
               { id: "layout", title: "Layout Variants" },
               { id: "alignment", title: "Vertical Alignment" },
               { id: "validation", title: "Validation" },
-              { id: "real-world-validation", title: "Real World" },
+              { id: "real-world-validation", title: "Real World Example" },
             ],
           },
           {
@@ -393,6 +554,7 @@ export function RadioDoc() {
             toc: [
               { id: "radio-group-props", title: "RadioGroup Props" },
               { id: "radio-item-props", title: "RadioItem Props" },
+              { id: "feature-guide", title: "Feature Usage Guide" },
             ],
           },
           {

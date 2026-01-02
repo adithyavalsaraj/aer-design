@@ -1,3 +1,4 @@
+import { useAerConfig } from "@/components/AerConfigProvider";
 import { cn } from "@/lib/utils";
 import { type VariantProps, cva } from "class-variance-authority";
 import * as React from "react";
@@ -59,9 +60,20 @@ export interface NavbarProps
 
 const Navbar = React.forwardRef<HTMLDivElement, NavbarProps>(
   (
-    { className, position, mode, size, align = "center", children, ...props },
+    {
+      className,
+      position,
+      mode,
+      size: sizeProp,
+      align = "center",
+      children,
+      ...props
+    },
     ref
   ) => {
+    const { size: globalSize } = useAerConfig();
+    const size = sizeProp || globalSize;
+
     return (
       <header
         ref={ref}

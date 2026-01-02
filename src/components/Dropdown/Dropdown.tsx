@@ -82,9 +82,12 @@ export interface DropdownProps
   onLoadMore?: () => void;
   hasMore?: boolean;
   startIcon?: React.ReactNode;
+  endIcon?: React.ReactNode;
   prefix?: React.ReactNode;
+  suffix?: React.ReactNode;
+  addonBefore?: React.ReactNode;
+  addonAfter?: React.ReactNode;
   maxDisplayCount?: number;
-  /* duplicates removed */
   containerClassName?: string;
   size?: "sm" | "default" | "lg";
   menuClassName?: string;
@@ -144,8 +147,11 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
       onLoadMore,
       hasMore,
       startIcon,
+      endIcon,
       prefix,
-      /* duplicates removed */
+      suffix,
+      addonBefore,
+      addonAfter,
       maxDisplayCount, // Optional prop to fallback to "{n} selected"
       size: sizeProp,
       ...props
@@ -169,6 +175,8 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
     const containerRef = React.useRef<HTMLDivElement>(null);
     const listRef = React.useRef<HTMLDivElement>(null);
     const menuRef = React.useRef<HTMLDivElement>(null);
+
+    const hasAddon = addonBefore || addonAfter;
 
     // Auto-positioning state
     const [menuPosition, setMenuPosition] = React.useState<{
@@ -339,18 +347,11 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
     }, []);
 
     // Virtualization Logic (disabled for now with groups - will implement later)
-    const [scrollTop, setScrollTop] = React.useState(0);
+
     const listHeight = Math.min(selectableItems.length * itemHeight, 250);
-    const visibleCount = Math.ceil(listHeight / itemHeight) + 2;
-    const startIndex = Math.floor(scrollTop / itemHeight);
-    const endIndex = Math.min(
-      startIndex + visibleCount,
-      selectableItems.length
-    );
 
     const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
       const target = e.currentTarget;
-      setScrollTop(target.scrollTop);
 
       // Lazy load trigger
       if (onLoadMore && hasMore && !loading) {
@@ -374,163 +375,190 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
         className={cn("relative w-full group/dropdown", containerClassName)}
         ref={containerRef}
       >
-        {/* Trigger */}
-        <div
-          ref={ref as any}
-          className={cn(
-            dropdownTriggerVariants({
-              variant,
-              error: !!error,
-              floatingLabel,
-              size,
-            }),
-            dropdownTriggerVariants({
-              variant,
-              error: !!error,
-              floatingLabel,
-              size,
-            }),
-            className
+        <div className="flex items-stretch w-full">
+          {addonBefore && (
+            <div className="flex items-center px-3 border border-r-0 rounded-l-aer-md bg-aer-muted text-aer-muted-foreground text-sm shrink-0 whitespace-nowrap">
+              {addonBefore}
+            </div>
           )}
-          onClick={() => !disabled && setIsOpen(!isOpen)}
-          tabIndex={disabled ? -1 : 0}
-          onKeyDown={(e) => {
-            if (disabled) return;
 
-            // Handle Space key
-            if (e.key === " ") {
-              e.preventDefault();
-              if (isOpen && focusedIndex >= 0) {
-                // Select focused option
-                const option = selectableItems[focusedIndex];
-                if (option && !option.disabled) {
-                  handleSelect(option.value);
-                }
-              } else {
-                // Toggle dropdown
-                setIsOpen(!isOpen);
-              }
-              return;
-            }
-
-            // Handle Enter key
-            if (e.key === "Enter") {
-              e.preventDefault();
-              if (isOpen && focusedIndex >= 0) {
-                const option = selectableItems[focusedIndex];
-                if (option && !option.disabled) {
-                  handleSelect(option.value);
-                }
-              } else {
-                setIsOpen(!isOpen);
-              }
-              return;
-            }
-
-            if (e.key === "Escape") setIsOpen(false);
-
-            // Arrow key navigation when open
-            if (isOpen && selectableItems.length > 0) {
-              if (e.key === "ArrowDown") {
-                e.preventDefault();
-                setFocusedIndex((prev) =>
-                  prev < selectableItems.length - 1 ? prev + 1 : 0
-                );
-              } else if (e.key === "ArrowUp") {
-                e.preventDefault();
-                setFocusedIndex((prev) =>
-                  prev > 0 ? prev - 1 : selectableItems.length - 1
-                );
-              } else if (e.key === "Home") {
-                e.preventDefault();
-                setFocusedIndex(0);
-              } else if (e.key === "End") {
-                e.preventDefault();
-                setFocusedIndex(selectableItems.length - 1);
-              }
-            }
-          }}
-          {...(props as any)}
-        >
-          {/* Floating Label - Moved to root for correct positioning relative to container */}
-
-          {/* Label / Start Elements */}
-          <div className="flex items-center gap-2 flex-1 min-w-0">
-            {startIcon && (
-              <span
-                className={cn(
-                  "text-aer-muted-foreground shrink-0 flex items-center justify-center mr-2" // Ensure centering and spacing
-                )}
-              >
-                {/* Clone element to modify size if it's an SVG, or just wrap it */}
-                <div
-                  className={cn(
-                    "flex items-center justify-center",
-                    iconSizes[size]
-                  )}
-                >
-                  {startIcon}
-                </div>
-              </span>
+          {/* Trigger */}
+          <div
+            ref={ref as any}
+            className={cn(
+              dropdownTriggerVariants({
+                variant,
+                error: !!error,
+                floatingLabel,
+                size,
+              }),
+              !hasAddon && variant === "outline" && "rounded-aer-md",
+              addonBefore && "border-l-0 rounded-l-none",
+              addonAfter && "border-r-0 rounded-r-none",
+              addonBefore && !addonAfter && "rounded-r-aer-md",
+              addonAfter && !addonBefore && "rounded-l-aer-md",
+              className
             )}
-            {prefix && (
-              <span className="text-aer-muted-foreground text-sm font-medium shrink-0 flex items-center">
-                {prefix}
-              </span>
-            )}
+            onClick={() => !disabled && setIsOpen(!isOpen)}
+            tabIndex={disabled ? -1 : 0}
+            onKeyDown={(e) => {
+              if (disabled) return;
 
-            <div
-              className={cn(
-                "relative flex-1 text-left h-full flex flex-col justify-center",
-                floatingLabel && isFloating && "pt-3.5 pb-0.5", // Push text down when label active
-                floatingLabel && !isFloating && "py-2" // Center placeholder
-              )}
-            >
-              {/* Floating Label - Moved inside to respect startIcon/prefix layout */}
-              {floatingLabel && (
+              // Handle Space key
+              if (e.key === " " && !searchable) {
+                // Allow space in search
+                e.preventDefault();
+                if (isOpen && focusedIndex >= 0) {
+                  // Select focused option
+                  const option = selectableItems[focusedIndex];
+                  if (option && !option.disabled) {
+                    handleSelect(option.value);
+                  }
+                } else {
+                  setIsOpen(!isOpen);
+                }
+                return;
+              }
+
+              // Handle Enter key
+              if (e.key === "Enter") {
+                e.preventDefault();
+                if (isOpen && focusedIndex >= 0) {
+                  const option = selectableItems[focusedIndex];
+                  if (option && !option.disabled) {
+                    handleSelect(option.value);
+                  }
+                } else {
+                  setIsOpen(!isOpen);
+                }
+                return;
+              }
+
+              if (e.key === "Escape") setIsOpen(false);
+
+              // Arrow key navigation when open
+              if (isOpen && selectableItems.length > 0) {
+                if (e.key === "ArrowDown") {
+                  e.preventDefault();
+                  setFocusedIndex((prev) =>
+                    prev < selectableItems.length - 1 ? prev + 1 : 0
+                  );
+                } else if (e.key === "ArrowUp") {
+                  e.preventDefault();
+                  setFocusedIndex((prev) =>
+                    prev > 0 ? prev - 1 : selectableItems.length - 1
+                  );
+                } else if (e.key === "Home") {
+                  e.preventDefault();
+                  setFocusedIndex(0);
+                } else if (e.key === "End") {
+                  e.preventDefault();
+                  setFocusedIndex(selectableItems.length - 1);
+                }
+              }
+            }}
+            {...(props as any)}
+          >
+            {/* Floating Label - Moved to root for correct positioning relative to container */}
+
+            {/* Label / Start Elements */}
+            <div className="flex items-center gap-2 flex-1 min-w-0">
+              {startIcon && (
                 <span
                   className={cn(
-                    "absolute left-0 transition-all duration-200 pointer-events-none origin-left text-aer-muted-foreground z-10",
-                    isFloating
-                      ? "top-1 text-xs text-aer-primary scale-90" // Active state - positioned at top
-                      : "top-1/2 -translate-y-1/2 text-sm" // Placeholder state
+                    "text-aer-muted-foreground shrink-0 flex items-center justify-center mr-2" // Ensure centering and spacing
                   )}
                 >
-                  {label || placeholder}
+                  <div
+                    className={cn(
+                      "flex items-center justify-center",
+                      iconSizes[size]
+                    )}
+                  >
+                    {startIcon}
+                  </div>
+                </span>
+              )}
+              {prefix && (
+                <span className="text-aer-muted-foreground text-sm font-medium shrink-0 flex items-center">
+                  {prefix}
                 </span>
               )}
 
-              {/* Display Value */}
-              {displayValue ? (
-                <span className="block truncate">{displayValue}</span>
-              ) : (
-                !floatingLabel && (
-                  <span className="text-aer-muted-foreground">
-                    {placeholder}
+              <div
+                className={cn(
+                  "relative flex-1 text-left h-full flex flex-col justify-center",
+                  floatingLabel && isFloating && "pt-3.5 pb-0.5", // Push text down when label active
+                  floatingLabel && !isFloating && "py-2" // Center placeholder
+                )}
+              >
+                {/* Floating Label - Moved inside to respect startIcon/prefix layout */}
+                {floatingLabel && (
+                  <span
+                    className={cn(
+                      "absolute left-0 transition-all duration-200 pointer-events-none origin-left text-aer-muted-foreground z-10",
+                      isFloating
+                        ? "top-1 text-xs text-aer-primary scale-90" // Active state - positioned at top
+                        : "top-1/2 -translate-y-1/2 text-sm" // Placeholder state
+                    )}
+                  >
+                    {label || placeholder}
                   </span>
-                )
+                )}
+
+                {/* Display Value */}
+                {displayValue ? (
+                  <span className="block truncate">{displayValue}</span>
+                ) : (
+                  !floatingLabel && (
+                    <span className="text-aer-muted-foreground">
+                      {placeholder}
+                    </span>
+                  )
+                )}
+              </div>
+            </div>
+
+            {/* End Elements */}
+            <div className="flex items-center gap-1.5 shrink-0 ml-2">
+              {suffix && (
+                <span className="text-aer-muted-foreground text-sm font-medium shrink-0 whitespace-nowrap">
+                  {suffix}
+                </span>
               )}
+              {endIcon && (
+                <span
+                  className={cn(
+                    "text-aer-muted-foreground flex items-center justify-center",
+                    iconSizes[size]
+                  )}
+                >
+                  {endIcon}
+                </span>
+              )}
+              {clearable && displayValue && !disabled && (
+                <div
+                  role="button"
+                  onClick={handleClear}
+                  className="p-0.5 rounded-full hover:bg-aer-muted text-aer-muted-foreground transition-colors"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </div>
+              )}
+              <ChevronDown
+                className={cn(
+                  "w-4 h-4 text-aer-muted-foreground transition-transform duration-200",
+                  isOpen && "rotate-180"
+                )}
+              />
             </div>
           </div>
 
-          {/* End Elements */}
-          <div className="flex items-center gap-1.5 shrink-0 ml-2">
-            {clearable && displayValue && !disabled && (
-              <div
-                role="button"
-                onClick={handleClear}
-                className="p-0.5 rounded-full hover:bg-aer-muted text-aer-muted-foreground transition-colors"
-              >
-                <X className="w-3.5 h-3.5" />
-              </div>
-            )}
-            <ChevronDown
-              className={cn(
-                "w-4 h-4 text-aer-muted-foreground transition-transform duration-200",
-                isOpen && "rotate-180"
-              )}
-            />
-          </div>
+          {addonAfter && (
+            <div className="flex items-center px-3 border border-l-0 rounded-r-aer-md bg-aer-muted text-aer-muted-foreground text-sm shrink-0 whitespace-nowrap">
+              {addonAfter}
+            </div>
+          )}
         </div>
 
         {/* Dropdown Menu */}

@@ -5,7 +5,77 @@ import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
 export function TextareaDoc() {
   const overview = (
     <div className="space-y-12">
-      <DocSection title="Basic" id="basic">
+      <DocSection
+        id="introduction"
+        title="Introduction"
+        description="Multi-line text input with rich customization options."
+      >
+        <div className="prose prose-sm max-w-none">
+          <p className="text-aer-muted-foreground">
+            The Textarea component renders a multi-line text input for longer
+            content. It shares the same visual language and component API as the
+            Input component, supporting variants, floating labels, validation
+            states, and sizing options.
+          </p>
+          <ul className="list-disc pl-6 space-y-2 text-aer-muted-foreground">
+            <li>
+              <strong>Elastic Sizing</strong> - Easily control min/max height
+              via className
+            </li>
+            <li>
+              <strong>Visual Variants</strong> - Outline, filled, and underlined
+              styles
+            </li>
+            <li>
+              <strong>Floating Labels</strong> - Integrated support for
+              Material-style floating labels
+            </li>
+            <li>
+              <strong>Validation</strong> - Built-in error states and feedback
+              styling
+            </li>
+          </ul>
+        </div>
+      </DocSection>
+
+      <DocSection
+        id="when-to-use"
+        title="When to Use"
+        description="Guidance on when to use a Textarea versus other inputs."
+      >
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
+            <h4 className="font-semibold mb-3 text-aer-foreground">
+              Long Form Content
+            </h4>
+            <p className="text-sm text-aer-muted-foreground mb-3">
+              Use Textarea for inputs expected to exceed a single line:
+            </p>
+            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
+              <li>Comments and feedback forms</li>
+              <li>Bio or description fields</li>
+              <li>Support ticket details</li>
+              <li>Address inputs</li>
+            </ul>
+          </div>
+
+          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
+            <h4 className="font-semibold mb-3 text-aer-foreground">
+              Fixed Height
+            </h4>
+            <p className="text-sm text-aer-muted-foreground mb-3">
+              Use the `rows` prop or `min-h-*` classes to set initial size:
+            </p>
+            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
+              <li>When you want to encourage detailed responses</li>
+              <li>To prevent layout shifts during input</li>
+              <li>To align with other large form elements</li>
+            </ul>
+          </div>
+        </div>
+      </DocSection>
+
+      <DocSection title="Basic Usage" id="basic">
         <div className="max-w-xl">
           <Textarea placeholder="Type your message here..." />
         </div>
@@ -83,7 +153,7 @@ export function TextareaDoc() {
         <CodeBlock ts={`<Textarea placeholder="Error state" error />`} />
       </DocSection>
 
-      <DocSection title="Real World" id="real-world-validation">
+      <DocSection title="Real World Example" id="real-world-validation">
         <RealWorldExample />
         <CodeBlock
           ts={`const [value, setValue] = useState("");\nconst [touched, setTouched] = useState(false);\nconst isInvalid = touched && value.trim().length < 10;\n\n<label>Description <span className="text-red-500">*</span></label>\n<Textarea \n  value={value}\n  onChange={(e) => setValue(e.target.value)}\n  onBlur={() => setTouched(true)}\n  error={isInvalid}\n/>`}
@@ -131,58 +201,123 @@ export function TextareaDoc() {
         <h3 id="textarea-props" className="text-lg font-bold mb-4">
           TextareaProps
         </h3>
+        <p className="text-sm text-aer-muted-foreground mb-4">
+          Textarea extends the standard HTMLTextAreaElement attributes and adds
+          the following props:
+        </p>
         <ApiTable
           data={[
             {
               prop: "value",
-              type: "string",
+              type: "string | number | readonly string[]",
               default: "-",
-              description: "The value of the textarea",
+              description: "The controlled value of the textarea.",
+            },
+            {
+              prop: "defaultValue",
+              type: "string | number | readonly string[]",
+              default: "-",
+              description: "The default value for uncontrolled usage.",
             },
             {
               prop: "onChange",
-              type: "(e: ChangeEvent) => void",
+              type: "(e: ChangeEvent<HTMLTextAreaElement>) => void",
               default: "-",
-              description: "Change callback",
+              description: "Callback fired when the value changes.",
+            },
+            {
+              prop: "placeholder",
+              type: "string",
+              default: "-",
+              description: "Placeholder text displayed when empty.",
+            },
+            {
+              prop: "disabled",
+              type: "boolean",
+              default: "false",
+              description: "Disables interaction and applies disabled styling.",
+            },
+            {
+              prop: "readOnly",
+              type: "boolean",
+              default: "false",
+              description: "Makes the textarea read-only but focusable.",
             },
             {
               prop: "error",
               type: "boolean | string",
-              default: "-",
-              description: "Triggers error styling",
-            },
-            {
-              prop: "className",
-              type: "string",
-              default: "-",
-              description: "Additional CSS classes",
+              default: "false",
+              description:
+                "Indicates an error state. Pass a string to (optionally) use it for aria-invalid.",
             },
             {
               prop: "variant",
               type: '"outline" | "filled" | "underlined"',
               default: '"outline"',
-              description: "Visual style variant",
+              description: "Visual style variant of the textarea.",
+            },
+            {
+              prop: "size",
+              type: '"sm" | "default" | "lg"',
+              default: '"default"',
+              description: "Size affecting padding and font size.",
             },
             {
               prop: "floatingLabel",
               type: "boolean",
               default: "false",
-              description: "Enables floating label animation",
+              description: "Enables the floating label animation pattern.",
             },
             {
               prop: "label",
               type: "string",
               default: "-",
-              description: "Label text for floating label",
+              description: "Label text. Required if floatingLabel is true.",
             },
             {
-              prop: "size",
-              type: '"sm" | "default" | "lg"',
-              default: '"default" (or global config)',
-              description: "Textarea size",
+              prop: "rows",
+              type: "number",
+              default: "-",
+              description: "Initial height in lines of text.",
+            },
+            {
+              prop: "className",
+              type: "string",
+              default: "-",
+              description: "Additional CSS classes for the textarea element.",
+            },
+            {
+              prop: "containerClassName",
+              type: "string",
+              default: "-",
+              description:
+                "Additional CSS classes for the wrapper element (useful for positioning).",
             },
           ]}
         />
+      </div>
+
+      <div>
+        <h3 id="feature-guide" className="text-lg font-bold mb-4">
+          Feature Usage Guide
+        </h3>
+        <div className="space-y-4">
+          <div className="p-4 border border-aer-border rounded-lg">
+            <h4 className="font-semibold mb-2">Auto-Growing</h4>
+            <p className="text-sm text-aer-muted-foreground">
+              While not built-in, you can easily implement auto-resizing
+              textareas using the{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                rows
+              </code>{" "}
+              prop or integrating with a library like{" "}
+              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
+                react-textarea-autosize
+              </code>
+              .
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -193,10 +328,52 @@ export function TextareaDoc() {
       id="css-variables"
       description="Customize textarea appearance using CSS variables."
     >
-      <CodeBlock
-        ts={`:root {\n  --aer-input: 240 5.9% 90%;\n  --aer-ring: 240 5.9% 10%;\n}`}
-        fullCode={`/* globals.css */\n:root {\n  --aer-input: 240 5.9% 90%;\n  --aer-ring: 240 5.9% 10%;\n}`}
-      />
+      <div className="space-y-4">
+        <p className="text-sm text-aer-muted-foreground">
+          Textarea shares many variables with Input to ensure consistency:
+        </p>
+        <CodeBlock
+          ts={`:root {
+  --aer-input: 214.3 31.8% 91.4%;
+  --aer-ring: 221.2 83.2% 53.3%;
+  --aer-background: 0 0% 100%;
+  --aer-primary: 221.2 83.2% 53.3%;
+}`}
+          fullCode={`/* styles/globals.css */
+:root {
+  /* Border color for outline variant */
+  --aer-input: 214.3 31.8% 91.4%; 
+  
+  /* Focus ring color */
+  --aer-ring: 221.2 83.2% 53.3%;
+  
+  /* Background color */
+  --aer-background: 0 0% 100%;
+  
+  /* Text and Floating Label colors */
+  --aer-foreground: 222.2 47.4% 11.2%;
+  --aer-muted-foreground: 215.4 16.3% 46.9%;
+  
+  /* Validation */
+  --aer-destructive: 0 84.2% 60.2%;
+}
+
+.dark {
+  --aer-input: 217.2 32.6% 17.5%;
+  --aer-ring: 217.2 91.2% 59.8%;
+  --aer-background: 222.2 84% 4.9%;
+}`}
+        />
+        <div className="mt-4 space-y-4">
+          <div className="p-4 bg-purple-500/10 border border-purple-500/20 rounded-lg">
+            <p className="text-sm text-purple-700 dark:text-purple-400">
+              <strong>Tip:</strong> Textarea uses the same variable{" "}
+              <code>--aer-input</code> as normal Inputs, ensuring they always
+              look like part of the same family.
+            </p>
+          </div>
+        </div>
+      </div>
     </DocSection>
   );
 
@@ -218,19 +395,24 @@ export function TextareaDoc() {
             label: "Overview",
             content: overview,
             toc: [
-              { id: "basic", title: "Basic" },
+              { id: "introduction", title: "Introduction" },
+              { id: "when-to-use", title: "When to Use" },
+              { id: "basic", title: "Basic Usage" },
               { id: "floating-label", title: "Floating Label" },
               { id: "variants", title: "Variants" },
               { id: "sizes", title: "Sizes" },
               { id: "validation", title: "Validation" },
-              { id: "real-world-validation", title: "Real World" },
+              { id: "real-world-validation", title: "Real World Example" },
             ],
           },
           {
             id: "api",
             label: "API",
             content: api,
-            toc: [{ id: "textarea-props", title: "TextareaProps" }],
+            toc: [
+              { id: "textarea-props", title: "TextareaProps" },
+              { id: "feature-guide", title: "Feature Usage Guide" },
+            ],
           },
           {
             id: "theming",
