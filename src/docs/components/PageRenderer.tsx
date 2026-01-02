@@ -1,4 +1,5 @@
 import { ButtonDoc } from "../pages/ButtonDoc";
+import { CascaderDoc } from "../pages/CascaderDoc";
 import { CheckboxDoc } from "../pages/CheckboxDoc";
 import { DropdownDoc } from "../pages/DropdownDoc";
 import { GetStartedDoc } from "../pages/GetStarted";
@@ -25,6 +26,8 @@ export function PageRenderer({ activePage }: PageRendererProps) {
       return <GetStartedDoc />;
     case "button":
       return <ButtonDoc />;
+    case "cascader":
+      return <CascaderDoc />;
     case "input":
       return <InputDoc />;
     case "dropdown":

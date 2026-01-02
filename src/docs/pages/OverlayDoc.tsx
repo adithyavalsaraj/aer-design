@@ -541,6 +541,62 @@ export default function ModalOverlay() {
       </DocSection>
 
       <DocSection
+        title="Granular Styling"
+        id="granular-styling"
+        description="Style the overlay container and backdrop using classes."
+      >
+        <div className="flex flex-wrap items-center justify-center gap-4 p-8 border border-aer-border rounded-lg bg-aer-muted/5">
+          <OverlayStylingExample />
+        </div>
+        <CodeBlock
+          ts={`// Dark Glassmorphism
+<Overlay
+  content={<div className="p-4 font-medium text-white">Dark Glassmorphism</div>}
+  className="!bg-gray-900/70 backdrop-blur-xl !border-gray-700/50 shadow-2xl rounded-xl !text-white"
+  side="bottom"
+>
+  <Button>Glass Effect</Button>
+</Overlay>
+
+// Custom backdrop styling
+<Overlay
+  backdrop
+  backdropClassName="bg-purple-900/20 backdrop-blur-sm"
+  content={<div className="p-6">Tinted Backdrop</div>}
+>
+  <Button>Tinted Backdrop</Button>
+</Overlay>`}
+          fullCode={`import { Overlay, Button } from "aer-design";
+
+export default function OverlayStyling() {
+  return (
+    <div className="flex gap-4">
+      <Overlay
+        content={<div className="p-4 font-medium">True Glassmorphism</div>}
+        className="!bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl rounded-xl text-white"
+        side="bottom"
+      >
+        <div className="p-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg">
+          <Button variant="outline" className="bg-white/20 border-white/40 hover:bg-white/30 text-white">
+            Glass Effect
+          </Button>
+        </div>
+      </Overlay>
+
+      <Overlay
+        backdrop
+        backdropClassName="bg-purple-900/20 backdrop-blur-sm"
+        content={<div className="p-6 bg-white rounded-lg shadow-xl">Tinted Backdrop</div>}
+      >
+        <Button variant="outline">Tinted Backdrop</Button>
+      </Overlay>
+    </div>
+  );
+}`}
+        />
+      </DocSection>
+
+      <DocSection
         title="Real World Example"
         id="real-world"
         description="User profile overlay with actions."
@@ -748,6 +804,7 @@ export default function UserProfile() {
               { id: "alignment", title: "Alignment" },
               { id: "close-behaviors", title: "Close Behaviors" },
               { id: "modal", title: "Modal Mode" },
+              { id: "granular-styling", title: "Granular Styling" },
               { id: "real-world", title: "Real World Example" },
             ],
           },
@@ -759,6 +816,34 @@ export default function UserProfile() {
           },
         ]}
       />
+    </div>
+  );
+}
+
+function OverlayStylingExample() {
+  return (
+    <div className="flex gap-4">
+      <Overlay
+        content={
+          <div className="p-4 font-medium text-white">Dark Glassmorphism</div>
+        }
+        className="!bg-gray-900/70 backdrop-blur-xl !border-gray-700/50 shadow-2xl rounded-xl !text-white"
+        side="bottom"
+      >
+        <Button variant="outline">Glass Effect</Button>
+      </Overlay>
+
+      <Overlay
+        backdrop
+        backdropClassName="bg-purple-900/20 backdrop-blur-sm"
+        content={
+          <div className="p-6 bg-white rounded-lg shadow-xl">
+            Tinted Backdrop
+          </div>
+        }
+      >
+        <Button variant="outline">Tinted Backdrop</Button>
+      </Overlay>
     </div>
   );
 }

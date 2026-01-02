@@ -2,6 +2,28 @@
 
 All notable changes to the Aer Design project will be documented in this file.
 
+## [v0.9.0] - 2026-01-02
+
+### ⚠️ Breaking Changes
+
+- **Label System Standardization**: Removed the `floatingLabel` prop from `Input`, `Textarea`, `Cascader`, and `Dropdown` components.
+  - Replaced with a standard, flexible label system supporting `labelPosition` ("top" | "left"), `helperText`, and `required` indicators.
+  - This ensures consistent layout and alignment across all form components.
+
+### Documentation
+
+- **Granular Styling Complete**: Added comprehensive "Granular Styling" sections to 7 major components (`Button`, `Input`, `Cascader`, `OTP`, `Tooltip`, `Overlay`, `Menu`).
+  - Each section includes practical examples and code snippets for high-control custom styling.
+- **Glassmorphism**: Improved `Overlay` documentation to demonstrate high-contrast "Dark Glass" styling for better visibility.
+
+### Bug Fixes
+
+- **Radio**: Fixed an issue where custom styling (`className`) wasn't applying correctly to the checked state due to CSS precedence.
+- **Cascader**: Fixed the granular styling interactive example to properly handle selection state.
+- **Overlay**:
+  - Fixed Z-index layering issues where the backdrop appeared behind the Sidebar.
+  - Improved default glassmorphism example visibility.
+
 ## [v0.8.0] - 2026-01-02
 
 ### Customizable Shortcuts

@@ -26,7 +26,18 @@ export type InputProps = Omit<
   addonClassName?: string;
   error?: boolean | string;
   label?: string;
-  floatingLabel?: boolean;
+  /** Position of the label relative to the input. @default "top" */
+  labelPosition?: "top" | "left";
+  /** Vertical alignment of label when position is "left". @default "center" */
+  labelAlign?: "start" | "center" | "end";
+  /** Fixed width for label when position is "left". */
+  labelWidth?: string;
+  /** Whether the field is required (shows asterisk). */
+  required?: boolean;
+  /** Helper text to display below the input. */
+  helperText?: string;
+  /** CSS classes for the helper text. */
+  helperTextClassName?: string;
   variant?: "outline" | "filled" | "underlined";
   size?: "sm" | "default" | "lg";
 };
@@ -49,7 +60,12 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       addonClassName,
       error,
       label,
-      floatingLabel,
+      labelPosition = "top",
+      labelAlign = "center",
+      labelWidth,
+      required,
+      helperText,
+      helperTextClassName,
       variant = "outline",
       size: sizeProp,
       placeholder,
@@ -88,12 +104,54 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       lg: "[&>svg]:w-5 [&>svg]:h-5",
     };
 
-    return (
+    // Label wrapper component (identical to Cascader)
+    const renderWithLabel = (content: React.ReactNode) => {
+      if (!label) return content;
+
+      return (
+        <div
+          className={cn(
+            "flex",
+            labelPosition === "left"
+              ? "flex-row items-start gap-4"
+              : "flex-col gap-1",
+            className || containerClassName
+          )}
+        >
+          <label
+            className={cn(
+              "text-sm font-medium text-aer-foreground",
+              labelPosition === "left" && labelWidth && `w-[${labelWidth}]`,
+              labelPosition === "left" && `self-${labelAlign}`,
+              labelClassName
+            )}
+          >
+            {label}
+            {required && <span className="text-red-500 ml-1">*</span>}
+          </label>
+          <div className={cn("flex-1", labelPosition === "left" && "min-w-0")}>
+            {content}
+            {helperText && (
+              <p
+                className={cn(
+                  "text-xs text-aer-muted-foreground mt-1.5",
+                  helperTextClassName
+                )}
+              >
+                {helperText}
+              </p>
+            )}
+          </div>
+        </div>
+      );
+    };
+
+    const inputContent = (
       <div
         className={cn(
           "flex items-stretch group/input",
           !(className || containerClassName)?.includes("w-") && "w-full",
-          className || containerClassName
+          !label && (className || containerClassName)
         )}
       >
         {addonBefore && (
@@ -143,39 +201,18 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             </span>
           )}
 
-          <div
-            className={cn(
-              "relative flex-1",
-              floatingLabel &&
-                "pt-4 pb-0 has-[:placeholder-shown:not(:focus)]:pt-2 has-[:placeholder-shown:not(:focus)]:pb-2"
-            )}
-          >
+          <div className="relative flex-1">
             <input
               type={type}
               className={cn(
-                "flex w-full bg-transparent py-2 file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-aer-muted-foreground focus:outline-none disabled:cursor-not-allowed peer",
+                "flex w-full bg-transparent py-2 file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-aer-muted-foreground focus:outline-none disabled:cursor-not-allowed",
                 sizeStyles[size],
-                floatingLabel && "placeholder-transparent h-6 pt-0 pb-1",
                 inputClassName
               )}
-              placeholder={floatingLabel ? placeholder || label : placeholder}
+              placeholder={placeholder}
               ref={inputRef}
               {...props}
             />
-            {floatingLabel && (
-              <label
-                className={cn(
-                  "absolute left-0 top-0 text-sm text-aer-muted-foreground transition-all duration-200 pointer-events-none origin-left",
-                  // Check for value (placeholder-shown) or focus
-                  "peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base",
-                  "peer-focus:-top-3 peer-focus:translate-y-0 peer-focus:text-xs peer-focus:text-aer-primary",
-                  "peer-[:not(:placeholder-shown)]:-top-3 peer-[:not(:placeholder-shown)]:translate-y-0 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-aer-primary",
-                  labelClassName
-                )}
-              >
-                {label || placeholder}
-              </label>
-            )}
           </div>
 
           {/* Right Elements Stack */}
@@ -208,6 +245,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         )}
       </div>
     );
+
+    return renderWithLabel(inputContent);
   }
 );
 Input.displayName = "Input";

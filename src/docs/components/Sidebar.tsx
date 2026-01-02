@@ -33,6 +33,7 @@ export const NAV_ITEMS = [
   },
   { id: "input", label: "Input", icon: Type, category: "Inputs" },
   { id: "dropdown", label: "Dropdown", icon: Boxes, category: "Inputs" },
+  { id: "cascader", label: "Cascader", icon: Boxes, category: "Inputs" },
   { id: "textarea", label: "Textarea", icon: Layout, category: "Inputs" },
 
   { id: "checkbox", label: "Checkbox", icon: CheckSquare, category: "Inputs" },

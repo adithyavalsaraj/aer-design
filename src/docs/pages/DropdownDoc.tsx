@@ -1,5 +1,7 @@
 import { Button } from "@/components/Button";
+import { Checkbox } from "@/components/Checkbox";
 import { Dropdown, type DropdownOption } from "@/components/Dropdown";
+import { RadioGroup, RadioItem } from "@/components/Radio";
 import { Globe, User } from "lucide-react";
 import * as React from "react";
 import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
@@ -12,6 +14,76 @@ export function DropdownDoc() {
     { label: "Disabled Option", value: "4", disabled: true },
     { label: "Option 5", value: "5" },
   ];
+
+  function DropdownLabelExample() {
+    const [labelPosition, setLabelPosition] = React.useState<"top" | "left">(
+      "top"
+    );
+    const [required, setRequired] = React.useState(false);
+    const [helperText, setHelperText] = React.useState(false);
+
+    const codeString = `<Dropdown
+  label="Username"
+  ${labelPosition === "left" ? 'labelPosition="left"\n  ' : ""}options={options}
+  placeholder="Select option"${required ? "\n  required" : ""}${
+      helperText ? '\n  helperText="Please select an option"' : ""
+    }
+/>`;
+
+    return (
+      <div className="space-y-6 w-full">
+        {/* Controls */}
+        <div className="flex flex-col items-center gap-x-4 gap-y-2 p-4 bg-aer-muted/20 rounded-lg border border-aer-border">
+          <div className="w-full">
+            <label className="text-sm font-medium text-aer-foreground mb-3 block">
+              Label Position
+            </label>
+            <RadioGroup
+              value={labelPosition}
+              onChange={(val) => setLabelPosition(val as "top" | "left")}
+              className="flex flex-row gap-4"
+            >
+              <RadioItem value="top" label="Top" />
+              <RadioItem value="left" label="Left" />
+            </RadioGroup>
+          </div>
+          <div className="flex w-full items-center gap-4">
+            <Checkbox
+              checked={required}
+              onChange={(e) => setRequired(e.target.checked)}
+              label="Required"
+            />
+            <Checkbox
+              checked={helperText}
+              onChange={(e) => setHelperText(e.target.checked)}
+              label="Helper Text"
+            />
+          </div>
+        </div>
+
+        {/* Live Preview */}
+        <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5">
+          <Dropdown
+            label="Username"
+            labelPosition={labelPosition}
+            options={basicOptions}
+            placeholder="Select option"
+            required={required}
+            helperText={helperText ? "Please select an option" : undefined}
+          />
+        </div>
+
+        {/* Code Preview */}
+        <CodeBlock
+          ts={codeString}
+          fullCode={`import { Dropdown } from "aer-design";\n\nconst options = [\n  { label: "Option 1", value: "1" },\n  { label: "Option 2", value: "2" },\n  { label: "Option 3", value: "3" },\n];\n\nexport default function Example() {\n  return (\n    ${codeString
+            .split("\n")
+            .map((line) => "    " + line)
+            .join("\n")}\n  );\n}`}
+        />
+      </div>
+    );
+  }
 
   const overview = (
     <div className="space-y-12">
@@ -507,27 +579,8 @@ export default function GroupedDropdown() {
         />
       </DocSection>
 
-      <DocSection title="Floating Label" id="floating-label">
-        <div className="max-w-sm space-y-6">
-          <Dropdown
-            floatingLabel
-            label="Country"
-            options={basicOptions}
-            placeholder="Select one"
-          />
-          <Dropdown
-            floatingLabel
-            variant="filled"
-            label="Framework"
-            startIcon={<Globe className="w-4 h-4" />}
-            options={basicOptions}
-            placeholder="Select one"
-          />
-        </div>
-        <CodeBlock
-          ts={`<Dropdown floatingLabel label="Country" options={options} />`}
-          fullCode={`import { Dropdown } from "aer-design";\n\nexport default function FloatingLabelDemo() {\n  return (\n    <Dropdown floatingLabel label="Country" options={options} />\n  );\n}`}
-        />
+      <DocSection title="Label" id="label">
+        <DropdownLabelExample />
       </DocSection>
 
       <DocSection
@@ -594,7 +647,8 @@ const options = [/*...*/];
   onChange={setValue}
   options={options}
   error={touched && !value}
-  floatingLabel
+  label="Role"
+  required
 />`}
           fullCode={`import { Dropdown, Button } from "aer-design";
 import { useState } from "react";
@@ -634,7 +688,7 @@ export default function UserSettings() {
           onChange={setRole}
           options={roleOptions}
           error={isInvalid}
-          floatingLabel
+          required
           startIcon={<Shield className="w-4 h-4" />}
           // Simulate "onBlur" by setting touched when menu closes? 
           // Dropdown doesn't have onBlur yet, but we can assume interaction.
@@ -692,7 +746,7 @@ export default function UserSettings() {
             onChange={setRole}
             options={roleOptions}
             error={isInvalid}
-            floatingLabel
+            required
             startIcon={
               <React.Suspense fallback={null}>
                 <User className="w-4 h-4" />
@@ -852,18 +906,30 @@ export default function UserSettings() {
                 "Shows a loading spinner. Useful for async data fetching.",
             },
             {
-              prop: "floatingLabel",
-              type: "boolean",
-              default: "false",
-              description:
-                "Enables floating label style. Label moves up when value is selected.",
-            },
-            {
               prop: "label",
               type: "string",
               default: "-",
               description:
-                "Label text for floating label mode. Required if floatingLabel is true.",
+                "Label text to display above or beside the dropdown.",
+            },
+            {
+              prop: "labelPosition",
+              type: "'top' | 'left'",
+              default: "'top'",
+              description: "Position of the label relative to the dropdown.",
+            },
+            {
+              prop: "required",
+              type: "boolean",
+              default: "false",
+              description:
+                "Shows an asterisk (*) next to the label to indicate required field.",
+            },
+            {
+              prop: "helperText",
+              type: "string",
+              default: "-",
+              description: "Helper text displayed below the dropdown.",
             },
             {
               prop: "variant",
@@ -1089,17 +1155,6 @@ export default function UserSettings() {
               for server-side filtering logic.
             </p>
           </div>
-          <div className="p-4 border border-aer-border rounded-lg">
-            <h4 className="font-semibold mb-2">Floating Label</h4>
-            <p className="text-sm text-aer-muted-foreground">
-              Use{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                floatingLabel
-              </code>{" "}
-              for a modern, compact Material Design look. Great for dense forms
-              where saving vertical space is important.
-            </p>
-          </div>
         </div>
       </div>
     </div>
@@ -1199,7 +1254,7 @@ export default function UserSettings() {
               { id: "lazy-loading", title: "Lazy Loading" },
               { id: "variants", title: "Variants" },
               { id: "sizes", title: "Sizes" },
-              { id: "floating-label", title: "Floating Label" },
+              { id: "label", title: "Label" },
               { id: "granular-styling", title: "Granular Styling" },
               { id: "validation", title: "Validation" },
               { id: "real-world", title: "Real World Example" },

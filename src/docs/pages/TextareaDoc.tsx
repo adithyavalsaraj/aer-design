@@ -14,8 +14,8 @@ export function TextareaDoc() {
           <p className="text-aer-muted-foreground">
             The Textarea component renders a multi-line text input for longer
             content. It shares the same visual language and component API as the
-            Input component, supporting variants, floating labels, validation
-            states, and sizing options.
+            Input component, supporting variants, labels, validation states, and
+            sizing options.
           </p>
           <ul className="list-disc pl-6 space-y-2 text-aer-muted-foreground">
             <li>
@@ -27,8 +27,8 @@ export function TextareaDoc() {
               styles
             </li>
             <li>
-              <strong>Floating Labels</strong> - Integrated support for
-              Material-style floating labels
+              <strong>Label System</strong> - Flexible label positioning with
+              helper text support
             </li>
             <li>
               <strong>Validation</strong> - Built-in error states and feedback
@@ -85,19 +85,25 @@ export function TextareaDoc() {
         />
       </DocSection>
 
-      <DocSection title="Floating Label" id="floating-label">
+      <DocSection title="Label" id="label">
         <div className="max-w-xl space-y-6">
-          <Textarea floatingLabel label="Feedback" placeholder=" " />
+          <Textarea label="Feedback" placeholder="Type your feedback..." />
           <Textarea
-            variant="filled"
-            floatingLabel
-            label="Project Description"
-            placeholder=" "
+            label="Description"
+            labelPosition="left"
+            labelWidth="120px"
+            placeholder="Enter description"
             className="min-h-[120px]"
+          />
+          <Textarea
+            label="Comments"
+            required
+            helperText="Please provide detailed comments"
+            placeholder="Your comments..."
           />
         </div>
         <CodeBlock
-          ts={`<Textarea floatingLabel label="Feedback" placeholder=" " />\n\n<Textarea \n  variant="filled" \n  floatingLabel \n  label="Project Description" \n  placeholder=" " \n  className="min-h-[120px]" \n/>`}
+          ts={`<Textarea label="Feedback" placeholder="Type your feedback..." />\n\n<Textarea \n  label="Description" \n  labelPosition="left" \n  labelWidth="120px"\n  placeholder="Enter description" \n  className="min-h-[120px]" \n/>\n\n<Textarea \n  label="Comments" \n  required \n  helperText="Please provide detailed comments"\n  placeholder="Your comments..." \n/>`}
         />
       </DocSection>
 
@@ -313,16 +319,30 @@ export default function GranularStyling() {
               description: "Size affecting padding and font size.",
             },
             {
-              prop: "floatingLabel",
-              type: "boolean",
-              default: "false",
-              description: "Enables the floating label animation pattern.",
-            },
-            {
               prop: "label",
               type: "string",
               default: "-",
-              description: "Label text. Required if floatingLabel is true.",
+              description:
+                "Label text to display above or beside the textarea.",
+            },
+            {
+              prop: "labelPosition",
+              type: "'top' | 'left'",
+              default: "'top'",
+              description: "Position of the label relative to the textarea.",
+            },
+            {
+              prop: "required",
+              type: "boolean",
+              default: "false",
+              description:
+                "Shows an asterisk (*) next to the label to indicate required field.",
+            },
+            {
+              prop: "helperText",
+              type: "string",
+              default: "-",
+              description: "Helper text displayed below the textarea.",
             },
             {
               prop: "rows",
@@ -414,7 +434,7 @@ export default function GranularStyling() {
   /* Background color */
   --aer-background: 0 0% 100%;
   
-  /* Text and Floating Label colors */
+  /* Text and Label colors */
   --aer-foreground: 222.2 47.4% 11.2%;
   --aer-muted-foreground: 215.4 16.3% 46.9%;
   
@@ -462,7 +482,7 @@ export default function GranularStyling() {
               { id: "introduction", title: "Introduction" },
               { id: "when-to-use", title: "When to Use" },
               { id: "basic", title: "Basic Usage" },
-              { id: "floating-label", title: "Floating Label" },
+              { id: "label", title: "Label" },
               { id: "variants", title: "Variants" },
               { id: "sizes", title: "Sizes" },
               { id: "granular-styling", title: "Granular Styling" },

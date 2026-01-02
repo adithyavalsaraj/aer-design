@@ -227,7 +227,7 @@ export function RadioDoc() {
             <p className="text-sm font-medium text-aer-muted-foreground">
               className - Root container (spacing)
             </p>
-            <RadioGroup defaultValue="1">
+            <RadioGroup>
               <RadioItem
                 className="mb-4 p-4 border rounded-xl bg-aer-primary/5"
                 value="1"
@@ -239,10 +239,10 @@ export function RadioDoc() {
             <p className="text-sm font-medium text-aer-muted-foreground">
               radioClassName - Custom indicator
             </p>
-            <RadioGroup defaultValue="1">
+            <RadioGroup>
               <RadioItem
-                radioClassName="bg-purple-600 border-purple-600"
-                dotClassName="bg-white"
+                radioClassName="border-purple-600 text-purple-600 peer-checked:bg-purple-600 peer-checked:text-white"
+                dotClassName="bg-current"
                 value="1"
                 label="Purple radio with white dot"
               />
@@ -250,7 +250,7 @@ export function RadioDoc() {
           </div>
         </div>
         <CodeBlock
-          ts={`<RadioItem className="mb-4 p-4 border rounded-xl" label="Root style" />\n\n<RadioItem \n  radioClassName="bg-purple-600 border-purple-600" \n  dotClassName="bg-white" \n  label="Custom colors" \n/>`}
+          ts={`<RadioItem className="mb-4 p-4 border rounded-xl" label="Root style" />\n\n<RadioItem \n  radioClassName="border-purple-600 text-purple-600 peer-checked:bg-purple-600 peer-checked:text-white" \n  dotClassName="bg-current" \n  label="Custom colors" \n/>`}
         />
       </DocSection>
 

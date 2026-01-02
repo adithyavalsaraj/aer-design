@@ -67,14 +67,14 @@ export function LoginForm() {
 | Component     | Description                                                                            |
 | :------------ | :------------------------------------------------------------------------------------- |
 | **Button**    | Highly interactive buttons with variants (primary, outline, ghost) and loading states. |
-| **Input**     | Enhanced text inputs with floating labels, icons, masking, and validation.             |
+| **Input**     | Enhanced text inputs with label positioning, icons, masking, and validation.           |
 | **Dropdown**  | Virtualized select menus with search, multi-select, grouping, and auto-positioning.    |
 | **Menu**      | Context menus with 360° auto-positioning, nested submenus, and keyboard navigation.    |
 | **Checkbox**  | Tri-state checkboxes with rich layout options (card mode, descriptions).               |
 | **Radio**     | Radio groups for single-selection, supporting card layouts.                            |
 | **Sidebar**   | Responsive, collapsible navigation sidebar with overlay and rail modes.                |
 | **Navbar**    | Adaptive top navigation bar with branding and actions.                                 |
-| **Textarea**  | Auto-resizing text areas with character counts.                                        |
+| **Textarea**  | Auto-resizing text areas with character counts and label positioning.                  |
 | **OTP Input** | Secure and accessible one-time password inputs.                                        |
 
 ## Utilities

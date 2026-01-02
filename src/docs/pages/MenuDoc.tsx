@@ -24,6 +24,7 @@ import {
   PlusCircle,
   Settings,
   Terminal,
+  Trash2,
   User,
   UserPlus,
   Users,
@@ -613,6 +614,56 @@ export default function PositioningMenu() {
       </DocSection>
 
       <DocSection
+        title="Granular Styling"
+        id="granular-styling"
+        description="Every part of the menu can be styled with standard className props."
+      >
+        <div className="flex flex-wrap items-center justify-center gap-8 p-8 border border-aer-border rounded-lg bg-aer-muted/5">
+          <MenuStylingExample />
+        </div>
+        <CodeBlock
+          ts={`// Interactive item styling
+<MenuItem className="hover:bg-purple-100 hover:text-purple-600 focus:bg-purple-100 focus:text-purple-600">
+  Custom Hover Item
+</MenuItem>
+
+// Destructive styling
+<MenuItem className="text-red-500 hover:bg-red-50 focus:bg-red-50">
+  Delete Account
+</MenuItem>
+
+// Custom content styling
+<MenuContent className="w-64 border-purple-200 shadow-xl rounded-xl">
+  {...}
+</MenuContent>`}
+          fullCode={`import { Menu, MenuTrigger, MenuContent, MenuItem, Button } from "aer-design";
+import { User, Trash2 } from "lucide-react";
+
+export default function MenuStyling() {
+  return (
+    <div className="flex gap-4">
+      <Menu>
+        <MenuTrigger asChild>
+          <Button variant="outline">Custom Menu</Button>
+        </MenuTrigger>
+        <MenuContent className="w-56 border-purple-200 shadow-xl rounded-xl">
+          <MenuItem className="hover:bg-purple-100 hover:text-purple-600 focus:bg-purple-100 focus:text-purple-600">
+            <User className="mr-2 h-4 w-4" />
+            <span>Profile</span>
+          </MenuItem>
+          <MenuItem className="text-red-600 hover:bg-red-50 hover:text-red-700 focus:bg-red-50 focus:text-red-700 mt-2">
+            <Trash2 className="mr-2 h-4 w-4" />
+            <span>Delete</span>
+          </MenuItem>
+        </MenuContent>
+      </Menu>
+    </div>
+  );
+}`}
+        />
+      </DocSection>
+
+      <DocSection
         id="real-world"
         title="Real World Example"
         description="A complete User Profile menu with groups, submenus, and keyboard shortcuts."
@@ -1008,6 +1059,28 @@ export default function UserMenu() {
     </DocSection>
   );
 
+  function MenuStylingExample() {
+    return (
+      <Menu>
+        <MenuTrigger asChild>
+          <Button variant="outline">Custom Menu Style</Button>
+        </MenuTrigger>
+        <MenuContent className="w-56 border-purple-200 shadow-xl rounded-xl p-2">
+          <MenuLabel className="text-purple-900">Customized</MenuLabel>
+          <MenuSeparator className="bg-purple-100" />
+          <MenuItem className="hover:bg-purple-100 hover:text-purple-600 focus:bg-purple-100 focus:text-purple-600 rounded-md transition-colors">
+            <User className="mr-2 h-4 w-4" />
+            <span>Profile</span>
+          </MenuItem>
+          <MenuItem className="text-red-600 hover:bg-red-50 hover:text-red-700 focus:bg-red-50 focus:text-red-700 mt-1 rounded-md transition-colors">
+            <Trash2 className="mr-2 h-4 w-4" />
+            <span>Delete</span>
+          </MenuItem>
+        </MenuContent>
+      </Menu>
+    );
+  }
+
   return (
     <div className="space-y-8">
       <header className="space-y-4">
@@ -1031,6 +1104,7 @@ export default function UserMenu() {
               { id: "icons", title: "Icons & Shortcuts" },
               { id: "nested", title: "Nested Submenus" },
               { id: "positioning", title: "Positioning" },
+              { id: "granular-styling", title: "Granular Styling" },
               { id: "real-world", title: "Real World Example" },
             ],
           },

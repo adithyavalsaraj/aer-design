@@ -380,6 +380,52 @@ export default function TooltipDelays() {
       </DocSection>
 
       <DocSection
+        title="Granular Styling"
+        id="granular-styling"
+        description="Customize the tooltip bubble and arrow with utility classes."
+      >
+        <div className="flex flex-wrap items-center justify-center gap-4 p-8 border border-aer-border rounded-lg bg-aer-muted/5">
+          <TooltipStylingExample />
+        </div>
+        <CodeBlock
+          ts={`<Tooltip
+  content="Custom bubble style"
+  className="bg-purple-600 text-white border-0 shadow-xl"
+>
+  <Button variant="outline">Custom Style</Button>
+</Tooltip>
+
+<Tooltip
+  content="Large text"
+  className="text-lg px-4 py-2 font-bold"
+>
+  <Button variant="outline">Large Text</Button>
+</Tooltip>`}
+          fullCode={`import { Tooltip, Button } from "aer-design";
+
+export default function TooltipStyling() {
+  return (
+    <div className="flex gap-4">
+      <Tooltip
+        content="Custom bubble style"
+        className="bg-purple-600 text-white border-0 shadow-xl"
+      >
+        <Button variant="outline">Custom Color</Button>
+      </Tooltip>
+
+      <Tooltip
+        content="Large text tooltip"
+        className="text-lg px-4 py-2 font-bold"
+      >
+        <Button variant="outline">Typography</Button>
+      </Tooltip>
+    </div>
+  );
+}`}
+        />
+      </DocSection>
+
+      <DocSection
         title="Real World Example"
         id="real-world"
         description="Interactive toolbar with contextual tooltips."
@@ -448,6 +494,26 @@ export default function Toolbar() {
       </DocSection>
     </div>
   );
+
+  function TooltipStylingExample() {
+    return (
+      <div className="flex gap-4">
+        <Tooltip
+          content="Custom bubble style"
+          className="bg-purple-600 text-white border-0 shadow-xl"
+        >
+          <Button variant="outline">Custom Color</Button>
+        </Tooltip>
+
+        <Tooltip
+          content="Large text tooltip"
+          className="text-lg px-4 py-2 font-bold"
+        >
+          <Button variant="outline">Typography</Button>
+        </Tooltip>
+      </div>
+    );
+  }
 
   const api = (
     <div className="space-y-12">
@@ -659,6 +725,7 @@ export default function Toolbar() {
               { id: "alignment", title: "Alignment" },
               { id: "trigger", title: "Trigger Modes" },
               { id: "delay", title: "Delay Configuration" },
+              { id: "granular-styling", title: "Granular Styling" },
               { id: "real-world", title: "Real World Example" },
             ],
           },

@@ -196,6 +196,55 @@ export function OtpDoc() {
         />
       </DocSection>
 
+      <DocSection
+        title="Granular Styling"
+        id="granular-styling"
+        description="Precise control over styling with element-specific className props."
+      >
+        <div className="flex flex-col gap-4 p-6 border rounded-lg bg-aer-muted/5 items-center">
+          <OtpStylingExample />
+        </div>
+        <CodeBlock
+          ts={`// Custom slots
+<OtpInput
+  length={4}
+  className="gap-4" 
+  cellClassName="border-b-2 rounded-none focus:border-purple-500 focus:ring-0"
+/>
+
+// Error styling
+<OtpInput
+  error
+  errorClassName="text-red-600 font-bold bg-red-50 p-2 rounded block mt-2"
+/>`}
+          fullCode={`import { OtpInput } from "aer-design";
+
+export default function OtpStylingExample() {
+  return (
+    <div className="space-y-8">
+      <div className="space-y-2">
+        <p className="text-xs uppercase font-bold text-zinc-500">Underline Style</p>
+        <OtpInput
+          length={4}
+          className="gap-4"
+          cellClassName="border-b-2 border-t-0 border-x-0 rounded-none focus:border-purple-500 focus:ring-0 bg-transparent px-0"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <p className="text-xs uppercase font-bold text-zinc-500">Custom Error</p>
+        <OtpInput
+          length={4}
+          error="Invalid Code"
+          errorClassName="text-red-600 font-bold bg-red-50 p-2 rounded block mt-2 text-center"
+        />
+      </div>
+    </div>
+  );
+}`}
+        />
+      </DocSection>
+
       <DocSection title="Real World Example" id="real-world-validation">
         <RealWorldExample />
         <CodeBlock
@@ -205,6 +254,34 @@ export function OtpDoc() {
       </DocSection>
     </div>
   );
+
+  function OtpStylingExample() {
+    return (
+      <div className="space-y-8">
+        <div className="space-y-2">
+          <span className="text-xs font-semibold uppercase text-aer-muted-foreground tracking-wider">
+            Underline Style
+          </span>
+          <OtpInput
+            length={4}
+            className="gap-4"
+            cellClassName="border-b-2 border-t-0 border-x-0 rounded-none focus:border-purple-500 focus:ring-0 bg-transparent px-0"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <span className="text-xs font-semibold uppercase text-aer-muted-foreground tracking-wider">
+            Custom Error
+          </span>
+          <OtpInput
+            length={4}
+            error="Invalid Code"
+            errorClassName="text-red-600 font-bold bg-red-50 p-2 rounded block mt-2 text-center"
+          />
+        </div>
+      </div>
+    );
+  }
 
   function RealWorldExample() {
     const [value, setValue] = React.useState("");
@@ -435,6 +512,7 @@ export function OtpDoc() {
               { id: "alphanumeric", title: "Alphanumeric" },
               { id: "security", title: "Security" },
               { id: "validation", title: "Validation" },
+              { id: "granular-styling", title: "Granular Styling" },
               { id: "real-world-validation", title: "Real World Example" },
             ],
           },

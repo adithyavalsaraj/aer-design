@@ -178,6 +178,10 @@ export interface UseAutoPositionReturn {
     side: Side;
     align: Align;
   };
+  elements: {
+    reference: Element | null;
+    floating: HTMLElement | null;
+  };
 }
 
 /**
@@ -313,6 +317,10 @@ export function useAutoPosition(
     placement: {
       side: effectiveSide,
       align: effectiveAlign,
+    },
+    elements: {
+      reference: referenceElement,
+      floating: floatingElement,
     },
   };
 }

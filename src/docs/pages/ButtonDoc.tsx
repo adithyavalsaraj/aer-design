@@ -372,6 +372,49 @@ export default function DisabledButtons() {
       </DocSection>
 
       <DocSection
+        title="Granular Styling"
+        id="granular-styling"
+        description="Precise control over styling with element-specific className props."
+      >
+        <div className="flex flex-col gap-4 p-6 border rounded-lg bg-aer-muted/5 items-center">
+          <ButtonStylingExample />
+        </div>
+        <CodeBlock
+          ts={`// Custom button styling
+<Button className="rounded-full bg-gradient-to-r from-pink-500 to-violet-500 border-0">
+  Gradient Button
+</Button>
+
+// Custom icon styling
+<Button iconClassName="text-yellow-400">
+  <Star className="mr-2" />
+  Starred
+</Button>`}
+          fullCode={`import { Button } from "aer-design";
+import { Star } from "lucide-react";
+
+export default function ButtonStylingExample() {
+  return (
+    <div className="flex flex-wrap gap-4">
+      <Button className="rounded-full bg-gradient-to-r from-pink-500 to-violet-500 border-0 hover:opacity-90 transition-opacity">
+        Gradient Button
+      </Button>
+      
+      <Button 
+        variant="outline" 
+        className="border-dashed border-2"
+        iconClassName="text-yellow-400"
+      >
+        <Star className="w-4 h-4 mr-2" />
+        Dashed & Starred
+      </Button>
+    </div>
+  );
+}`}
+        />
+      </DocSection>
+
+      <DocSection
         id="real-world"
         title="Real World Example"
         description="Complete form with multiple button variants and states."
@@ -686,6 +729,21 @@ export default function UserProfileForm() {
     );
   }
 
+  function ButtonStylingExample() {
+    return (
+      <div className="flex flex-wrap gap-4">
+        <Button className="rounded-full bg-gradient-to-r from-pink-500 to-violet-500 border-0 hover:opacity-90 transition-opacity text-white">
+          Gradient Button
+        </Button>
+
+        <Button variant="outline" className="border-dashed border-2">
+          <Sparkles className="w-4 h-4 mr-2 text-yellow-500" />
+          Dashed & Starred
+        </Button>
+      </div>
+    );
+  }
+
   const api = (
     <div className="space-y-8">
       <div>
@@ -892,6 +950,7 @@ export default function UserProfileForm() {
               { id: "loading-state", title: "Loading State" },
               { id: "sizes", title: "Sizes" },
               { id: "disabled-state", title: "Disabled State" },
+              { id: "granular-styling", title: "Granular Styling" },
               { id: "real-world", title: "Real World Example" },
             ],
           },

@@ -24,10 +24,6 @@ const dropdownTriggerVariants = cva(
         true: "border-red-500 focus-visible:ring-red-500",
         false: "",
       },
-      floatingLabel: {
-        true: "", // Layout handled by inner elements now
-        false: "",
-      },
       size: {
         default: "h-10 text-sm",
         sm: "h-9 text-xs",
@@ -37,7 +33,6 @@ const dropdownTriggerVariants = cva(
     defaultVariants: {
       variant: "outline",
       error: false,
-      floatingLabel: false,
       size: "default",
     },
   }
@@ -69,7 +64,18 @@ export interface DropdownProps
   onChange?: (value: any) => void;
   placeholder?: string;
   label?: string;
-  floatingLabel?: boolean;
+  /** Position of the label relative to the input. @default "top" */
+  labelPosition?: "top" | "left";
+  /** Vertical alignment of label when position is "left". @default "center" */
+  labelAlign?: "start" | "center" | "end";
+  /** Fixed width for label when position is "left". */
+  labelWidth?: string;
+  /** Whether the field is required (shows asterisk). */
+  required?: boolean;
+  /** Helper text to display below the input. */
+  helperText?: string;
+  /** CSS classes for the helper text. */
+  helperTextClassName?: string;
   multiple?: boolean;
   searchable?: boolean;
   onSearch?: (query: string) => void;
@@ -156,7 +162,12 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
       onChange,
       placeholder = "Select...",
       label,
-      floatingLabel,
+      labelPosition = "top",
+      labelAlign = "center",
+      labelWidth,
+      required,
+      helperText,
+      helperTextClassName,
       multiple,
       searchable,
       onSearch,
@@ -298,7 +309,6 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
     };
 
     const displayValue = getDisplayLabel();
-    const isFloating = isOpen || !!displayValue || !!searchQuery;
 
     // Handle selection
     const handleSelect = (optionValue: string | number) => {
@@ -392,11 +402,53 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
       lg: "w-5 h-5",
     };
 
-    return (
+    // Label wrapper component
+    const renderWithLabel = (content: React.ReactNode) => {
+      if (!label) return content;
+
+      return (
+        <div
+          className={cn(
+            "flex",
+            labelPosition === "left"
+              ? "flex-row items-start gap-4"
+              : "flex-col gap-1",
+            className || containerClassName
+          )}
+        >
+          <label
+            className={cn(
+              "text-sm font-medium text-aer-foreground",
+              labelPosition === "left" && labelWidth && `w-[${labelWidth}]`,
+              labelPosition === "left" && `self-${labelAlign}`,
+              labelClassName
+            )}
+          >
+            {label}
+            {required && <span className="text-red-500 ml-1">*</span>}
+          </label>
+          <div className={cn("flex-1", labelPosition === "left" && "min-w-0")}>
+            {content}
+            {helperText && (
+              <p
+                className={cn(
+                  "text-xs text-aer-muted-foreground mt-1.5",
+                  helperTextClassName
+                )}
+              >
+                {helperText}
+              </p>
+            )}
+          </div>
+        </div>
+      );
+    };
+
+    const dropdownContent = (
       <div
         className={cn(
           "relative w-full group/dropdown",
-          className || containerClassName
+          !label && (className || containerClassName)
         )}
         ref={containerRef}
       >
@@ -419,7 +471,6 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
               dropdownTriggerVariants({
                 variant,
                 error: !!error,
-                floatingLabel,
                 size,
               }),
               !hasAddon && variant === "outline" && "rounded-aer-md",
@@ -489,8 +540,6 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
             }}
             {...(props as any)}
           >
-            {/* Floating Label - Moved to root for correct positioning relative to container */}
-
             {/* Label / Start Elements */}
             <div className="flex items-center gap-2 flex-1 min-w-0">
               {startIcon && (
@@ -518,35 +567,16 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
 
               <div
                 className={cn(
-                  "relative flex-1 text-left h-full flex flex-col justify-center",
-                  floatingLabel && isFloating && "pt-3.5 pb-0.5", // Push text down when label active
-                  floatingLabel && !isFloating && "py-2" // Center placeholder
+                  "relative flex-1 text-left h-full flex flex-col justify-center"
                 )}
               >
-                {/* Floating Label - Moved inside to respect startIcon/prefix layout */}
-                {floatingLabel && (
-                  <span
-                    className={cn(
-                      "absolute left-0 transition-all duration-200 pointer-events-none origin-left text-aer-muted-foreground z-10",
-                      isFloating
-                        ? "top-1 text-xs text-aer-primary scale-90" // Active state - positioned at top
-                        : "top-1/2 -translate-y-1/2 text-sm", // Placeholder state
-                      labelClassName
-                    )}
-                  >
-                    {label || placeholder}
-                  </span>
-                )}
-
                 {/* Display Value */}
                 {displayValue ? (
                   <span className="block truncate">{displayValue}</span>
                 ) : (
-                  !floatingLabel && (
-                    <span className="text-aer-muted-foreground">
-                      {placeholder}
-                    </span>
-                  )
+                  <span className="text-aer-muted-foreground">
+                    {placeholder}
+                  </span>
                 )}
               </div>
             </div>
@@ -795,6 +825,8 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
         )}
       </div>
     );
+
+    return renderWithLabel(dropdownContent);
   }
 );
 Dropdown.displayName = "Dropdown";

@@ -6,7 +6,18 @@ export interface TextareaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   error?: boolean | string;
   label?: string;
-  floatingLabel?: boolean;
+  /** Position of the label relative to the textarea. @default "top" */
+  labelPosition?: "top" | "left";
+  /** Vertical alignment of label when position is "left". @default "center" */
+  labelAlign?: "start" | "center" | "end";
+  /** Fixed width for label when position is "left". */
+  labelWidth?: string;
+  /** Whether the field is required (shows asterisk). */
+  required?: boolean;
+  /** Helper text to display below the textarea. */
+  helperText?: string;
+  /** CSS classes for the helper text. */
+  helperTextClassName?: string;
   variant?: "outline" | "filled" | "underlined";
   size?: "sm" | "default" | "lg";
   /** CSS classes for the root container element */
@@ -25,7 +36,12 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       labelClassName,
       error,
       label,
-      floatingLabel,
+      labelPosition = "top",
+      labelAlign = "center",
+      labelWidth,
+      required,
+      helperText,
+      helperTextClassName,
       variant = "outline",
       placeholder,
       size: sizeProp,
@@ -52,7 +68,49 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       lg: "text-base min-h-[100px]",
     };
 
-    return (
+    // Label wrapper component
+    const renderWithLabel = (content: React.ReactNode) => {
+      if (!label) return content;
+
+      return (
+        <div
+          className={cn(
+            "flex",
+            labelPosition === "left"
+              ? "flex-row items-start gap-4"
+              : "flex-col gap-1",
+            className
+          )}
+        >
+          <label
+            className={cn(
+              "text-sm font-medium text-aer-foreground",
+              labelPosition === "left" && labelWidth && `w-[${labelWidth}]`,
+              labelPosition === "left" && `self-${labelAlign}`,
+              labelClassName
+            )}
+          >
+            {label}
+            {required && <span className="text-red-500 ml-1">*</span>}
+          </label>
+          <div className={cn("flex-1", labelPosition === "left" && "min-w-0")}>
+            {content}
+            {helperText && (
+              <p
+                className={cn(
+                  "text-xs text-aer-muted-foreground mt-1.5",
+                  helperTextClassName
+                )}
+              >
+                {helperText}
+              </p>
+            )}
+          </div>
+        </div>
+      );
+    };
+
+    const textareaContent = (
       <div
         className={cn(
           "relative group/input w-full cursor-text transition-all flex flex-col",
@@ -61,40 +119,24 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           variant !== "underlined" && "px-3 py-2",
           variant === "outline" && "rounded-aer-md",
           error && "border-red-500 focus-within:ring-red-500",
-          floatingLabel && "pt-4",
-          className
+          !label && className
         )}
       >
         <textarea
           className={cn(
             "flex w-full bg-transparent placeholder:text-aer-muted-foreground focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 peer resize-y",
             sizeStyles[size],
-            // Floating label adjustments
-            floatingLabel && "placeholder-transparent pt-0",
             variant === "underlined" && "px-0",
             textareaClassName
           )}
-          placeholder={floatingLabel ? placeholder || label : placeholder}
+          placeholder={placeholder}
           ref={ref}
           {...props}
         />
-        {floatingLabel && (
-          <label
-            className={cn(
-              "absolute left-3 top-2 text-sm text-aer-muted-foreground transition-all duration-200 pointer-events-none origin-left bg-transparent px-1",
-              // Check for value (placeholder-shown) or focus
-              "peer-placeholder-shown:top-6 peer-placeholder-shown:text-base",
-              "peer-focus:top-1.5 peer-focus:text-xs peer-focus:text-aer-primary",
-              "peer-[:not(:placeholder-shown)]:top-1.5 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-aer-primary",
-              variant === "underlined" && "left-0 px-0",
-              labelClassName
-            )}
-          >
-            {label || placeholder}
-          </label>
-        )}
       </div>
     );
+
+    return renderWithLabel(textareaContent);
   }
 );
 Textarea.displayName = "Textarea";

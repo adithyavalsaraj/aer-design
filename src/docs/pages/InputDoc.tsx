@@ -1,4 +1,5 @@
 import { Button } from "@/components/Button";
+import { Checkbox } from "@/components/Checkbox";
 import {
   EmailInput,
   Input,
@@ -6,9 +7,73 @@ import {
   PasswordInput,
   PhoneInput,
 } from "@/components/Input";
+import { RadioGroup, RadioItem } from "@/components/Radio";
 import { CreditCard, Globe, Search } from "lucide-react";
 import * as React from "react";
 import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
+
+function LabelExample() {
+  const [labelPosition, setLabelPosition] = React.useState<"top" | "left">(
+    "top"
+  );
+  const [required, setRequired] = React.useState(false);
+  const [helperText, setHelperText] = React.useState(false);
+
+  return (
+    <div className="space-y-6">
+      {/* Controls */}
+      <div className="flex flex-col items-center gap-x-4 gap-y-2 p-4 bg-aer-muted/20 rounded-lg border border-aer-border">
+        <div className="w-full">
+          <label className="text-sm font-medium text-aer-foreground mb-3 block">
+            Label Position
+          </label>
+          <RadioGroup
+            value={labelPosition}
+            onChange={(val) => setLabelPosition(val as "top" | "left")}
+            className="flex flex-row gap-4"
+          >
+            <RadioItem value="top" label="Top" />
+            <RadioItem value="left" label="Left" />
+          </RadioGroup>
+        </div>
+        <div className="flex w-full items-center gap-4">
+          <Checkbox
+            checked={required}
+            onChange={(e) => setRequired(e.target.checked)}
+            label="Required"
+          />
+          <Checkbox
+            checked={helperText}
+            onChange={(e) => setHelperText(e.target.checked)}
+            label="Helper Text"
+          />
+        </div>
+      </div>
+
+      {/* Example */}
+      <div className="max-w-2xl">
+        <Input
+          label="Username"
+          labelPosition={labelPosition}
+          required={required}
+          helperText={helperText ? "Enter your username" : undefined}
+          placeholder="johndoe"
+        />
+      </div>
+
+      {/* Code */}
+      <CodeBlock
+        ts={`<Input
+  label="Username"
+  labelPosition="${labelPosition}"${required ? "\n  required" : ""}${
+          helperText ? '\n  helperText="Enter your username"' : ""
+        }
+  placeholder="johndoe"
+/>`}
+      />
+    </div>
+  );
+}
 
 export function InputDoc() {
   const overview = (
@@ -39,7 +104,7 @@ export function InputDoc() {
               custom formats
             </li>
             <li>
-              <strong>Floating labels</strong> for modern, space-efficient forms
+              <strong>Label positioning</strong> with top/left alignment options
             </li>
             <li>
               <strong>Icons and addons</strong> for enhanced visual context
@@ -122,25 +187,6 @@ export function InputDoc() {
               <li>Custom patterns (SSN, license plates, etc.)</li>
             </ul>
           </div>
-
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Floating Labels
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                floatingLabel
-              </code>{" "}
-              when:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>You need space-efficient forms</li>
-              <li>Creating modern, Material Design-style UIs</li>
-              <li>Building compact mobile interfaces</li>
-              <li>You want animated label transitions</li>
-            </ul>
-          </div>
         </div>
       </DocSection>
 
@@ -196,30 +242,11 @@ export function InputDoc() {
       </DocSection>
 
       <DocSection
-        title="Floating Label"
-        id="floating-label"
-        description="Modern animated labels that float above the input on focus."
+        title="Label"
+        id="label"
+        description="Add labels to inputs with flexible positioning and helper text options."
       >
-        <div className="max-w-sm space-y-6">
-          <Input floatingLabel label="Username" placeholder=" " />
-          <Input
-            variant="filled"
-            floatingLabel
-            label="Email Address"
-            placeholder=" "
-            startIcon={<Globe />}
-          />
-          <Input
-            variant="underlined"
-            floatingLabel
-            label="Company"
-            placeholder=" "
-          />
-        </div>
-        <CodeBlock
-          ts={`<Input floatingLabel label="Username" placeholder=" " />\n\n<Input \n  variant="filled" \n  floatingLabel \n  label="Email Address" \n  startIcon={<Globe />} \n  placeholder=" " \n/>\n\n<Input \n  variant="underlined" \n  floatingLabel \n  label="Company" \n  placeholder=" " \n/>`}
-          fullCode={`import { Input } from "aer-design";\nimport { Globe } from "lucide-react";\n\nexport default function FloatingLabelExample() {\n  return (\n    <div className="max-w-sm space-y-6">\n      <Input floatingLabel label="Username" placeholder=" " />\n      <Input \n        variant="filled" \n        floatingLabel \n        label="Email Address" \n        startIcon={<Globe />} \n        placeholder=" " \n      />\n      <Input \n        variant="underlined" \n        floatingLabel \n        label="Company" \n        placeholder=" " \n      />\n    </div>\n  );\n}`}
-        />
+        <LabelExample />
       </DocSection>
 
       <DocSection
@@ -545,18 +572,29 @@ export default function GranularStyling() {
                 "Fixed element attached to the right (outside input). Often used for action buttons.",
             },
             {
-              prop: "floatingLabel",
-              type: "boolean",
-              default: "false",
-              description:
-                "Enables floating label animation. Label moves up when input is focused or has value.",
-            },
-            {
               prop: "label",
               type: "string",
               default: "-",
+              description: "Label text to display above or beside the input.",
+            },
+            {
+              prop: "labelPosition",
+              type: "'top' | 'left'",
+              default: "'top'",
+              description: "Position of the label relative to the input.",
+            },
+            {
+              prop: "required",
+              type: "boolean",
+              default: "false",
               description:
-                "Label text for floating label. Required when floatingLabel is true.",
+                "Shows an asterisk (*) next to the label to indicate required field.",
+            },
+            {
+              prop: "helperText",
+              type: "string",
+              default: "-",
+              description: "Helper text displayed below the input.",
             },
             {
               prop: "error",
@@ -589,8 +627,7 @@ export default function GranularStyling() {
               prop: "labelClassName",
               type: "string",
               default: "-",
-              description:
-                "CSS classes for the label element (when using floatingLabel).",
+              description: "CSS classes for the label element.",
             },
             {
               prop: "iconClassName",
@@ -705,15 +742,15 @@ export default function GranularStyling() {
             <h4 className="font-semibold mb-2">filled</h4>
             <p className="text-sm text-aer-muted-foreground">
               Material Design style with background fill. Creates visual
-              hierarchy and works great with floating labels. Ideal for modern,
-              clean interfaces.
+              hierarchy and works great with labels. Ideal for modern, clean
+              interfaces.
             </p>
           </div>
           <div className="p-4 border border-aer-border rounded-lg">
             <h4 className="font-semibold mb-2">underlined</h4>
             <p className="text-sm text-aer-muted-foreground">
               Minimalist style with only bottom border. Perfect for compact
-              forms and inline editing. Pairs excellently with floating labels.
+              forms and inline editing. Pairs excellently with labels.
             </p>
           </div>
         </div>
@@ -833,11 +870,12 @@ export default function GranularStyling() {
               { id: "basic", title: "Basic Usage" },
               { id: "specialized", title: "Specialized Inputs" },
               { id: "masking", title: "Masking" },
-              { id: "floating-label", title: "Floating Label" },
+              { id: "label", title: "Label" },
               { id: "variants", title: "Visual Variants" },
               { id: "sizes", title: "Size Variants" },
               { id: "icons", title: "Icons & Prefixes" },
               { id: "addons", title: "Addons" },
+              { id: "granular-styling", title: "Granular Styling" },
               { id: "validation", title: "Validation States" },
               { id: "real-world-validation", title: "Real World Example" },
             ],
