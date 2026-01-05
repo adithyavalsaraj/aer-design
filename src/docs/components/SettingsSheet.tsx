@@ -1,5 +1,5 @@
 import { useAerConfig } from "@/components/AerConfigProvider";
-import { AlignLeft, AlignRight, X } from "lucide-react";
+import { AlignLeft, AlignRight, Check, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { ModeToggle } from "./ModeToggle";
 import { ThemePicker } from "./ThemePicker";
@@ -10,7 +10,14 @@ interface SettingsSheetProps {
 }
 
 export function SettingsSheet({ isOpen, onClose }: SettingsSheetProps) {
-  const { direction, setDirection, size, setSize } = useAerConfig();
+  const {
+    direction,
+    setDirection,
+    size,
+    setSize,
+    autoContrast,
+    toggleAutoContrast,
+  } = useAerConfig();
   const [isVisible, setIsVisible] = useState(false);
 
   // Handle animation states
@@ -132,6 +139,37 @@ export function SettingsSheet({ isOpen, onClose }: SettingsSheetProps) {
               <p className="text-xs text-aer-muted-foreground">
                 Sets default size for all inputs
               </p>
+            </div>
+          </div>
+
+          {/* Accessibility Section */}
+          <div className="space-y-3">
+            <h3 className="text-sm font-medium text-aer-muted-foreground uppercase tracking-wider">
+              Accessibility
+            </h3>
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <span className="text-sm font-medium block">Auto Contrast</span>
+                <p className="text-xs text-aer-muted-foreground">
+                  Automatic WCAG-compliant text colors
+                </p>
+              </div>
+              <button
+                onClick={toggleAutoContrast}
+                className={`relative w-11 h-6 rounded-full transition-colors ${
+                  autoContrast ? "bg-aer-primary" : "bg-aer-muted"
+                }`}
+              >
+                <div
+                  className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform flex items-center justify-center ${
+                    autoContrast ? "translate-x-[22px]" : "translate-x-0.5"
+                  }`}
+                >
+                  {autoContrast && (
+                    <Check className="size-3 text-aer-primary" />
+                  )}
+                </div>
+              </button>
             </div>
           </div>
         </div>

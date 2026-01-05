@@ -176,7 +176,7 @@ function SidebarPlayground() {
         </div>
       )}
 
-      <div className="h-32 rounded-xl bg-gradient-to-br from-aer-muted to-transparent border border-aer-border/50 p-6 flex items-center justify-center text-aer-muted-foreground">
+      <div className="h-32 rounded-xl bg-linear-to-br from-aer-muted to-transparent border border-aer-border/50 p-6 flex items-center justify-center text-aer-muted-foreground">
         {isDocumentLayout ? "Document Content" : "App Shell Content"}
       </div>
       <div className="space-y-4">
@@ -676,6 +676,13 @@ export function SidebarDoc() {
         <ApiTable
           data={[
             {
+              prop: "variant",
+              type: '"default" | "aer"',
+              default: '"default"',
+              description:
+                "Visual style variant. 'aer' applies glassmorphism effects.",
+            },
+            {
               prop: "mode",
               type: "'fixed' | 'sticky' | 'absolute' | 'floating' | 'overlay' | 'icon'",
               default: "'fixed'",
@@ -831,6 +838,14 @@ export function SidebarDoc() {
   --aer-muted: 217.2 32.6% 17.5%;
 }`}
         />
+        <div className="mt-4 p-4 bg-aer-muted/5 border border-aer-border rounded-lg">
+          <p className="text-sm text-aer-muted-foreground">
+            <strong>Note:</strong> The <strong>Aer</strong> variant applies a
+            glassmorphism style with white text, designed for dark or colorful
+            backgrounds. For automatic contrast adjustment on custom
+            backgrounds, enable the global <code>autoContrast</code> setting.
+          </p>
+        </div>
       </div>
     </DocSection>
   );

@@ -221,7 +221,33 @@ export default function App() {
       >
         <CustomTooltipExample />
         <CodeBlock
-          ts={`// See full code example for complete implementation`}
+          ts={`function Tooltip({ content, children, side = "top" }: TooltipProps) {
+  const [isOpen, setIsOpen] = React.useState(false);
+  
+  const { referenceRef, floatingRef, floatingStyles } = useAutoPosition({
+    isOpen,
+    side,
+    align: "center",
+    sideOffset: 8,
+  });
+
+  return (
+    <div className="relative inline-block">
+      <div
+        ref={referenceRef}
+        onMouseEnter={() => setIsOpen(true)}
+        onMouseLeave={() => setIsOpen(false)}
+      >
+        {children}
+      </div>
+      {isOpen && (
+        <div ref={floatingRef} style={floatingStyles} className="...">
+          {content}
+        </div>
+      )}
+    </div>
+  );
+}`}
           fullCode={`import { useAutoPosition } from "aer-design";
 import * as React from "react";
 
@@ -293,7 +319,32 @@ export default function App() {
       >
         <CustomPopoverExample />
         <CodeBlock
-          ts={`// Interactive popover with click-to-open`}
+          ts={`function Popover({ trigger, children, side = "bottom" }: PopoverProps) {
+  const [isOpen, setIsOpen] = React.useState(false);
+  const containerRef = React.useRef(null);
+  
+  const { referenceRef, floatingRef, floatingStyles } = useAutoPosition({
+    isOpen,
+    side,
+    align: "start",
+    sideOffset: 8,
+  });
+
+  // ... Close on outside click logic
+
+  return (
+    <div ref={containerRef} className="relative inline-block">
+      <div ref={referenceRef} onClick={() => setIsOpen(!isOpen)}>
+        {trigger}
+      </div>
+      {isOpen && (
+        <div ref={floatingRef} style={floatingStyles} className="...">
+          {children}
+        </div>
+      )}
+    </div>
+  );
+}`}
           fullCode={`import { useAutoPosition } from "aer-design";
 import * as React from "react";
 
@@ -365,7 +416,33 @@ export default function App() {
       >
         <RealWorldExample />
         <CodeBlock
-          ts={`// Notification system with auto-positioning`}
+          ts={`function NotificationSystem() {
+  const [isOpen, setIsOpen] = React.useState(false);
+  
+  const { referenceRef, floatingRef, floatingStyles, placement } = useAutoPosition({
+    isOpen,
+    side: "bottom",
+    align: "end",
+    sideOffset: 12,
+  });
+
+  return (
+    <div className="p-8">
+      <div ref={referenceRef}>
+        <Button onClick={() => setIsOpen(!isOpen)}>Toggle</Button>
+      </div>
+      
+      {isOpen && (
+        <div ref={floatingRef} style={floatingStyles}>
+          <Notification 
+            title="Auto-positioned" 
+            message={\`Placed at: \${placement.side}\`} 
+          />
+        </div>
+      )}
+    </div>
+  );
+}`}
           fullCode={`import { useAutoPosition } from "aer-design";
 import { Info, X } from "lucide-react";
 import * as React from "react";
@@ -650,7 +727,7 @@ export default function NotificationSystem() {
             <div
               ref={floatingRef}
               style={floatingStyles}
-              className="min-w-[200px] p-4 bg-aer-background border border-aer-border rounded-lg shadow-lg animate-in fade-in-0 zoom-in-95"
+              className="min-w-[200px] p-4 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg shadow-lg animate-in fade-in-0 zoom-in-95"
             >
               {children}
             </div>
@@ -669,8 +746,10 @@ export default function NotificationSystem() {
             </Button>
           }
         >
-          <h3 className="font-bold mb-2 text-aer-foreground">Popover Title</h3>
-          <p className="text-sm text-aer-muted-foreground">
+          <h3 className="font-bold mb-2 text-zinc-900 dark:text-zinc-50">
+            Popover Title
+          </h3>
+          <p className="text-sm text-zinc-500 dark:text-zinc-400">
             This popover automatically positions itself to stay within the
             viewport!
           </p>
@@ -699,7 +778,7 @@ export default function NotificationSystem() {
         </p>
         <div className="relative">
           <div ref={referenceRef} className="inline-block">
-            <Button onClick={() => setIsOpen(!isOpen)} variant="aer">
+            <Button onClick={() => setIsOpen(!isOpen)} variant="default">
               <Info className="w-4 h-4 mr-2" />
               {isOpen ? "Hide" : "Show"} Notification
             </Button>
@@ -711,31 +790,31 @@ export default function NotificationSystem() {
               style={floatingStyles}
               className="animate-in slide-in-from-top-2 duration-200"
             >
-              <div className="min-w-[300px] max-w-[400px] p-4 bg-aer-background border border-aer-border rounded-lg shadow-xl">
+              <div className="min-w-[300px] max-w-[400px] p-4 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg shadow-xl">
                 <div className="flex items-start gap-3">
-                  <Info className="w-5 h-5 text-aer-primary mt-0.5 shrink-0" />
+                  <Info className="w-5 h-5 text-blue-600 dark:text-blue-500 mt-0.5 shrink-0" />
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-semibold text-sm text-aer-foreground">
+                    <h4 className="font-semibold text-sm text-zinc-900 dark:text-zinc-50">
                       New Update Available
                     </h4>
-                    <p className="text-xs text-aer-muted-foreground mt-1">
+                    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
                       Version 2.0 is now available with exciting new features!
                     </p>
                   </div>
                   <button
                     onClick={() => setIsOpen(false)}
-                    className="text-aer-muted-foreground hover:text-aer-foreground shrink-0"
+                    className="text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300 shrink-0"
                   >
                     <X className="w-4 h-4" />
                   </button>
                 </div>
-                <div className="text-xs text-aer-muted-foreground mt-3 pt-3 border-t border-aer-border text-center">
+                <div className="text-xs text-zinc-400 dark:text-zinc-500 mt-3 pt-3 border-t border-zinc-100 dark:border-zinc-800 text-center">
                   Auto-positioned:{" "}
-                  <span className="font-mono text-aer-primary">
+                  <span className="font-mono text-blue-600 dark:text-blue-500">
                     {placement.side}
                   </span>{" "}
                   /{" "}
-                  <span className="font-mono text-aer-primary">
+                  <span className="font-mono text-blue-600 dark:text-blue-500">
                     {placement.align}
                   </span>
                 </div>

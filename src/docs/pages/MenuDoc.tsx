@@ -306,19 +306,24 @@ export default function IconsMenu() {
           </Menu>
         </div>
         <CodeBlock
-          ts={`<SubMenu
-  trigger={
-    <>
-      <UserPlus className="mr-2 h-4 w-4" />
-      <span>Add to Team</span>
-    </>
-  }
->
-  <MenuItem>Engineering</MenuItem>
-  <SubMenu trigger={...}>
-    <MenuItem>SEO Team</MenuItem>
-  </SubMenu>
-</SubMenu>`}
+          ts={`<Menu>
+  <MenuContent>
+    <MenuGroup>
+      <MenuLabel>Invite</MenuLabel>
+      <MenuItem icon={<Mail />}>Email</MenuItem>
+      
+      <SubMenu trigger={<MenuItem icon={<UserPlus />}>Add to Team</MenuItem>}>
+        <MenuItem icon={<Terminal />}>Engineering</MenuItem>
+        
+        <SubMenu trigger={<MenuItem icon={<Users />}>Marketing</MenuItem>}>
+          <MenuItem>SEO Team</MenuItem>
+          <MenuItem>Content Team</MenuItem>
+        </SubMenu>
+      </SubMenu>
+      
+    </MenuGroup>
+  </MenuContent>
+</Menu>`}
           fullCode={`import { Menu, MenuTrigger, MenuContent, MenuItem, MenuLabel, MenuSeparator, MenuGroup, SubMenu, Button } from "aer-design";
 import { Mail, MessageSquare, UserPlus, Terminal, PenTool, Users, PlusCircle } from "lucide-react";
 
@@ -571,25 +576,16 @@ export default function NestedMenu() {
           </div>
         </div>
         <CodeBlock
-          ts={`<!-- Top Positions -->
-<MenuContent side="top" align="start">...</MenuContent>
-<MenuContent side="top" align="center">...</MenuContent>
-<MenuContent side="top" align="end">...</MenuContent>
+          ts={`<div className="grid grid-cols-4 gap-4">
+  {/* Top Positions */}
+  <MenuContent side="top" align="start">...</MenuContent>
+  <MenuContent side="top" align="center">...</MenuContent>
+  <MenuContent side="top" align="end">...</MenuContent>
 
-<!-- Bottom Positions -->
-<MenuContent side="bottom" align="start">...</MenuContent>
-<MenuContent side="bottom" align="center">...</MenuContent>
-<MenuContent side="bottom" align="end">...</MenuContent>
-
-<!-- Left Positions -->
-<MenuContent side="left" align="start">...</MenuContent>
-<MenuContent side="left" align="center">...</MenuContent>
-<MenuContent side="left" align="end">...</MenuContent>
-
-<!-- Right Positions -->
-<MenuContent side="right" align="start">...</MenuContent>
-<MenuContent side="right" align="center">...</MenuContent>
-<MenuContent side="right" align="end">...</MenuContent>`}
+  {/* Bottom Positions */}
+  <MenuContent side="bottom" align="start">...</MenuContent>
+  ...
+</div>`}
           fullCode={`import { Menu, MenuTrigger, MenuContent, MenuItem, Button } from "aer-design";
 
 export default function PositioningMenu() {
@@ -668,14 +664,17 @@ export default function MenuStyling() {
         title="Real World Example"
         description="A complete User Profile menu with groups, submenus, and keyboard shortcuts."
       >
-        <div className="flex justify-center p-8 border border-aer-border/50 rounded-xl bg-gradient-to-br from-aer-muted/50 to-aer-background/50">
+        <div className="flex justify-center p-8 border border-aer-border/50 rounded-xl bg-zinc-950/90 relative z-10">
+          <div className="absolute inset-0 rounded-xl overflow-hidden pointer-events-none">
+            <div className="absolute inset-0 bg-linear-to-br from-violet-600/20 via-transparent to-blue-600/20" />
+          </div>
           <Menu>
             <MenuTrigger asChild>
               <Button
                 variant="aer"
                 className="h-12 px-4 gap-3 rounded-full hover:scale-105 transition-transform"
               >
-                <div className="size-8 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-xs ring-2 ring-white/20">
+                <div className="size-8 rounded-full bg-linear-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-xs ring-2 ring-white/20">
                   JD
                 </div>
                 <div className="flex flex-col items-start text-left">
@@ -750,7 +749,52 @@ export default function MenuStyling() {
           </Menu>
         </div>
         <CodeBlock
-          ts={`// Interactive User Profile Menu Example`}
+          ts={`<Menu>
+  <MenuTrigger asChild>
+    <Button variant="aer" className="h-12 px-4 gap-3 rounded-full">
+      <div className="size-8 rounded-full bg-linear-to-tr from-indigo-500 to-purple-500 ...">JD</div>
+      <div className="flex flex-col items-start text-left">
+        <span className="text-xs font-bold">John Doe</span>
+        <span className="text-[10px] opacity-70">Pro Plan</span>
+      </div>
+    </Button>
+  </MenuTrigger>
+  
+  <MenuContent className="w-64" align="end" sideOffset={8}>
+    <div className="px-2 py-1.5 border-b mb-1 opacity-70">
+      <p className="text-sm font-bold">John Doe</p>
+      <p className="text-xs">john.doe@example.com</p>
+    </div>
+
+    <MenuGroup>
+      <MenuLabel>Platform</MenuLabel>
+      <MenuItem>
+        <Terminal className="mr-2 h-4 w-4" />
+        <span>Dashboard</span>
+        <span className="ml-auto text-xs opacity-60">⌘D</span>
+      </MenuItem>
+      {/* ... other items ... */}
+    </MenuGroup>
+
+    <MenuSeparator />
+
+    <MenuGroup>
+      <MenuLabel>Team</MenuLabel>
+      <SubMenu trigger={<MenuItem><Users /><span>Manage Team</span></MenuItem>}>
+        <MenuItem><Mail /><span>Invite Member</span></MenuItem>
+        <MenuItem><PenTool /><span>Permissions</span></MenuItem>
+      </SubMenu>
+    </MenuGroup>
+
+    <MenuSeparator />
+
+    <MenuItem className="text-red-500 hover:text-red-600 focus:text-red-600">
+      <LogOut className="mr-2 h-4 w-4" />
+      <span>Log out</span>
+      <span className="ml-auto text-xs opacity-60">⇧⌘Q</span>
+    </MenuItem>
+  </MenuContent>
+</Menu>`}
           fullCode={`import { 
   Button, 
   Menu, 
@@ -777,7 +821,7 @@ export default function UserMenu() {
     <Menu>
       <MenuTrigger asChild>
         <Button variant="aer" className="h-12 px-4 gap-3 rounded-full">
-          <div className="size-8 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-xs">
+          <div className="size-8 rounded-full bg-linear-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-xs">
             JD
           </div>
           <div className="flex flex-col items-start text-left">
@@ -863,6 +907,13 @@ export default function UserMenu() {
               type: "boolean",
               default: "-",
               description: "Controlled open state of the menu.",
+            },
+            {
+              prop: "variant",
+              type: "'default' | 'aer'",
+              default: "'default'",
+              description:
+                "Visual style variant. 'aer' applies glassmorphism effects.",
             },
             {
               prop: "onOpenChange",
@@ -1056,6 +1107,14 @@ export default function UserMenu() {
 }
 `}
       />
+      <div className="mt-4 p-4 bg-aer-muted/5 border border-aer-border rounded-lg">
+        <p className="text-sm text-aer-muted-foreground">
+          <strong>Note:</strong> The <strong>Aer</strong> variant applies a
+          glassmorphism style with white text, designed for dark or colorful
+          backgrounds. For automatic contrast adjustment on custom backgrounds,
+          enable the global <code>autoContrast</code> setting.
+        </p>
+      </div>
     </DocSection>
   );
 

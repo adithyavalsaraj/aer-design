@@ -347,6 +347,13 @@ export default function OtpStylingExample() {
               description: "Callback fired when the value changes.",
             },
             {
+              prop: "variant",
+              type: "'default' | 'aer'",
+              default: "'default'",
+              description:
+                "Visual style variant. 'aer' applies glassmorphism effects.",
+            },
+            {
               prop: "length",
               type: "number",
               default: "6",
@@ -481,6 +488,14 @@ export default function OtpStylingExample() {
   --aer-background: 222.2 84% 4.9%;
 }`}
         />
+        <div className="mt-4 p-4 bg-aer-muted/5 border border-aer-border rounded-lg">
+          <p className="text-sm text-aer-muted-foreground">
+            <strong>Note:</strong> The <strong>Aer</strong> variant applies a
+            glassmorphism style with white text, designed for dark or colorful
+            backgrounds. For automatic contrast adjustment on custom
+            backgrounds, enable the global <code>autoContrast</code> setting.
+          </p>
+        </div>
       </div>
     </DocSection>
   );

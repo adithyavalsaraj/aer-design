@@ -1,4 +1,5 @@
 import { useAerConfig } from "@/components/AerConfigProvider";
+import { useContrastColor } from "@/hooks/useContrastColor";
 import { cn } from "@/lib/utils";
 import * as React from "react";
 
@@ -45,12 +46,22 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       variant = "outline",
       placeholder,
       size: sizeProp,
+      style,
       ...props
     },
     ref
   ) => {
-    const { size: globalSize } = useAerConfig();
+    const { size: globalSize, autoContrast } = useAerConfig();
     const size = sizeProp || globalSize;
+
+    // Auto Contrast Logic
+    const backgroundColor = style?.backgroundColor as string;
+    const contrastColor = useContrastColor(backgroundColor || "");
+
+    const finalStyle = { ...style };
+    if (autoContrast && backgroundColor) {
+      finalStyle.color = contrastColor;
+    }
 
     // Variant styles matching Input component
     const variantStyles = {
@@ -132,6 +143,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           )}
           placeholder={placeholder}
           ref={ref}
+          style={finalStyle}
           {...props}
         />
       </div>

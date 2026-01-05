@@ -470,6 +470,41 @@ export default function CloseBehaviors() {
       </DocSection>
 
       <DocSection
+        title="The Aer Variant"
+        id="variants"
+        description="Choose from supported visual styles."
+      >
+        <div className="relative flex flex-col gap-6 items-center justify-center p-16 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden min-h-[300px]">
+          {/* Vibrant Background Elements */}
+          <div className="absolute inset-0 bg-white/10 backdrop-blur-md -z-10" />
+          <div className="absolute top-1/3 right-1/4 w-40 h-40 bg-pink-500/40 rounded-full blur-[60px]" />
+          <div className="absolute bottom-1/3 left-1/4 w-40 h-40 bg-cyan-500/40 rounded-full blur-[60px]" />
+
+          <Overlay
+            variant="aer"
+            content={
+              <div className="p-6 text-white text-center">
+                <h3 className="font-bold text-lg mb-1">Glassmorphism</h3>
+                <p className="text-white/80 text-sm">
+                  This overlay uses backdrop blur and translucency.
+                </p>
+              </div>
+            }
+          >
+            <Button
+              variant="outline"
+              className="bg-white/10 border-white/20 text-white hover:bg-white/20 hover:text-white"
+            >
+              Open Aer Variant
+            </Button>
+          </Overlay>
+        </div>
+        <CodeBlock
+          ts={`<div className="bg-linear-to-br from-violet-600 to-indigo-600 p-12 rounded-lg">\n  <Overlay variant="aer">\n    <Button variant="outline" className="bg-white/10 text-white border-white/20">\n      Open Aer Variant\n    </Button>\n  </Overlay>\n</div>`}
+        />
+      </DocSection>
+
+      <DocSection
         title="Modal Mode"
         id="modal"
         description="Create modal-like overlays with focus trapping."
@@ -794,6 +829,12 @@ export default function UserProfile() {
               description: "Close overlay when scrolling.",
             },
             {
+              prop: "variant",
+              type: '"default" | "aer"',
+              default: '"default"',
+              description: "Visual style variant.",
+            },
+            {
               prop: "modal",
               type: "boolean",
               default: "false",
@@ -837,6 +878,7 @@ export default function UserProfile() {
               { id: "positioning", title: "Positioning" },
               { id: "alignment", title: "Alignment" },
               { id: "close-behaviors", title: "Close Behaviors" },
+              { id: "variants", title: "Variants" },
               { id: "modal", title: "Modal Mode" },
               { id: "granular-styling", title: "Granular Styling" },
               { id: "real-world", title: "Real World Example" },
@@ -847,6 +889,37 @@ export default function UserProfile() {
             label: "API",
             content: api,
             toc: [{ id: "overlay-props", title: "OverlayProps" }],
+          },
+
+          {
+            id: "theming",
+            label: "Theming",
+            content: (
+              <DocSection
+                id="css-variables"
+                title="CSS Variables"
+                description="Customize the overlay using CSS variables."
+              >
+                <div className="space-y-4">
+                  <p className="text-sm text-aer-muted-foreground">
+                    The Overlay component uses specific variables for the `aer`
+                    variant to enable glassmorphism. It also supports{" "}
+                    <strong>Auto-Contrast</strong>: the text color will
+                    automatically adjust based on the background color if
+                    `autoContrast` is enabled in `AerConfigProvider`.
+                  </p>
+                  <CodeBlock
+                    ts={`/* Aer Variant Variables */
+:root {
+  --aer-glass-border: 0 0% 100% / 0.1;
+  --aer-glass-bg: 0 0% 100% / 0.05;
+  --aer-glass-blur: 12px;
+}`}
+                  />
+                </div>
+              </DocSection>
+            ),
+            toc: [{ id: "css-variables", title: "CSS Variables" }],
           },
         ]}
       />
@@ -860,7 +933,7 @@ function OverlayStylingExample() {
       {/* 1. Glassmorphism Demo */}
       <div className="relative h-72 rounded-xl bg-zinc-950 overflow-hidden flex items-center justify-center border border-zinc-800 shadow-inner">
         {/* Background Elements */}
-        <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 via-transparent to-orange-500/10" />
+        <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 via-fuchsia-500/10 to-orange-500/10" />
         <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-pink-500/30 rounded-full blur-[50px]" />
         <div className="absolute bottom-1/4 right-1/4 w-32 h-32 bg-blue-500/30 rounded-full blur-[50px]" />
         <div

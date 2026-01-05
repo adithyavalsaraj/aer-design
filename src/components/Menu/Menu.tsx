@@ -22,6 +22,7 @@ export function Menu({
   children,
   isOpen: controlledOpen,
   onOpenChange,
+  variant,
 }: MenuProps) {
   const [uncontrolledOpen, setUncontrolledOpen] = React.useState(false);
   const isControlled = controlledOpen !== undefined;
@@ -45,8 +46,15 @@ export function Menu({
   );
 
   const contextValue = React.useMemo(
-    () => ({ isOpen, setIsOpen, closeMenu, openMenu, toggleMenu }),
-    [isOpen, setIsOpen, closeMenu, openMenu, toggleMenu]
+    () => ({
+      isOpen,
+      setIsOpen,
+      closeMenu,
+      openMenu,
+      toggleMenu,
+      variant: variant || "default",
+    }),
+    [isOpen, setIsOpen, closeMenu, openMenu, toggleMenu, variant]
   );
 
   return (
@@ -430,6 +438,7 @@ MenuSeparator.displayName = "MenuSeparator";
 
 export const SubMenu = React.forwardRef<HTMLDivElement, SubMenuProps>(
   ({ className, trigger, children, disabled, ...props }, ref) => {
+    const { variant } = useMenu();
     const [isOpen, setIsOpen] = React.useState(false);
     const timeoutRef = React.useRef<number | null>(null);
 
@@ -523,13 +532,12 @@ export const SubMenu = React.forwardRef<HTMLDivElement, SubMenuProps>(
           <div
             ref={subContentRef}
             className={cn(
-              "absolute whitespace-nowrap rounded-md border border-aer-border bg-aer-background p-1 text-aer-foreground shadow-md animate-in fade-in-0 zoom-in-95 z-[100]",
+              menuContentVariants({ variant: variant as any }),
               // Default width behavior:
               // 1. Minimum 8rem
               // 2. Matches parent width if larger than 8rem
               // 3. Can be overridden by user using `w-` or `min-w-` classes cause tailwind-merge handles the conflict
-              "min-w-[max(8rem,var(--aer-submenu-parent-width,0px))]",
-              "-ml-1"
+              "absolute min-w-[max(8rem,var(--aer-submenu-parent-width,0px))] -ml-1 z-100"
             )}
             style={positionStyle}
             role="menu"

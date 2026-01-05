@@ -1,4 +1,5 @@
 import { useAerConfig } from "@/components/AerConfigProvider";
+import { useContrastColor } from "@/hooks/useContrastColor";
 import { cn } from "@/lib/utils";
 import * as React from "react";
 
@@ -69,12 +70,22 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       variant = "outline",
       size: sizeProp,
       placeholder,
+      style,
       ...props
     },
     ref
   ) => {
-    const { size: globalSize } = useAerConfig();
+    const { size: globalSize, autoContrast } = useAerConfig();
     const size = sizeProp || globalSize;
+
+    // Auto Contrast Logic
+    const backgroundColor = style?.backgroundColor as string;
+    const contrastColor = useContrastColor(backgroundColor || "");
+
+    const finalStyle = { ...style };
+    if (autoContrast && backgroundColor) {
+      finalStyle.color = contrastColor;
+    }
 
     const hasAddon = addonBefore || addonAfter;
     const inputRef = React.useRef<HTMLInputElement>(null);
@@ -212,6 +223,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               )}
               placeholder={placeholder}
               ref={inputRef}
+              style={finalStyle}
               {...props}
             />
           </div>

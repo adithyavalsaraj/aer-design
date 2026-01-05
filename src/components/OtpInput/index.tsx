@@ -21,6 +21,7 @@ export interface OtpInputProps {
   error?: boolean | string;
   onBlur?: () => void;
   size?: "sm" | "default" | "lg";
+  variant?: "outline" | "filled" | "underlined" | "aer";
 }
 
 const OtpInput = React.forwardRef<HTMLDivElement, OtpInputProps>(
@@ -173,10 +174,11 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpInputProps>(
         {Array.from({ length }).map((_, i) => (
           <div key={i} className="relative">
             <Input
+              variant={props.variant}
               ref={(el) => {
                 inputRefs.current[i] = el;
               }}
-              className={cn("p-0 flex-shrink-0", sizes.container)}
+              className={cn("p-0 shrink-0", sizes.container)}
               inputClassName={cn(
                 "text-center font-bold h-full w-full",
                 sizes.text,

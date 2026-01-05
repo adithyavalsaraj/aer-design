@@ -553,7 +553,7 @@ export default function GroupedDropdown() {
       >
         <div className="relative p-12 bg-zinc-950 rounded-2xl border border-zinc-800">
           {/* Vibrant Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-violet-600/20 via-transparent to-orange-600/20" />
+          <div className="absolute inset-0 bg-linear-to-br from-violet-600/20 via-transparent to-orange-600/20" />
           <div className="absolute top-1/4 right-1/3 w-40 h-40 bg-pink-500/30 rounded-full blur-[60px]" />
           <div className="absolute bottom-1/4 left-1/3 w-40 h-40 bg-blue-500/30 rounded-full blur-[60px]" />
 
@@ -577,7 +577,7 @@ const options = [
 
 export default function AerDropdownExample() {
   return (
-    <div className="p-12 bg-gradient-to-br from-violet-600 to-orange-600 rounded-2xl">
+    <div className="p-12 bg-linear-to-br from-violet-600 to-orange-600 rounded-2xl">
       <div className="max-w-sm">
         <Dropdown 
           variant="aer"
@@ -1268,6 +1268,14 @@ export default function UserSettings() {
               <strong>Tip:</strong> Use the ThemeProvider to switch themes
               globally, or override these variables in a specific scope to
               customize just the dropdowns.
+            </p>
+          </div>
+          <div className="mt-4 p-4 bg-aer-muted/5 border border-aer-border rounded-lg">
+            <p className="text-sm text-aer-muted-foreground">
+              <strong>Note:</strong> The <strong>Aer</strong> variant applies a
+              glassmorphism style with white text, designed for dark or colorful
+              backgrounds. For automatic contrast adjustment on custom
+              backgrounds, enable the global <code>autoContrast</code> setting.
             </p>
           </div>
         </div>

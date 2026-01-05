@@ -424,10 +424,10 @@ export default function GranularStyling() {
             },
             {
               prop: "variant",
-              type: "'default' | 'card'",
+              type: "'default' | 'card' | 'aer'",
               default: "'default'",
               description:
-                "Visual style variant. 'card' renders a large clickable box.",
+                "Visual style variant. 'card' renders a large clickable box. 'aer' applies glassmorphism.",
             },
             {
               prop: "size",
@@ -648,6 +648,14 @@ export default function GranularStyling() {
               <strong>Tip:</strong> The Card variant uses{" "}
               <code>--aer-muted</code> for its hover state and background.
               Ensure this variable is defined in your theme.
+            </p>
+          </div>
+          <div className="p-4 bg-aer-muted/5 border border-aer-border rounded-lg">
+            <p className="text-sm text-aer-muted-foreground">
+              <strong>Note:</strong> The <strong>Aer</strong> variant applies a
+              glassmorphism style with white text, designed for dark or colorful
+              backgrounds. For automatic contrast adjustment on custom
+              backgrounds, enable the global <code>autoContrast</code> setting.
             </p>
           </div>
         </div>

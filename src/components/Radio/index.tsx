@@ -104,6 +104,7 @@ const radioItemVariants = cva(
       variant: {
         default: "",
         card: "p-4 border rounded-aer-xl hover:bg-aer-muted/50 has-[:checked]:border-aer-primary has-[:checked]:bg-aer-primary/5 has-[:checked]:shadow-md ring-offset-background transition-all",
+        aer: "p-4 border border-white/10 rounded-aer-xl bg-white/5 backdrop-blur-md shadow-lg text-white has-[:checked]:bg-white/10 has-[:checked]:border-white/20 transition-all hover:bg-white/10",
       },
     },
     compoundVariants: [

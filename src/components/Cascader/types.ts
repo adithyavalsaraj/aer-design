@@ -84,7 +84,7 @@ export interface CascaderProps {
   /**
    * Visual variant.
    */
-  variant?: "outline" | "filled" | "underlined";
+  variant?: "outline" | "filled" | "underlined" | "aer";
   /**
    * Size of the trigger.
    */

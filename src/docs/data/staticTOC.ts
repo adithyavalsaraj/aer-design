@@ -110,7 +110,9 @@ export const staticTOC: Record<string, { id: string; title: string }[]> = {
     { id: "positioning", title: "Positioning" },
     { id: "alignment", title: "Alignment" },
     { id: "close-behaviors", title: "Close Behaviors" },
+    { id: "variants", title: "The Aer Variant" },
     { id: "modal", title: "Modal Mode" },
+    { id: "granular-styling", title: "Granular Styling" },
     { id: "real-world", title: "Real World Example" },
   ],
   tooltip: [

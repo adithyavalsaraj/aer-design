@@ -2,6 +2,48 @@
 
 All notable changes to the Aer Design project will be documented in this file.
 
+## [v0.10.0] - 2026-01-05
+
+### New Features
+
+- **Automatic Contrast System**: Introduced WCAG 2.1 compliant automatic text color calculation.
+  - **`useContrastColor`**: React hook for automatic text color calculation based on background.
+  - **`getAccessibleTextColor`**: Utility function to determine accessible text color.
+  - **`getContrastRatio`**: Calculate WCAG contrast ratio between two colors.
+  - **`meetsWCAG`**: Check if contrast ratio meets WCAG AA/AAA standards.
+  - **`getLuminance`**: Calculate relative luminance according to WCAG formula.
+  - **Color Format Support**: Handles hex, rgb, and rgba color formats.
+  - **WCAG Levels**: Supports both AA (4.5:1) and AAA (7:1) compliance levels.
+  - **Performance**: Memoized calculations with minimal overhead.
+  - **Accessibility First**: Makes WCAG compliance automatic and effortless.
+
+### Component Enhancements
+
+- **Glassmorphism "aer" Variant**: Added premium glassmorphism variant across components.
+  - **Button**: Enhanced aer variant with improved transparency and blur effects.
+  - **Input**: Added aer variant with glassmorphism styling.
+  - **Dropdown**: Added aer variant to both trigger and menu panel with proper z-index handling.
+  - **Textarea**: Added aer variant with glassmorphism effect.
+  - **Text Contrast**: All aer variant text includes text-shadow for improved readability.
+
+### Documentation
+
+- **Comprehensive Examples**: Added "The Aer Variant" sections to all component documentation pages.
+  - Vibrant gradient backgrounds showcasing glassmorphism effect.
+  - Live interactive examples with code snippets.
+  - Pro tips for optimal usage.
+- **Contrast System Documentation**: Created comprehensive guide for automatic contrast utilities.
+  - API reference with examples.
+  - WCAG standards explanation.
+  - Best practices and performance notes.
+- **README Updates**: Added contrast utilities to features and utilities sections with examples.
+
+### Bug Fixes
+
+- **Dropdown**: Fixed z-index issues where menu panel was hidden behind containers.
+- **Dropdown**: Removed overflow-hidden from aer variant example container to prevent clipping.
+- **Dropdown**: Fixed text visibility in aer variant options with proper text color application.
+
 ## [v0.9.0] - 2026-01-02
 
 ### ⚠️ Breaking Changes

@@ -1,4 +1,5 @@
 import { useAerConfig } from "@/components/AerConfigProvider";
+import { useContrastColor } from "@/hooks/useContrastColor";
 import { Slot } from "@radix-ui/react-slot";
 import { Loader2 } from "lucide-react";
 import * as React from "react";
@@ -17,14 +18,24 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       isLoading = false,
       children,
       disabled,
+      style,
       ...props
     },
     ref
   ) => {
     const Comp = asChild ? Slot : "button";
 
-    const { size: globalSize } = useAerConfig();
+    const { size: globalSize, autoContrast } = useAerConfig();
     const computedSize = size || globalSize;
+
+    // Auto Contrast Logic
+    const backgroundColor = style?.backgroundColor as string;
+    const contrastColor = useContrastColor(backgroundColor || "");
+
+    const finalStyle = { ...style };
+    if (autoContrast && backgroundColor) {
+      finalStyle.color = contrastColor;
+    }
 
     return (
       <Comp
@@ -33,6 +44,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         )}
         ref={ref}
         disabled={isLoading || disabled}
+        style={finalStyle}
         {...props}
       >
         {isLoading ? (

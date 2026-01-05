@@ -222,7 +222,8 @@ export default function CustomDisplay() {
         <CodeBlock
           ts={`<Cascader variant="outline" ... />
 <Cascader variant="filled" ... />
-<Cascader variant="underlined" ... />`}
+<Cascader variant="underlined" ... />
+<Cascader variant="aer" ... />`}
         />
       </DocSection>
 
@@ -570,7 +571,7 @@ export default function ProductForm() {
             },
             {
               prop: "variant",
-              type: '"outline" | "filled" | "underlined"',
+              type: '"outline" | "filled" | "underlined" | "aer"',
               default: '"outline"',
               description: "Visual style variant.",
             },
@@ -637,7 +638,7 @@ export default function ProductForm() {
       <DocSection
         id="theming"
         title="Theming"
-        description="Customize the look and feel using CSS variables."
+        description="Customize the look and feel using CSS variables. Note: Auto-contrast is enabled by default for 'aer' variant and background colors."
       >
         <ThemingExample />
         <CodeBlock

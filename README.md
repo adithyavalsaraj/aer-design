@@ -9,11 +9,12 @@ Aer Design is a modern, accessible, and highly customizable component library bu
 ## Features
 
 - 🪶 **Weightless**: Zero-runtime CSS-in-JS overhead. Built on standard CSS variables and Tailwind.
-- ♿ **Accessible**: Full WAI-ARIA compliance via Radix UI primitives.
+- ♿ **Accessible**: Full WAI-ARIA compliance via Radix UI primitives + automatic WCAG 2.1 contrast.
 - 🎨 **Themable**: 8 persistent color themes & dark mode support out of the box.
 - 🌍 **RTL Support**: First-class support for Right-to-Left layouts.
 - ⚡ **Performance**: Optimized for speed with minimal re-renders.
 - 🎯 **TypeScript**: Full TypeScript support with comprehensive type definitions.
+- 🔍 **Auto-Contrast**: Automatic text color calculation for WCAG AA/AAA compliance.
 
 ## Installation
 
@@ -83,6 +84,9 @@ export function LoginForm() {
 | :--------------------------- | :------------------------------------------------------------------------------ |
 | **calculateOptimalPosition** | Function for manual position calculation with 360° collision detection.         |
 | **useAutoPosition**          | React hook for automatic positioning of floating elements (tooltips, popovers). |
+| **useContrastColor**         | React hook for automatic WCAG-compliant text color calculation.                 |
+| **getAccessibleTextColor**   | Function to determine accessible text color based on background.                |
+| **getContrastRatio**         | Calculate WCAG contrast ratio between two colors.                               |
 | **useShortcut**              | React hook for scoped, customizable keyboard shortcuts.                         |
 | **ShortcutRecorder**         | UI component for recording and customizing user shortcuts.                      |
 | **AerConfigProvider**        | Global configuration provider for RTL support and component sizing.             |
@@ -152,6 +156,28 @@ function Tooltip({ content, children }) {
 ### Auto-Positioning
 
 Dropdown and Menu components automatically adjust their position to stay within the viewport, intelligently flipping sides and alignments as needed.
+
+### Automatic Contrast
+
+Ensure WCAG 2.1 compliance automatically with the contrast calculation system:
+
+```tsx
+import { useContrastColor } from "aer-design";
+
+function Card({ bgColor, children }) {
+  const textColor = useContrastColor(bgColor);
+
+  return (
+    <div style={{ backgroundColor: bgColor, color: textColor }}>
+      {children}
+    </div>
+  );
+}
+
+// The text color automatically adjusts to meet WCAG AA standards (4.5:1 ratio)
+<Card bgColor="#3498db">Accessible Text</Card> // White text
+<Card bgColor="#f1c40f">Accessible Text</Card> // Black text
+```
 
 ### Type Safety
 

@@ -10,6 +10,7 @@ export interface AerConfigProviderProps {
   disablePersistence?: boolean;
   defaultDirection?: Direction;
   defaultSize?: Size;
+  defaultAutoContrast?: boolean;
 }
 
 export function AerConfigProvider({
@@ -17,6 +18,7 @@ export function AerConfigProvider({
   disablePersistence = false,
   defaultDirection = "ltr",
   defaultSize = "default",
+  defaultAutoContrast = false,
 }: AerConfigProviderProps) {
   // Direction State
   const [direction, setDirectionState] = useState<Direction>(() => {
@@ -36,6 +38,15 @@ export function AerConfigProvider({
     return (saved as Size) || defaultSize;
   });
 
+  // Auto Contrast State
+  const [autoContrast, setAutoContrastState] = useState<boolean>(() => {
+    if (disablePersistence) {
+      return defaultAutoContrast;
+    }
+    const saved = localStorage.getItem("aer-auto-contrast");
+    return saved === "true" || defaultAutoContrast;
+  });
+
   // Persistence Effects
   useEffect(() => {
     if (disablePersistence) return;
@@ -47,6 +58,11 @@ export function AerConfigProvider({
     if (disablePersistence) return;
     localStorage.setItem("aer-size", size);
   }, [size, disablePersistence]);
+
+  useEffect(() => {
+    if (disablePersistence) return;
+    localStorage.setItem("aer-auto-contrast", String(autoContrast));
+  }, [autoContrast, disablePersistence]);
 
   // Actions
   const toggleDirection = () => {
@@ -61,6 +77,14 @@ export function AerConfigProvider({
     setSizeState(s);
   };
 
+  const setAutoContrast = (enabled: boolean) => {
+    setAutoContrastState(enabled);
+  };
+
+  const toggleAutoContrast = () => {
+    setAutoContrastState((prev) => !prev);
+  };
+
   return (
     <AerConfigContext.Provider
       value={{
@@ -69,6 +93,9 @@ export function AerConfigProvider({
         setDirection,
         size,
         setSize,
+        autoContrast,
+        setAutoContrast,
+        toggleAutoContrast,
       }}
     >
       {children}

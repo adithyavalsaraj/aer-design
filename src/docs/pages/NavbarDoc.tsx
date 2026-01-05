@@ -199,6 +199,13 @@ export function NavbarDoc() {
                 "Where the navbar is fixed/positioned. 'top' adds a bottom border, 'bottom' adds a top border.",
             },
             {
+              prop: "variant",
+              type: "'default' | 'aer'",
+              default: "'default'",
+              description:
+                "Visual style variant. 'aer' applies glassmorphism effects.",
+            },
+            {
               prop: "mode",
               type: "'fixed' | 'sticky' | 'static' | 'floating' | 'absolute'",
               default: "'sticky'",
@@ -303,6 +310,14 @@ export function NavbarDoc() {
   --aer-muted: 217.2 32.6% 17.5%;
 }`}
         />
+        <div className="mt-4 p-4 bg-aer-muted/5 border border-aer-border rounded-lg">
+          <p className="text-sm text-aer-muted-foreground">
+            <strong>Note:</strong> The <strong>Aer</strong> variant applies a
+            glassmorphism style with white text, designed for dark or colorful
+            backgrounds. For automatic contrast adjustment on custom
+            backgrounds, enable the global <code>autoContrast</code> setting.
+          </p>
+        </div>
       </div>
     </DocSection>
   );

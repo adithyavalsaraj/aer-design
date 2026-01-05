@@ -9,6 +9,10 @@ const navbarVariants = cva(
   "flex bg-aer-background border-aer-border z-40 transition-all duration-300 ease-in-out",
   {
     variants: {
+      variant: {
+        default: "bg-aer-background border-aer-border",
+        aer: "bg-white/5 backdrop-blur-xl border-white/10 text-white shadow-lg",
+      },
       position: {
         top: "border-b inset-x-0 top-0",
         bottom: "border-t inset-x-0 bottom-0",
@@ -44,9 +48,18 @@ const navbarVariants = cva(
       position: "top",
       mode: "sticky",
       size: "default",
+      variant: "default",
     },
   }
 );
+
+// --- Context ---
+interface NavbarContextValue {
+  variant?: "default" | "aer";
+}
+const NavbarContext = React.createContext<NavbarContextValue>({
+  variant: "default",
+});
 
 // --- Types ---
 
@@ -75,22 +88,27 @@ const Navbar = React.forwardRef<HTMLDivElement, NavbarProps>(
     const size = sizeProp || globalSize;
 
     return (
-      <header
-        ref={ref}
-        className={cn(navbarVariants({ position, mode, size }), className)}
-        {...props}
-      >
-        <div
+      <NavbarContext.Provider value={{ variant: props.variant || "default" }}>
+        <header
+          ref={ref}
           className={cn(
-            "flex w-full items-center gap-2 mx-auto max-w-7xl",
-            align === "center" && "justify-center",
-            align === "start" && "justify-start",
-            align === "end" && "justify-end"
+            navbarVariants({ position, mode, size, variant: props.variant }),
+            className
           )}
+          {...props}
         >
-          {children}
-        </div>
-      </header>
+          <div
+            className={cn(
+              "flex w-full items-center gap-2 mx-auto max-w-7xl",
+              align === "center" && "justify-center",
+              align === "start" && "justify-start",
+              align === "end" && "justify-end"
+            )}
+          >
+            {children}
+          </div>
+        </header>
+      </NavbarContext.Provider>
     );
   }
 );
@@ -107,13 +125,19 @@ interface NavbarItemProps
 
 const NavbarItem = React.forwardRef<HTMLButtonElement, NavbarItemProps>(
   ({ className, icon, active, children, ...props }, ref) => {
+    const { variant } = React.useContext(NavbarContext);
+
     return (
       <button
         ref={ref}
         className={cn(
           "group flex items-center gap-2 rounded-aer-md text-sm font-medium transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-aer-ring px-3 py-2",
           active
-            ? "bg-aer-primary/10 text-aer-primary"
+            ? variant === "aer"
+              ? "bg-white/20 text-white shadow-md border border-white/10"
+              : "bg-aer-primary/10 text-aer-primary"
+            : variant === "aer"
+            ? "text-white/70 hover:bg-white/10 hover:text-white"
             : "text-aer-muted-foreground hover:bg-aer-muted hover:text-aer-foreground",
           className
         )}

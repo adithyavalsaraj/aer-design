@@ -502,6 +502,17 @@ export default function GranularStyling() {
               look like part of the same family.
             </p>
           </div>
+          <div className="p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+            <p className="text-sm text-blue-700 dark:text-blue-400">
+              <strong>Auto-Contrast:</strong> When the global{" "}
+              <code className="text-xs bg-blue-500/20 px-1 rounded">
+                autoContrast
+              </code>{" "}
+              setting is enabled, this component will automatically adjust its
+              text color to ensure WCAG compliance when a custom background
+              color is applied via the <code>style</code> prop.
+            </p>
+          </div>
         </div>
       </div>
     </DocSection>

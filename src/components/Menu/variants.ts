@@ -4,9 +4,14 @@ export const menuContentVariants = cva(
   "absolute z-[100] min-w-[8rem] whitespace-nowrap rounded-md border border-aer-border bg-aer-background p-1 text-aer-foreground shadow-md animate-in fade-in-0 zoom-in-95",
   {
     variants: {
-      // Add variants here if needed later (e.g. size, flavor)
+      variant: {
+        default: "bg-aer-background border-aer-border",
+        aer: "bg-white/10 backdrop-blur-md border-white/10 text-white shadow-2xl",
+      },
     },
-    defaultVariants: {},
+    defaultVariants: {
+      variant: "default",
+    },
   }
 );
 
@@ -22,6 +27,7 @@ export const menuItemVariants = cva(
         default: "",
         destructive:
           "text-red-500 hover:text-red-600 focus:text-red-600 focus:bg-red-100 dark:focus:bg-red-900/20",
+        aer: "text-white/80 hover:bg-white/10 hover:text-white focus:bg-white/10 focus:text-white",
       },
     },
     defaultVariants: {

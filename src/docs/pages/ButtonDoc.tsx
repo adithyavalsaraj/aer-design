@@ -1,4 +1,6 @@
 import { Button } from "@/components/Button";
+import { useContrastColor } from "@/hooks/useContrastColor";
+import { getContrastRatio } from "@/lib/contrast";
 import { Download, Mail, Plus, Save, Sparkles, Trash2, X } from "lucide-react";
 import * as React from "react";
 import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
@@ -421,7 +423,36 @@ export default function ButtonStylingExample() {
       >
         <RealWorldExample />
         <CodeBlock
-          ts={`// Form with primary, secondary, and destructive actions`}
+          ts={`// Interactive User Profile Form
+export default function UserProfileForm() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasChanges, setHasChanges] = useState(false);
+
+  return (
+    <div className="max-w-md p-6 border rounded-lg bg-aer-background">
+      <h3 className="text-lg font-semibold mb-4">Profile Settings</h3>
+      
+      {/* Form Fields... */}
+
+      <div className="flex items-center justify-between mt-6">
+        <div className="flex gap-2">
+          <Button isLoading={isLoading} disabled={!hasChanges}>
+            <Save className="mr-2 h-4 w-4" />
+            Save
+          </Button>
+          <Button variant="outline" disabled={!hasChanges}>
+            Cancel
+          </Button>
+        </div>
+        
+        <Button variant="destructive" size="sm">
+          <Trash2 className="mr-2 h-4 w-4" />
+          Delete
+        </Button>
+      </div>
+    </div>
+  );
+}`}
           fullCode={`import { Button } from "aer-design";
 import { Save, X, Trash2 } from "lucide-react";
 import { useState } from "react";
@@ -750,6 +781,102 @@ export default function UserProfileForm() {
     );
   }
 
+  function AutomaticContrastExample() {
+    const [bgColor, setBgColor] = React.useState("#3498db");
+    const textColor = useContrastColor(bgColor);
+    const contrastRatio = getContrastRatio(bgColor, textColor);
+    const meetsAA = contrastRatio >= 4.5;
+    const meetsAAA = contrastRatio >= 7;
+
+    return (
+      <div className="space-y-4">
+        <div className="flex flex-col sm:flex-row gap-4 items-start">
+          <div className="flex-1 space-y-2">
+            <label className="text-sm font-medium">Background Color</label>
+            <div className="flex gap-2">
+              <input
+                type="color"
+                value={bgColor}
+                onChange={(e) => setBgColor(e.target.value)}
+                className="h-10 w-20 rounded border border-aer-border cursor-pointer"
+              />
+              <input
+                type="text"
+                value={bgColor}
+                onChange={(e) => setBgColor(e.target.value)}
+                className="flex-1 h-10 px-3 rounded border border-aer-border bg-aer-background text-aer-foreground"
+                placeholder="#3498db"
+              />
+            </div>
+          </div>
+
+          <div className="flex-1 space-y-2">
+            <label className="text-sm font-medium">Contrast Information</label>
+            <div className="space-y-1 text-sm">
+              <div className="flex items-center gap-2">
+                <span className="text-aer-muted-foreground">Text Color:</span>
+                <code className="px-2 py-0.5 rounded bg-aer-muted text-aer-foreground">
+                  {textColor}
+                </code>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-aer-muted-foreground">Ratio:</span>
+                <code className="px-2 py-0.5 rounded bg-aer-muted text-aer-foreground">
+                  {contrastRatio.toFixed(2)}:1
+                </code>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <span
+                  className={`px-2 py-0.5 rounded text-xs font-medium ${
+                    meetsAA
+                      ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100"
+                      : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100"
+                  }`}
+                >
+                  {meetsAA ? "✓" : "✗"} WCAG AA
+                </span>
+                <span
+                  className={`px-2 py-0.5 rounded text-xs font-medium ${
+                    meetsAAA
+                      ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100"
+                      : "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100"
+                  }`}
+                >
+                  {meetsAAA ? "✓" : "✗"} WCAG AAA
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          className="p-8 rounded-lg border border-aer-border transition-all"
+          style={{ backgroundColor: bgColor, color: textColor }}
+        >
+          <h3 className="text-2xl font-bold mb-2">Accessible Button</h3>
+          <p className="mb-4 opacity-90">
+            The text color automatically adjusts to ensure readability on any
+            background.
+          </p>
+          <Button
+            style={{ backgroundColor: bgColor, color: textColor }}
+            className="border-2"
+          >
+            Click Me
+          </Button>
+        </div>
+
+        <div className="text-xs text-aer-muted-foreground">
+          <p>
+            <strong>Tip:</strong> Try different background colors to see how the
+            text color automatically adjusts to maintain WCAG compliance. The
+            system ensures at least 4.5:1 contrast ratio (AA standard).
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   const api = (
     <div className="space-y-8">
       <div>
@@ -923,6 +1050,18 @@ export default function UserProfileForm() {
             <strong>Tip:</strong> Use the ThemeProvider to switch between 8
             built-in themes, or customize these variables to match your brand
             colors.
+          </p>
+        </div>
+
+        <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+          <p className="text-sm text-blue-700 dark:text-blue-400">
+            <strong>Auto-Contrast:</strong> When the global{" "}
+            <code className="text-xs bg-blue-500/20 px-1 rounded">
+              autoContrast
+            </code>{" "}
+            setting is enabled, this component will automatically adjust its
+            text color to ensure WCAG compliance when a custom background color
+            is applied via the <code>style</code> prop.
           </p>
         </div>
       </div>

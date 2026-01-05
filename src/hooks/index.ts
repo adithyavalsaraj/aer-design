@@ -7,3 +7,5 @@ export type {
   UseAutoPositionOptions,
   UseAutoPositionReturn,
 } from "./useAutoPosition";
+
+export { useContrastColor } from "./useContrastColor";

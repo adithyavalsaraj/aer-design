@@ -1,4 +1,6 @@
+import { useAerConfig } from "@/components/AerConfigProvider";
 import { calculateOptimalPosition } from "@/hooks";
+import { useContrastColor } from "@/hooks/useContrastColor";
 import { cn } from "@/lib/utils";
 import * as React from "react";
 import { type TooltipProps } from "./types";
@@ -17,8 +19,10 @@ export const Tooltip = ({
   arrow = true,
   disabled = false,
   className,
+  style,
   ...props
 }: TooltipProps) => {
+  const { autoContrast } = useAerConfig();
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const [effectiveSide, setEffectiveSide] = React.useState<typeof side>(side);
   const [effectiveAlign, setEffectiveAlign] =
@@ -221,6 +225,20 @@ export const Tooltip = ({
     return styles;
   };
 
+  // Auto Contrast Logic
+  const backgroundColor = style?.backgroundColor as string;
+  const contrastColor = useContrastColor(backgroundColor || "");
+
+  const getMergedStyles = (): React.CSSProperties => {
+    const positionStyles = getPositionStyles();
+    const finalStyle = { ...positionStyles, ...style };
+
+    if (autoContrast && backgroundColor) {
+      finalStyle.color = contrastColor;
+    }
+    return finalStyle;
+  };
+
   return (
     <>
       {triggerElement}
@@ -230,7 +248,7 @@ export const Tooltip = ({
           role="tooltip"
           id="tooltip"
           className={cn(tooltipVariants({ variant }), className)}
-          style={getPositionStyles()}
+          style={getMergedStyles()}
           {...props}
         >
           <div className="relative z-10">{content}</div>

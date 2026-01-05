@@ -23,6 +23,10 @@ const sidebarVariants = cva(
         overlay: "fixed z-50 h-full", // Overlay mode
         icon: "fixed inset-y-0 z-30", // Icon-only mode
       },
+      variant: {
+        default: "bg-aer-background border-aer-border",
+        aer: "bg-white/5 backdrop-blur-xl border-white/10 text-white shadow-2xl",
+      },
       collapsed: {
         true: "",
         false: "",
@@ -69,6 +73,7 @@ const sidebarVariants = cva(
       position: "left",
       mode: "fixed",
       collapsed: false,
+      variant: "default",
     },
   }
 );
@@ -94,11 +99,13 @@ export interface SidebarProps
 interface SidebarContextValue {
   collapsed?: boolean;
   position?: "left" | "right" | "top" | "bottom" | null;
+  variant?: "default" | "aer";
   onOpenChange?: (isOpen: boolean) => void;
 }
 const SidebarContext = React.createContext<SidebarContextValue>({
   collapsed: false,
   position: "left",
+  variant: "default",
 });
 
 export const useSidebar = () => React.useContext(SidebarContext);
@@ -116,6 +123,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
       isOpen = true,
       overlay = false,
       backdrop = true,
+      variant = "default",
       onBackdropClick,
       children,
       onMouseEnter,
@@ -192,6 +200,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
         value={{
           collapsed: !!isActuallyCollapsed,
           position,
+          variant: variant || "default",
           onOpenChange: props.onOpenChange,
         }}
       >
@@ -210,6 +219,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
             sidebarVariants({
               position,
               mode: overlay ? "overlay" : mode,
+              variant,
               collapsed: isActuallyCollapsed,
             }),
             getHiddenClass(),
@@ -237,7 +247,7 @@ const SidebarHeader = ({
   return (
     <div
       className={cn(
-        "flex items-center min-h-[4rem] border-b border-aer-border/40 shrink-0 gap-3 transition-all duration-300 ease-in-out",
+        "flex items-center min-h-16 border-b border-aer-border/40 shrink-0 gap-3 transition-all duration-300 ease-in-out",
         collapsed ? "justify-center px-0" : "px-4", // Auto-center when collapsed
         className
       )}
@@ -317,7 +327,7 @@ const SidebarFooter = ({
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      "flex items-center px-4 py-4 min-h-[4rem] border-t border-aer-border/40 shrink-0 gap-3",
+      "flex items-center px-4 py-4 min-h-16 border-t border-aer-border/40 shrink-0 gap-3",
       className
     )}
     {...props}
@@ -377,7 +387,7 @@ import { createPortal } from "react-dom";
 // ... (SidebarItem component start)
 const SidebarItem = React.forwardRef<HTMLButtonElement, SidebarItemProps>(
   ({ className, icon, active, children, ...props }, ref) => {
-    const { collapsed, position } = React.useContext(SidebarContext);
+    const { collapsed, position, variant } = React.useContext(SidebarContext);
     const isHorizontal = position === "top" || position === "bottom";
 
     // Tooltip Logic (Portal)
@@ -452,7 +462,11 @@ const SidebarItem = React.forwardRef<HTMLButtonElement, SidebarItemProps>(
               "justify-center px-0 w-10 h-10 mx-auto",
             // Colors & States
             active
-              ? "bg-aer-primary text-aer-primary-foreground shadow-md shadow-aer-primary/20"
+              ? variant === "aer"
+                ? "bg-white/20 text-white shadow-lg border border-white/10"
+                : "bg-aer-primary text-aer-primary-foreground shadow-md shadow-aer-primary/20"
+              : variant === "aer"
+              ? "text-white/70 hover:bg-white/10 hover:text-white"
               : "text-aer-foreground/80 hover:bg-aer-muted hover:text-aer-foreground hover:translate-x-0.5 active:scale-95",
             // Reset hover effects for horizontal/custom layouts
             (isHorizontal || className?.includes("flex-col")) &&

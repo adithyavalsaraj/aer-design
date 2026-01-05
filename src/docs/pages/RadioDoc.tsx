@@ -436,10 +436,10 @@ export function RadioDoc() {
             },
             {
               prop: "variant",
-              type: "'default' | 'card'",
+              type: "'default' | 'card' | 'aer'",
               default: "'default'",
               description:
-                "Visual style variant. 'card' renders a large clickable box.",
+                "Visual style variant. 'card' renders a large clickable box. 'aer' applies glassmorphism.",
             },
             {
               prop: "labelPosition",
@@ -584,6 +584,14 @@ export function RadioDoc() {
             <p className="text-sm text-purple-700 dark:text-purple-400">
               <strong>Tip:</strong> The Card variant uses{" "}
               <code>--aer-muted</code> for its hover state.
+            </p>
+          </div>
+          <div className="p-4 bg-aer-muted/5 border border-aer-border rounded-lg">
+            <p className="text-sm text-aer-muted-foreground">
+              <strong>Note:</strong> The <strong>Aer</strong> variant applies a
+              glassmorphism style with white text, designed for dark or colorful
+              backgrounds. For automatic contrast adjustment on custom
+              backgrounds, enable the global <code>autoContrast</code> setting.
             </p>
           </div>
         </div>

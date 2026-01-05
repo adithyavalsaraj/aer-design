@@ -19,6 +19,7 @@ const cascaderTriggerVariants = cva(
           "border-b-2 border-aer-input/20 bg-aer-muted/30 hover:bg-aer-muted/50 rounded-t-md rounded-b-none focus-visible:outline-none focus-visible:border-aer-primary",
         underlined:
           "border-b border-aer-input bg-transparent rounded-none px-0 focus-visible:outline-none focus-visible:border-aer-primary",
+        aer: "border border-white/10 bg-white/5 backdrop-blur-md shadow-md text-white hover:bg-white/10 focus-visible:ring-white/20",
       },
       error: {
         true: "border-red-500 focus-visible:ring-red-500",
@@ -386,7 +387,15 @@ export function Cascader({
             onSelect={handleSelect}
             selectedValue={value}
             loadData={loadData}
-            itemClassName={itemClassName}
+            itemClassName={cn(
+              itemClassName,
+              variant === "aer" &&
+                "hover:bg-white/10 hover:text-white focus:bg-white/10"
+            )}
+            className={cn(
+              variant === "aer" &&
+                "bg-white/10 backdrop-blur-2xl border-white/10 shadow-2xl"
+            )}
             virtualized={virtualized}
             itemHeight={itemHeight}
           />

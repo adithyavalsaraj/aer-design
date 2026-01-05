@@ -20,6 +20,7 @@ interface CascaderMenuProps {
   itemClassName?: string;
   virtualized?: boolean;
   itemHeight?: number;
+  className?: string; // Add className prop
 }
 
 export function CascaderMenu({
@@ -32,6 +33,7 @@ export function CascaderMenu({
   itemClassName,
   virtualized,
   itemHeight = 32,
+  className,
 }: CascaderMenuProps) {
   const [hoveredOption, setHoveredOption] =
     React.useState<CascaderOption | null>(null);
@@ -71,7 +73,8 @@ export function CascaderMenu({
       onScroll={handleScroll}
       className={cn(
         "flex flex-col min-w-[180px] bg-aer-background border border-aer-border rounded-lg shadow-lg py-1", // py-1 for non-virtualized standard padding
-        virtualized && "py-0" // remove padding for virtualized to exact calc
+        virtualized && "py-0", // remove padding for virtualized to exact calc
+        className
       )}
       style={{
         maxHeight: `${menuHeight}px`,

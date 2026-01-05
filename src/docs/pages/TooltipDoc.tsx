@@ -434,7 +434,19 @@ export default function TooltipStyling() {
           <DemoToolbar />
         </div>
         <CodeBlock
-          ts={`// Interactive toolbar with tooltips`}
+          ts={`<div className="flex gap-2">
+  <Tooltip content="Copy">
+    <Button variant="ghost" size="sm"><Copy /></Button>
+  </Tooltip>
+  
+  <Tooltip content="Delete" variant="dark">
+    <Button variant="ghost" size="sm" className="text-red-500"><Trash2 /></Button>
+  </Tooltip>
+
+  <Tooltip content="Help" trigger="click" variant="light">
+    <Button variant="ghost" size="sm"><HelpCircle /></Button>
+  </Tooltip>
+</div>`}
           fullCode={`import { Tooltip, Button } from "aer-design";
 import { Copy, Trash2, Settings, Info, User, HelpCircle } from "lucide-react";
 
@@ -693,6 +705,17 @@ export default function Toolbar() {
             <strong>Tip:</strong> Use the <code>variant</code> prop for
             pre-defined styles, or apply custom classes via{" "}
             <code>className</code> for complete control.
+          </p>
+        </div>
+        <div className="p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+          <p className="text-sm text-blue-700 dark:text-blue-400">
+            <strong>Auto-Contrast:</strong> When the global{" "}
+            <code className="text-xs bg-blue-500/20 px-1 rounded">
+              autoContrast
+            </code>{" "}
+            setting is enabled, this component will automatically adjust its
+            text color to ensure WCAG compliance when a custom background color
+            is applied via the <code>style</code> prop.
           </p>
         </div>
       </div>

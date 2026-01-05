@@ -22,6 +22,8 @@ export interface OverlayProps
   alignOffset?: number;
   /** Positioning strategy */
   strategy?: "fixed" | "absolute";
+  /** Visual variant */
+  variant?: "default" | "aer";
   /** Show backdrop behind overlay */
   backdrop?: boolean;
   /** Custom className for backdrop */

@@ -8,6 +8,7 @@ export interface MenuContextValue {
   closeMenu: () => void;
   openMenu: () => void;
   toggleMenu: () => void;
+  variant: "default" | "aer";
   // Focus management can be added here
 }
 
@@ -15,6 +16,7 @@ export interface MenuProps {
   children: React.ReactNode;
   isOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
+  variant?: "default" | "aer";
 }
 
 export interface MenuTriggerProps

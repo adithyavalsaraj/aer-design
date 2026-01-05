@@ -9,6 +9,9 @@ export interface AerConfigContextType {
   setDirection: (dir: Direction) => void;
   size: Size;
   setSize: (size: Size) => void;
+  autoContrast: boolean;
+  setAutoContrast: (enabled: boolean) => void;
+  toggleAutoContrast: () => void;
 }
 
 export const AerConfigContext = createContext<AerConfigContextType | undefined>(

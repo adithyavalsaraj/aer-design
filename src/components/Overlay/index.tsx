@@ -1,4 +1,5 @@
-import { calculateOptimalPosition } from "@/hooks";
+import { useAerConfig } from "@/components/AerConfigProvider";
+import { calculateOptimalPosition, useContrastColor } from "@/hooks";
 import { cn } from "@/lib/utils";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -24,6 +25,7 @@ export const Overlay = ({
   modal = false,
   disabled = false,
   className,
+  variant = "default",
   ...props
 }: OverlayProps) => {
   // State management (controlled/uncontrolled)
@@ -229,6 +231,20 @@ export const Overlay = ({
   };
 
   // Render overlay content
+  const { autoContrast } = useAerConfig();
+  const contrastColor = useContrastColor(
+    props.style?.backgroundColor as string
+  );
+
+  const mergedStyles: React.CSSProperties = {
+    ...props.style,
+    ...getPositionStyles(),
+  };
+
+  if (autoContrast && props.style?.backgroundColor) {
+    mergedStyles.color = contrastColor;
+  }
+
   const overlayContent = isOpen && !disabled && (
     <>
       {backdrop && (
@@ -241,8 +257,8 @@ export const Overlay = ({
         ref={overlayRef}
         role="dialog"
         aria-modal={modal}
-        className={cn(overlayVariants({ strategy }), className)}
-        style={getPositionStyles()}
+        className={cn(overlayVariants({ strategy, variant }), className)}
+        style={mergedStyles}
         {...props}
       >
         {content}
