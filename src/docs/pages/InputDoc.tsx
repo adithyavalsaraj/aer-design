@@ -240,11 +240,12 @@ export function InputDoc() {
         id="aer-variant"
         description="Premium glassmorphism effect for modern, high-end interfaces."
       >
-        <div className="relative p-12 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">
-          {/* Vibrant Background */}
-          <div className="absolute inset-0 bg-linear-to-br from-blue-600/20 via-transparent to-purple-600/20" />
-          <div className="absolute top-1/4 left-1/3 w-40 h-40 bg-cyan-500/30 rounded-full blur-[60px]" />
-          <div className="absolute bottom-1/4 right-1/3 w-40 h-40 bg-violet-500/30 rounded-full blur-[60px]" />
+        <div className="aer-vibrant-container">
+          <div className="aer-vibrant-bg-wrapper">
+            <div className="aer-vibrant-bg" />
+            <div className="aer-vibrant-blob w-40 h-40 bg-sky-500/30 top-1/4 left-1/3" />
+            <div className="aer-vibrant-blob w-40 h-40 bg-blue-500/30 bottom-1/4 right-1/3" />
+          </div>
 
           <div className="relative z-10 max-w-sm mx-auto space-y-4">
             <Input
@@ -263,7 +264,8 @@ import { Search } from "lucide-react";
 
 export default function AerInputExample() {
   return (
-    <div className="p-12 bg-linear-to-br from-blue-600 to-purple-600 rounded-2xl">
+    <div className="aer-vibrant-container h-48">
+      <div className="aer-vibrant-bg" />
       <div className="max-w-sm space-y-4">
         <Input 
           variant="aer" 
@@ -424,7 +426,7 @@ export default function AerInputExample() {
               inputClassName - Input element (text styling)
             </p>
             <Input
-              inputClassName="text-lg font-bold text-purple-600"
+              inputClassName="text-lg font-bold text-sky-600"
               placeholder="Custom text styling"
             />
           </div>
@@ -463,7 +465,7 @@ export default function GranularStyling() {
         placeholder="Spacing and layout" 
       />
       <Input 
-        inputClassName="text-lg font-bold text-purple-600" 
+        inputClassName="text-lg font-bold text-sky-600" 
         placeholder="Custom text styling" 
       />
       <Input 
@@ -877,8 +879,8 @@ export default function GranularStyling() {
 }`}
         />
         <div className="mt-4 space-y-4">
-          <div className="p-4 bg-purple-500/10 border border-purple-500/20 rounded-lg">
-            <p className="text-sm text-purple-700 dark:text-purple-400">
+          <div className="p-4 bg-sky-500/10 border border-sky-500/20 rounded-lg">
+            <p className="text-sm text-sky-700 dark:text-sky-400">
               <strong>Tip:</strong> Use the ThemeProvider to switch between 8
               built-in themes (Sapphire, Carbon, Ruby, Amber, Emerald, Amethyst,
               Sunset, Ocean), or customize these variables to match your brand

@@ -144,9 +144,11 @@ export function OtpDoc() {
         title="The Aer Variant"
         description="Our signature glassmorphism effect for premium interfaces."
       >
-        <div className="relative flex items-center justify-center p-16 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">
-          <div className="absolute inset-0 bg-linear-to-br from-purple-600/20 via-transparent to-blue-600/20" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-violet-500/30 rounded-full blur-[60px]" />
+        <div className="aer-vibrant-container">
+          <div className="aer-vibrant-bg-wrapper">
+            <div className="aer-vibrant-bg" />
+            <div className="aer-vibrant-blob top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-sky-500/30" />
+          </div>
 
           <div className="relative z-10">
             <h4 className="text-white/80 text-center mb-4 text-sm font-medium">
@@ -157,7 +159,7 @@ export function OtpDoc() {
         </div>
         <CodeBlock
           ts={`<div className="bg-zinc-950 p-12 rounded-xl relative overflow-hidden">\n  <OtpInput\n    length={6}\n    variant="aer"\n  />\n</div>`}
-          fullCode={`import { OtpInput } from "aer-design";\n\nexport default function AerOtpExample() {\n  return (\n    <div className="relative flex flex-col items-center justify-center p-16 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">\n      <div className="absolute inset-0 bg-linear-to-br from-purple-600/20 via-transparent to-blue-600/20" />\n      \n      <div className="relative z-10">\n        <h4 className="text-white/80 text-center mb-4 text-sm font-medium">Enter Verification Code</h4>\n            <OtpInput\n              length={6}\n              variant="aer"\n            />\n      </div>\n    </div>\n  );\n}`}
+          fullCode={`import { OtpInput } from "aer-design";\n\nexport default function AerOtpExample() {\n  return (\n    <div className="relative flex flex-col items-center justify-center p-16 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">\n      <div className="absolute inset-0 bg-linear-to-br from-sky-600/20 via-transparent to-blue-600/20" />\n      \n      <div className="relative z-10">\n        <h4 className="text-white/80 text-center mb-4 text-sm font-medium">Enter Verification Code</h4>\n            <OtpInput\n              length={6}\n              variant="aer"\n            />\n      </div>\n    </div>\n  );\n}`}
         />
       </DocSection>
 
@@ -255,7 +257,7 @@ export function OtpDoc() {
 <OtpInput
   length={4}
   className="gap-4" 
-  cellClassName="border-b-2 rounded-none focus:border-purple-500 focus:ring-0"
+  cellClassName="border-b-2 rounded-none focus:border-sky-500 focus:ring-0"
 />
 
 // Error styling
@@ -273,7 +275,7 @@ export default function OtpStylingExample() {
         <OtpInput
           length={4}
           className="gap-4"
-          cellClassName="border-b-2 border-t-0 border-x-0 rounded-none focus:border-purple-500 focus:ring-0 bg-transparent px-0"
+          cellClassName="border-b-2 border-t-0 border-x-0 rounded-none focus:border-sky-500 focus:ring-0 bg-transparent px-0"
         />
       </div>
 
@@ -311,7 +313,7 @@ export default function OtpStylingExample() {
           <OtpInput
             length={4}
             className="gap-4"
-            cellClassName="border-b-2 border-t-0 border-x-0 rounded-none focus:border-purple-500 focus:ring-0 bg-transparent px-0"
+            cellClassName="border-b-2 border-t-0 border-x-0 rounded-none focus:border-sky-500 focus:ring-0 bg-transparent px-0"
           />
         </div>
 
@@ -534,8 +536,8 @@ export default function OtpStylingExample() {
   --aer-background: 222.2 84% 4.9%;
 }`}
         />
-        <div className="mt-4 p-4 bg-aer-muted/5 border border-aer-border rounded-lg">
-          <p className="text-sm text-aer-muted-foreground">
+        <div className="p-4 bg-sky-500/10 border border-sky-500/20 rounded-lg">
+          <p className="text-sm text-sky-700 dark:text-sky-400">
             <strong>Note:</strong> The <strong>Aer</strong> variant applies a
             glassmorphism style with white text, designed for dark or colorful
             backgrounds. For automatic contrast adjustment on custom

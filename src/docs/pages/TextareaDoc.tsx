@@ -114,11 +114,12 @@ export function TextareaDoc() {
         id="aer-variant"
         description="Premium glassmorphism effect for modern textareas."
       >
-        <div className="relative p-12 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">
-          {/* Vibrant Background */}
-          <div className="absolute inset-0 bg-linear-to-br from-orange-600/20 via-transparent to-pink-600/20" />
-          <div className="absolute top-1/3 left-1/4 w-40 h-40 bg-red-500/30 rounded-full blur-[60px]" />
-          <div className="absolute bottom-1/3 right-1/4 w-40 h-40 bg-amber-500/30 rounded-full blur-[60px]" />
+        <div className="aer-vibrant-container">
+          <div className="aer-vibrant-bg-wrapper">
+            <div className="aer-vibrant-bg" />
+            <div className="aer-vibrant-blob top-1/3 left-1/4 w-40 h-40 bg-blue-500/30" />
+            <div className="aer-vibrant-blob bottom-1/3 right-1/4 w-40 h-40 bg-sky-500/30" />
+          </div>
 
           <div className="relative z-10 max-w-xl mx-auto">
             <Textarea
@@ -134,7 +135,7 @@ export function TextareaDoc() {
 
 export default function AerTextareaExample() {
   return (
-    <div className="p-12 bg-linear-to-br from-orange-600 to-pink-600 rounded-2xl">
+    <div className="p-12 bg-linear-to-br from-blue-600 to-sky-600 rounded-2xl">
       <div className="max-w-xl">
         <Textarea 
           variant="aer"
@@ -218,7 +219,7 @@ export default function AerTextareaExample() {
               textareaClassName - Textarea element (text styling)
             </p>
             <Textarea
-              textareaClassName="text-lg font-bold text-purple-600"
+              textareaClassName="text-lg font-bold text-sky-600"
               placeholder="Custom text styling"
             />
           </div>
@@ -228,7 +229,7 @@ export default function AerTextareaExample() {
 <Textarea className="mb-4 w-full" placeholder="Spacing" />
 
 // Textarea element styling (text)
-<Textarea textareaClassName="text-lg font-bold text-purple-600" placeholder="Text style" />`}
+<Textarea textareaClassName="text-lg font-bold text-sky-600" placeholder="Text style" />`}
           fullCode={`import { Textarea } from "aer-design";
 
 export default function GranularStyling() {
@@ -239,7 +240,7 @@ export default function GranularStyling() {
         placeholder="Spacing and layout" 
       />
       <Textarea 
-        textareaClassName="text-lg font-bold text-purple-600" 
+        textareaClassName="text-lg font-bold text-sky-600" 
         placeholder="Custom text styling" 
       />
     </div>
@@ -495,8 +496,8 @@ export default function GranularStyling() {
 }`}
         />
         <div className="mt-4 space-y-4">
-          <div className="p-4 bg-purple-500/10 border border-purple-500/20 rounded-lg">
-            <p className="text-sm text-purple-700 dark:text-purple-400">
+          <div className="p-4 bg-sky-500/10 border border-sky-500/20 rounded-lg">
+            <p className="text-sm text-sky-700 dark:text-sky-400">
               <strong>Tip:</strong> Textarea uses the same variable{" "}
               <code>--aer-input</code> as normal Inputs, ensuring they always
               look like part of the same family.

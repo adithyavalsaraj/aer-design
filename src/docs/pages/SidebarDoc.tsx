@@ -621,11 +621,12 @@ export function SidebarDoc() {
         title="The Aer Variant"
         description="Our signature glassmorphism effect for premium interfaces."
       >
-        <div className="relative flex items-center justify-center p-16 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">
-          {/* Vibrant Background Elements */}
-          <div className="absolute inset-0 bg-linear-to-br from-purple-600/20 via-transparent to-blue-600/20" />
-          <div className="absolute top-1/3 left-1/4 w-40 h-40 bg-pink-500/40 rounded-full blur-[60px]" />
-          <div className="absolute bottom-1/3 right-1/4 w-40 h-40 bg-cyan-500/40 rounded-full blur-[60px]" />
+        <div className="aer-vibrant-container">
+          <div className="aer-vibrant-bg-wrapper">
+            <div className="aer-vibrant-bg" />
+            <div className="aer-vibrant-blob top-1/3 left-1/4 w-40 h-40 bg-sky-500/40" />
+            <div className="aer-vibrant-blob bottom-1/3 right-1/4 w-40 h-40 bg-blue-500/40" />
+          </div>
 
           <div className="relative z-10 w-full h-[300px] border border-white/10 rounded-xl overflow-hidden bg-white/5 backdrop-blur-md shadow-2xl flex">
             <Sidebar
@@ -636,7 +637,7 @@ export function SidebarDoc() {
             >
               <SidebarHeader className="border-white/10">
                 <div className="flex items-center gap-3">
-                  <div className="size-8 rounded-full bg-linear-to-tr from-indigo-500 to-purple-500" />
+                  <div className="size-8 rounded-full bg-linear-to-tr from-sky-500 to-cyan-500" />
                   <span className="font-bold text-white">Aer</span>
                 </div>
               </SidebarHeader>
@@ -676,7 +677,7 @@ export function SidebarDoc() {
         </div>
         <CodeBlock
           ts={`<div className="bg-zinc-950 p-12 rounded-xl relative overflow-hidden">\n  <Sidebar\n    variant="aer"\n    mode="sticky"\n    className="bg-transparent border-r border-white/10"\n  >\n    {/* Sidebar Content */}\n  </Sidebar>\n</div>`}
-          fullCode={`import { Sidebar, SidebarHeader, SidebarContent, SidebarSection, SidebarItem } from "aer-design";\nimport { Home, User, Settings } from "lucide-react";\nimport { useState } from "react";\n\nexport default function AerSidebarExample() {\n  const [activeItem, setActiveItem] = useState("home");\n\n  return (\n    <div className="relative flex items-center justify-center p-16 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">\n      <div className="absolute inset-0 bg-linear-to-br from-purple-600/20 via-transparent to-blue-600/20" />\n      \n      <div className="relative z-10 w-full h-[300px] border border-white/10 rounded-xl overflow-hidden bg-white/5 backdrop-blur-md shadow-2xl flex">\n         <Sidebar\n          mode="sticky"\n          position="left"\n          className="h-full bg-transparent border-r border-white/10"\n          variant="aer"\n        >\n          <SidebarHeader className="border-white/10">\n            <div className="flex items-center gap-3">\n              <div className="size-8 rounded-full bg-linear-to-tr from-indigo-500 to-purple-500" />\n              <span className="font-bold text-white">Aer</span>\n            </div>\n          </SidebarHeader>\n          <SidebarContent>\n            <SidebarSection>\n              <SidebarItem \n                icon={<Home className="text-white" />} \n                active={activeItem === "home"} \n                onClick={() => setActiveItem("home")}\n                className="text-white hover:bg-white/10 hover:text-white"\n              >\n                Home\n              </SidebarItem>\n              <SidebarItem \n                icon={<User className="text-white/70" />} \n                active={activeItem === "team"} \n                onClick={() => setActiveItem("team")}\n                className="text-white/70 hover:bg-white/10 hover:text-white"\n              >\n                Team\n              </SidebarItem>\n              <SidebarItem \n                icon={<Settings className="text-white/70" />} \n                active={activeItem === "settings"} \n                onClick={() => setActiveItem("settings")}\n                className="text-white/70 hover:bg-white/10 hover:text-white"\n              >\n                Settings\n              </SidebarItem>\n            </SidebarSection>\n          </SidebarContent>\n        </Sidebar>\n        <div className="flex-1 p-6 text-white/50 text-sm font-mono">\n          Main Content Area\n        </div>\n      </div>\n    </div>\n  );\n}`}
+          fullCode={`import { Sidebar, SidebarHeader, SidebarContent, SidebarSection, SidebarItem } from "aer-design";\nimport { Home, User, Settings } from "lucide-react";\nimport { useState } from "react";\n\nexport default function AerSidebarExample() {\n  const [activeItem, setActiveItem] = useState("home");\n\n  return (\n    <div className="relative flex items-center justify-center p-16 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">\n      <div className="absolute inset-0 bg-linear-to-br from-sky-600/20 via-transparent to-blue-600/20" />\n      \n      <div className="relative z-10 w-full h-[300px] border border-white/10 rounded-xl overflow-hidden bg-white/5 backdrop-blur-md shadow-2xl flex">\n         <Sidebar\n          mode="sticky"\n          position="left"\n          className="h-full bg-transparent border-r border-white/10"\n          variant="aer"\n        >\n          <SidebarHeader className="border-white/10">\n            <div className="flex items-center gap-3">\n              <div className="size-8 rounded-full bg-linear-to-tr from-sky-500 to-cyan-500" />\n              <span className="font-bold text-white">Aer</span>\n            </div>\n          </SidebarHeader>\n          <SidebarContent>\n            <SidebarSection>\n              <SidebarItem \n                icon={<Home className="text-white" />} \n                active={activeItem === "home"} \n                onClick={() => setActiveItem("home")}\n                className="text-white hover:bg-white/10 hover:text-white"\n              >\n                Home\n              </SidebarItem>\n              <SidebarItem \n                icon={<User className="text-white/70" />} \n                active={activeItem === "team"} \n                onClick={() => setActiveItem("team")}\n                className="text-white/70 hover:bg-white/10 hover:text-white"\n              >\n                Team\n              </SidebarItem>\n              <SidebarItem \n                icon={<Settings className="text-white/70" />} \n                active={activeItem === "settings"} \n                onClick={() => setActiveItem("settings")}\n                className="text-white/70 hover:bg-white/10 hover:text-white"\n              >\n                Settings\n              </SidebarItem>\n            </SidebarSection>\n          </SidebarContent>\n        </Sidebar>\n        <div className="flex-1 p-6 text-white/50 text-sm font-mono">\n          Main Content Area\n        </div>\n      </div>\n    </div>\n  );\n}`}
         />
       </DocSection>
 
@@ -736,16 +737,17 @@ export function SidebarDoc() {
           <Sidebar
             mode="absolute"
             position="left"
-            className="h-[300px] relative border-none bg-indigo-500/5 rounded-xl overflow-hidden"
+            className="h-[300px] relative border-none bg-sky-500/5 rounded-xl overflow-hidden"
           >
-            <SidebarHeader className="bg-indigo-500/10 border-indigo-500/10">
-              <div className="size-8 rounded-lg bg-indigo-500" />
+            <SidebarHeader className="bg-sky-500/10 border-sky-500/10">
+              <div className="size-8 rounded-lg bg-sky-500" />
+              <span className="font-bold">Aer</span>
             </SidebarHeader>
             <SidebarContent>
-              <SidebarSection title="Custom Slots" className="px-2">
+              <SidebarSection>
                 <SidebarItem
-                  icon={<Home className="text-indigo-500" />}
-                  className="rounded-lg hover:bg-indigo-500/10"
+                  icon={<Home className="text-sky-500" />}
+                  className="rounded-lg hover:bg-sky-500/10"
                 >
                   Styled Item
                 </SidebarItem>
@@ -754,7 +756,7 @@ export function SidebarDoc() {
           </Sidebar>
         </div>
         <CodeBlock
-          ts={`<Sidebar\n  className="bg-indigo-500/5 rounded-xl"\n  headerClassName="bg-indigo-500/10"\n  contentClassName="px-2"\n>\n  <SidebarItem className="rounded-lg hover:bg-indigo-500/10" />\n</Sidebar>`}
+          ts={`<Sidebar\n  className="bg-sky-500/5 rounded-xl"\n  headerClassName="bg-sky-500/10"\n  contentClassName="px-2"\n>\n  <SidebarItem className="rounded-lg hover:bg-sky-500/10" />\n</Sidebar>`}
         />
       </DocSection>
 

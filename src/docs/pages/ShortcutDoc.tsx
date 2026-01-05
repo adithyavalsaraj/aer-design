@@ -304,13 +304,13 @@ export default function SettingsPage() {
         <div className="flex flex-col gap-6 p-6 border rounded-lg bg-aer-muted/5 items-center">
           <ShortcutRecorder
             actionId="styling-demo"
-            className="w-64 h-12 rounded-full border-purple-200 bg-purple-50 text-purple-700 focus:ring-purple-500"
+            className="w-64 h-12 rounded-full border-sky-200 bg-sky-50 text-sky-700 focus:ring-sky-500"
           />
         </div>
         <CodeBlock
           ts={`<ShortcutRecorder
   actionId="my-action"
-  className="w-64 border-purple-200 bg-purple-50 text-purple-700"
+  className="w-64 border-sky-200 bg-sky-50 text-sky-700"
 />`}
         />
       </DocSection>

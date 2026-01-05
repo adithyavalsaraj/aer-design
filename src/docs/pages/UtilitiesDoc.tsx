@@ -459,8 +459,8 @@ html[dir="rtl"] {
   --font-family: 'Amiri', serif; /* Example Arabic font */
 }`}
         />
-        <div className="mt-4 p-4 bg-purple-500/10 border border-purple-500/20 rounded-lg">
-          <p className="text-sm text-purple-700 dark:text-purple-400">
+        <div className="mt-4 p-4 bg-sky-500/10 border border-sky-500/20 rounded-lg">
+          <p className="text-sm text-sky-700 dark:text-sky-400">
             <strong>Tip:</strong> You typically don't need to touch CSS
             variables for direction/sizing as Aer Design components handle them
             automatically.
@@ -494,6 +494,7 @@ html[dir="rtl"] {
               { id: "sizing", title: "Global Sizing" },
               { id: "real-world", title: "Real World Example" },
               { id: "automatic-contrast", title: "Automatic Contrast" },
+              { id: "theme-validation", title: "Theme Validation" },
             ],
           },
           {
@@ -598,7 +599,7 @@ function DemoSettingsPanel() {
     <div className="w-72 p-5 bg-aer-background border border-aer-border rounded-xl shadow-lg space-y-5">
       <div className="flex items-center gap-3 pb-3 border-b border-aer-border">
         <div className="relative p-2 rounded-lg shadow-sm overflow-hidden">
-          <div className="absolute inset-0 bg-linear-to-br from-indigo-500/20 via-purple-500/20 to-pink-500/20" />
+          <div className="absolute inset-0 bg-linear-to-br from-sky-500/20 via-cyan-500/20 to-blue-500/20" />
           <Settings className="relative z-10 size-4 text-white" />
         </div>
         <div>

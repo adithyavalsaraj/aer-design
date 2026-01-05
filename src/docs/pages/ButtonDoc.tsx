@@ -381,7 +381,7 @@ export default function DisabledButtons() {
         </div>
         <CodeBlock
           ts={`// Custom button styling
-<Button className="rounded-full bg-linear-to-br from-indigo-500 to-purple-600 text-white border-0 px-6 shadow-lg">
+<Button className="rounded-full bg-linear-to-br from-blue-600 to-sky-600 text-white border-0 px-6 shadow-lg">
   Gradient Button
 </Button>
 
@@ -396,7 +396,7 @@ import { Star } from "lucide-react";
 export default function ButtonStylingExample() {
   return (
     <div className="flex flex-wrap gap-4 items-center">
-      <Button className="rounded-full bg-linear-to-br from-indigo-500 to-purple-600 text-white border-0 px-6 shadow-lg">
+      <Button className="rounded-full bg-linear-to-br from-blue-600 to-sky-600 text-white border-0 px-6 shadow-lg">
         Gradient Button
       </Button>
       
@@ -568,12 +568,13 @@ export default function UserProfileForm() {
 
   function AerVariantExample() {
     return (
-      <div className="relative flex items-center justify-center p-16 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">
-        {/* Vibrant Background Elements */}
-        <div className="absolute inset-0 bg-linear-to-br from-violet-600/20 via-purple-900/40 to-indigo-900/60" />
-        <div className="absolute top-1/3 left-1/4 w-40 h-40 bg-pink-500/40 rounded-full blur-[60px]" />
-        <div className="absolute bottom-1/3 right-1/4 w-40 h-40 bg-cyan-500/40 rounded-full blur-[60px]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-violet-500/30 rounded-full blur-[50px]" />
+      <div className="aer-vibrant-container">
+        <div className="aer-vibrant-bg-wrapper">
+          <div className="aer-vibrant-bg" />
+          <div className="aer-vibrant-blob top-1/3 left-1/4 w-40 h-40 bg-sky-500/30" />
+          <div className="aer-vibrant-blob bottom-1/3 right-1/4 w-40 h-40 bg-blue-500/30" />
+          <div className="aer-vibrant-blob top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-sky-500/30" />
+        </div>
 
         <Button variant="aer" size="lg" className="relative z-10">
           <Sparkles className="w-4 h-4 mr-2" />
@@ -767,7 +768,7 @@ export default function UserProfileForm() {
   function ButtonStylingExample() {
     return (
       <div className="flex flex-wrap gap-4 items-center">
-        <Button className="rounded-full bg-linear-to-br from-indigo-500 to-purple-600 shadow-lg text-white font-medium border-0 px-6">
+        <Button className="rounded-full bg-linear-to-br from-blue-600 to-sky-600 shadow-lg text-white font-medium border-0 px-6">
           Gradient Button
         </Button>
 
@@ -947,8 +948,8 @@ export default function UserProfileForm() {
   /* ... other dark mode overrides */
 }`}
         />
-        <div className="mt-4 p-4 bg-purple-500/10 border border-purple-500/20 rounded-lg">
-          <p className="text-sm text-purple-700 dark:text-purple-400">
+        <div className="mt-4 p-4 bg-sky-500/10 border border-sky-500/20 rounded-lg">
+          <p className="text-sm text-sky-700 dark:text-sky-400">
             <strong>Tip:</strong> Use the ThemeProvider to switch between 8
             built-in themes, or customize these variables to match your brand
             colors.

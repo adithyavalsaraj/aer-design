@@ -141,11 +141,12 @@ export function RadioDoc() {
         id="aer-variant"
         description="Premium glassmorphism effect for modern selection controls."
       >
-        <div className="relative p-12 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">
-          {/* Vibrant Background */}
-          <div className="absolute inset-0 bg-linear-to-br from-purple-600/20 via-transparent to-blue-600/20" />
-          <div className="absolute top-1/4 left-1/4 w-40 h-40 bg-purple-500/30 rounded-full blur-[60px]" />
-          <div className="absolute bottom-1/4 right-1/4 w-40 h-40 bg-blue-500/30 rounded-full blur-[60px]" />
+        <div className="aer-vibrant-container">
+          <div className="aer-vibrant-bg-wrapper">
+            <div className="aer-vibrant-bg" />
+            <div className="aer-vibrant-blob top-1/4 left-1/4 w-40 h-40 bg-sky-500/30" />
+            <div className="aer-vibrant-blob bottom-1/4 right-1/4 w-40 h-40 bg-blue-500/30" />
+          </div>
 
           <div className="relative z-10 flex flex-col items-center">
             <RadioGroup defaultValue="1">
@@ -156,7 +157,7 @@ export function RadioDoc() {
         </div>
         <CodeBlock
           ts={`<RadioGroup variant="aer" defaultValue="1">\n  <RadioItem value="1" label="Premium selection" />\n  <RadioItem value="2" label="Glassmorphism" />\n</RadioGroup>`}
-          fullCode={`import { RadioGroup, RadioItem } from "aer-design";\n\nexport default function AerRadio() {\n  return (\n    <div className="p-12 bg-linear-to-br from-purple-600 to-blue-600 rounded-2xl">\n      <RadioGroup variant="aer" defaultValue="1">\n        <RadioItem value="1" label="Premium selection" />\n        <RadioItem value="2" label="Glassmorphism" />\n      </RadioGroup>\n    </div>\n  );\n}`}
+          fullCode={`import { RadioGroup, RadioItem } from "aer-design";\n\nexport default function AerRadio() {\n  return (\n    <div className="p-12 bg-linear-to-br from-blue-600 to-sky-600 rounded-2xl">\n      <RadioGroup variant="aer" defaultValue="1">\n        <RadioItem value="1" label="Premium selection" />\n        <RadioItem value="2" label="Glassmorphism" />\n      </RadioGroup>\n    </div>\n  );\n}`}
         />
         <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
           <p className="text-sm text-blue-700 dark:text-blue-400">
@@ -272,16 +273,16 @@ export function RadioDoc() {
             </p>
             <RadioGroup>
               <RadioItem
-                radioClassName="border-purple-600 text-purple-600 peer-checked:bg-purple-600 peer-checked:text-white"
+                radioClassName="border-sky-600 text-sky-600 peer-checked:bg-sky-600 peer-checked:text-white"
                 dotClassName="bg-current"
                 value="1"
-                label="Purple radio with white dot"
+                label="Sky radio with white dot"
               />
             </RadioGroup>
           </div>
         </div>
         <CodeBlock
-          ts={`<RadioItem className="mb-4 p-4 border rounded-xl" label="Root style" />\n\n<RadioItem \n  radioClassName="border-purple-600 text-purple-600 peer-checked:bg-purple-600 peer-checked:text-white" \n  dotClassName="bg-current" \n  label="Custom colors" \n/>`}
+          ts={`<RadioItem className="mb-4 p-4 border rounded-xl" label="Root style" />\n\n<RadioItem \n  radioClassName="border-sky-600 text-sky-600 peer-checked:bg-sky-600 peer-checked:text-white" \n  dotClassName="bg-current" \n  label="Custom colors" \n/>`}
         />
       </DocSection>
 
@@ -611,8 +612,8 @@ export function RadioDoc() {
 }`}
         />
         <div className="mt-4 space-y-4">
-          <div className="p-4 bg-purple-500/10 border border-purple-500/20 rounded-lg">
-            <p className="text-sm text-purple-700 dark:text-purple-400">
+          <div className="p-4 bg-sky-500/10 border border-sky-500/20 rounded-lg">
+            <p className="text-sm text-sky-700 dark:text-sky-400">
               <strong>Tip:</strong> The Card variant uses{" "}
               <code>--aer-muted</code> for its hover state.
             </p>

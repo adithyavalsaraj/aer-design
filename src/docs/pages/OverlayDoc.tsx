@@ -138,33 +138,36 @@ export default function BasicOverlay() {
         id="aer-variant"
         description="Our signature glassmorphism effect for premium interfaces."
       >
-        <div className="relative flex flex-col gap-6 items-center justify-center p-16 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden min-h-[300px]">
-          {/* Vibrant Background Elements */}
-          <div className="absolute inset-0 bg-white/10 backdrop-blur-md -z-10" />
-          <div className="absolute top-1/3 right-1/4 w-40 h-40 bg-pink-500/40 rounded-full blur-[60px]" />
-          <div className="absolute bottom-1/3 left-1/4 w-40 h-40 bg-cyan-500/40 rounded-full blur-[60px]" />
+        <div className="aer-vibrant-container min-h-[300px]">
+          <div className="aer-vibrant-bg-wrapper">
+            <div className="aer-vibrant-bg" />
+            <div className="aer-vibrant-blob top-1/3 right-1/4 w-40 h-40 bg-sky-500/40" />
+            <div className="aer-vibrant-blob bottom-1/3 left-1/4 w-40 h-40 bg-blue-500/40" />
+          </div>
 
-          <Overlay
-            variant="aer"
-            content={
-              <div className="p-6 text-white text-center">
-                <h3 className="font-bold text-lg mb-1">Glassmorphism</h3>
-                <p className="text-white/80 text-sm">
-                  This overlay uses backdrop blur and translucency.
-                </p>
-              </div>
-            }
-          >
-            <Button
-              variant="outline"
-              className="bg-white/10 border-white/20 text-white hover:bg-white/20 hover:text-white"
+          <div className="relative z-10">
+            <Overlay
+              variant="aer"
+              content={
+                <div className="p-6 text-white text-center">
+                  <h3 className="font-bold text-lg mb-1">Glassmorphism</h3>
+                  <p className="text-white/80 text-sm">
+                    This overlay uses backdrop blur and translucency.
+                  </p>
+                </div>
+              }
             >
-              Open Aer Variant
-            </Button>
-          </Overlay>
+              <Button
+                variant="outline"
+                className="bg-white/10 border-white/20 text-white hover:bg-white/20 hover:text-white"
+              >
+                Open Aer Variant
+              </Button>
+            </Overlay>
+          </div>
         </div>
         <CodeBlock
-          ts={`<div className="bg-linear-to-br from-violet-600 to-indigo-600 p-12 rounded-lg">\n  <Overlay variant="aer">\n    <Button variant="outline" className="bg-white/10 text-white border-white/20">\n      Open Aer Variant\n    </Button>\n  </Overlay>\n</div>`}
+          ts={`<div className="aer-vibrant-container h-48">\n  <div className="aer-vibrant-bg" />\n  <Overlay variant="aer">\n    <Button variant="outline" className="bg-white/10 text-white border-white/20">\n      Open Aer Variant\n    </Button>\n  </Overlay>\n</div>`}
         />
       </DocSection>
 
@@ -432,7 +435,7 @@ export default function ModalOverlay() {
   sideOffset={20}
   content={
     <div className="p-4 w-52">
-      <div className="mb-2 h-8 w-8 rounded-lg bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center shadow-lg">
+      <div className="mb-2 h-8 w-8 rounded-lg bg-linear-to-br from-sky-400 to-cyan-500 flex items-center justify-center shadow-lg">
         <Sparkles className="w-4 h-4 text-white" />
       </div>
       <h4 className="font-semibold text-base mb-1 text-white">Glass UI</h4>
@@ -457,7 +460,7 @@ export default function OverlayStyling() {
         className="bg-white/10! backdrop-blur-xl border border-white/20 shadow-2xl rounded-xl text-white"
         side="bottom"
       >
-        <div className="p-4 bg-linear-to-r from-purple-500 to-pink-500 rounded-lg">
+        <div className="p-4 bg-linear-to-r from-sky-500 to-cyan-500 rounded-lg">
           <Button variant="outline" className="bg-white/20 border-white/40 hover:bg-white/30 text-white">
             Glass Effect
           </Button>
@@ -466,7 +469,7 @@ export default function OverlayStyling() {
 
       <Overlay
         backdrop
-        backdropClassName="bg-purple-900/20 backdrop-blur-sm"
+        backdropClassName="bg-zinc-950/40 backdrop-blur-sm"
         content={<div className="p-6 bg-white rounded-lg shadow-xl">Tinted Backdrop</div>}
       >
         <Button variant="outline">Tinted Backdrop</Button>
@@ -490,7 +493,7 @@ export default function OverlayStyling() {
   content={
     <div className="p-4 w-64">
       <div className="flex items-center gap-3 mb-4 pb-4 border-b border-aer-border">
-        <div className="w-10 h-10 rounded-full bg-linear-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-semibold">
+        <div className="w-10 h-10 rounded-full bg-linear-to-br from-sky-500 to-cyan-500 flex items-center justify-center text-white font-semibold">
           JD
         </div>
         <div>
@@ -525,7 +528,7 @@ export default function UserProfile() {
       content={
         <div className="p-4 w-64">
           <div className="flex items-center gap-3 mb-4 pb-4 border-b">
-            <div className="w-10 h-10 rounded-full bg-linear-to-br from-purple-500 to-pink-500" />
+            <div className="w-10 h-10 rounded-full bg-linear-to-br from-sky-500 to-cyan-500" />
             <div>
               <p className="font-semibold">John Doe</p>
               <p className="text-xs text-muted-foreground">john@example.com</p>
@@ -772,44 +775,47 @@ function OverlayStylingExample() {
   return (
     <div className="grid gap-6 lg:grid-cols-2 w-full">
       {/* 1. Glassmorphism Demo */}
-      <div className="relative h-72 rounded-xl bg-zinc-950 overflow-hidden flex items-center justify-center border border-zinc-800 shadow-inner">
-        {/* Background Elements */}
-        <div className="absolute inset-0 bg-linear-to-br from-violet-500/10 via-fuchsia-500/10 to-orange-500/10" />
-        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-pink-500/30 rounded-full blur-[50px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-32 h-32 bg-blue-500/30 rounded-full blur-[50px]" />
-        <div
-          className="absolute inset-0 opacity-20"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.5'/%3E%3C/svg%3E")`,
-          }}
-        />
+      <div className="aer-vibrant-container min-h-[200px]">
+        <div className="aer-vibrant-bg-wrapper">
+          <div className="aer-vibrant-bg" />
+          <div className="aer-vibrant-blob top-1/4 left-1/4 w-32 h-32 bg-sky-500/40" />
+          <div className="aer-vibrant-blob bottom-1/4 right-1/4 w-32 h-32 bg-blue-500/40" />
+          <div
+            className="absolute inset-0 opacity-20"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.5'/%3E%3C/svg%3E")`,
+            }}
+          />
+        </div>
 
-        <Overlay
-          content={
-            <div className="p-4 w-52">
-              <div className="mb-3 h-8 w-8 rounded-lg bg-linear-to-br from-orange-400 to-pink-500 flex items-center justify-center shadow-lg ring-1 ring-white/20">
-                <Sparkles className="w-4 h-4 text-white" />
+        <div className="relative z-10">
+          <Overlay
+            content={
+              <div className="p-4 w-52">
+                <div className="mb-3 h-8 w-8 rounded-lg bg-linear-to-br from-sky-400 to-blue-500 flex items-center justify-center shadow-lg ring-1 ring-white/20">
+                  <Sparkles className="w-4 h-4 text-white" />
+                </div>
+                <h4 className="font-semibold text-base mb-1 text-white">
+                  Glass UI
+                </h4>
+                <p className="text-xs text-white/60 leading-relaxed font-medium">
+                  This element uses backdrop filters to blur the vibrant
+                  background.
+                </p>
               </div>
-              <h4 className="font-semibold text-base mb-1 text-white">
-                Glass UI
-              </h4>
-              <p className="text-xs text-white/60 leading-relaxed font-medium">
-                This element uses backdrop filters to blur the vibrant
-                background.
-              </p>
-            </div>
-          }
-          className="bg-white/5! backdrop-blur-xl border border-white/10! shadow-2xl rounded-2xl text-white! ring-1 ring-white/5"
-          side="top"
-          sideOffset={20}
-        >
-          <Button
-            variant="outline"
-            className="border-white/20 bg-white/5 text-white hover:bg-white/10 hover:text-white hover:border-white/30 backdrop-blur-sm relative z-10 transition-all duration-300"
+            }
+            className="bg-white/5! backdrop-blur-xl border border-white/10! shadow-2xl rounded-2xl text-white! ring-1 ring-white/5"
+            side="top"
+            sideOffset={20}
           >
-            Open Glass Overlay
-          </Button>
-        </Overlay>
+            <Button
+              variant="outline"
+              className="border-white/20 bg-white/5 text-white hover:bg-white/10 hover:text-white hover:border-white/30 backdrop-blur-sm relative z-10 transition-all duration-300"
+            >
+              Open Glass Overlay
+            </Button>
+          </Overlay>
+        </div>
       </div>
 
       {/* 2. Tinted Backdrop Demo */}
@@ -817,7 +823,7 @@ function OverlayStylingExample() {
         <div className="absolute inset-0 bg-grid-slate-200/50 [mask-image:linear-gradient(0deg,white,transparent)] dark:bg-grid-slate-700/50" />
         <Overlay
           backdrop
-          backdropClassName="bg-indigo-950/40 backdrop-blur-[2px]"
+          backdropClassName="bg-zinc-950/40 backdrop-blur-[2px]"
           content={
             <div className="p-6 bg-white dark:bg-zinc-900 rounded-xl shadow-2xl border border-aer-border max-w-xs">
               <h4 className="font-semibold mb-2">Tinted Backdrop</h4>
@@ -843,7 +849,7 @@ function DemoUserProfile() {
       content={
         <div className="p-4 w-64">
           <div className="flex items-center gap-3 mb-4 pb-4 border-b border-aer-border">
-            <div className="w-10 h-10 rounded-full bg-linear-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-semibold">
+            <div className="w-10 h-10 rounded-full bg-linear-to-br from-sky-500 to-cyan-500 flex items-center justify-center text-white font-semibold">
               JD
             </div>
             <div>

@@ -210,24 +210,41 @@
   [data-theme="violet"] {
     --color-aer-primary: hsl(262.1 83.3% 57.8%);
     --color-aer-primary-foreground: hsl(210 40% 98%);
-    --color-aer-secondary: hsl(262 70% 97%);
+    --color-aer-secondary: hsl(262 100% 97%);
     --color-aer-secondary-foreground: hsl(262.1 83.3% 57.8%);
-    --color-aer-muted: hsl(262 70% 97%);
+    --color-aer-muted: hsl(262 100% 97%);
     --color-aer-muted-foreground: hsl(262 40% 45%);
-    --color-aer-accent: hsl(262 70% 97%);
+    --color-aer-accent: hsl(262 100% 97%);
     --color-aer-accent-foreground: hsl(262.1 83.3% 57.8%);
     --color-aer-ring: hsl(262.1 83.3% 57.8%);
   }
   .dark[data-theme="violet"] {
-    --color-aer-primary: hsl(263.4 70% 50.4%);
+    --color-aer-primary: hsl(262.1 83.3% 57.8%);
     --color-aer-primary-foreground: hsl(210 40% 98%);
-    --color-aer-secondary: hsl(263 40% 20%);
+    --color-aer-secondary: hsl(262 40% 18%);
     --color-aer-secondary-foreground: hsl(210 40% 98%);
-    --color-aer-muted: hsl(263 40% 20%);
-    --color-aer-muted-foreground: hsl(263 30% 65%);
-    --color-aer-accent: hsl(263 40% 20%);
+    --color-aer-muted: hsl(262 40% 18%);
+    --color-aer-muted-foreground: hsl(262 30% 65%);
+    --color-aer-accent: hsl(262 40% 18%);
     --color-aer-accent-foreground: hsl(210 40% 98%);
-    --color-aer-ring: hsl(263.4 70% 50.4%);
+    --color-aer-ring: hsl(262.1 83.3% 57.8%);
+  }
+
+  /* Documentation Example Backgrounds */
+  .aer-vibrant-container {
+    @apply relative flex items-center justify-center p-16 rounded-2xl isolate z-10;
+  }
+
+  .aer-vibrant-bg-wrapper {
+    @apply absolute inset-0 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden pointer-events-none z-0;
+  }
+
+  .aer-vibrant-bg {
+    @apply absolute inset-0 bg-linear-to-br from-sky-600/20 via-transparent to-blue-600/20 pointer-events-none;
+  }
+
+  .aer-vibrant-blob {
+    @apply absolute rounded-full blur-[60px] opacity-30 pointer-events-none;
   }
 
   /* Sunset (Funky Gradient) */

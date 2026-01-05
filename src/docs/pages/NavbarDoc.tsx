@@ -133,11 +133,12 @@ export function NavbarDoc() {
         title="The Aer Variant"
         description="Our signature glassmorphism effect for premium interfaces."
       >
-        <div className="relative flex items-center justify-center p-16 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">
-          {/* Vibrant Background Elements */}
-          <div className="absolute inset-0 bg-linear-to-br from-purple-600/20 via-transparent to-blue-600/20" />
-          <div className="absolute top-1/3 left-1/4 w-40 h-40 bg-pink-500/40 rounded-full blur-[60px]" />
-          <div className="absolute bottom-1/3 right-1/4 w-40 h-40 bg-cyan-500/40 rounded-full blur-[60px]" />
+        <div className="aer-vibrant-container">
+          <div className="aer-vibrant-bg-wrapper">
+            <div className="aer-vibrant-bg" />
+            <div className="aer-vibrant-blob top-1/3 left-1/4 w-40 h-40 bg-sky-500/40" />
+            <div className="aer-vibrant-blob bottom-1/3 right-1/4 w-40 h-40 bg-blue-500/40" />
+          </div>
 
           <div className="relative z-10 w-full max-w-2xl">
             <Navbar
@@ -161,7 +162,7 @@ export function NavbarDoc() {
         </div>
         <CodeBlock
           ts={`<Navbar variant="aer" position="static" className="rounded-xl">\n  {/* Navbar content... */}\n</Navbar>`}
-          fullCode={`import { Navbar, NavbarItem, NavbarSpacer } from "aer-design";\n\nexport default function AerNavbarExample() {\n  return (\n    <div className="relative flex items-center justify-center p-16 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">\n      <div className="absolute inset-0 bg-linear-to-br from-purple-600/20 via-transparent to-blue-600/20" />\n      \n      <div className="relative z-10 w-full max-w-2xl">\n        <Navbar variant="aer" position="top" mode="static" className="rounded-xl border border-white/10">\n          <div className="font-bold text-white text-lg mr-4">Aer</div>\n          <NavbarItem active className="text-white">Dashboard</NavbarItem>\n          <NavbarItem className="text-white/70 hover:text-white">Projects</NavbarItem>\n          <NavbarSpacer />\n          <div className="flex items-center gap-2">\n             <div className="size-8 rounded-full bg-white/10" />\n          </div>\n        </Navbar>\n      </div>\n    </div>\n  );\n}`}
+          fullCode={`import { Navbar, NavbarItem, NavbarSpacer } from "aer-design";\n\nexport default function AerNavbarExample() {\n  return (\n    <div className="relative flex items-center justify-center p-16 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">\n      <div className="absolute inset-0 bg-linear-to-br from-sky-600/20 via-transparent to-blue-600/20" />\n      \n      <div className="relative z-10 w-full max-w-2xl">\n        <Navbar variant="aer" position="top" mode="static" className="rounded-xl border border-white/10">\n          <div className="font-bold text-white text-lg mr-4">Aer</div>\n          <NavbarItem active className="text-white">Dashboard</NavbarItem>\n          <NavbarItem className="text-white/70 hover:text-white">Projects</NavbarItem>\n          <NavbarSpacer />\n          <div className="flex items-center gap-2">\n             <div className="size-8 rounded-full bg-white/10" />\n          </div>\n        </Navbar>\n      </div>\n    </div>\n  );\n}`}
         />
       </DocSection>
 
@@ -223,17 +224,17 @@ export function NavbarDoc() {
         <div className="p-6 border rounded-lg bg-aer-muted/5 flex justify-center">
           <Navbar
             mode="static"
-            className="bg-purple-500/10 border-purple-500/20 rounded-lg max-w-md"
+            className="bg-sky-500/10 border-sky-500/20 rounded-lg max-w-md"
           >
-            <div className="font-bold text-purple-600">Styled</div>
+            <div className="font-bold text-sky-600">Styled</div>
             <NavbarSpacer />
-            <NavbarItem className="hover:bg-purple-500/20 text-purple-600 rounded-md">
+            <NavbarItem className="hover:bg-sky-500/20 text-sky-600 rounded-md">
               Custom Item
             </NavbarItem>
           </Navbar>
         </div>
         <CodeBlock
-          ts={`<Navbar className="bg-purple-500/10 border-purple-500/20 rounded-lg">\n  <NavbarItem className="hover:bg-purple-500/20 text-purple-600" />\n</Navbar>`}
+          ts={`<Navbar className="bg-sky-500/10 border-sky-500/20 rounded-lg">\n  <NavbarItem className="hover:bg-sky-500/20 text-sky-600" />\n</Navbar>`}
         />
       </DocSection>
 

@@ -250,11 +250,12 @@ export function DropdownDoc() {
         id="aer-variant"
         description="Premium glassmorphism effect for modern dropdowns."
       >
-        <div className="relative p-12 bg-zinc-950 rounded-2xl border border-zinc-800">
-          {/* Vibrant Background */}
-          <div className="absolute inset-0 bg-linear-to-br from-violet-600/20 via-transparent to-orange-600/20" />
-          <div className="absolute top-1/4 right-1/3 w-40 h-40 bg-pink-500/30 rounded-full blur-[60px]" />
-          <div className="absolute bottom-1/4 left-1/3 w-40 h-40 bg-blue-500/30 rounded-full blur-[60px]" />
+        <div className="aer-vibrant-container">
+          <div className="aer-vibrant-bg-wrapper">
+            <div className="aer-vibrant-bg" />
+            <div className="aer-vibrant-blob w-40 h-40 bg-sky-500/30 top-1/4 right-1/3" />
+            <div className="aer-vibrant-blob w-40 h-40 bg-blue-500/30 bottom-1/4 left-1/3" />
+          </div>
 
           <div className="relative z-10 max-w-sm mx-auto">
             <Dropdown
@@ -276,7 +277,8 @@ const options = [
 
 export default function AerDropdownExample() {
   return (
-    <div className="p-12 bg-linear-to-br from-violet-600 to-orange-600 rounded-2xl">
+    <div className="aer-vibrant-container h-48">
+      <div className="aer-vibrant-bg" />
       <div className="max-w-sm">
         <Dropdown 
           variant="aer"
@@ -657,8 +659,8 @@ export default function GroupedDropdown() {
               itemClassName & iconClassName
             </p>
             <Dropdown
-              itemClassName="hover:bg-purple-500 hover:text-white rounded-none"
-              iconClassName="text-purple-500"
+              itemClassName="hover:bg-sky-500 hover:text-white rounded-none"
+              iconClassName="text-sky-500"
               startIcon={<User className="w-4 h-4" />}
               options={basicOptions}
               placeholder="Custom items and icons"
@@ -666,7 +668,7 @@ export default function GroupedDropdown() {
           </div>
         </div>
         <CodeBlock
-          ts={`<Dropdown \n  className="p-4 border rounded-2xl bg-aer-primary/5" \n  triggerClassName="bg-white rounded-full border-2 border-aer-primary" \n  options={options} \n/>\n\n<Dropdown \n  itemClassName="hover:bg-purple-500 hover:text-white rounded-none" \n  iconClassName="text-purple-500" \n  options={options} \n/>`}
+          ts={`<Dropdown \n  className="p-4 border rounded-2xl bg-aer-primary/5" \n  triggerClassName="bg-white rounded-full border-2 border-aer-primary" \n  options={options} \n/>\n\n<Dropdown \n  itemClassName="hover:bg-sky-500 hover:text-white rounded-none" \n  iconClassName="text-sky-500" \n  options={options} \n/>`}
         />
       </DocSection>
 
@@ -1263,8 +1265,8 @@ export default function UserSettings() {
 }`}
         />
         <div className="mt-4 space-y-4">
-          <div className="p-4 bg-purple-500/10 border border-purple-500/20 rounded-lg">
-            <p className="text-sm text-purple-700 dark:text-purple-400">
+          <div className="p-4 bg-sky-500/10 border border-sky-500/20 rounded-lg">
+            <p className="text-sm text-sky-700 dark:text-sky-400">
               <strong>Tip:</strong> Use the ThemeProvider to switch themes
               globally, or override these variables in a specific scope to
               customize just the dropdowns.

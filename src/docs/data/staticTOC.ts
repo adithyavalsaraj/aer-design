@@ -181,6 +181,7 @@ export const staticTOC: Record<string, { id: string; title: string }[]> = {
     { id: "sizing", title: "Global Sizing" },
     { id: "real-world", title: "Real World Example" },
     { id: "automatic-contrast", title: "Automatic Contrast" },
+    { id: "theme-validation", title: "Theme Validation" },
   ],
   shortcuts: [
     { id: "introduction", title: "Introduction" },

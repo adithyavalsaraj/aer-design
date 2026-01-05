@@ -232,12 +232,11 @@ export default function CustomDisplay() {
         title="The Aer Variant"
         description="Our signature glassmorphism effect for premium interfaces."
       >
-        <div className="relative flex items-center justify-center p-16 bg-zinc-950 rounded-2xl border border-zinc-800">
-          {/* Vibrant Background Elements (Clipped) */}
-          <div className="absolute inset-0 overflow-hidden rounded-2xl">
-            <div className="absolute inset-0 bg-linear-to-br from-purple-600/20 via-transparent to-blue-600/20" />
-            <div className="absolute top-1/3 left-1/4 w-40 h-40 bg-pink-500/40 rounded-full blur-[60px]" />
-            <div className="absolute bottom-1/3 right-1/4 w-40 h-40 bg-cyan-500/40 rounded-full blur-[60px]" />
+        <div className="aer-vibrant-container">
+          <div className="aer-vibrant-bg-wrapper">
+            <div className="aer-vibrant-bg" />
+            <div className="aer-vibrant-blob top-1/3 left-1/4 w-40 h-40 bg-sky-500/40" />
+            <div className="aer-vibrant-blob bottom-1/3 right-1/4 w-40 h-40 bg-blue-500/40" />
           </div>
 
           <div className="relative z-10 w-64">
@@ -280,7 +279,7 @@ const options = [
 export default function AerCascaderExample() {
   return (
     <div className="relative flex items-center justify-center p-16 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">
-      <div className="absolute inset-0 bg-linear-to-br from-purple-600/20 via-transparent to-blue-600/20" />
+      <div className="absolute inset-0 bg-linear-to-br from-sky-600/20 via-transparent to-blue-600/20" />
       
       <div className="relative z-10 w-64">
         <Cascader
@@ -448,9 +447,9 @@ export default function DisabledExample() {
   value={value}
   onChange={setValue}
   className="w-64"
-  triggerClassName="border-purple-200 bg-purple-50 hover:border-purple-300"
-  itemClassName="hover:bg-purple-100 hover:text-purple-700"
-  placeholder="Purple Theme"
+  triggerClassName="border-sky-200 bg-sky-50 hover:border-sky-300"
+  itemClassName="hover:bg-sky-100 hover:text-sky-700"
+  placeholder="Sky Theme"
 />`}
           fullCode={`import { Cascader } from "aer-design";
 import { useState } from "react";
@@ -464,9 +463,9 @@ export default function CascaderStyling() {
       value={val}
       onChange={setVal}
       className="w-72"
-      triggerClassName="border-purple-200 bg-purple-50/50 hover:bg-purple-50 hover:border-purple-300 transition-colors"
-      itemClassName="hover:bg-purple-100 hover:text-purple-700 focus:bg-purple-100 focus:text-purple-700 data-[selected=true]:bg-purple-200"
-      placeholder="Purple Theme"
+      triggerClassName="border-sky-200 bg-sky-50/50 hover:bg-sky-50 hover:border-sky-300 transition-colors"
+      itemClassName="hover:bg-sky-100 hover:text-sky-700 focus:bg-sky-100 focus:text-sky-700 data-[selected=true]:bg-sky-200"
+      placeholder="Sky Theme"
     />
   );
 }`}
@@ -718,7 +717,7 @@ export default function ProductForm() {
 
 /* Scoped overrides */
 .custom-cascader {
-  --aer-primary: 262.1 83.3% 57.8%; /* Purple focus */
+  --aer-primary: 199 89% 48%; /* Sky focus */
 }`}
         />
       </DocSection>
@@ -969,8 +968,8 @@ export default function ProductForm() {
   --aer-background: 222.2 84% 4.9%;
 }`}
           />
-          <div className="mt-4 p-4 bg-purple-500/10 border border-purple-500/20 rounded-lg">
-            <p className="text-sm text-purple-700 dark:text-purple-400">
+          <div className="mt-4 p-4 bg-sky-500/10 border border-sky-500/20 rounded-lg">
+            <p className="text-sm text-sky-700 dark:text-sky-400">
               <strong>Tip:</strong> Cascader styles are derived from base
               variables, ensuring it automatically matches your theme without
               extra configuration.
@@ -1211,9 +1210,9 @@ export default function ProductForm() {
         value={val}
         onChange={setVal}
         className="w-72"
-        triggerClassName="border-purple-200 bg-purple-50/50 hover:bg-purple-50 hover:border-purple-300 transition-colors"
-        itemClassName="hover:bg-purple-100 hover:text-purple-700 focus:bg-purple-100 focus:text-purple-700 data-[selected=true]:bg-purple-200"
-        placeholder="Purple Theme"
+        triggerClassName="border-sky-200 bg-sky-50/50 hover:bg-sky-50 hover:border-sky-300 transition-colors"
+        itemClassName="hover:bg-sky-100 hover:text-sky-700 focus:bg-sky-100 focus:text-sky-700 data-[selected=true]:bg-sky-200"
+        placeholder="Sky Theme"
       />
     );
   }

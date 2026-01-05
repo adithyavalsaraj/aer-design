@@ -163,13 +163,14 @@ export default function TooltipVariants() {
         title="The Aer Variant"
         description="Our signature glassmorphism effect for premium interfaces."
       >
-        <div className="relative flex items-center justify-center p-24 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">
-          {/* Vibrant Background Elements */}
-          <div className="absolute inset-0 bg-linear-to-br from-purple-600/20 via-transparent to-blue-600/20" />
-          <div className="absolute top-1/2 left-1/3 w-32 h-32 bg-pink-500/30 rounded-full blur-[50px]" />
+        <div className="aer-vibrant-container p-24">
+          <div className="aer-vibrant-bg-wrapper">
+            <div className="aer-vibrant-bg" />
+            <div className="aer-vibrant-blob top-1/2 left-1/3 w-32 h-32 bg-sky-500/30" />
+          </div>
 
           <div className="relative z-10">
-            <Tooltip content="Glassmorphism Tooltip" variant="aer" open>
+            <Tooltip content="Glassmorphism Tooltip" variant="aer">
               <Button variant="aer">Hover Me</Button>
             </Tooltip>
           </div>
@@ -185,7 +186,7 @@ export default function TooltipVariants() {
 export default function AerTooltipExample() {
   return (
     <div className="relative flex items-center justify-center p-24 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">
-      <div className="absolute inset-0 bg-linear-to-br from-purple-600/20 via-transparent to-blue-600/20" />
+      <div className="absolute inset-0 bg-linear-to-br from-sky-600/20 via-transparent to-blue-600/20" />
       
       <div className="relative z-10">
         <Tooltip content="Glassmorphism Tooltip" variant="aer">
@@ -430,7 +431,7 @@ export default function TooltipDelays() {
         <CodeBlock
           ts={`<Tooltip
   content="Custom bubble style"
-  className="bg-purple-600 text-white border-0 shadow-xl"
+  className="bg-sky-600 text-white border-0 shadow-xl"
 >
   <Button variant="outline">Custom Style</Button>
 </Tooltip>
@@ -448,7 +449,7 @@ export default function TooltipStyling() {
     <div className="flex gap-4">
       <Tooltip
         content="Custom bubble style"
-        className="bg-purple-600 text-white border-0 shadow-xl"
+        className="bg-sky-600 text-white border-0 shadow-xl"
       >
         <Button variant="outline">Custom Color</Button>
       </Tooltip>
@@ -552,7 +553,7 @@ export default function Toolbar() {
       <div className="flex gap-4">
         <Tooltip
           content="Custom bubble style"
-          className="bg-purple-600 text-white border-0 shadow-xl"
+          className="bg-sky-600 text-white border-0 shadow-xl"
         >
           <Button variant="outline">Custom Color</Button>
         </Tooltip>
@@ -740,8 +741,8 @@ export default function Toolbar() {
   --aer-popover-foreground: 220 9% 20%;
 }`}
         />
-        <div className="mt-4 p-4 bg-purple-500/10 border border-purple-500/20 rounded-lg">
-          <p className="text-sm text-purple-700 dark:text-purple-400">
+        <div className="mt-4 p-4 bg-sky-500/10 border border-sky-500/20 rounded-lg">
+          <p className="text-sm text-sky-700 dark:text-sky-400">
             <strong>Tip:</strong> Use the <code>variant</code> prop for
             pre-defined styles, or apply custom classes via{" "}
             <code>className</code> for complete control.

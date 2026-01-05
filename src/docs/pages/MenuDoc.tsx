@@ -152,10 +152,11 @@ export default function BasicMenu() {
         title="The Aer Variant"
         description="Our signature glassmorphism effect for premium interfaces."
       >
-        <div className="relative flex items-center justify-center p-24 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">
-          {/* Vibrant Background Elements */}
-          <div className="absolute inset-0 bg-linear-to-br from-purple-600/20 via-transparent to-blue-600/20" />
-          <div className="absolute top-1/3 left-1/4 w-40 h-40 bg-pink-500/40 rounded-full blur-[60px]" />
+        <div className="aer-vibrant-container p-24">
+          <div className="aer-vibrant-bg-wrapper">
+            <div className="aer-vibrant-bg" />
+            <div className="aer-vibrant-blob top-1/3 left-1/4 w-40 h-40 bg-sky-500/40" />
+          </div>
 
           <div className="relative z-10">
             <Menu>
@@ -190,7 +191,7 @@ import { User, Settings } from "lucide-react";
 export default function AerMenuExample() {
   return (
     <div className="relative flex items-center justify-center p-24 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">
-      <div className="absolute inset-0 bg-linear-to-br from-purple-600/20 via-transparent to-blue-600/20" />
+      <div className="absolute inset-0 bg-linear-to-br from-sky-600/20 via-transparent to-blue-600/20" />
       
       <div className="relative z-10">
         <Menu>
@@ -687,7 +688,7 @@ export default function PositioningMenu() {
         </div>
         <CodeBlock
           ts={`// Interactive item styling
-<MenuItem className="hover:bg-purple-100 hover:text-purple-600 focus:bg-purple-100 focus:text-purple-600">
+<MenuItem className="hover:bg-sky-100 hover:text-sky-600 focus:bg-sky-100 focus:text-sky-600">
   Custom Hover Item
 </MenuItem>
 
@@ -697,7 +698,7 @@ export default function PositioningMenu() {
 </MenuItem>
 
 // Custom content styling
-<MenuContent className="w-64 border-purple-200 shadow-xl rounded-xl">
+<MenuContent className="w-64 border-sky-200 shadow-xl rounded-xl">
   {...}
 </MenuContent>`}
           fullCode={`import { Menu, MenuTrigger, MenuContent, MenuItem, Button } from "aer-design";
@@ -710,8 +711,8 @@ export default function MenuStyling() {
         <MenuTrigger asChild>
           <Button variant="outline">Custom Menu</Button>
         </MenuTrigger>
-        <MenuContent className="w-56 border-purple-200 shadow-xl rounded-xl">
-          <MenuItem className="hover:bg-purple-100 hover:text-purple-600 focus:bg-purple-100 focus:text-purple-600">
+        <MenuContent className="w-56 border-sky-200 shadow-xl rounded-xl">
+          <MenuItem className="hover:bg-sky-100 hover:text-sky-600 focus:bg-sky-100 focus:text-sky-600">
             <User className="mr-2 h-4 w-4" />
             <span>Profile</span>
           </MenuItem>
@@ -732,95 +733,99 @@ export default function MenuStyling() {
         title="Real World Example"
         description="A complete User Profile menu with groups, submenus, and keyboard shortcuts."
       >
-        <div className="flex justify-center p-8 border border-aer-border/50 rounded-xl bg-zinc-950/90 relative z-10">
-          <div className="absolute inset-0 rounded-xl overflow-hidden pointer-events-none">
-            <div className="absolute inset-0 bg-linear-to-br from-violet-600/20 via-transparent to-blue-600/20" />
+        <div className="aer-vibrant-container">
+          <div className="aer-vibrant-bg-wrapper">
+            <div className="aer-vibrant-bg" />
+            <div className="aer-vibrant-blob top-1/4 left-1/4 w-32 h-32 bg-sky-500/20" />
+            <div className="aer-vibrant-blob bottom-1/4 right-1/4 w-32 h-32 bg-blue-500/20" />
           </div>
-          <Menu>
-            <MenuTrigger asChild>
-              <Button
-                variant="aer"
-                className="h-12 px-4 gap-3 rounded-full hover:scale-105 transition-transform"
-              >
-                <div className="size-8 rounded-full bg-linear-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-xs ring-2 ring-white/20">
-                  JD
-                </div>
-                <div className="flex flex-col items-start text-left">
-                  <span className="text-xs font-bold">John Doe</span>
-                  <span className="text-[10px] text-aer-muted-foreground">
-                    Pro Plan
-                  </span>
-                </div>
-              </Button>
-            </MenuTrigger>
-            <MenuContent className="w-64" align="end" sideOffset={8}>
-              <div className="px-2 py-1.5 border-b border-aer-border/50 mb-1">
-                <p className="text-sm font-bold">John Doe</p>
-                <p className="text-xs text-aer-muted-foreground">
-                  john.doe@example.com
-                </p>
-              </div>
-              <MenuGroup>
-                <MenuLabel>Platform</MenuLabel>
-                <MenuItem onClick={() => console.log("Dashboard")}>
-                  <Terminal className="mr-2 h-4 w-4 text-indigo-400" />
-                  <span>Dashboard</span>
-                  <span className="ml-auto text-xs tracking-widest text-aer-muted-foreground">
-                    ⌘D
-                  </span>
-                </MenuItem>
-                <MenuItem onClick={() => console.log("Settings")}>
-                  <Settings className="mr-2 h-4 w-4 text-emerald-400" />
-                  <span>Settings</span>
-                  <span className="ml-auto text-xs tracking-widest text-aer-muted-foreground">
-                    ⌘S
-                  </span>
-                </MenuItem>
-              </MenuGroup>
-              <MenuSeparator />
-              <MenuGroup>
-                <MenuLabel>Team</MenuLabel>
-                <SubMenu
-                  trigger={
-                    <>
-                      <Users className="mr-2 h-4 w-4 text-orange-400" />
-                      <span>Manage Team</span>
-                    </>
-                  }
+          <div className="relative z-10">
+            <Menu>
+              <MenuTrigger asChild>
+                <Button
+                  variant="aer"
+                  className="h-12 px-4 gap-3 rounded-full hover:scale-105 transition-transform"
                 >
-                  <MenuItem onClick={() => console.log("Invite Member")}>
-                    <Mail className="mr-2 h-4 w-4" />
-                    <span>Invite Member</span>
+                  <div className="size-8 rounded-full bg-linear-to-tr from-sky-500 to-cyan-500 flex items-center justify-center text-white font-bold text-xs ring-2 ring-white/20">
+                    JD
+                  </div>
+                  <div className="flex flex-col items-start text-left">
+                    <span className="text-xs font-bold">John Doe</span>
+                    <span className="text-[10px] text-aer-muted-foreground">
+                      Pro Plan
+                    </span>
+                  </div>
+                </Button>
+              </MenuTrigger>
+              <MenuContent className="w-64" align="end" sideOffset={8}>
+                <div className="px-2 py-1.5 border-b border-aer-border/50 mb-1">
+                  <p className="text-sm font-bold">John Doe</p>
+                  <p className="text-xs text-aer-muted-foreground">
+                    john.doe@example.com
+                  </p>
+                </div>
+                <MenuGroup>
+                  <MenuLabel>Platform</MenuLabel>
+                  <MenuItem onClick={() => console.log("Dashboard")}>
+                    <Terminal className="mr-2 h-4 w-4 text-sky-400" />
+                    <span>Dashboard</span>
+                    <span className="ml-auto text-xs tracking-widest text-aer-muted-foreground">
+                      ⌘D
+                    </span>
                   </MenuItem>
-                  <MenuItem onClick={() => console.log("Permissions")}>
-                    <PenTool className="mr-2 h-4 w-4" />
-                    <span>Permissions</span>
+                  <MenuItem onClick={() => console.log("Settings")}>
+                    <Settings className="mr-2 h-4 w-4 text-emerald-400" />
+                    <span>Settings</span>
+                    <span className="ml-auto text-xs tracking-widest text-aer-muted-foreground">
+                      ⌘S
+                    </span>
                   </MenuItem>
-                </SubMenu>
-                <MenuItem onClick={() => console.log("Billing")}>
-                  <CreditCard className="mr-2 h-4 w-4 text-blue-400" />
-                  <span>Billing</span>
+                </MenuGroup>
+                <MenuSeparator />
+                <MenuGroup>
+                  <MenuLabel>Team</MenuLabel>
+                  <SubMenu
+                    trigger={
+                      <>
+                        <Users className="mr-2 h-4 w-4 text-orange-400" />
+                        <span>Manage Team</span>
+                      </>
+                    }
+                  >
+                    <MenuItem onClick={() => console.log("Invite Member")}>
+                      <Mail className="mr-2 h-4 w-4" />
+                      <span>Invite Member</span>
+                    </MenuItem>
+                    <MenuItem onClick={() => console.log("Permissions")}>
+                      <PenTool className="mr-2 h-4 w-4" />
+                      <span>Permissions</span>
+                    </MenuItem>
+                  </SubMenu>
+                  <MenuItem onClick={() => console.log("Billing")}>
+                    <CreditCard className="mr-2 h-4 w-4 text-blue-400" />
+                    <span>Billing</span>
+                  </MenuItem>
+                </MenuGroup>
+                <MenuSeparator />
+                <MenuItem
+                  onClick={() => console.log("Log out")}
+                  className="text-red-500 hover:text-red-600 focus:text-red-600 focus:bg-red-50 dark:focus:bg-red-950/20"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
+                  <span className="ml-auto text-xs tracking-widest opacity-60">
+                    ⇧⌘Q
+                  </span>
                 </MenuItem>
-              </MenuGroup>
-              <MenuSeparator />
-              <MenuItem
-                onClick={() => console.log("Log out")}
-                className="text-red-500 hover:text-red-600 focus:text-red-600 focus:bg-red-50 dark:focus:bg-red-950/20"
-              >
-                <LogOut className="mr-2 h-4 w-4" />
-                <span>Log out</span>
-                <span className="ml-auto text-xs tracking-widest opacity-60">
-                  ⇧⌘Q
-                </span>
-              </MenuItem>
-            </MenuContent>
-          </Menu>
+              </MenuContent>
+            </Menu>
+          </div>
         </div>
         <CodeBlock
           ts={`<Menu>
   <MenuTrigger asChild>
     <Button variant="aer" className="h-12 px-4 gap-3 rounded-full">
-      <div className="size-8 rounded-full bg-linear-to-tr from-indigo-500 to-purple-500 ...">JD</div>
+      <div className="size-8 rounded-full bg-linear-to-tr from-sky-500 to-cyan-500 flex items-center justify-center text-white font-bold text-xs ring-2 ring-white/20">JD</div>
       <div className="flex flex-col items-start text-left">
         <span className="text-xs font-bold">John Doe</span>
         <span className="text-[10px] opacity-70">Pro Plan</span>
@@ -889,7 +894,7 @@ export default function UserMenu() {
     <Menu>
       <MenuTrigger asChild>
         <Button variant="aer" className="h-12 px-4 gap-3 rounded-full">
-          <div className="size-8 rounded-full bg-linear-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-xs">
+          <div className="size-8 rounded-full bg-linear-to-tr from-sky-500 to-cyan-500 flex items-center justify-center text-white font-bold text-xs">
             JD
           </div>
           <div className="flex flex-col items-start text-left">
@@ -1192,10 +1197,10 @@ export default function UserMenu() {
         <MenuTrigger asChild>
           <Button variant="outline">Custom Menu Style</Button>
         </MenuTrigger>
-        <MenuContent className="w-56 border-purple-200 shadow-xl rounded-xl p-2">
-          <MenuLabel className="text-purple-900">Customized</MenuLabel>
-          <MenuSeparator className="bg-purple-100" />
-          <MenuItem className="hover:bg-purple-100 hover:text-purple-600 focus:bg-purple-100 focus:text-purple-600 rounded-md transition-colors">
+        <MenuContent className="w-56 border-sky-200 shadow-xl rounded-xl p-2">
+          <MenuLabel className="text-sky-900">Customized</MenuLabel>
+          <MenuSeparator className="bg-sky-100" />
+          <MenuItem className="hover:bg-sky-100 hover:text-sky-600 focus:bg-sky-100 focus:text-sky-600 rounded-md transition-colors">
             <User className="mr-2 h-4 w-4" />
             <span>Profile</span>
           </MenuItem>
