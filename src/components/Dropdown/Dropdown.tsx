@@ -19,6 +19,7 @@ const dropdownTriggerVariants = cva(
           "border-b-2 border-aer-input/20 bg-aer-muted/30 hover:bg-aer-muted/50 rounded-t-md rounded-b-none focus-visible:outline-none focus-visible:border-aer-primary",
         underlined:
           "border-b border-aer-input bg-transparent rounded-none px-0 focus-visible:outline-none focus-visible:border-aer-primary",
+        aer: "bg-white/5 backdrop-blur-xl border border-white/10 hover:bg-white/10 hover:border-white/20 shadow-2xl ring-1 ring-white/5 transition-all duration-300 focus-visible:outline-none",
       },
       error: {
         true: "border-red-500 focus-visible:ring-red-500",
@@ -634,7 +635,10 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
           <div
             ref={menuRef}
             className={cn(
-              "absolute z-50 w-full bg-aer-background border border-aer-border rounded-aer-md shadow-lg overflow-hidden animate-in fade-in-0 zoom-in-95",
+              "absolute w-full border rounded-aer-md shadow-lg overflow-hidden animate-in fade-in-0 zoom-in-95",
+              variant === "aer"
+                ? "z-[100] bg-white/5 backdrop-blur-xl border-white/10 shadow-2xl ring-1 ring-white/5"
+                : "z-50 bg-aer-background border-aer-border",
               menuPosition.side === "top"
                 ? "bottom-full mb-1"
                 : "top-full mt-1",
@@ -707,14 +711,20 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
                                   "flex items-center gap-2 px-3 py-2 text-sm cursor-pointer transition-colors select-none rounded-sm",
                                   isOptSelected &&
                                     !multiple &&
-                                    "bg-aer-primary/10 text-aer-primary font-medium",
+                                    (variant === "aer"
+                                      ? "bg-white/20 font-medium"
+                                      : "bg-aer-primary/10 text-aer-primary font-medium"),
                                   isOptSelected && multiple && "bg-transparent",
                                   !isOptSelected &&
                                     selectableIndex === focusedIndex &&
-                                    "bg-aer-accent",
+                                    (variant === "aer"
+                                      ? "bg-white/10"
+                                      : "bg-aer-accent"),
                                   !isOptSelected &&
                                     selectableIndex !== focusedIndex &&
-                                    "hover:bg-aer-muted/50",
+                                    (variant === "aer"
+                                      ? "hover:bg-white/10"
+                                      : "hover:bg-aer-muted/50"),
                                   option.disabled &&
                                     "opacity-50 cursor-not-allowed pointer-events-none",
                                   itemClassName
@@ -727,7 +737,14 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
                                     readOnly
                                   />
                                 )}
-                                <span className="truncate flex-1 text-aer-foreground">
+                                <span
+                                  className={cn(
+                                    "truncate flex-1",
+                                    variant === "aer"
+                                      ? "!text-white [text-shadow:0_1px_2px_rgba(0,0,0,0.8)]"
+                                      : "text-aer-foreground"
+                                  )}
+                                >
                                   {option.label}
                                 </span>
                                 {!multiple && isOptSelected && (
@@ -768,14 +785,20 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
                             "flex items-center gap-2 px-3 py-2 text-sm cursor-pointer transition-colors select-none rounded-sm",
                             isOptSelected &&
                               !multiple &&
-                              "bg-aer-primary/10 text-aer-primary font-medium",
+                              (variant === "aer"
+                                ? "bg-white/20 text-white font-medium"
+                                : "bg-aer-primary/10 text-aer-primary font-medium"),
                             isOptSelected && multiple && "bg-transparent",
                             !isOptSelected &&
                               selectableIndex === focusedIndex &&
-                              "bg-aer-accent",
+                              (variant === "aer"
+                                ? "bg-white/10"
+                                : "bg-aer-accent"),
                             !isOptSelected &&
                               selectableIndex !== focusedIndex &&
-                              "hover:bg-aer-muted/50",
+                              (variant === "aer"
+                                ? "hover:bg-white/10"
+                                : "hover:bg-aer-muted/50"),
                             item.disabled &&
                               "opacity-50 cursor-not-allowed pointer-events-none",
                             itemClassName
@@ -788,7 +811,14 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
                               readOnly
                             />
                           )}
-                          <span className="truncate flex-1 text-aer-foreground">
+                          <span
+                            className={cn(
+                              "truncate flex-1",
+                              variant === "aer"
+                                ? "!text-white [text-shadow:0_1px_2px_rgba(0,0,0,0.8)]"
+                                : "text-aer-foreground"
+                            )}
+                          >
                             {item.label}
                           </span>
                           {!multiple && isOptSelected && (

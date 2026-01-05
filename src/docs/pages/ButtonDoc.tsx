@@ -539,8 +539,14 @@ export default function UserProfileForm() {
 
   function AerVariantExample() {
     return (
-      <div className="flex items-center justify-center p-12 bg-gradient-to-br from-zinc-900 to-zinc-950 rounded-2xl border border-white/10">
-        <Button variant="aer" size="lg">
+      <div className="relative flex items-center justify-center p-16 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">
+        {/* Vibrant Background Elements */}
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 via-transparent to-blue-600/20" />
+        <div className="absolute top-1/3 left-1/4 w-40 h-40 bg-pink-500/40 rounded-full blur-[60px]" />
+        <div className="absolute bottom-1/3 right-1/4 w-40 h-40 bg-cyan-500/40 rounded-full blur-[60px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-violet-500/30 rounded-full blur-[50px]" />
+
+        <Button variant="aer" size="lg" className="relative z-10">
           <Sparkles className="w-4 h-4 mr-2" />
           Join the Movement
         </Button>

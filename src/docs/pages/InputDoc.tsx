@@ -279,6 +279,59 @@ export function InputDoc() {
       </DocSection>
 
       <DocSection
+        title="The Aer Variant"
+        id="aer-variant"
+        description="Premium glassmorphism effect for modern, high-end interfaces."
+      >
+        <div className="relative p-12 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">
+          {/* Vibrant Background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 via-transparent to-purple-600/20" />
+          <div className="absolute top-1/4 left-1/3 w-40 h-40 bg-cyan-500/30 rounded-full blur-[60px]" />
+          <div className="absolute bottom-1/4 right-1/3 w-40 h-40 bg-violet-500/30 rounded-full blur-[60px]" />
+
+          <div className="relative z-10 max-w-sm mx-auto space-y-4">
+            <Input
+              variant="aer"
+              placeholder="Premium glassmorphism input"
+              startIcon={<Search />}
+            />
+            <PasswordInput variant="aer" placeholder="Secure password" />
+          </div>
+        </div>
+        <CodeBlock
+          ts={`<Input variant="aer" placeholder="Premium input" startIcon={<Search />} />
+<PasswordInput variant="aer" placeholder="Secure password" />`}
+          fullCode={`import { Input, PasswordInput } from "aer-design";
+import { Search } from "lucide-react";
+
+export default function AerInputExample() {
+  return (
+    <div className="p-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl">
+      <div className="max-w-sm space-y-4">
+        <Input 
+          variant="aer" 
+          placeholder="Premium glassmorphism input"
+          startIcon={<Search />}
+        />
+        <PasswordInput 
+          variant="aer" 
+          placeholder="Secure password"
+        />
+      </div>
+    </div>
+  );
+}`}
+        />
+        <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+          <p className="text-sm text-blue-700 dark:text-blue-400">
+            <strong>Pro tip:</strong> The Aer variant works best on dark or
+            colorful backgrounds. It features a glassmorphism effect with
+            backdrop blur and semi-transparent styling.
+          </p>
+        </div>
+      </DocSection>
+
+      <DocSection
         title="Size Variants"
         id="sizes"
         description="Three size options to fit different layouts and use cases."
@@ -872,6 +925,7 @@ export default function GranularStyling() {
               { id: "masking", title: "Masking" },
               { id: "label", title: "Label" },
               { id: "variants", title: "Visual Variants" },
+              { id: "aer-variant", title: "The Aer Variant" },
               { id: "sizes", title: "Size Variants" },
               { id: "icons", title: "Icons & Prefixes" },
               { id: "addons", title: "Addons" },

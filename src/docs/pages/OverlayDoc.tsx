@@ -1,7 +1,7 @@
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import { Overlay } from "@/components/Overlay";
-import { Bell, HelpCircle, Settings, User } from "lucide-react";
+import { Bell, HelpCircle, Settings, Sparkles, User } from "lucide-react";
 import * as React from "react";
 import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
 
@@ -545,26 +545,31 @@ export default function ModalOverlay() {
         id="granular-styling"
         description="Style the overlay container and backdrop using classes."
       >
-        <div className="flex flex-wrap items-center justify-center gap-4 p-8 border border-aer-border rounded-lg bg-aer-muted/5">
+        <div className="flex flex-col gap-6 w-full">
           <OverlayStylingExample />
         </div>
         <CodeBlock
-          ts={`// Dark Glassmorphism
+          ts={`// Premium Glassmorphism
+// Note: Ensure the overlay is placed over a colorful background to see the effect
 <Overlay
-  content={<div className="p-4 font-medium text-white">Dark Glassmorphism</div>}
-  className="!bg-gray-900/70 backdrop-blur-xl !border-gray-700/50 shadow-2xl rounded-xl !text-white"
-  side="bottom"
+  side="right"
+  sideOffset={20}
+  content={
+    <div className="p-4 w-52">
+      <div className="mb-2 h-8 w-8 rounded-lg bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center shadow-lg">
+        <Sparkles className="w-4 h-4 text-white" />
+      </div>
+      <h4 className="font-semibold text-base mb-1 text-white">Glass UI</h4>
+      <p className="text-xs text-white/60">
+        Backdrop filters blur the content behind this element.
+      </p>
+    </div>
+  }
+  className="!bg-white/5 backdrop-blur-md border !border-white/15 shadow-2xl rounded-2xl !text-white ring-1 ring-white/5"
 >
-  <Button>Glass Effect</Button>
-</Overlay>
-
-// Custom backdrop styling
-<Overlay
-  backdrop
-  backdropClassName="bg-purple-900/20 backdrop-blur-sm"
-  content={<div className="p-6">Tinted Backdrop</div>}
->
-  <Button>Tinted Backdrop</Button>
+  <Button className="border-white/20 bg-white/5 text-white hover:bg-white/10">
+    Open Glass Overlay
+  </Button>
 </Overlay>`}
           fullCode={`import { Overlay, Button } from "aer-design";
 
@@ -605,7 +610,36 @@ export default function OverlayStyling() {
           <DemoUserProfile />
         </div>
         <CodeBlock
-          ts={`// User profile overlay`}
+          ts={`<Overlay
+  content={
+    <div className="p-4 w-64">
+      <div className="flex items-center gap-3 mb-4 pb-4 border-b border-aer-border">
+        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-semibold">
+          JD
+        </div>
+        <div>
+          <p className="font-semibold text-sm">John Doe</p>
+          <p className="text-xs text-aer-muted-foreground">john@example.com</p>
+        </div>
+      </div>
+      <div className="space-y-1">
+        <Button variant="ghost" className="w-full justify-start">
+          <User className="w-4 h-4 mr-2" /> Profile
+        </Button>
+        <Button variant="ghost" className="w-full justify-start">
+          <Settings className="w-4 h-4 mr-2" /> Settings
+        </Button>
+        {/* ... */}
+      </div>
+    </div>
+  }
+  side="bottom"
+  align="end"
+>
+  <Button variant="outline" size="sm">
+    <User className="w-4 h-4 mr-2" /> Account
+  </Button>
+</Overlay>`}
           fullCode={`import { Overlay, Button } from "aer-design";
 import { User, Settings, Bell, HelpCircle } from "lucide-react";
 
@@ -822,28 +856,67 @@ export default function UserProfile() {
 
 function OverlayStylingExample() {
   return (
-    <div className="flex gap-4">
-      <Overlay
-        content={
-          <div className="p-4 font-medium text-white">Dark Glassmorphism</div>
-        }
-        className="!bg-gray-900/70 backdrop-blur-xl !border-gray-700/50 shadow-2xl rounded-xl !text-white"
-        side="bottom"
-      >
-        <Button variant="outline">Glass Effect</Button>
-      </Overlay>
+    <div className="grid gap-6 lg:grid-cols-2 w-full">
+      {/* 1. Glassmorphism Demo */}
+      <div className="relative h-72 rounded-xl bg-zinc-950 overflow-hidden flex items-center justify-center border border-zinc-800 shadow-inner">
+        {/* Background Elements */}
+        <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 via-transparent to-orange-500/10" />
+        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-pink-500/30 rounded-full blur-[50px]" />
+        <div className="absolute bottom-1/4 right-1/4 w-32 h-32 bg-blue-500/30 rounded-full blur-[50px]" />
+        <div
+          className="absolute inset-0 opacity-20"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.5'/%3E%3C/svg%3E")`,
+          }}
+        />
 
-      <Overlay
-        backdrop
-        backdropClassName="bg-purple-900/20 backdrop-blur-sm"
-        content={
-          <div className="p-6 bg-white rounded-lg shadow-xl">
-            Tinted Backdrop
-          </div>
-        }
-      >
-        <Button variant="outline">Tinted Backdrop</Button>
-      </Overlay>
+        <Overlay
+          content={
+            <div className="p-4 w-52">
+              <div className="mb-3 h-8 w-8 rounded-lg bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center shadow-lg ring-1 ring-white/20">
+                <Sparkles className="w-4 h-4 text-white" />
+              </div>
+              <h4 className="font-semibold text-base mb-1 text-white">
+                Glass UI
+              </h4>
+              <p className="text-xs text-white/60 leading-relaxed font-medium">
+                This element uses backdrop filters to blur the vibrant
+                background.
+              </p>
+            </div>
+          }
+          className="!bg-white/5 backdrop-blur-xl border !border-white/10 shadow-2xl rounded-2xl !text-white ring-1 ring-white/5"
+          side="top"
+          sideOffset={20}
+        >
+          <Button
+            variant="outline"
+            className="border-white/20 bg-white/5 text-white hover:bg-white/10 hover:text-white hover:border-white/30 backdrop-blur-sm relative z-10 transition-all duration-300"
+          >
+            Open Glass Overlay
+          </Button>
+        </Overlay>
+      </div>
+
+      {/* 2. Tinted Backdrop Demo */}
+      <div className="relative h-72 rounded-xl border border-aer-border bg-aer-muted/5 flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 bg-grid-slate-200/50 [mask-image:linear-gradient(0deg,white,transparent)] dark:bg-grid-slate-700/50" />
+        <Overlay
+          backdrop
+          backdropClassName="bg-indigo-950/40 backdrop-blur-[2px]"
+          content={
+            <div className="p-6 bg-white dark:bg-zinc-900 rounded-xl shadow-2xl border border-aer-border max-w-xs">
+              <h4 className="font-semibold mb-2">Tinted Backdrop</h4>
+              <p className="text-sm text-aer-muted-foreground">
+                The backdrop is styled with a semi-transparent color and subtle
+                blur.
+              </p>
+            </div>
+          }
+        >
+          <Button variant="outline">Tinted Backdrop</Button>
+        </Overlay>
+      </div>
     </div>
   );
 }

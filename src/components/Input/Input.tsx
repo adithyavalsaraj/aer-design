@@ -38,7 +38,7 @@ export type InputProps = Omit<
   helperText?: string;
   /** CSS classes for the helper text. */
   helperTextClassName?: string;
-  variant?: "outline" | "filled" | "underlined";
+  variant?: "outline" | "filled" | "underlined" | "aer";
   size?: "sm" | "default" | "lg";
 };
 
@@ -90,6 +90,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         "border-b-2 border-aer-input/20 bg-aer-muted/30 focus-within:border-aer-primary focus-within:bg-aer-muted/50 rounded-t-md rounded-b-none",
       underlined:
         "border-b border-aer-input bg-transparent rounded-none px-0 focus-within:border-aer-primary",
+      aer: "bg-white/5 backdrop-blur-xl border border-white/10 focus-within:bg-white/10 focus-within:border-white/20 shadow-2xl ring-1 ring-white/5 transition-all duration-300",
     };
 
     const sizeStyles = {
