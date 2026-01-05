@@ -85,28 +85,6 @@ export function TextareaDoc() {
         />
       </DocSection>
 
-      <DocSection title="Label" id="label">
-        <div className="max-w-xl space-y-6">
-          <Textarea label="Feedback" placeholder="Type your feedback..." />
-          <Textarea
-            label="Description"
-            labelPosition="left"
-            labelWidth="120px"
-            placeholder="Enter description"
-            className="min-h-[120px]"
-          />
-          <Textarea
-            label="Comments"
-            required
-            helperText="Please provide detailed comments"
-            placeholder="Your comments..."
-          />
-        </div>
-        <CodeBlock
-          ts={`<Textarea label="Feedback" placeholder="Type your feedback..." />\n\n<Textarea \n  label="Description" \n  labelPosition="left" \n  labelWidth="120px"\n  placeholder="Enter description" \n  className="min-h-[120px]" \n/>\n\n<Textarea \n  label="Comments" \n  required \n  helperText="Please provide detailed comments"\n  placeholder="Your comments..." \n/>`}
-        />
-      </DocSection>
-
       <DocSection title="Variants" id="variants">
         <div className="max-w-xl space-y-6">
           <div>
@@ -138,7 +116,7 @@ export function TextareaDoc() {
       >
         <div className="relative p-12 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">
           {/* Vibrant Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-orange-600/20 via-transparent to-pink-600/20" />
+          <div className="absolute inset-0 bg-linear-to-br from-orange-600/20 via-transparent to-pink-600/20" />
           <div className="absolute top-1/3 left-1/4 w-40 h-40 bg-red-500/30 rounded-full blur-[60px]" />
           <div className="absolute bottom-1/3 right-1/4 w-40 h-40 bg-amber-500/30 rounded-full blur-[60px]" />
 
@@ -156,7 +134,7 @@ export function TextareaDoc() {
 
 export default function AerTextareaExample() {
   return (
-    <div className="p-12 bg-gradient-to-br from-orange-600 to-pink-600 rounded-2xl">
+    <div className="p-12 bg-linear-to-br from-orange-600 to-pink-600 rounded-2xl">
       <div className="max-w-xl">
         <Textarea 
           variant="aer"
@@ -195,6 +173,28 @@ export default function AerTextareaExample() {
         <CodeBlock
           ts={`<Textarea size="sm" placeholder="Small" />\n<Textarea size="default" placeholder="Default" />\n<Textarea size="lg" placeholder="Large" />`}
           fullCode={`import { Textarea } from "aer-design";\n\nexport default function SizesDemo() {\n  return (\n    <div className="space-y-4">\n      <Textarea size="sm" placeholder="Small" />\n      <Textarea size="default" placeholder="Default" />\n      <Textarea size="lg" placeholder="Large" />\n    </div>\n  );\n}`}
+        />
+      </DocSection>
+
+      <DocSection title="Label" id="label">
+        <div className="max-w-xl space-y-6">
+          <Textarea label="Feedback" placeholder="Type your feedback..." />
+          <Textarea
+            label="Description"
+            labelPosition="left"
+            labelWidth="120px"
+            placeholder="Enter description"
+            className="min-h-[120px]"
+          />
+          <Textarea
+            label="Comments"
+            required
+            helperText="Please provide detailed comments"
+            placeholder="Your comments..."
+          />
+        </div>
+        <CodeBlock
+          ts={`<Textarea label="Feedback" placeholder="Type your feedback..." />\n\n<Textarea \n  label="Description" \n  labelPosition="left" \n  labelWidth="120px"\n  placeholder="Enter description" \n  className="min-h-[120px]" \n/>\n\n<Textarea \n  label="Comments" \n  required \n  helperText="Please provide detailed comments"\n  placeholder="Your comments..." \n/>`}
         />
       </DocSection>
 
@@ -539,10 +539,10 @@ export default function GranularStyling() {
               { id: "introduction", title: "Introduction" },
               { id: "when-to-use", title: "When to Use" },
               { id: "basic", title: "Basic Usage" },
-              { id: "label", title: "Label" },
               { id: "variants", title: "Variants" },
               { id: "aer-variant", title: "The Aer Variant" },
               { id: "sizes", title: "Sizes" },
+              { id: "label", title: "Label" },
               { id: "granular-styling", title: "Granular Styling" },
               { id: "validation", title: "Validation" },
               { id: "real-world-validation", title: "Real World Example" },

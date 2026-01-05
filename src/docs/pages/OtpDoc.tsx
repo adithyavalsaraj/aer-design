@@ -89,6 +89,30 @@ export function OtpDoc() {
         />
       </DocSection>
 
+      <DocSection
+        id="variants"
+        title="Visual Variants"
+        description="Choose from multiple visual styles to match your application's design."
+      >
+        <div className="flex flex-col gap-8">
+          <div className="space-y-2">
+            <h4 className="text-sm font-medium">Outline (Default)</h4>
+            <OtpInput variant="outline" length={4} />
+          </div>
+          <div className="space-y-2">
+            <h4 className="text-sm font-medium">Filled</h4>
+            <OtpInput variant="filled" length={4} />
+          </div>
+          <div className="space-y-2">
+            <h4 className="text-sm font-medium">Underlined</h4>
+            <OtpInput variant="underlined" length={4} />
+          </div>
+        </div>
+        <CodeBlock
+          ts={`<OtpInput variant="outline" length={4} />\n<OtpInput variant="filled" length={4} />\n<OtpInput variant="underlined" length={4} />`}
+        />
+      </DocSection>
+
       <DocSection title="Sizes" id="sizes">
         <div className="flex flex-col gap-6">
           <div className="space-y-1.5">
@@ -112,6 +136,28 @@ export function OtpDoc() {
         </div>
         <CodeBlock
           ts={`<OtpInput size="sm" length={4} />\n<OtpInput size="default" length={4} />\n<OtpInput size="lg" length={4} />`}
+        />
+      </DocSection>
+
+      <DocSection
+        id="aer-variant"
+        title="The Aer Variant"
+        description="Our signature glassmorphism effect for premium interfaces."
+      >
+        <div className="relative flex items-center justify-center p-16 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">
+          <div className="absolute inset-0 bg-linear-to-br from-purple-600/20 via-transparent to-blue-600/20" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-violet-500/30 rounded-full blur-[60px]" />
+
+          <div className="relative z-10">
+            <h4 className="text-white/80 text-center mb-4 text-sm font-medium">
+              Enter Verification Code
+            </h4>
+            <OtpInput length={6} variant="aer" />
+          </div>
+        </div>
+        <CodeBlock
+          ts={`<div className="bg-zinc-950 p-12 rounded-xl relative overflow-hidden">\n  <OtpInput\n    length={6}\n    variant="aer"\n  />\n</div>`}
+          fullCode={`import { OtpInput } from "aer-design";\n\nexport default function AerOtpExample() {\n  return (\n    <div className="relative flex flex-col items-center justify-center p-16 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">\n      <div className="absolute inset-0 bg-linear-to-br from-purple-600/20 via-transparent to-blue-600/20" />\n      \n      <div className="relative z-10">\n        <h4 className="text-white/80 text-center mb-4 text-sm font-medium">Enter Verification Code</h4>\n            <OtpInput\n              length={6}\n              variant="aer"\n            />\n      </div>\n    </div>\n  );\n}`}
         />
       </DocSection>
 
@@ -348,8 +394,8 @@ export default function OtpStylingExample() {
             },
             {
               prop: "variant",
-              type: "'default' | 'aer'",
-              default: "'default'",
+              type: "'outline' | 'filled' | 'underlined' | 'aer'",
+              default: "'outline'",
               description:
                 "Visual style variant. 'aer' applies glassmorphism effects.",
             },
@@ -522,7 +568,9 @@ export default function OtpStylingExample() {
               { id: "introduction", title: "Introduction" },
               { id: "when-to-use", title: "When to Use" },
               { id: "basic", title: "Basic Usage" },
+              { id: "variants", title: "Visual Variants" },
               { id: "sizes", title: "Sizes" },
+              { id: "aer-variant", title: "The Aer Variant" },
               { id: "length", title: "Custom Length" },
               { id: "alphanumeric", title: "Alphanumeric" },
               { id: "security", title: "Security" },

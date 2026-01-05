@@ -9,6 +9,7 @@ export const tooltipVariants = cva(
           "bg-aer-popover text-aer-popover-foreground border border-aer-border",
         dark: "bg-gray-900 text-white border border-gray-800",
         light: "bg-white text-gray-900 border border-gray-200 shadow-xl",
+        aer: "bg-white/10 backdrop-blur-md border border-white/10 text-white shadow-lg",
       },
     },
     defaultVariants: {
@@ -23,6 +24,7 @@ export const tooltipArrowVariants = cva("absolute w-3 h-3 rotate-45 z-0", {
       default: "bg-aer-popover border border-aer-border",
       dark: "bg-gray-900 border border-gray-800",
       light: "bg-white border border-gray-200",
+      aer: "bg-white/10 backdrop-blur-md border border-white/10",
     },
     side: {
       top: "bottom-[-6px] border-b-0 border-r-0",

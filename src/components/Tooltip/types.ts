@@ -25,4 +25,10 @@ export interface TooltipProps
   arrow?: boolean;
   /** Disable the tooltip */
   disabled?: boolean;
+  /** Force the tooltip open state (controlled) */
+  open?: boolean;
+  /** Set the default open state (uncontrolled) */
+  defaultOpen?: boolean;
+  /** Callback when open state changes */
+  onOpenChange?: (open: boolean) => void;
 }

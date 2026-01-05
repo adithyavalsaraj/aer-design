@@ -40,6 +40,7 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpInputProps>(
       error,
       onBlur,
       size: sizeProp,
+      variant,
       ...props
     },
     ref
@@ -174,7 +175,7 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpInputProps>(
         {Array.from({ length }).map((_, i) => (
           <div key={i} className="relative">
             <Input
-              variant={props.variant}
+              variant={variant}
               ref={(el) => {
                 inputRefs.current[i] = el;
               }}

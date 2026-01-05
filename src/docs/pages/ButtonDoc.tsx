@@ -1,6 +1,4 @@
 import { Button } from "@/components/Button";
-import { useContrastColor } from "@/hooks/useContrastColor";
-import { getContrastRatio } from "@/lib/contrast";
 import { Download, Mail, Plus, Save, Sparkles, Trash2, X } from "lucide-react";
 import * as React from "react";
 import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
@@ -186,7 +184,7 @@ import { Sparkles } from "lucide-react";
 
 export default function AerButton() {
   return (
-    <div className="flex items-center justify-center p-12 bg-gradient-to-br from-zinc-900 to-zinc-950 rounded-2xl border border-white/10">
+    <div className="flex items-center justify-center p-12 bg-linear-to-br from-zinc-900 to-zinc-950 rounded-2xl border border-white/10">
       <Button variant="aer" size="lg">
         <Sparkles className="w-4 h-4 mr-2" />
         Join the Movement
@@ -383,7 +381,7 @@ export default function DisabledButtons() {
         </div>
         <CodeBlock
           ts={`// Custom button styling
-<Button className="rounded-full bg-gradient-to-r from-pink-500 to-violet-500 border-0">
+<Button className="rounded-full bg-linear-to-br from-indigo-500 to-purple-600 text-white border-0 px-6 shadow-lg">
   Gradient Button
 </Button>
 
@@ -397,8 +395,8 @@ import { Star } from "lucide-react";
 
 export default function ButtonStylingExample() {
   return (
-    <div className="flex flex-wrap gap-4">
-      <Button className="rounded-full bg-gradient-to-r from-pink-500 to-violet-500 border-0 hover:opacity-90 transition-opacity">
+    <div className="flex flex-wrap gap-4 items-center">
+      <Button className="rounded-full bg-linear-to-br from-indigo-500 to-purple-600 text-white border-0 px-6 shadow-lg">
         Gradient Button
       </Button>
       
@@ -572,7 +570,7 @@ export default function UserProfileForm() {
     return (
       <div className="relative flex items-center justify-center p-16 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">
         {/* Vibrant Background Elements */}
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 via-transparent to-blue-600/20" />
+        <div className="absolute inset-0 bg-linear-to-br from-violet-600/20 via-purple-900/40 to-indigo-900/60" />
         <div className="absolute top-1/3 left-1/4 w-40 h-40 bg-pink-500/40 rounded-full blur-[60px]" />
         <div className="absolute bottom-1/3 right-1/4 w-40 h-40 bg-cyan-500/40 rounded-full blur-[60px]" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-violet-500/30 rounded-full blur-[50px]" />
@@ -768,8 +766,8 @@ export default function UserProfileForm() {
 
   function ButtonStylingExample() {
     return (
-      <div className="flex flex-wrap gap-4">
-        <Button className="rounded-full bg-gradient-to-r from-pink-500 to-violet-500 border-0 hover:opacity-90 transition-opacity text-white">
+      <div className="flex flex-wrap gap-4 items-center">
+        <Button className="rounded-full bg-linear-to-br from-indigo-500 to-purple-600 shadow-lg text-white font-medium border-0 px-6">
           Gradient Button
         </Button>
 
@@ -777,102 +775,6 @@ export default function UserProfileForm() {
           <Sparkles className="w-4 h-4 mr-2 text-yellow-500" />
           Dashed & Starred
         </Button>
-      </div>
-    );
-  }
-
-  function AutomaticContrastExample() {
-    const [bgColor, setBgColor] = React.useState("#3498db");
-    const textColor = useContrastColor(bgColor);
-    const contrastRatio = getContrastRatio(bgColor, textColor);
-    const meetsAA = contrastRatio >= 4.5;
-    const meetsAAA = contrastRatio >= 7;
-
-    return (
-      <div className="space-y-4">
-        <div className="flex flex-col sm:flex-row gap-4 items-start">
-          <div className="flex-1 space-y-2">
-            <label className="text-sm font-medium">Background Color</label>
-            <div className="flex gap-2">
-              <input
-                type="color"
-                value={bgColor}
-                onChange={(e) => setBgColor(e.target.value)}
-                className="h-10 w-20 rounded border border-aer-border cursor-pointer"
-              />
-              <input
-                type="text"
-                value={bgColor}
-                onChange={(e) => setBgColor(e.target.value)}
-                className="flex-1 h-10 px-3 rounded border border-aer-border bg-aer-background text-aer-foreground"
-                placeholder="#3498db"
-              />
-            </div>
-          </div>
-
-          <div className="flex-1 space-y-2">
-            <label className="text-sm font-medium">Contrast Information</label>
-            <div className="space-y-1 text-sm">
-              <div className="flex items-center gap-2">
-                <span className="text-aer-muted-foreground">Text Color:</span>
-                <code className="px-2 py-0.5 rounded bg-aer-muted text-aer-foreground">
-                  {textColor}
-                </code>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-aer-muted-foreground">Ratio:</span>
-                <code className="px-2 py-0.5 rounded bg-aer-muted text-aer-foreground">
-                  {contrastRatio.toFixed(2)}:1
-                </code>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                <span
-                  className={`px-2 py-0.5 rounded text-xs font-medium ${
-                    meetsAA
-                      ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100"
-                      : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100"
-                  }`}
-                >
-                  {meetsAA ? "✓" : "✗"} WCAG AA
-                </span>
-                <span
-                  className={`px-2 py-0.5 rounded text-xs font-medium ${
-                    meetsAAA
-                      ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100"
-                      : "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100"
-                  }`}
-                >
-                  {meetsAAA ? "✓" : "✗"} WCAG AAA
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div
-          className="p-8 rounded-lg border border-aer-border transition-all"
-          style={{ backgroundColor: bgColor, color: textColor }}
-        >
-          <h3 className="text-2xl font-bold mb-2">Accessible Button</h3>
-          <p className="mb-4 opacity-90">
-            The text color automatically adjusts to ensure readability on any
-            background.
-          </p>
-          <Button
-            style={{ backgroundColor: bgColor, color: textColor }}
-            className="border-2"
-          >
-            Click Me
-          </Button>
-        </div>
-
-        <div className="text-xs text-aer-muted-foreground">
-          <p>
-            <strong>Tip:</strong> Try different background colors to see how the
-            text color automatically adjusts to maintain WCAG compliance. The
-            system ensures at least 4.5:1 contrast ratio (AA standard).
-          </p>
-        </div>
       </div>
     );
   }

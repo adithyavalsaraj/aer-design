@@ -180,7 +180,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           onClick={() => inputRef.current?.focus()}
           className={cn(
             "relative flex items-center gap-2 transition-all cursor-text",
-            variantStyles[variant],
+            variantStyles[variant as keyof typeof variantStyles],
             !(className || containerClassName)?.includes("px-") &&
               !(className || containerClassName)?.includes("p-") &&
               variant !== "underlined" &&

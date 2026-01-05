@@ -136,6 +136,37 @@ export function RadioDoc() {
         />
       </DocSection>
 
+      <DocSection
+        title="The Aer Variant"
+        id="aer-variant"
+        description="Premium glassmorphism effect for modern selection controls."
+      >
+        <div className="relative p-12 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">
+          {/* Vibrant Background */}
+          <div className="absolute inset-0 bg-linear-to-br from-purple-600/20 via-transparent to-blue-600/20" />
+          <div className="absolute top-1/4 left-1/4 w-40 h-40 bg-purple-500/30 rounded-full blur-[60px]" />
+          <div className="absolute bottom-1/4 right-1/4 w-40 h-40 bg-blue-500/30 rounded-full blur-[60px]" />
+
+          <div className="relative z-10 flex flex-col items-center">
+            <RadioGroup defaultValue="1">
+              <RadioItem variant="aer" value="1" label="Premium selection" />
+              <RadioItem variant="aer" value="2" label="Glassmorphism effect" />
+            </RadioGroup>
+          </div>
+        </div>
+        <CodeBlock
+          ts={`<RadioGroup variant="aer" defaultValue="1">\n  <RadioItem value="1" label="Premium selection" />\n  <RadioItem value="2" label="Glassmorphism" />\n</RadioGroup>`}
+          fullCode={`import { RadioGroup, RadioItem } from "aer-design";\n\nexport default function AerRadio() {\n  return (\n    <div className="p-12 bg-linear-to-br from-purple-600 to-blue-600 rounded-2xl">\n      <RadioGroup variant="aer" defaultValue="1">\n        <RadioItem value="1" label="Premium selection" />\n        <RadioItem value="2" label="Glassmorphism" />\n      </RadioGroup>\n    </div>\n  );\n}`}
+        />
+        <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+          <p className="text-sm text-blue-700 dark:text-blue-400">
+            <strong>Pro tip:</strong> The Aer variant features a premium
+            glassmorphism effect. It's best used on colorful or dark
+            backgrounds.
+          </p>
+        </div>
+      </DocSection>
+
       <DocSection title="Sizes" id="sizes">
         <div className="flex items-start gap-x-8">
           <RadioGroup size="sm" defaultValue="1">
@@ -622,6 +653,7 @@ export function RadioDoc() {
               { id: "when-to-use", title: "When to Use" },
               { id: "basic", title: "Basic Usage" },
               { id: "cards", title: "Card Selection" },
+              { id: "aer-variant", title: "The Aer Variant" },
               { id: "sizes", title: "Sizes" },
               { id: "layout", title: "Layout Variants" },
               { id: "alignment", title: "Vertical Alignment" },

@@ -45,6 +45,33 @@ export function ShortcutDoc() {
       </DocSection>
 
       <DocSection
+        id="when-to-use"
+        title="When to Use"
+        description="Scenarios where a global shortcut system is essential."
+      >
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
+            <h4 className="font-semibold mb-2 text-aer-foreground">
+              Power User Workflows
+            </h4>
+            <p className="text-sm text-aer-muted-foreground mb-3">
+              Use for professional applications where keyboard speed is critical
+              (IDE, Design tools, Dashboards).
+            </p>
+          </div>
+          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
+            <h4 className="font-semibold mb-2 text-aer-foreground">
+              Accessibility
+            </h4>
+            <p className="text-sm text-aer-muted-foreground mb-3">
+              Improve accessibility by allowing users to remap difficult key
+              combinations to something more comfortable.
+            </p>
+          </div>
+        </div>
+      </DocSection>
+
+      <DocSection
         id="setup"
         title="Setup"
         description="Wrap your application with the ShortcutProvider."
@@ -68,7 +95,7 @@ export default function App() {
 export default function App() {
   return (
     <ShortcutProvider>
-      // Your application root
+      {/* Your application root */}
       <YourApp />
     </ShortcutProvider>
   );
@@ -77,7 +104,7 @@ export default function App() {
       </DocSection>
 
       <DocSection
-        id="basic-usage"
+        id="basic"
         title="Basic Usage"
         description="Register and listen for shortcuts using the useShortcut hook."
       >
@@ -270,6 +297,25 @@ export default function SettingsPage() {
       </DocSection>
 
       <DocSection
+        id="granular-styling"
+        title="Granular Styling"
+        description="The shortcut recorder can be styled with standard utility classes."
+      >
+        <div className="flex flex-col gap-6 p-6 border rounded-lg bg-aer-muted/5 items-center">
+          <ShortcutRecorder
+            actionId="styling-demo"
+            className="w-64 h-12 rounded-full border-purple-200 bg-purple-50 text-purple-700 focus:ring-purple-500"
+          />
+        </div>
+        <CodeBlock
+          ts={`<ShortcutRecorder
+  actionId="my-action"
+  className="w-64 border-purple-200 bg-purple-50 text-purple-700"
+/>`}
+        />
+      </DocSection>
+
+      <DocSection
         id="conflicts"
         title="System Conflicts"
         description="Handling browser and OS reserved shortcuts."
@@ -359,7 +405,7 @@ export default function SettingsPage() {
           <p className="text-sm text-aer-muted-foreground mb-4">
             Focus the input below and press{" "}
             <kbd className="font-sans px-1 py-0.5 bg-aer-background rounded border">
-              Ctrl + E
+              Control + E
             </kbd>
             .
           </p>
@@ -476,10 +522,12 @@ export default function SettingsPage() {
             content: overview,
             toc: [
               { id: "introduction", title: "Introduction" },
+              { id: "when-to-use", title: "When to Use" },
               { id: "setup", title: "Setup" },
-              { id: "basic-usage", title: "Basic Usage" },
+              { id: "basic", title: "Basic Usage" },
               { id: "scoped", title: "Scoped Shortcuts" },
               { id: "customization", title: "User Customization" },
+              { id: "granular-styling", title: "Granular Styling" },
               { id: "conflicts", title: "System Conflicts" },
             ],
           },

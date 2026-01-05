@@ -134,6 +134,41 @@ export default function BasicOverlay() {
       </DocSection>
 
       <DocSection
+        title="The Aer Variant"
+        id="aer-variant"
+        description="Our signature glassmorphism effect for premium interfaces."
+      >
+        <div className="relative flex flex-col gap-6 items-center justify-center p-16 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden min-h-[300px]">
+          {/* Vibrant Background Elements */}
+          <div className="absolute inset-0 bg-white/10 backdrop-blur-md -z-10" />
+          <div className="absolute top-1/3 right-1/4 w-40 h-40 bg-pink-500/40 rounded-full blur-[60px]" />
+          <div className="absolute bottom-1/3 left-1/4 w-40 h-40 bg-cyan-500/40 rounded-full blur-[60px]" />
+
+          <Overlay
+            variant="aer"
+            content={
+              <div className="p-6 text-white text-center">
+                <h3 className="font-bold text-lg mb-1">Glassmorphism</h3>
+                <p className="text-white/80 text-sm">
+                  This overlay uses backdrop blur and translucency.
+                </p>
+              </div>
+            }
+          >
+            <Button
+              variant="outline"
+              className="bg-white/10 border-white/20 text-white hover:bg-white/20 hover:text-white"
+            >
+              Open Aer Variant
+            </Button>
+          </Overlay>
+        </div>
+        <CodeBlock
+          ts={`<div className="bg-linear-to-br from-violet-600 to-indigo-600 p-12 rounded-lg">\n  <Overlay variant="aer">\n    <Button variant="outline" className="bg-white/10 text-white border-white/20">\n      Open Aer Variant\n    </Button>\n  </Overlay>\n</div>`}
+        />
+      </DocSection>
+
+      <DocSection
         title="Controlled Mode"
         id="controlled"
         description="Control overlay state programmatically."
@@ -165,47 +200,8 @@ export default function BasicOverlay() {
           </Overlay>
         </div>
         <CodeBlock
-          ts={`const [open, setOpen] = useState(false);
-const triggerRef = useRef<HTMLButtonElement>(null);
-
-<Button ref={triggerRef} onClick={() => setOpen(!open)}>
-  Toggle Overlay
-</Button>
-
-<Overlay
-  open={open}
-  onOpenChange={setOpen}
-  content={<div>Controlled content</div>}
->
-  <div ref={triggerRef} />
-</Overlay>`}
-          fullCode={`import { Overlay, Button } from "aer-design";
-import { useState, useRef } from "react";
-
-export default function ControlledOverlay() {
-  const [open, setOpen] = useState(false);
-  const triggerRef = useRef<HTMLButtonElement>(null);
-
-  return (
-    <>
-      <Button ref={triggerRef} onClick={() => setOpen(!open)}>
-        Toggle Overlay
-      </Button>
-      <Overlay
-        open={open}
-        onOpenChange={setOpen}
-        content={
-          <div className="p-4">
-            <h3>Controlled Overlay</h3>
-            <Button onClick={() => setOpen(false)}>Close</Button>
-          </div>
-        }
-      >
-        <div ref={triggerRef} />
-      </Overlay>
-    </>
-  );
-}`}
+          ts={`const [open, setOpen] = useState(false);\nconst triggerRef = useRef<HTMLButtonElement>(null);\n\n<Button ref={triggerRef} onClick={() => setOpen(!open)}>\n  Toggle Overlay\n</Button>\n\n<Overlay\n  open={open}\n  onOpenChange={setOpen}\n  content={<div>Controlled content</div>}\n>\n  <div ref={triggerRef} />\n</Overlay>`}
+          fullCode={`import { Overlay, Button } from "aer-design";\nimport { useState, useRef } from "react";\n\nexport default function ControlledOverlay() {\n  const [open, setOpen] = useState(false);\n  const triggerRef = useRef<HTMLButtonElement>(null);\n\n  return (\n    <>\n      <Button ref={triggerRef} onClick={() => setOpen(!open)}>\n        Toggle Overlay\n      </Button>\n      <Overlay\n        open={open}\n        onOpenChange={setOpen}\n        content={\n          <div className="p-4">\n            <h3>Controlled Overlay</h3>\n            <Button onClick={() => setOpen(false)}>Close</Button>\n          </div>\n        }\n      >\n        <div ref={triggerRef} />\n      </Overlay>\n    </>\n  );\n}`}
         />
       </DocSection>
 
@@ -230,29 +226,8 @@ export default function ControlledOverlay() {
           </Overlay>
         </div>
         <CodeBlock
-          ts={`<Overlay
-  backdrop
-  content={<div className="p-6">Content with backdrop</div>}
->
-  <Button>Open</Button>
-</Overlay>`}
-          fullCode={`import { Overlay, Button } from "aer-design";
-
-export default function BackdropOverlay() {
-  return (
-    <Overlay
-      backdrop
-      content={
-        <div className="p-6 max-w-md">
-          <h3>Overlay with Backdrop</h3>
-          <p>Click outside to close</p>
-        </div>
-      }
-    >
-      <Button>Open with Backdrop</Button>
-    </Overlay>
-  );
-}`}
+          ts={`<Overlay\n  backdrop\n  content={<div className="p-6">Content with backdrop</div>}\n>\n  <Button>Open</Button>\n</Overlay>`}
+          fullCode={`import { Overlay, Button } from "aer-design";\n\nexport default function BackdropOverlay() {\n  return (\n    <Overlay\n      backdrop\n      content={\n        <div className="p-6 max-w-md">\n          <h3>Overlay with Backdrop</h3>\n          <p>Click outside to close</p>\n        </div>\n      }\n    >\n      <Button>Open with Backdrop</Button>\n    </Overlay>\n  );\n}`}
         />
       </DocSection>
 
@@ -287,41 +262,8 @@ export default function BackdropOverlay() {
           </Overlay>
         </div>
         <CodeBlock
-          ts={`<Overlay content={<div>Content</div>} side="top">
-  <Button>Top</Button>
-</Overlay>
-
-<Overlay content={<div>Content</div>} side="bottom">
-  <Button>Bottom</Button>
-</Overlay>
-
-<Overlay content={<div>Content</div>} side="left">
-  <Button>Left</Button>
-</Overlay>
-
-<Overlay content={<div>Content</div>} side="right">
-  <Button>Right</Button>
-</Overlay>`}
-          fullCode={`import { Overlay, Button } from "aer-design";
-
-export default function PositionedOverlay() {
-  return (
-    <div className="flex gap-4">
-      <Overlay content={<div className="p-4">Top</div>} side="top">
-        <Button>Top</Button>
-      </Overlay>
-      <Overlay content={<div className="p-4">Bottom</div>} side="bottom">
-        <Button>Bottom</Button>
-      </Overlay>
-      <Overlay content={<div className="p-4">Left</div>} side="left">
-        <Button>Left</Button>
-      </Overlay>
-      <Overlay content={<div className="p-4">Right</div>} side="right">
-        <Button>Right</Button>
-      </Overlay>
-    </div>
-  );
-}`}
+          ts={`<Overlay content={<div>Content</div>} side="top">\n  <Button>Top</Button>\n</Overlay>\n\n<Overlay content={<div>Content</div>} side="bottom">\n  <Button>Bottom</Button>\n</Overlay>\n\n<Overlay content={<div>Content</div>} side="left">\n  <Button>Left</Button>\n</Overlay>\n\n<Overlay content={<div>Content</div>} side="right">\n  <Button>Right</Button>\n</Overlay>`}
+          fullCode={`import { Overlay, Button } from "aer-design";\n\nexport default function PositionedOverlay() {\n  return (\n    <div className="flex gap-4">\n      <Overlay content={<div className="p-4">Top</div>} side="top">\n        <Button>Top</Button>\n      </Overlay>\n      <Overlay content={<div className="p-4">Bottom</div>} side="bottom">\n        <Button>Bottom</Button>\n      </Overlay>\n      <Overlay content={<div className="p-4">Left</div>} side="left">\n        <Button>Left</Button>\n      </Overlay>\n      <Overlay content={<div className="p-4">Right</div>} side="right">\n        <Button>Right</Button>\n      </Overlay>\n    </div>\n  );\n}`}
         />
         <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
           <p className="text-sm text-blue-700 dark:text-blue-400">
@@ -367,34 +309,8 @@ export default function PositionedOverlay() {
           </Overlay>
         </div>
         <CodeBlock
-          ts={`<Overlay content={<div>Content</div>} side="bottom" align="start">
-  <Button>Align Start</Button>
-</Overlay>
-
-<Overlay content={<div>Content</div>} side="bottom" align="center">
-  <Button>Align Center</Button>
-</Overlay>
-
-<Overlay content={<div>Content</div>} side="bottom" align="end">
-  <Button>Align End</Button>
-</Overlay>`}
-          fullCode={`import { Overlay, Button } from "aer-design";
-
-export default function AlignedOverlay() {
-  return (
-    <div className="flex flex-col gap-4">
-      <Overlay content={<div className="p-4">Start</div>} side="bottom" align="start">
-        <Button className="w-48">Align Start</Button>
-      </Overlay>
-      <Overlay content={<div className="p-4">Center</div>} side="bottom" align="center">
-        <Button className="w-48">Align Center</Button>
-      </Overlay>
-      <Overlay content={<div className="p-4">End</div>} side="bottom" align="end">
-        <Button className="w-48">Align End</Button>
-      </Overlay>
-    </div>
-  );
-}`}
+          ts={`<Overlay content={<div>Content</div>} side="bottom" align="start">\n  <Button>Align Start</Button>\n</Overlay>\n\n<Overlay content={<div>Content</div>} side="bottom" align="center">\n  <Button>Align Center</Button>\n</Overlay>\n\n<Overlay content={<div>Content</div>} side="bottom" align="end">\n  <Button>Align End</Button>\n</Overlay>`}
+          fullCode={`import { Overlay, Button } from "aer-design";\n\nexport default function AlignedOverlay() {\n  return (\n    <div className="flex flex-col gap-4">\n      <Overlay content={<div className="p-4">Start</div>} side="bottom" align="start">\n        <Button className="w-48">Align Start</Button>\n      </Overlay>\n      <Overlay content={<div className="p-4">Center</div>} side="bottom" align="center">\n        <Button className="w-48">Align Center</Button>\n      </Overlay>\n      <Overlay content={<div className="p-4">End</div>} side="bottom" align="end">\n        <Button className="w-48">Align End</Button>\n      </Overlay>\n    </div>\n  );\n}`}
         />
       </DocSection>
 
@@ -424,83 +340,8 @@ export default function AlignedOverlay() {
           </Overlay>
         </div>
         <CodeBlock
-          ts={`// Disable outside click
-<Overlay closeOnOutsideClick={false} content={<div>Content</div>}>
-  <Button>No Outside Click</Button>
-</Overlay>
-
-// Disable escape key
-<Overlay closeOnEscape={false} content={<div>Content</div>}>
-  <Button>No Escape</Button>
-</Overlay>
-
-// Disable scroll close
-<Overlay closeOnScroll={false} content={<div>Content</div>}>
-  <Button>No Scroll Close</Button>
-</Overlay>`}
-          fullCode={`import { Overlay, Button } from "aer-design";
-
-export default function CloseBehaviors() {
-  return (
-    <div className="flex gap-4">
-      <Overlay
-        closeOnOutsideClick={false}
-        content={<div className="p-4">Won't close on outside click</div>}
-      >
-        <Button>No Outside Click</Button>
-      </Overlay>
-      
-      <Overlay
-        closeOnEscape={false}
-        content={<div className="p-4">Won't close on Escape</div>}
-      >
-        <Button>No Escape</Button>
-      </Overlay>
-      
-      <Overlay
-        closeOnScroll={false}
-        content={<div className="p-4">Won't close on scroll</div>}
-      >
-        <Button>No Scroll Close</Button>
-      </Overlay>
-    </div>
-  );
-}`}
-        />
-      </DocSection>
-
-      <DocSection
-        title="The Aer Variant"
-        id="variants"
-        description="Choose from supported visual styles."
-      >
-        <div className="relative flex flex-col gap-6 items-center justify-center p-16 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden min-h-[300px]">
-          {/* Vibrant Background Elements */}
-          <div className="absolute inset-0 bg-white/10 backdrop-blur-md -z-10" />
-          <div className="absolute top-1/3 right-1/4 w-40 h-40 bg-pink-500/40 rounded-full blur-[60px]" />
-          <div className="absolute bottom-1/3 left-1/4 w-40 h-40 bg-cyan-500/40 rounded-full blur-[60px]" />
-
-          <Overlay
-            variant="aer"
-            content={
-              <div className="p-6 text-white text-center">
-                <h3 className="font-bold text-lg mb-1">Glassmorphism</h3>
-                <p className="text-white/80 text-sm">
-                  This overlay uses backdrop blur and translucency.
-                </p>
-              </div>
-            }
-          >
-            <Button
-              variant="outline"
-              className="bg-white/10 border-white/20 text-white hover:bg-white/20 hover:text-white"
-            >
-              Open Aer Variant
-            </Button>
-          </Overlay>
-        </div>
-        <CodeBlock
-          ts={`<div className="bg-linear-to-br from-violet-600 to-indigo-600 p-12 rounded-lg">\n  <Overlay variant="aer">\n    <Button variant="outline" className="bg-white/10 text-white border-white/20">\n      Open Aer Variant\n    </Button>\n  </Overlay>\n</div>`}
+          ts={`// Disable outside click\n<Overlay closeOnOutsideClick={false} content={<div>Content</div>}>\n  <Button>No Outside Click</Button>\n</Overlay>\n\n// Disable escape key\n<Overlay closeOnEscape={false} content={<div>Content</div>}>\n  <Button>No Escape</Button>\n</Overlay>\n\n// Disable scroll close\n<Overlay closeOnScroll={false} content={<div>Content</div>}>\n  <Button>No Scroll Close</Button>\n</Overlay>`}
+          fullCode={`import { Overlay, Button } from "aer-design";\n\nexport default function CloseBehaviors() {\n  return (\n    <div className="flex gap-4">\n      <Overlay\n        closeOnOutsideClick={false}\n        content={<div className="p-4">Won't close on outside click</div>}\n      >\n        <Button>No Outside Click</Button>\n      </Overlay>\n      \n      <Overlay\n        closeOnEscape={false}\n        content={<div className="p-4">Won't close on Escape</div>}\n      >\n        <Button>No Escape</Button>\n      </Overlay>\n      \n      <Overlay\n        closeOnScroll={false}\n        content={<div className="p-4">Won't close on scroll</div>}\n      >\n        <Button>No Scroll Close</Button>\n      </Overlay>\n    </div>\n  );\n}`}
         />
       </DocSection>
 
@@ -600,7 +441,7 @@ export default function ModalOverlay() {
       </p>
     </div>
   }
-  className="!bg-white/5 backdrop-blur-md border !border-white/15 shadow-2xl rounded-2xl !text-white ring-1 ring-white/5"
+  className="bg-white/5! backdrop-blur-md border border-white/15! shadow-2xl rounded-2xl text-white! ring-1 ring-white/5"
 >
   <Button className="border-white/20 bg-white/5 text-white hover:bg-white/10">
     Open Glass Overlay
@@ -613,10 +454,10 @@ export default function OverlayStyling() {
     <div className="flex gap-4">
       <Overlay
         content={<div className="p-4 font-medium">True Glassmorphism</div>}
-        className="!bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl rounded-xl text-white"
+        className="bg-white/10! backdrop-blur-xl border border-white/20 shadow-2xl rounded-xl text-white"
         side="bottom"
       >
-        <div className="p-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg">
+        <div className="p-4 bg-linear-to-r from-purple-500 to-pink-500 rounded-lg">
           <Button variant="outline" className="bg-white/20 border-white/40 hover:bg-white/30 text-white">
             Glass Effect
           </Button>
@@ -649,7 +490,7 @@ export default function OverlayStyling() {
   content={
     <div className="p-4 w-64">
       <div className="flex items-center gap-3 mb-4 pb-4 border-b border-aer-border">
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-semibold">
+        <div className="w-10 h-10 rounded-full bg-linear-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-semibold">
           JD
         </div>
         <div>
@@ -684,7 +525,7 @@ export default function UserProfile() {
       content={
         <div className="p-4 w-64">
           <div className="flex items-center gap-3 mb-4 pb-4 border-b">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500" />
+            <div className="w-10 h-10 rounded-full bg-linear-to-br from-purple-500 to-pink-500" />
             <div>
               <p className="font-semibold">John Doe</p>
               <p className="text-xs text-muted-foreground">john@example.com</p>
@@ -873,12 +714,12 @@ export default function UserProfile() {
               { id: "introduction", title: "Introduction" },
               { id: "when-to-use", title: "When to Use" },
               { id: "basic", title: "Basic Usage" },
+              { id: "aer-variant", title: "The Aer Variant" },
               { id: "controlled", title: "Controlled Mode" },
               { id: "backdrop", title: "With Backdrop" },
               { id: "positioning", title: "Positioning" },
               { id: "alignment", title: "Alignment" },
               { id: "close-behaviors", title: "Close Behaviors" },
-              { id: "variants", title: "Variants" },
               { id: "modal", title: "Modal Mode" },
               { id: "granular-styling", title: "Granular Styling" },
               { id: "real-world", title: "Real World Example" },
@@ -933,7 +774,7 @@ function OverlayStylingExample() {
       {/* 1. Glassmorphism Demo */}
       <div className="relative h-72 rounded-xl bg-zinc-950 overflow-hidden flex items-center justify-center border border-zinc-800 shadow-inner">
         {/* Background Elements */}
-        <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 via-fuchsia-500/10 to-orange-500/10" />
+        <div className="absolute inset-0 bg-linear-to-br from-violet-500/10 via-fuchsia-500/10 to-orange-500/10" />
         <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-pink-500/30 rounded-full blur-[50px]" />
         <div className="absolute bottom-1/4 right-1/4 w-32 h-32 bg-blue-500/30 rounded-full blur-[50px]" />
         <div
@@ -946,7 +787,7 @@ function OverlayStylingExample() {
         <Overlay
           content={
             <div className="p-4 w-52">
-              <div className="mb-3 h-8 w-8 rounded-lg bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center shadow-lg ring-1 ring-white/20">
+              <div className="mb-3 h-8 w-8 rounded-lg bg-linear-to-br from-orange-400 to-pink-500 flex items-center justify-center shadow-lg ring-1 ring-white/20">
                 <Sparkles className="w-4 h-4 text-white" />
               </div>
               <h4 className="font-semibold text-base mb-1 text-white">
@@ -958,7 +799,7 @@ function OverlayStylingExample() {
               </p>
             </div>
           }
-          className="!bg-white/5 backdrop-blur-xl border !border-white/10 shadow-2xl rounded-2xl !text-white ring-1 ring-white/5"
+          className="bg-white/5! backdrop-blur-xl border border-white/10! shadow-2xl rounded-2xl text-white! ring-1 ring-white/5"
           side="top"
           sideOffset={20}
         >
@@ -1002,7 +843,7 @@ function DemoUserProfile() {
       content={
         <div className="p-4 w-64">
           <div className="flex items-center gap-3 mb-4 pb-4 border-b border-aer-border">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-semibold">
+            <div className="w-10 h-10 rounded-full bg-linear-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-semibold">
               JD
             </div>
             <div>

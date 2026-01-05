@@ -597,8 +597,9 @@ function DemoSettingsPanel() {
   return (
     <div className="w-72 p-5 bg-aer-background border border-aer-border rounded-xl shadow-lg space-y-5">
       <div className="flex items-center gap-3 pb-3 border-b border-aer-border">
-        <div className="p-2 bg-gradient-to-br from-indigo-500 to-purple-500 text-white rounded-lg shadow-sm">
-          <Settings className="size-4" />
+        <div className="relative p-2 rounded-lg shadow-sm overflow-hidden">
+          <div className="absolute inset-0 bg-linear-to-br from-indigo-500/20 via-purple-500/20 to-pink-500/20" />
+          <Settings className="relative z-10 size-4 text-white" />
         </div>
         <div>
           <h3 className="font-bold text-sm">Settings</h3>

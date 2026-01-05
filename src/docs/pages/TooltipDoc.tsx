@@ -159,6 +159,46 @@ export default function TooltipVariants() {
       </DocSection>
 
       <DocSection
+        id="aer-variant"
+        title="The Aer Variant"
+        description="Our signature glassmorphism effect for premium interfaces."
+      >
+        <div className="relative flex items-center justify-center p-24 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">
+          {/* Vibrant Background Elements */}
+          <div className="absolute inset-0 bg-linear-to-br from-purple-600/20 via-transparent to-blue-600/20" />
+          <div className="absolute top-1/2 left-1/3 w-32 h-32 bg-pink-500/30 rounded-full blur-[50px]" />
+
+          <div className="relative z-10">
+            <Tooltip content="Glassmorphism Tooltip" variant="aer" open>
+              <Button variant="aer">Hover Me</Button>
+            </Tooltip>
+          </div>
+        </div>
+        <CodeBlock
+          ts={`<div className="bg-zinc-950 p-12 rounded-xl relative overflow-hidden">
+  <Tooltip content="Glassmorphism Tooltip" variant="aer">
+    <Button variant="aer">Hover Me</Button>
+  </Tooltip>
+</div>`}
+          fullCode={`import { Tooltip, Button } from "aer-design";
+
+export default function AerTooltipExample() {
+  return (
+    <div className="relative flex items-center justify-center p-24 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">
+      <div className="absolute inset-0 bg-linear-to-br from-purple-600/20 via-transparent to-blue-600/20" />
+      
+      <div className="relative z-10">
+        <Tooltip content="Glassmorphism Tooltip" variant="aer">
+          <Button variant="aer">Hover Me</Button>
+        </Tooltip>
+      </div>
+    </div>
+  );
+}`}
+        />
+      </DocSection>
+
+      <DocSection
         title="Positioning"
         id="positioning"
         description="Control tooltip placement around the trigger."
@@ -744,6 +784,7 @@ export default function Toolbar() {
               { id: "when-to-use", title: "When to Use" },
               { id: "basic", title: "Basic Usage" },
               { id: "variants", title: "Variants" },
+              { id: "aer-variant", title: "The Aer Variant" },
               { id: "positioning", title: "Positioning" },
               { id: "alignment", title: "Alignment" },
               { id: "trigger", title: "Trigger Modes" },

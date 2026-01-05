@@ -221,6 +221,115 @@ export function DropdownDoc() {
         />
       </DocSection>
 
+      <DocSection title="Variants" id="variants">
+        <div className="max-w-sm space-y-6">
+          <Dropdown
+            options={basicOptions}
+            variant="outline"
+            placeholder="Outline"
+          />
+          <Dropdown
+            options={basicOptions}
+            variant="filled"
+            placeholder="Filled"
+          />
+          <Dropdown
+            options={basicOptions}
+            variant="underlined"
+            placeholder="Underlined"
+          />
+        </div>
+        <CodeBlock
+          ts={`<Dropdown variant="outline" placeholder="Outline" />\n<Dropdown variant="filled" placeholder="Filled" />\n<Dropdown variant="underlined" placeholder="Underlined" />`}
+          fullCode={`import { Dropdown } from "aer-design";\n\nexport default function VariantsDemo() {\n  return (\n    <div className="space-y-4">\n       <Dropdown variant="outline" placeholder="Outline" />\n       <Dropdown variant="filled" placeholder="Filled" />\n       <Dropdown variant="underlined" placeholder="Underlined" />\n    </div>\n  );\n}`}
+        />
+      </DocSection>
+
+      <DocSection
+        title="The Aer Variant"
+        id="aer-variant"
+        description="Premium glassmorphism effect for modern dropdowns."
+      >
+        <div className="relative p-12 bg-zinc-950 rounded-2xl border border-zinc-800">
+          {/* Vibrant Background */}
+          <div className="absolute inset-0 bg-linear-to-br from-violet-600/20 via-transparent to-orange-600/20" />
+          <div className="absolute top-1/4 right-1/3 w-40 h-40 bg-pink-500/30 rounded-full blur-[60px]" />
+          <div className="absolute bottom-1/4 left-1/3 w-40 h-40 bg-blue-500/30 rounded-full blur-[60px]" />
+
+          <div className="relative z-10 max-w-sm mx-auto">
+            <Dropdown
+              variant="aer"
+              options={basicOptions}
+              placeholder="Select with glassmorphism"
+            />
+          </div>
+        </div>
+        <CodeBlock
+          ts={`<Dropdown variant="aer" options={options} placeholder="Premium dropdown" />`}
+          fullCode={`import { Dropdown } from "aer-design";
+
+const options = [
+  { label: "Option 1", value: "1" },
+  { label: "Option 2", value: "2" },
+  { label: "Option 3", value: "3" },
+];
+
+export default function AerDropdownExample() {
+  return (
+    <div className="p-12 bg-linear-to-br from-violet-600 to-orange-600 rounded-2xl">
+      <div className="max-w-sm">
+        <Dropdown 
+          variant="aer"
+          options={options}
+          placeholder="Select with glassmorphism"
+        />
+      </div>
+    </div>
+  );
+}`}
+        />
+        <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+          <p className="text-sm text-blue-700 dark:text-blue-400">
+            <strong>Pro tip:</strong> The Aer variant creates a premium
+            glassmorphism effect. Use it on colorful or dark backgrounds for the
+            best visual impact.
+          </p>
+        </div>
+      </DocSection>
+
+      <DocSection title="Sizes" id="sizes">
+        <div className="max-w-sm space-y-6">
+          <div>
+            <label className="text-sm font-medium mb-1.5 block">Small</label>
+            <Dropdown
+              size="sm"
+              options={basicOptions}
+              placeholder="Small Dropdown"
+            />
+          </div>
+          <div>
+            <label className="text-sm font-medium mb-1.5 block">Default</label>
+            <Dropdown
+              size="default"
+              options={basicOptions}
+              placeholder="Default Dropdown"
+            />
+          </div>
+          <div>
+            <label className="text-sm font-medium mb-1.5 block">Large</label>
+            <Dropdown
+              size="lg"
+              options={basicOptions}
+              placeholder="Large Dropdown"
+            />
+          </div>
+        </div>
+        <CodeBlock
+          ts={`<Dropdown size="sm" placeholder="Small" />\n<Dropdown size="default" placeholder="Default" />\n<Dropdown size="lg" placeholder="Large" />`}
+          fullCode={`import { Dropdown } from "aer-design";\n\nconst options = [{ label: "Option 1", value: "1" }];\n\nexport default function SizesDemo() {\n  return (\n    <div className="space-y-4">\n       <Dropdown size="sm" options={options} placeholder="Small" />\n       <Dropdown size="default" options={options} placeholder="Default" />\n       <Dropdown size="lg" options={options} placeholder="Large" />\n    </div>\n  );\n}`}
+        />
+      </DocSection>
+
       <DocSection title="Multi-select" id="multi-select">
         <div className="max-w-sm space-y-4">
           <Dropdown
@@ -519,115 +628,6 @@ export default function GroupedDropdown() {
         <CodeBlock
           ts={`<Dropdown \n  options={items} \n  loading={isLoading} \n  onLoadMore={loadMore} \n  hasMore={hasMore}\n  virtualized\n  placeholder="Scroll to load more"\n/>`}
           fullCode={`import { Dropdown } from "aer-design";\n\nexport default function LazyLoadDemo() {\n  // Initial items\n  const [items, setItems] = React.useState(() => Array.from({ length: 20 }, (_, i) => ({ label: "Item " + (i + 1), value: String(i + 1) })));\n  const [loading, setLoading] = React.useState(false);\n  \n  const loadMore = () => {\n    setLoading(true);\n    setTimeout(() => {\n       setItems(prev => [...prev, ...Array.from({ length: 10 }, (_, i) => ({ label: "Item " + (prev.length + i + 1), value: String(prev.length + i + 1) }))]);\n       setLoading(false);\n    }, 1000);\n  };\n\n  return (\n    <Dropdown \n      options={items} \n      loading={loading} \n      onLoadMore={loadMore} \n      hasMore={true}\n      placeholder="Scroll to load more"\n    />\n  );\n}`}
-        />
-      </DocSection>
-
-      <DocSection title="Variants" id="variants">
-        <div className="max-w-sm space-y-6">
-          <Dropdown
-            options={basicOptions}
-            variant="outline"
-            placeholder="Outline"
-          />
-          <Dropdown
-            options={basicOptions}
-            variant="filled"
-            placeholder="Filled"
-          />
-          <Dropdown
-            options={basicOptions}
-            variant="underlined"
-            placeholder="Underlined"
-          />
-        </div>
-        <CodeBlock
-          ts={`<Dropdown variant="outline" placeholder="Outline" />\n<Dropdown variant="filled" placeholder="Filled" />\n<Dropdown variant="underlined" placeholder="Underlined" />`}
-          fullCode={`import { Dropdown } from "aer-design";\n\nexport default function VariantsDemo() {\n  return (\n    <div className="space-y-4">\n       <Dropdown variant="outline" placeholder="Outline" />\n       <Dropdown variant="filled" placeholder="Filled" />\n       <Dropdown variant="underlined" placeholder="Underlined" />\n    </div>\n  );\n}`}
-        />
-      </DocSection>
-
-      <DocSection
-        title="The Aer Variant"
-        id="aer-variant"
-        description="Premium glassmorphism effect for modern dropdowns."
-      >
-        <div className="relative p-12 bg-zinc-950 rounded-2xl border border-zinc-800">
-          {/* Vibrant Background */}
-          <div className="absolute inset-0 bg-linear-to-br from-violet-600/20 via-transparent to-orange-600/20" />
-          <div className="absolute top-1/4 right-1/3 w-40 h-40 bg-pink-500/30 rounded-full blur-[60px]" />
-          <div className="absolute bottom-1/4 left-1/3 w-40 h-40 bg-blue-500/30 rounded-full blur-[60px]" />
-
-          <div className="relative z-10 max-w-sm mx-auto">
-            <Dropdown
-              variant="aer"
-              options={basicOptions}
-              placeholder="Select with glassmorphism"
-            />
-          </div>
-        </div>
-        <CodeBlock
-          ts={`<Dropdown variant="aer" options={options} placeholder="Premium dropdown" />`}
-          fullCode={`import { Dropdown } from "aer-design";
-
-const options = [
-  { label: "Option 1", value: "1" },
-  { label: "Option 2", value: "2" },
-  { label: "Option 3", value: "3" },
-];
-
-export default function AerDropdownExample() {
-  return (
-    <div className="p-12 bg-linear-to-br from-violet-600 to-orange-600 rounded-2xl">
-      <div className="max-w-sm">
-        <Dropdown 
-          variant="aer"
-          options={options}
-          placeholder="Select with glassmorphism"
-        />
-      </div>
-    </div>
-  );
-}`}
-        />
-        <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
-          <p className="text-sm text-blue-700 dark:text-blue-400">
-            <strong>Pro tip:</strong> The Aer variant creates a premium
-            glassmorphism effect. Use it on colorful or dark backgrounds for the
-            best visual impact.
-          </p>
-        </div>
-      </DocSection>
-
-      <DocSection title="Sizes" id="sizes">
-        <div className="max-w-sm space-y-6">
-          <div>
-            <label className="text-sm font-medium mb-1.5 block">Small</label>
-            <Dropdown
-              size="sm"
-              options={basicOptions}
-              placeholder="Small Dropdown"
-            />
-          </div>
-          <div>
-            <label className="text-sm font-medium mb-1.5 block">Default</label>
-            <Dropdown
-              size="default"
-              options={basicOptions}
-              placeholder="Default Dropdown"
-            />
-          </div>
-          <div>
-            <label className="text-sm font-medium mb-1.5 block">Large</label>
-            <Dropdown
-              size="lg"
-              options={basicOptions}
-              placeholder="Large Dropdown"
-            />
-          </div>
-        </div>
-        <CodeBlock
-          ts={`<Dropdown size="sm" placeholder="Small" />\n<Dropdown size="default" placeholder="Default" />\n<Dropdown size="lg" placeholder="Large" />`}
-          fullCode={`import { Dropdown } from "aer-design";\n\nconst options = [{ label: "Option 1", value: "1" }];\n\nexport default function SizesDemo() {\n  return (\n    <div className="space-y-4">\n       <Dropdown size="sm" options={options} placeholder="Small" />\n       <Dropdown size="default" options={options} placeholder="Default" />\n       <Dropdown size="lg" options={options} placeholder="Large" />\n    </div>\n  );\n}`}
         />
       </DocSection>
 
@@ -1305,17 +1305,17 @@ export default function UserSettings() {
               { id: "introduction", title: "Introduction" },
               { id: "when-to-use", title: "When to Use" },
               { id: "basic", title: "Basic Usage" },
-              { id: "multi-select", title: "Multi-select" },
-              { id: "addons-icons", title: "Addons & Icons" },
-              { id: "clearable", title: "Clearable" },
-              { id: "grouped", title: "Grouped Dropdown" },
-              { id: "search", title: "Search & Filter" },
-              { id: "virtualization", title: "Virtualization" },
-              { id: "lazy-loading", title: "Lazy Loading" },
               { id: "variants", title: "Variants" },
               { id: "aer-variant", title: "The Aer Variant" },
               { id: "sizes", title: "Sizes" },
+              { id: "multi-select", title: "Multi-select" },
+              { id: "search", title: "Search & Filter" },
+              { id: "virtualization", title: "Virtualization" },
+              { id: "lazy-loading", title: "Lazy Loading" },
+              { id: "grouped", title: "Grouped Dropdown" },
+              { id: "clearable", title: "Clearable" },
               { id: "label", title: "Label" },
+              { id: "addons-icons", title: "Addons & Icons" },
               { id: "granular-styling", title: "Granular Styling" },
               { id: "validation", title: "Validation" },
               { id: "real-world", title: "Real World Example" },

@@ -228,6 +228,74 @@ export default function CustomDisplay() {
       </DocSection>
 
       <DocSection
+        id="aer-variant"
+        title="The Aer Variant"
+        description="Our signature glassmorphism effect for premium interfaces."
+      >
+        <div className="relative flex items-center justify-center p-16 bg-zinc-950 rounded-2xl border border-zinc-800">
+          {/* Vibrant Background Elements (Clipped) */}
+          <div className="absolute inset-0 overflow-hidden rounded-2xl">
+            <div className="absolute inset-0 bg-linear-to-br from-purple-600/20 via-transparent to-blue-600/20" />
+            <div className="absolute top-1/3 left-1/4 w-40 h-40 bg-pink-500/40 rounded-full blur-[60px]" />
+            <div className="absolute bottom-1/3 right-1/4 w-40 h-40 bg-cyan-500/40 rounded-full blur-[60px]" />
+          </div>
+
+          <div className="relative z-10 w-64">
+            <AerVariantExample options={geoOptions} />
+          </div>
+        </div>
+        <CodeBlock
+          ts={`<div className="bg-zinc-950 p-12 rounded-xl relative overflow-hidden">
+  {/* Background effects... */}
+  <Cascader
+    options={options}
+    placeholder="Select Region"
+    variant="aer"
+  />
+</div>`}
+          fullCode={`import { Cascader } from "aer-design";
+
+const options = [
+  {
+    label: "North America",
+    value: "na",
+    children: [
+      { label: "USA", value: "usa", children: [
+        { label: "New York", value: "ny" },
+        { label: "Los Angeles", value: "la" }
+      ] },
+      { label: "Canada", value: "can" }
+    ]
+  },
+  {
+    label: "Europe",
+    value: "eu",
+    children: [
+      { label: "UK", value: "uk" },
+      { label: "Germany", value: "de" }
+    ]
+  }
+];
+
+export default function AerCascaderExample() {
+  return (
+    <div className="relative flex items-center justify-center p-16 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">
+      <div className="absolute inset-0 bg-linear-to-br from-purple-600/20 via-transparent to-blue-600/20" />
+      
+      <div className="relative z-10 w-64">
+        <Cascader
+          options={options}
+          placeholder="Select Region"
+          variant="aer"
+        />
+      </div>
+    </div>
+  );
+}`}
+        />
+      </DocSection>
+
+      <DocSection
         id="sizes"
         title="Sizes"
         description="Configure the size of the trigger to match your layout."
@@ -349,18 +417,17 @@ export default function ShowLastItem() {
           fullCode={`import { Cascader } from "aer-design";
 import { useState } from "react";
 
-const options = [
-    { label: "Enabled Parent", value: "1", children: [
-        { label: "Disabled Child", value: "1-1", disabled: true },
-        { label: "Enabled Child", value: "1-2" }
-    ]}
-];
-
 export default function DisabledExample() {
   return (
-    <div className="w-64 space-y-4">
-        <Cascader disabled placeholder="Component Disabled" options={[]} />
-        <Cascader placeholder="Option Disabled" options={options} />
+    <div className="flex flex-col gap-4">
+      <Cascader disabled placeholder="Disabled component" options={[]} />
+      <Cascader 
+        placeholder="Disabled options" 
+        options={[
+          { label: "Option 1", value: "1" },
+          { label: "Disabled Option", value: "2", disabled: true }
+        ]} 
+      />
     </div>
   );
 }`}
@@ -681,13 +748,15 @@ export default function ProductForm() {
               { id: "when-to-use", title: "When to Use" },
               { id: "basic-usage", title: "Basic Usage" },
               { id: "custom-display", title: "Custom Display" },
+              { id: "variants", title: "Variants" },
+              { id: "aer-variant", title: "The Aer Variant" },
+              { id: "sizes", title: "Sizes" },
               { id: "label", title: "Label" },
               { id: "addons", title: "Addons & Icons" },
               { id: "lazy-load", title: "Lazy Loading" },
-              { id: "variants", title: "Variants" },
-              { id: "sizes", title: "Sizes" },
+              { id: "disabled-state", title: "Disabled State" },
               { id: "error-state", title: "Error State" },
-              { id: "show-last-item", title: "Show Last Item Only" },
+              { id: "show-last-item", title: "Show Last Item" },
               { id: "granular-styling", title: "Granular Styling" },
               { id: "real-world", title: "Real World Example" },
             ],
@@ -1145,6 +1214,19 @@ export default function ProductForm() {
         triggerClassName="border-purple-200 bg-purple-50/50 hover:bg-purple-50 hover:border-purple-300 transition-colors"
         itemClassName="hover:bg-purple-100 hover:text-purple-700 focus:bg-purple-100 focus:text-purple-700 data-[selected=true]:bg-purple-200"
         placeholder="Purple Theme"
+      />
+    );
+  }
+
+  function AerVariantExample({ options }: { options: any[] }) {
+    const [val, setVal] = React.useState<string | number>();
+    return (
+      <Cascader
+        options={options}
+        value={val}
+        onChange={setVal}
+        placeholder="Select Region"
+        variant="aer"
       />
     );
   }

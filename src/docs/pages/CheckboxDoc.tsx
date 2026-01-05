@@ -107,6 +107,55 @@ export function CheckboxDoc() {
       </DocSection>
 
       <DocSection
+        title="Card Variant"
+        id="cards"
+        description="Turn checkboxes into selectable cards."
+      >
+        <div className="grid gap-4 md:grid-cols-2">
+          <Checkbox
+            variant="card"
+            label="Standard Plan"
+            description="$10/month"
+            defaultChecked
+          />
+          <Checkbox variant="card" label="Pro Plan" description="$20/month" />
+        </div>
+        <CodeBlock
+          ts={`<Checkbox variant="card" label="Standard Plan" description="$10/mo" />`}
+          fullCode={`import { Checkbox } from "aer-design";\n\nexport default function Cards() {\n  return (\n    <div className="grid gap-4 md:grid-cols-2">\n      <Checkbox variant="card" label="Standard" description="$10/mo" defaultChecked />\n      <Checkbox variant="card" label="Pro" description="$20/mo" />\n    </div>\n  );\n}`}
+        />
+      </DocSection>
+
+      <DocSection
+        title="The Aer Variant"
+        id="aer-variant"
+        description="Premium glassmorphism effect for modern selection controls."
+      >
+        <div className="relative p-12 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">
+          {/* Vibrant Background */}
+          <div className="absolute inset-0 bg-linear-to-br from-indigo-600/20 via-transparent to-rose-600/20" />
+          <div className="absolute top-1/4 left-1/4 w-40 h-40 bg-indigo-500/30 rounded-full blur-[60px]" />
+          <div className="absolute bottom-1/4 right-1/4 w-40 h-40 bg-rose-500/30 rounded-full blur-[60px]" />
+
+          <div className="relative z-10 flex flex-col gap-6 items-center">
+            <Checkbox variant="aer" label="Premium selection" defaultChecked />
+            <Checkbox variant="aer" label="Glassmorphism effect" />
+          </div>
+        </div>
+        <CodeBlock
+          ts={`<Checkbox variant="aer" label="Premium selection" defaultChecked />`}
+          fullCode={`import { Checkbox } from "aer-design";\n\nexport default function AerCheckbox() {\n  return (\n    <div className="p-12 bg-linear-to-br from-indigo-600 to-rose-600 rounded-2xl">\n      <Checkbox variant="aer" label="Premium selection" defaultChecked />\n    </div>\n  );\n}`}
+        />
+        <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+          <p className="text-sm text-blue-700 dark:text-blue-400">
+            <strong>Pro tip:</strong> The Aer variant features a premium
+            glassmorphism effect. It's best used on colorful or dark
+            backgrounds.
+          </p>
+        </div>
+      </DocSection>
+
+      <DocSection
         title="Checkbox Group"
         id="checkbox-group"
         description="Manage a group of checkboxes with an optional 'Select All' parent."
@@ -136,26 +185,6 @@ export function CheckboxDoc() {
         <CodeBlock
           ts={`<Checkbox disabled />\n<Checkbox disabled defaultChecked />\n<Checkbox checked="indeterminate" />`}
           fullCode={`import { Checkbox } from "aer-design";\n\nexport default function States() {\n  return (\n    <div className="flex flex-col gap-4">\n      <Checkbox disabled label="Disabled" />\n      <Checkbox disabled defaultChecked label="Disabled Checked" />\n      <Checkbox checked="indeterminate" label="Indeterminate" />\n    </div>\n  );\n}`}
-        />
-      </DocSection>
-
-      <DocSection
-        title="Card Variant"
-        id="cards"
-        description="Turn checkboxes into selectable cards."
-      >
-        <div className="grid gap-4 md:grid-cols-2">
-          <Checkbox
-            variant="card"
-            label="Standard Plan"
-            description="$10/month"
-            defaultChecked
-          />
-          <Checkbox variant="card" label="Pro Plan" description="$20/month" />
-        </div>
-        <CodeBlock
-          ts={`<Checkbox variant="card" label="Standard Plan" description="$10/mo" />`}
-          fullCode={`import { Checkbox } from "aer-design";\n\nexport default function Cards() {\n  return (\n    <div className="grid gap-4 md:grid-cols-2">\n      <Checkbox variant="card" label="Standard" description="$10/mo" defaultChecked />\n      <Checkbox variant="card" label="Pro" description="$20/mo" />\n    </div>\n  );\n}`}
         />
       </DocSection>
 
@@ -685,9 +714,10 @@ export default function GranularStyling() {
               { id: "introduction", title: "Introduction" },
               { id: "when-to-use", title: "When to Use" },
               { id: "basic", title: "Basic Usage" },
+              { id: "cards", title: "Card Variant" },
+              { id: "aer-variant", title: "The Aer Variant" },
               { id: "checkbox-group", title: "Checkbox Group" },
               { id: "states", title: "States" },
-              { id: "cards", title: "Card Variant" },
               { id: "sizes", title: "Sizes" },
               { id: "positioning", title: "Label Positioning" },
               { id: "alignment", title: "Vertical Alignment" },

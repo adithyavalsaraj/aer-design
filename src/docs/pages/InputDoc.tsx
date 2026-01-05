@@ -207,49 +207,6 @@ export function InputDoc() {
       </DocSection>
 
       <DocSection
-        title="Specialized Inputs"
-        id="specialized"
-        description="Pre-configured inputs for email, password, and phone with built-in features."
-      >
-        <div className="max-w-sm space-y-4">
-          <PasswordInput placeholder="Enter password" />
-          <EmailInput placeholder="johndoe@aer-design.com" />
-          <PhoneInput placeholder="+1 (555) 000-0000" />
-        </div>
-        <CodeBlock
-          ts={`<PasswordInput placeholder="Enter password" />\n<EmailInput placeholder="johndoe@aer-design.com" />\n<PhoneInput placeholder="+1 (555) 000-0000" />`}
-          fullCode={`import { PasswordInput, EmailInput, PhoneInput } from "aer-design";\n\nexport default function SpecializedInputs() {\n  return (\n    <div className="space-y-4">\n      <EmailInput label="Email address" />\n      <PasswordInput label="Secure Password" />\n      <PhoneInput label="Mobile Number" />\n    </div>\n  );\n}`}
-        />
-      </DocSection>
-
-      <DocSection
-        title="Masking"
-        id="masking"
-        description="Pattern-based masking for formatted data."
-      >
-        <div className="max-w-sm space-y-4">
-          <MaskedInput
-            mask="#### #### #### ####"
-            startIcon={<CreditCard />}
-            placeholder="Card Number"
-          />
-          <MaskedInput mask="## / ## / ####" placeholder="DD / MM / YYYY" />
-        </div>
-        <CodeBlock
-          ts={`<MaskedInput mask="#### #### #### ####" startIcon={<CreditCard />} />\n<MaskedInput mask="## / ## / ####" placeholder="DD / MM / YYYY" />`}
-          fullCode={`import { MaskedInput } from "aer-design";\nimport { CreditCard } from "lucide-react";\n\nexport default function CardForm() {\n  return (\n    <div className="p-6 bg-zinc-900 border border-white/5 rounded-2xl flex flex-col gap-4">\n      <h3 className="text-sm font-medium text-white">Payment Details</h3>\n      <MaskedInput \n        mask="#### #### #### ####" \n        startIcon={<CreditCard />} \n        placeholder="0000 0000 0000 0000" \n      />\n      <div className="grid grid-cols-2 gap-4">\n        <MaskedInput mask="##/##" placeholder="MM/YY" />\n        <MaskedInput mask="###" placeholder="CVC" />\n      </div>\n    </div>\n  );\n}`}
-        />
-      </DocSection>
-
-      <DocSection
-        title="Label"
-        id="label"
-        description="Add labels to inputs with flexible positioning and helper text options."
-      >
-        <LabelExample />
-      </DocSection>
-
-      <DocSection
         title="Visual Variants"
         id="variants"
         description="Three distinct visual styles for different design aesthetics."
@@ -259,7 +216,7 @@ export function InputDoc() {
             <label className="text-sm font-medium mb-1.5 block">
               Outline (Default)
             </label>
-            <Input placeholder="Outline Style" />
+            <Input variant="outline" placeholder="Outline Style" />
           </div>
           <div>
             <label className="text-sm font-medium mb-1.5 block">Filled</label>
@@ -273,8 +230,8 @@ export function InputDoc() {
           </div>
         </div>
         <CodeBlock
-          ts={`<Input placeholder="Outline" />\n<Input variant="filled" placeholder="Filled" />\n<Input variant="underlined" placeholder="Underlined" />`}
-          fullCode={`import { Input } from "aer-design";\n\nexport default function VariantExample() {\n  return (\n    <div className="max-w-sm space-y-6">\n      <Input placeholder="Outline (Default)" />\n      <Input variant="filled" placeholder="Filled" />\n      <Input variant="underlined" placeholder="Underlined" />\n    </div>\n  );\n}`}
+          ts={`<Input variant="outline" placeholder="Outline" />\n<Input variant="filled" placeholder="Filled" />\n<Input variant="underlined" placeholder="Underlined" />`}
+          fullCode={`import { Input } from "aer-design";\n\nexport default function VariantExample() {\n  return (\n    <div className="max-w-sm space-y-6">\n      <Input variant="outline" placeholder="Outline (Default)" />\n      <Input variant="filled" placeholder="Filled" />\n      <Input variant="underlined" placeholder="Underlined" />\n    </div>\n  );\n}`}
         />
       </DocSection>
 
@@ -285,7 +242,7 @@ export function InputDoc() {
       >
         <div className="relative p-12 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">
           {/* Vibrant Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 via-transparent to-purple-600/20" />
+          <div className="absolute inset-0 bg-linear-to-br from-blue-600/20 via-transparent to-purple-600/20" />
           <div className="absolute top-1/4 left-1/3 w-40 h-40 bg-cyan-500/30 rounded-full blur-[60px]" />
           <div className="absolute bottom-1/4 right-1/3 w-40 h-40 bg-violet-500/30 rounded-full blur-[60px]" />
 
@@ -306,7 +263,7 @@ import { Search } from "lucide-react";
 
 export default function AerInputExample() {
   return (
-    <div className="p-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl">
+    <div className="p-12 bg-linear-to-br from-blue-600 to-purple-600 rounded-2xl">
       <div className="max-w-sm space-y-4">
         <Input 
           variant="aer" 
@@ -358,6 +315,49 @@ export default function AerInputExample() {
           ts={`<Input size="sm" placeholder="Small" />\n<Input size="default" placeholder="Default" />\n<Input size="lg" placeholder="Large" />`}
           fullCode={`import { Input } from "aer-design";\nimport { Search } from "lucide-react";\n\nexport default function SizesExample() {\n  return (\n    <div className="max-w-sm space-y-6">\n      <Input size="sm" placeholder="Small Input" startIcon={<Search />} />\n      <Input size="default" placeholder="Default Input" startIcon={<Search />} />\n      <Input size="lg" placeholder="Large Input" startIcon={<Search />} />\n    </div>\n  );\n}`}
         />
+      </DocSection>
+
+      <DocSection
+        title="Specialized Inputs"
+        id="specialized"
+        description="Pre-configured inputs for email, password, and phone with built-in features."
+      >
+        <div className="max-w-sm space-y-4">
+          <PasswordInput placeholder="Enter password" />
+          <EmailInput placeholder="johndoe@aer-design.com" />
+          <PhoneInput placeholder="+1 (555) 000-0000" />
+        </div>
+        <CodeBlock
+          ts={`<PasswordInput placeholder="Enter password" />\n<EmailInput placeholder="johndoe@aer-design.com" />\n<PhoneInput placeholder="+1 (555) 000-0000" />`}
+          fullCode={`import { PasswordInput, EmailInput, PhoneInput } from "aer-design";\n\nexport default function SpecializedInputs() {\n  return (\n    <div className="space-y-4">\n      <EmailInput label="Email address" />\n      <PasswordInput label="Secure Password" />\n      <PhoneInput label="Mobile Number" />\n    </div>\n  );\n}`}
+        />
+      </DocSection>
+
+      <DocSection
+        title="Masking"
+        id="masking"
+        description="Pattern-based masking for formatted data."
+      >
+        <div className="max-w-sm space-y-4">
+          <MaskedInput
+            mask="#### #### #### ####"
+            startIcon={<CreditCard />}
+            placeholder="Card Number"
+          />
+          <MaskedInput mask="## / ## / ####" placeholder="DD / MM / YYYY" />
+        </div>
+        <CodeBlock
+          ts={`<MaskedInput mask="#### #### #### ####" startIcon={<CreditCard />} />\n<MaskedInput mask="## / ## / ####" placeholder="DD / MM / YYYY" />`}
+          fullCode={`import { MaskedInput } from "aer-design";\nimport { CreditCard } from "lucide-react";\n\nexport default function CardForm() {\n  return (\n    <div className="p-6 bg-zinc-900 border border-white/5 rounded-2xl flex flex-col gap-4">\n      <h3 className="text-sm font-medium text-white">Payment Details</h3>\n      <MaskedInput \n        mask="#### #### #### ####" \n        startIcon={<CreditCard />} \n        placeholder="0000 0000 0000 0000" \n      />\n      <div className="grid grid-cols-2 gap-4">\n        <MaskedInput mask="##/##" placeholder="MM/YY" />\n        <MaskedInput mask="###" placeholder="CVC" />\n      </div>\n    </div>\n  );\n}`}
+        />
+      </DocSection>
+
+      <DocSection
+        title="Label"
+        id="label"
+        description="Add labels to inputs with flexible positioning and helper text options."
+      >
+        <LabelExample />
       </DocSection>
 
       <DocSection
@@ -570,7 +570,7 @@ export default function GranularStyling() {
           data={[
             {
               prop: "variant",
-              type: '"outline" | "filled" | "underlined"',
+              type: '"outline" | "filled" | "underlined" | "aer"',
               default: '"outline"',
               description:
                 "Visual style variant. 'outline' has border, 'filled' has background, 'underlined' has bottom border only.",
@@ -932,12 +932,12 @@ export default function GranularStyling() {
               { id: "introduction", title: "Introduction" },
               { id: "when-to-use", title: "When to Use" },
               { id: "basic", title: "Basic Usage" },
-              { id: "specialized", title: "Specialized Inputs" },
-              { id: "masking", title: "Masking" },
-              { id: "label", title: "Label" },
               { id: "variants", title: "Visual Variants" },
               { id: "aer-variant", title: "The Aer Variant" },
               { id: "sizes", title: "Size Variants" },
+              { id: "specialized", title: "Specialized Inputs" },
+              { id: "masking", title: "Masking" },
+              { id: "label", title: "Label" },
               { id: "icons", title: "Icons & Prefixes" },
               { id: "addons", title: "Addons" },
               { id: "granular-styling", title: "Granular Styling" },

@@ -511,6 +511,7 @@ function SidebarPlayground() {
 
 export function SidebarDoc() {
   const [activeTab, setActiveTab] = React.useState("home");
+  const [activeAerItem, setActiveAerItem] = React.useState("home");
 
   const overview = (
     <div className="space-y-12">
@@ -616,6 +617,70 @@ export function SidebarDoc() {
       </DocSection>
 
       <DocSection
+        id="aer-variant"
+        title="The Aer Variant"
+        description="Our signature glassmorphism effect for premium interfaces."
+      >
+        <div className="relative flex items-center justify-center p-16 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">
+          {/* Vibrant Background Elements */}
+          <div className="absolute inset-0 bg-linear-to-br from-purple-600/20 via-transparent to-blue-600/20" />
+          <div className="absolute top-1/3 left-1/4 w-40 h-40 bg-pink-500/40 rounded-full blur-[60px]" />
+          <div className="absolute bottom-1/3 right-1/4 w-40 h-40 bg-cyan-500/40 rounded-full blur-[60px]" />
+
+          <div className="relative z-10 w-full h-[300px] border border-white/10 rounded-xl overflow-hidden bg-white/5 backdrop-blur-md shadow-2xl flex">
+            <Sidebar
+              mode="sticky"
+              position="left"
+              className="h-full bg-transparent border-r border-white/10"
+              variant="aer"
+            >
+              <SidebarHeader className="border-white/10">
+                <div className="flex items-center gap-3">
+                  <div className="size-8 rounded-full bg-linear-to-tr from-indigo-500 to-purple-500" />
+                  <span className="font-bold text-white">Aer</span>
+                </div>
+              </SidebarHeader>
+              <SidebarContent>
+                <SidebarSection>
+                  <SidebarItem
+                    icon={<Home className="text-white" />}
+                    active={activeAerItem === "home"}
+                    onClick={() => setActiveAerItem("home")}
+                    className="text-white hover:bg-white/10 hover:text-white"
+                  >
+                    Home
+                  </SidebarItem>
+                  <SidebarItem
+                    icon={<User className="text-white/70" />}
+                    active={activeAerItem === "team"}
+                    onClick={() => setActiveAerItem("team")}
+                    className="text-white/70 hover:bg-white/10 hover:text-white"
+                  >
+                    Team
+                  </SidebarItem>
+                  <SidebarItem
+                    icon={<Settings className="text-white/70" />}
+                    active={activeAerItem === "settings"}
+                    onClick={() => setActiveAerItem("settings")}
+                    className="text-white/70 hover:bg-white/10 hover:text-white"
+                  >
+                    Settings
+                  </SidebarItem>
+                </SidebarSection>
+              </SidebarContent>
+            </Sidebar>
+            <div className="flex-1 p-6 text-white/50 text-sm font-mono">
+              Main Content Area
+            </div>
+          </div>
+        </div>
+        <CodeBlock
+          ts={`<div className="bg-zinc-950 p-12 rounded-xl relative overflow-hidden">\n  <Sidebar\n    variant="aer"\n    mode="sticky"\n    className="bg-transparent border-r border-white/10"\n  >\n    {/* Sidebar Content */}\n  </Sidebar>\n</div>`}
+          fullCode={`import { Sidebar, SidebarHeader, SidebarContent, SidebarSection, SidebarItem } from "aer-design";\nimport { Home, User, Settings } from "lucide-react";\nimport { useState } from "react";\n\nexport default function AerSidebarExample() {\n  const [activeItem, setActiveItem] = useState("home");\n\n  return (\n    <div className="relative flex items-center justify-center p-16 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">\n      <div className="absolute inset-0 bg-linear-to-br from-purple-600/20 via-transparent to-blue-600/20" />\n      \n      <div className="relative z-10 w-full h-[300px] border border-white/10 rounded-xl overflow-hidden bg-white/5 backdrop-blur-md shadow-2xl flex">\n         <Sidebar\n          mode="sticky"\n          position="left"\n          className="h-full bg-transparent border-r border-white/10"\n          variant="aer"\n        >\n          <SidebarHeader className="border-white/10">\n            <div className="flex items-center gap-3">\n              <div className="size-8 rounded-full bg-linear-to-tr from-indigo-500 to-purple-500" />\n              <span className="font-bold text-white">Aer</span>\n            </div>\n          </SidebarHeader>\n          <SidebarContent>\n            <SidebarSection>\n              <SidebarItem \n                icon={<Home className="text-white" />} \n                active={activeItem === "home"} \n                onClick={() => setActiveItem("home")}\n                className="text-white hover:bg-white/10 hover:text-white"\n              >\n                Home\n              </SidebarItem>\n              <SidebarItem \n                icon={<User className="text-white/70" />} \n                active={activeItem === "team"} \n                onClick={() => setActiveItem("team")}\n                className="text-white/70 hover:bg-white/10 hover:text-white"\n              >\n                Team\n              </SidebarItem>\n              <SidebarItem \n                icon={<Settings className="text-white/70" />} \n                active={activeItem === "settings"} \n                onClick={() => setActiveItem("settings")}\n                className="text-white/70 hover:bg-white/10 hover:text-white"\n              >\n                Settings\n              </SidebarItem>\n            </SidebarSection>\n          </SidebarContent>\n        </Sidebar>\n        <div className="flex-1 p-6 text-white/50 text-sm font-mono">\n          Main Content Area\n        </div>\n      </div>\n    </div>\n  );\n}`}
+        />
+      </DocSection>
+
+      <DocSection
         title="Floating Island"
         id="floating"
         description="A specialized styling example for the 'Floating' mode."
@@ -660,6 +725,50 @@ export function SidebarDoc() {
           ts={`<Sidebar mode="floating" position="left" />`}
           fullCode={`import { Sidebar, SidebarHeader, SidebarContent, SidebarSection, SidebarItem } from "aer-design";\nimport { Home, User, Settings } from "lucide-react";\n\nexport default function FloatingSidebar() {\n  return (\n    // Uses fixed positioning by default, so it floats over content\n    <Sidebar mode="floating" position="left">\n      <SidebarHeader className="border-none pb-0">\n        <div className="size-8 rounded-full bg-aer-primary" />\n      </SidebarHeader>\n      <SidebarContent>\n        <SidebarSection className="mt-4">\n          <SidebarItem icon={<Home />}>Home</SidebarItem>\n          <SidebarItem icon={<User />}>Team</SidebarItem>\n          <SidebarItem icon={<Settings />}>Config</SidebarItem>\n        </SidebarSection>\n      </SidebarContent>\n    </Sidebar>\n  );\n}`}
         />
+      </DocSection>
+
+      <DocSection
+        title="Granular Styling"
+        id="granular-styling"
+        description="Customize every slot of the sidebar with specific className props."
+      >
+        <div className="p-6 border rounded-lg bg-aer-muted/5 flex justify-center isolate">
+          <Sidebar
+            mode="absolute"
+            position="left"
+            className="h-[300px] relative border-none bg-indigo-500/5 rounded-xl overflow-hidden"
+          >
+            <SidebarHeader className="bg-indigo-500/10 border-indigo-500/10">
+              <div className="size-8 rounded-lg bg-indigo-500" />
+            </SidebarHeader>
+            <SidebarContent>
+              <SidebarSection title="Custom Slots" className="px-2">
+                <SidebarItem
+                  icon={<Home className="text-indigo-500" />}
+                  className="rounded-lg hover:bg-indigo-500/10"
+                >
+                  Styled Item
+                </SidebarItem>
+              </SidebarSection>
+            </SidebarContent>
+          </Sidebar>
+        </div>
+        <CodeBlock
+          ts={`<Sidebar\n  className="bg-indigo-500/5 rounded-xl"\n  headerClassName="bg-indigo-500/10"\n  contentClassName="px-2"\n>\n  <SidebarItem className="rounded-lg hover:bg-indigo-500/10" />\n</Sidebar>`}
+        />
+      </DocSection>
+
+      <DocSection
+        title="Real World Example"
+        id="real-world"
+        description="A complete application shell with responsive behavior."
+      >
+        <div className="p-6 border rounded-lg bg-aer-muted/5">
+          <p className="text-sm text-aer-muted-foreground text-center italic">
+            The main playground at the top serves as our primary real-world
+            demonstration.
+          </p>
+        </div>
       </DocSection>
     </div>
   );
@@ -870,7 +979,10 @@ export function SidebarDoc() {
               { id: "introduction", title: "Introduction" },
               { id: "when-to-use", title: "When to Use" },
               { id: "basic", title: "Basic Usage" },
+              { id: "aer-variant", title: "The Aer Variant" },
               { id: "floating", title: "Floating Island" },
+              { id: "granular-styling", title: "Granular Styling" },
+              { id: "real-world", title: "Real World Example" },
             ],
           },
           {

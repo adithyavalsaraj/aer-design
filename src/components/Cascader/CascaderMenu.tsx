@@ -7,20 +7,15 @@ import type { CascaderOption } from "./types";
 interface CascaderMenuProps {
   options: CascaderOption[];
   onSelect: (option: CascaderOption, isLeaf: boolean) => void;
-  /**
-   * Currently active value at this level (for highlighting parent)
-   */
   activeValue?: string | number;
-  /**
-   * The selected leaf value (for displaying checkmark)
-   */
   selectedValue?: string | number;
   depth?: number;
   loadData?: (option: CascaderOption) => Promise<void> | void;
   itemClassName?: string;
   virtualized?: boolean;
   itemHeight?: number;
-  className?: string; // Add className prop
+  className?: string; // Appears as 'className' on the root element
+  menuClassName?: string; // Propagated class for submenus
 }
 
 export function CascaderMenu({
@@ -34,28 +29,26 @@ export function CascaderMenu({
   virtualized,
   itemHeight = 32,
   className,
+  menuClassName,
 }: CascaderMenuProps) {
   const [hoveredOption, setHoveredOption] =
     React.useState<CascaderOption | null>(null);
 
-  // Clear hovered option when options change (e.g. if parent closes)
   React.useEffect(() => {
     setHoveredOption(null);
   }, [options]);
 
-  // Virtualization State
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [scrollTop, setScrollTop] = React.useState(0);
-  const menuHeight = 300; // Fixed max height
+  const menuHeight = 300;
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     setScrollTop(e.currentTarget.scrollTop);
   };
 
-  const visibleCount = Math.ceil(menuHeight / itemHeight) + 1; // +1 buffer
+  const visibleCount = Math.ceil(menuHeight / itemHeight) + 1;
   const totalHeight = options.length * itemHeight;
 
-  // Calculate window
   const startIndex = virtualized ? Math.floor(scrollTop / itemHeight) : 0;
   const endIndex = virtualized
     ? Math.min(options.length, startIndex + visibleCount)
@@ -66,14 +59,19 @@ export function CascaderMenu({
     : options;
   const offsetY = virtualized ? startIndex * itemHeight : 0;
 
+  // If menuClassName is not explicitly passed, we might want to capture the current className
+  // to pass down as the style for submenus if this is the root.
+  // However, usually specific styling is passed via className.
+  const effectiveMenuClass = menuClassName || className;
+
   return (
     <div
       data-cascader-menu
       ref={containerRef}
       onScroll={handleScroll}
       className={cn(
-        "flex flex-col min-w-[180px] bg-aer-background border border-aer-border rounded-lg shadow-lg py-1", // py-1 for non-virtualized standard padding
-        virtualized && "py-0", // remove padding for virtualized to exact calc
+        "flex flex-col min-w-[180px] bg-aer-background border border-aer-border rounded-lg shadow-lg py-1",
+        virtualized && "py-0",
         className
       )}
       style={{
@@ -111,6 +109,7 @@ export function CascaderMenu({
               itemClassName={itemClassName}
               virtualized={virtualized}
               itemHeight={itemHeight}
+              menuClassName={effectiveMenuClass}
             />
           ))}
         </div>
@@ -131,6 +130,7 @@ interface CascaderMenuItemProps {
   itemClassName?: string;
   virtualized?: boolean;
   itemHeight?: number;
+  menuClassName?: string;
 }
 
 function CascaderMenuItem({
@@ -145,13 +145,11 @@ function CascaderMenuItem({
   itemClassName,
   virtualized,
   itemHeight,
+  menuClassName,
 }: CascaderMenuItemProps) {
   const triggerRef = React.useRef<HTMLDivElement>(null);
   const isLeaf =
     option.isLeaf ?? (!option.children || option.children.length === 0);
-  // If loadData is present and not a leaf, but no children yet, consider it scalable?
-  // Actually, standard behavior: isLeaf explicitly true -> leaf.
-  // If children empty and loadData exists -> not leaf, can load.
   const canLoad =
     !isLeaf && (!option.children || option.children.length === 0) && !!loadData;
 
@@ -160,7 +158,6 @@ function CascaderMenuItem({
   const isSelected = selectedValue === option.value;
   const [isLoading, setIsLoading] = React.useState(false);
 
-  // Show submenu if hovered and has children OR is loading
   const showSubmenu =
     hoveredOption?.value === option.value && (!isLeaf || isLoading);
 
@@ -168,7 +165,6 @@ function CascaderMenuItem({
     if (!option.disabled) {
       setHoveredOption(option);
 
-      // Trigger loadData if needed
       if (canLoad && !isLoading && !option.children?.length) {
         setIsLoading(true);
         const promise = loadData(option);
@@ -181,7 +177,6 @@ function CascaderMenuItem({
               setIsLoading(false);
             });
         } else {
-          // If not a promise (sync), just finish
           setIsLoading(false);
         }
       }
@@ -227,7 +222,6 @@ function CascaderMenuItem({
           ))}
       </div>
 
-      {/* Render Submenu if hovered */}
       {showSubmenu && option.children && option.children.length > 0 && (
         <CascaderSubMenu
           triggerRef={triggerRef}
@@ -239,6 +233,7 @@ function CascaderMenuItem({
           itemClassName={itemClassName}
           virtualized={virtualized}
           itemHeight={itemHeight}
+          menuClassName={menuClassName}
         />
       )}
     </div>
@@ -255,6 +250,7 @@ function CascaderSubMenu({
   itemClassName,
   virtualized,
   itemHeight,
+  menuClassName,
 }: {
   triggerRef: React.RefObject<HTMLDivElement | null>;
   option: CascaderOption;
@@ -265,6 +261,7 @@ function CascaderSubMenu({
   itemClassName?: string;
   virtualized?: boolean;
   itemHeight?: number;
+  menuClassName?: string;
 }) {
   return ReactDOM.createPortal(
     <CascaderSubMenuContent
@@ -277,6 +274,7 @@ function CascaderSubMenu({
       itemClassName={itemClassName}
       virtualized={virtualized}
       itemHeight={itemHeight}
+      menuClassName={menuClassName}
     />,
     document.body
   );
@@ -292,6 +290,7 @@ function CascaderSubMenuContent({
   itemClassName,
   virtualized,
   itemHeight,
+  menuClassName,
 }: {
   triggerRef: React.RefObject<HTMLDivElement | null>;
   option: CascaderOption;
@@ -302,9 +301,9 @@ function CascaderSubMenuContent({
   itemClassName?: string;
   virtualized?: boolean;
   itemHeight?: number;
+  menuClassName?: string;
 }) {
   const ref = React.useRef<HTMLDivElement>(null);
-  // Initial state: visible but offscreen to ensure dimensions are measurable
   const [style, setStyle] = React.useState<React.CSSProperties>({
     top: -9999,
     left: -9999,
@@ -322,16 +321,13 @@ function CascaderSubMenuContent({
         zIndex: 1005 + depth,
       };
 
-      // Default: Right of trigger
       let left = triggerRect.right + 4;
       let top = triggerRect.top;
 
-      // Horizontal flip
       if (left + rect.width > innerWidth) {
         left = triggerRect.left - rect.width - 4;
       }
 
-      // Vertical shift
       if (top + rect.height > innerHeight) {
         top = innerHeight - rect.height - 10;
       }
@@ -347,7 +343,6 @@ function CascaderSubMenuContent({
   return (
     <div ref={ref} className="animate-in fade-in zoom-in-95" style={style}>
       <div
-        // Safe area bridge
         style={{
           position: "absolute",
           top: 0,
@@ -356,9 +351,7 @@ function CascaderSubMenuContent({
           width: "6px",
           zIndex: -1,
         }}
-        onMouseEnter={() => {
-          // Keep it open
-        }}
+        onMouseEnter={() => {}}
       />
       <CascaderMenu
         options={option.children!}
@@ -369,6 +362,8 @@ function CascaderSubMenuContent({
         itemClassName={itemClassName}
         virtualized={virtualized}
         itemHeight={itemHeight}
+        className={menuClassName}
+        menuClassName={menuClassName}
       />
     </div>
   );

@@ -148,6 +148,74 @@ export default function BasicMenu() {
       </DocSection>
 
       <DocSection
+        id="aer-variant"
+        title="The Aer Variant"
+        description="Our signature glassmorphism effect for premium interfaces."
+      >
+        <div className="relative flex items-center justify-center p-24 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">
+          {/* Vibrant Background Elements */}
+          <div className="absolute inset-0 bg-linear-to-br from-purple-600/20 via-transparent to-blue-600/20" />
+          <div className="absolute top-1/3 left-1/4 w-40 h-40 bg-pink-500/40 rounded-full blur-[60px]" />
+
+          <div className="relative z-10">
+            <Menu>
+              <MenuTrigger asChild>
+                <Button variant="aer">Open Menu</Button>
+              </MenuTrigger>
+              <MenuContent variant="aer">
+                <MenuLabel>My Account</MenuLabel>
+                <MenuSeparator />
+                <MenuItem>
+                  <User className="mr-2 h-4 w-4" /> Profile
+                </MenuItem>
+                <MenuItem>
+                  <Settings className="mr-2 h-4 w-4" /> Settings
+                </MenuItem>
+              </MenuContent>
+            </Menu>
+          </div>
+        </div>
+        <CodeBlock
+          ts={`<Menu>
+  <MenuTrigger asChild>
+    <Button variant="aer">Open Menu</Button>
+  </MenuTrigger>
+  <MenuContent variant="aer">
+    {/* Menu Items... */}
+  </MenuContent>
+</Menu>`}
+          fullCode={`import { Menu, MenuTrigger, MenuContent, MenuItem, MenuLabel, MenuSeparator, Button } from "aer-design";
+import { User, Settings } from "lucide-react";
+
+export default function AerMenuExample() {
+  return (
+    <div className="relative flex items-center justify-center p-24 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">
+      <div className="absolute inset-0 bg-linear-to-br from-purple-600/20 via-transparent to-blue-600/20" />
+      
+      <div className="relative z-10">
+        <Menu>
+          <MenuTrigger asChild>
+            <Button variant="aer">Open Menu</Button>
+          </MenuTrigger>
+          <MenuContent variant="aer">
+            <MenuLabel>My Account</MenuLabel>
+            <MenuSeparator />
+            <MenuItem>
+               <User className="mr-2 h-4 w-4" /> Profile
+            </MenuItem>
+            <MenuItem>
+               <Settings className="mr-2 h-4 w-4" /> Settings
+            </MenuItem>
+          </MenuContent>
+        </Menu>
+      </div>
+    </div>
+  );
+}`}
+        />
+      </DocSection>
+
+      <DocSection
         id="icons"
         title="With Icons & Shortcuts"
         description="MenuItems can contain icons and other elements."
@@ -1159,7 +1227,10 @@ export default function UserMenu() {
             label: "Overview",
             content: overview,
             toc: [
+              { id: "introduction", title: "Introduction" },
+              { id: "when-to-use", title: "When to Use" },
               { id: "basic", title: "Basic Usage" },
+              { id: "aer-variant", title: "The Aer Variant" },
               { id: "icons", title: "Icons & Shortcuts" },
               { id: "nested", title: "Nested Submenus" },
               { id: "positioning", title: "Positioning" },

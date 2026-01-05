@@ -18,12 +18,30 @@ export const Tooltip = ({
   trigger = "hover",
   arrow = true,
   disabled = false,
+  open: controlledOpen,
+  defaultOpen = false,
+  onOpenChange,
   className,
   style,
   ...props
 }: TooltipProps) => {
   const { autoContrast } = useAerConfig();
-  const [isOpen, setIsOpen] = React.useState<boolean>(false);
+  const [internalIsOpen, setInternalIsOpen] =
+    React.useState<boolean>(defaultOpen);
+
+  const isOpen = controlledOpen ?? internalIsOpen;
+
+  const setIsOpen = React.useCallback(
+    (value: React.SetStateAction<boolean>) => {
+      const newValue =
+        typeof value === "function"
+          ? (value as (prev: boolean) => boolean)(isOpen)
+          : value;
+      setInternalIsOpen(newValue);
+      onOpenChange?.(newValue);
+    },
+    [isOpen, onOpenChange]
+  );
   const [effectiveSide, setEffectiveSide] = React.useState<typeof side>(side);
   const [effectiveAlign, setEffectiveAlign] =
     React.useState<typeof align>(align);
