@@ -6,6 +6,17 @@ All notable changes to the Aer Design project will be documented in this file.
 
 ### New Features
 
+- **SidebarNestedItem**: Introduced collapsible nested navigation for Sidebar component.
+
+  - **Multi-Level Nesting**: Support for unlimited nesting depth with recursive structure.
+  - **Smart Adaptation**: Automatically renders as floating panels in collapsed/horizontal modes.
+  - **Position-Aware Chevrons**: Uses ChevronDown for top, ChevronUp for bottom, ChevronRight for sides.
+  - **Active Child Detection**: Recursive detection highlights all ancestor items when any descendant is active.
+  - **Customizable Indent**: `indent` prop accepts any CSS unit (px, rem, em, %, etc.) for flexible spacing.
+  - **Floating Panels**: Intelligent positioning based on sidebar location (left/right/top/bottom).
+  - **Full Width Items**: Panel items properly span container width with labels always visible.
+  - **Active Indicators**: Subtle background tint on parent items containing active children.
+
 - **Automatic Contrast System**: Introduced WCAG 2.1 compliant automatic text color calculation.
   - **`useContrastColor`**: React hook for automatic text color calculation based on background.
   - **`getAccessibleTextColor`**: Utility function to determine accessible text color.

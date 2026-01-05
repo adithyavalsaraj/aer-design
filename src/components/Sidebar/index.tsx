@@ -1,7 +1,14 @@
 import { cn } from "@/lib/utils";
 import { type VariantProps, cva } from "class-variance-authority";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  ChevronUp,
+  X,
+} from "lucide-react";
 import * as React from "react";
+import { createPortal } from "react-dom";
 
 // --- Variants ---
 
@@ -380,8 +387,6 @@ interface SidebarItemProps
   active?: boolean;
 }
 
-import { createPortal } from "react-dom";
-
 // ... (existing imports)
 
 // ... (SidebarItem component start)
@@ -463,7 +468,7 @@ const SidebarItem = React.forwardRef<HTMLButtonElement, SidebarItemProps>(
             // Colors & States
             active
               ? variant === "aer"
-                ? "bg-white/20 text-white shadow-lg border border-white/10"
+                ? "bg-white/20 text-white shadow-lg"
                 : "bg-aer-primary text-aer-primary-foreground shadow-md shadow-aer-primary/20"
               : variant === "aer"
               ? "text-white/70 hover:bg-white/10 hover:text-white"
@@ -519,6 +524,245 @@ const SidebarItem = React.forwardRef<HTMLButtonElement, SidebarItemProps>(
 );
 SidebarItem.displayName = "SidebarItem";
 
+// --- Nested Item with Expand/Collapse ---
+
+interface SidebarNestedItemProps {
+  icon?: React.ReactNode;
+  label: string;
+  defaultExpanded?: boolean;
+  indent?: string; // Indentation with CSS unit (default: "1rem")
+  children: React.ReactNode;
+  className?: string;
+}
+
+const SidebarNestedItem = ({
+  icon,
+  label,
+  defaultExpanded = false,
+  indent = "1rem", // Default 1rem
+  children,
+  className,
+}: SidebarNestedItemProps) => {
+  const { collapsed, position, variant } = React.useContext(SidebarContext);
+  const [isExpanded, setIsExpanded] = React.useState(defaultExpanded);
+  const [isPanelOpen, setIsPanelOpen] = React.useState(false);
+  const isHorizontal = position === "top" || position === "bottom";
+  const buttonRef = React.useRef<HTMLButtonElement>(null);
+  const [panelStyles, setPanelStyles] = React.useState<React.CSSProperties>({});
+
+  // Recursively check if any child (at any level) is active
+  const hasActiveChild = React.useMemo(() => {
+    const checkActive = (children: React.ReactNode): boolean => {
+      let foundActive = false;
+      React.Children.forEach(children, (child) => {
+        if (React.isValidElement(child)) {
+          // Check if this child is active
+          if ((child.props as any).active) {
+            foundActive = true;
+          }
+          // Recursively check this child's children
+          if ((child.props as any).children) {
+            if (checkActive((child.props as any).children)) {
+              foundActive = true;
+            }
+          }
+        }
+      });
+      return foundActive;
+    };
+    return checkActive(children);
+  }, [children]);
+
+  // Calculate panel position when opened
+  React.useEffect(() => {
+    if (isPanelOpen && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      let styles: React.CSSProperties = {
+        position: "fixed",
+        zIndex: 100,
+      };
+
+      if (isHorizontal) {
+        // Horizontal sidebar: show panel below/above
+        if (position === "top") {
+          styles.top = rect.bottom + 8;
+          styles.left = rect.left;
+        } else {
+          styles.bottom = window.innerHeight - rect.top + 8;
+          styles.left = rect.left;
+        }
+      } else {
+        // Vertical sidebar: show panel to the side
+        styles.top = rect.top;
+        if (position === "right") {
+          styles.right = window.innerWidth - rect.left + 8;
+        } else {
+          styles.left = rect.right + 8;
+        }
+      }
+
+      setPanelStyles(styles);
+    }
+  }, [isPanelOpen, position, isHorizontal]);
+
+  // Close panel when clicking outside
+  React.useEffect(() => {
+    if (!isPanelOpen) return;
+
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        buttonRef.current &&
+        !buttonRef.current.contains(e.target as Node) &&
+        !(e.target as Element).closest(".sidebar-nested-panel")
+      ) {
+        setIsPanelOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isPanelOpen]);
+
+  // In collapsed or horizontal mode, show as a trigger with floating panel
+  if (collapsed || isHorizontal) {
+    return (
+      <>
+        <button
+          ref={buttonRef}
+          onClick={() => setIsPanelOpen(!isPanelOpen)}
+          className={cn(
+            "group flex items-center gap-3 rounded-aer-md text-sm font-medium transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-aer-ring",
+            isHorizontal
+              ? "px-3 py-2 justify-between w-full"
+              : "w-full px-3 py-2",
+            collapsed &&
+              !isHorizontal &&
+              "justify-center px-0 w-10 h-10 mx-auto",
+            variant === "aer"
+              ? "text-white/70 hover:bg-white/10 hover:text-white"
+              : "text-aer-foreground/80 hover:bg-aer-muted hover:text-aer-foreground hover:translate-x-0.5 active:scale-95",
+            isPanelOpen && (variant === "aer" ? "bg-white/10" : "bg-aer-muted"),
+            hasActiveChild &&
+              !isPanelOpen &&
+              (variant === "aer" ? "bg-white/10" : "bg-aer-primary/10"),
+            className
+          )}
+        >
+          <div className="flex items-center gap-3">
+            {icon && (
+              <span
+                className={cn(
+                  "flex items-center justify-center shrink-0 transition-transform duration-200",
+                  collapsed ? "size-5" : "size-4"
+                )}
+              >
+                {icon}
+              </span>
+            )}
+            {(!collapsed || isHorizontal) && (
+              <span className="truncate leading-tight">{label}</span>
+            )}
+          </div>
+          {/* Chevron indicator for nested items */}
+          {(!collapsed || isHorizontal) && (
+            <>
+              {isHorizontal ? (
+                position === "top" ? (
+                  <ChevronDown
+                    className={cn(
+                      "size-4 shrink-0 transition-transform duration-200",
+                      isPanelOpen && "rotate-180"
+                    )}
+                  />
+                ) : (
+                  <ChevronUp
+                    className={cn(
+                      "size-4 shrink-0 transition-transform duration-200",
+                      isPanelOpen && "rotate-180"
+                    )}
+                  />
+                )
+              ) : (
+                <ChevronRight
+                  className={cn(
+                    "size-4 shrink-0 transition-transform duration-200",
+                    isPanelOpen && "rotate-90"
+                  )}
+                />
+              )}
+            </>
+          )}
+        </button>
+
+        {/* Floating Panel */}
+        {isPanelOpen &&
+          createPortal(
+            <div
+              className="sidebar-nested-panel min-w-[240px] bg-aer-background border border-aer-border rounded-aer-lg shadow-xl p-2 space-y-0.5 animate-in fade-in zoom-in-95 duration-200"
+              style={panelStyles}
+            >
+              <div className="px-3 py-2 text-xs font-semibold text-aer-muted-foreground border-b border-aer-border mb-2">
+                {label}
+              </div>
+              {/* Wrap children in context with collapsed=false to show labels */}
+              <SidebarContext.Provider
+                value={{
+                  collapsed: false,
+                  position,
+                  variant,
+                }}
+              >
+                <div className="flex flex-col w-full">{children}</div>
+              </SidebarContext.Provider>
+            </div>,
+            document.body
+          )}
+      </>
+    );
+  }
+
+  // Normal expanded mode (vertical, not collapsed)
+  return (
+    <div className={cn("w-full", className)}>
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className={cn(
+          "group flex items-center justify-between gap-3 w-full px-3 py-2 rounded-aer-md text-sm font-medium transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-aer-ring",
+          "text-aer-foreground/80 hover:bg-aer-muted hover:text-aer-foreground hover:translate-x-0.5 active:scale-95",
+          hasActiveChild && "bg-aer-primary/10"
+        )}
+      >
+        <div className="flex items-center gap-3">
+          {icon && (
+            <span className="flex items-center justify-center shrink-0 size-4 transition-transform duration-200 group-hover:scale-110">
+              {icon}
+            </span>
+          )}
+          <span className="truncate leading-tight">{label}</span>
+        </div>
+        <ChevronRight
+          className={cn(
+            "size-4 shrink-0 transition-transform duration-200",
+            isExpanded && "rotate-90"
+          )}
+        />
+      </button>
+      {isExpanded && (
+        <div
+          className="mt-1 space-y-0.5 border-s-2 border-aer-border/30 animate-in slide-in-from-top-2 fade-in duration-200"
+          style={{
+            marginInlineStart: indent,
+            paddingInlineStart: `calc(${indent} / 2)`,
+          }}
+        >
+          {children}
+        </div>
+      )}
+    </div>
+  );
+};
+SidebarNestedItem.displayName = "SidebarNestedItem";
+
 export {
   Sidebar,
   SidebarClose,
@@ -526,6 +770,7 @@ export {
   SidebarFooter,
   SidebarHeader,
   SidebarItem,
+  SidebarNestedItem,
   SidebarSection,
 };
 

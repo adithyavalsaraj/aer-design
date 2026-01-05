@@ -6,6 +6,7 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarItem,
+  SidebarNestedItem,
   SidebarSection,
   useSidebar,
 } from "@/components/Sidebar";
@@ -239,20 +240,64 @@ function SidebarPlayground() {
           >
             Dashboard
           </SidebarItem>
-          <SidebarItem
+          <SidebarNestedItem
             icon={<Users />}
-            active={activeItem === "team"}
-            onClick={() => setActiveItem("team")}
+            label="Team"
+            defaultExpanded={true}
           >
-            Team
-          </SidebarItem>
-          <SidebarItem
-            icon={<MessageSquare />}
-            active={activeItem === "messages"}
-            onClick={() => setActiveItem("messages")}
-          >
-            Messages
-          </SidebarItem>
+            <SidebarItem
+              icon={<User />}
+              active={activeItem === "members"}
+              onClick={() => setActiveItem("members")}
+            >
+              Members
+            </SidebarItem>
+            <SidebarItem
+              icon={<Settings />}
+              active={activeItem === "roles"}
+              onClick={() => setActiveItem("roles")}
+            >
+              Roles
+            </SidebarItem>
+            <SidebarItem
+              icon={<Bell />}
+              active={activeItem === "invites"}
+              onClick={() => setActiveItem("invites")}
+            >
+              Invites
+            </SidebarItem>
+          </SidebarNestedItem>
+          <SidebarNestedItem icon={<MessageSquare />} label="Messages">
+            <SidebarItem
+              icon={<Bell />}
+              active={activeItem === "inbox"}
+              onClick={() => setActiveItem("inbox")}
+            >
+              Inbox
+            </SidebarItem>
+            <SidebarItem
+              icon={<User />}
+              active={activeItem === "sent"}
+              onClick={() => setActiveItem("sent")}
+            >
+              Sent
+            </SidebarItem>
+            {/* Multi-level nesting example */}
+            <SidebarNestedItem icon={<Settings />} label="Archives">
+              <SidebarItem
+                active={activeItem === "archive-2024"}
+                onClick={() => setActiveItem("archive-2024")}
+              >
+                2024
+              </SidebarItem>
+              <SidebarItem
+                active={activeItem === "archive-2023"}
+                onClick={() => setActiveItem("archive-2023")}
+              >
+                2023
+              </SidebarItem>
+            </SidebarNestedItem>
+          </SidebarNestedItem>
         </SidebarSection>
         <SidebarSection title="Tools">
           <SidebarItem
@@ -617,6 +662,118 @@ export function SidebarDoc() {
       </DocSection>
 
       <DocSection
+        title="Nested Items"
+        id="nested-items"
+        description="Create multi-level navigation with collapsible sections."
+      >
+        <div className="space-y-4">
+          <p className="text-sm text-aer-muted-foreground">
+            Use <code>SidebarNestedItem</code> to create expandable/collapsible
+            navigation groups. Perfect for organizing complex navigation
+            hierarchies.
+          </p>
+          <div className="p-6 border rounded-lg bg-aer-muted/5 flex justify-center isolate">
+            <Sidebar
+              mode="absolute"
+              position="left"
+              className="h-[400px] relative"
+            >
+              <SidebarHeader>
+                <div className="size-8 rounded-lg bg-aer-primary" />
+                <span className="font-bold">Dashboard</span>
+              </SidebarHeader>
+              <SidebarContent>
+                <SidebarSection title="Navigation">
+                  <SidebarItem icon={<Home />}>Home</SidebarItem>
+                  <SidebarNestedItem
+                    icon={<Users />}
+                    label="Team"
+                    defaultExpanded={true}
+                  >
+                    <SidebarItem icon={<User />}>Members</SidebarItem>
+                    <SidebarItem icon={<Settings />}>Roles</SidebarItem>
+                    <SidebarItem icon={<Bell />}>Invites</SidebarItem>
+                  </SidebarNestedItem>
+                  <SidebarNestedItem icon={<MessageSquare />} label="Messages">
+                    <SidebarItem icon={<Bell />}>Inbox</SidebarItem>
+                    <SidebarItem icon={<User />}>Sent</SidebarItem>
+                  </SidebarNestedItem>
+                  <SidebarItem icon={<Settings />}>Settings</SidebarItem>
+                </SidebarSection>
+              </SidebarContent>
+            </Sidebar>
+          </div>
+          <CodeBlock
+            ts={`<SidebarNestedItem 
+  icon={<Users />} 
+  label="Team"
+  defaultExpanded={true}
+>
+  <SidebarItem icon={<User />}>Members</SidebarItem>
+  <SidebarItem icon={<Settings />}>Roles</SidebarItem>
+</SidebarNestedItem>`}
+            fullCode={`import { 
+  Sidebar, 
+  SidebarHeader, 
+  SidebarContent, 
+  SidebarSection, 
+  SidebarItem,
+  SidebarNestedItem 
+} from "aer-design";
+import { Home, Users, User, Settings, Bell, MessageSquare } from "lucide-react";
+
+export default function NestedSidebarExample() {
+  return (
+    <Sidebar mode="fixed" position="left">
+      <SidebarHeader>
+        <div className="size-8 rounded-lg bg-aer-primary" />
+        <span className="font-bold">Dashboard</span>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarSection title="Navigation">
+          <SidebarItem icon={<Home />}>Home</SidebarItem>
+          
+          {/* Nested section with sub-items */}
+          <SidebarNestedItem
+            icon={<Users />}
+            label="Team"
+            defaultExpanded={true}
+          >
+            <SidebarItem icon={<User />}>Members</SidebarItem>
+            <SidebarItem icon={<Settings />}>Roles</SidebarItem>
+            <SidebarItem icon={<Bell />}>Invites</SidebarItem>
+          </SidebarNestedItem>
+          
+          {/* Another nested section */}
+          <SidebarNestedItem
+            icon={<MessageSquare />}
+            label="Messages"
+          >
+            <SidebarItem icon={<Bell />}>Inbox</SidebarItem>
+            <SidebarItem icon={<User />}>Sent</SidebarItem>
+          </SidebarNestedItem>
+          
+          <SidebarItem icon={<Settings />}>Settings</SidebarItem>
+        </SidebarSection>
+      </SidebarContent>
+    </Sidebar>
+  );
+}`}
+          />
+          <div className="mt-4 p-4 bg-sky-500/10 border border-sky-500/20 rounded-lg">
+            <p className="text-sm text-sky-700 dark:text-sky-400">
+              <strong>Smart Adaptation:</strong> In <strong>collapsed</strong>{" "}
+              (icon-only) mode or <strong>horizontal</strong> (top/bottom)
+              positions, nested items automatically show as a floating panel
+              when clicked. The panel positions itself intelligently based on
+              the sidebar's location, ensuring nested navigation is always
+              accessible.
+            </p>
+          </div>
+        </div>
+      </DocSection>
+
+      <DocSection
         id="aer-variant"
         title="The Aer Variant"
         description="Our signature glassmorphism effect for premium interfaces."
@@ -867,6 +1024,67 @@ export function SidebarDoc() {
       </div>
 
       <div>
+        <h4 id="sidebar-nested-item-props" className="text-lg font-bold mb-4">
+          SidebarNestedItemProps
+        </h4>
+        <p className="text-sm text-aer-muted-foreground mb-4">
+          Props for creating collapsible nested navigation sections.
+        </p>
+        <ApiTable
+          data={[
+            {
+              prop: "label",
+              type: "string",
+              default: "-",
+              description: "The text label for the nested section.",
+            },
+            {
+              prop: "icon",
+              type: "React.ReactNode",
+              default: "-",
+              description: "Optional icon to display before the label.",
+            },
+            {
+              prop: "defaultExpanded",
+              type: "boolean",
+              default: "false",
+              description:
+                "Whether the section is expanded by default in normal mode.",
+            },
+            {
+              prop: "indent",
+              type: "string",
+              default: '"1rem"',
+              description:
+                "Indentation for nested children. Accepts any CSS unit (px, rem, em, %, etc.).",
+            },
+            {
+              prop: "children",
+              type: "React.ReactNode",
+              default: "-",
+              description:
+                "Child items (SidebarItem or nested SidebarNestedItem components).",
+            },
+            {
+              prop: "className",
+              type: "string",
+              default: "-",
+              description: "Additional CSS classes for styling.",
+            },
+          ]}
+        />
+        <div className="mt-4 p-4 bg-sky-500/10 border border-sky-500/20 rounded-lg">
+          <p className="text-sm text-sky-700 dark:text-sky-400">
+            <strong>Smart Behavior:</strong> In collapsed or horizontal modes,
+            nested items automatically render as floating panels instead of
+            inline expansion. The panel positions itself intelligently based on
+            sidebar position. Active child detection is recursive - all ancestor
+            nested items show an active indicator when any descendant is active.
+          </p>
+        </div>
+      </div>
+
+      <div>
         <h3 id="feature-guide" className="text-lg font-bold mb-4">
           Feature Usage Guide
         </h3>
@@ -981,6 +1199,7 @@ export function SidebarDoc() {
               { id: "introduction", title: "Introduction" },
               { id: "when-to-use", title: "When to Use" },
               { id: "basic", title: "Basic Usage" },
+              { id: "nested-items", title: "Nested Items" },
               { id: "aer-variant", title: "The Aer Variant" },
               { id: "floating", title: "Floating Island" },
               { id: "granular-styling", title: "Granular Styling" },
@@ -993,6 +1212,10 @@ export function SidebarDoc() {
             content: api,
             toc: [
               { id: "sidebar-props", title: "SidebarProps" },
+              {
+                id: "sidebar-nested-item-props",
+                title: "SidebarNestedItemProps",
+              },
               { id: "feature-guide", title: "Feature Usage Guide" },
             ],
           },

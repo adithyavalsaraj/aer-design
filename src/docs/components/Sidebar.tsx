@@ -4,6 +4,7 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarItem,
+  SidebarNestedItem,
   SidebarSection,
 } from "@/components/Sidebar";
 import {
@@ -29,35 +30,92 @@ export const NAV_ITEMS = [
     id: "button",
     label: "Button",
     icon: MousePointer2,
-    category: "Inputs",
+    category: "Components",
+    subCategory: "Inputs",
   },
-  { id: "input", label: "Input", icon: Type, category: "Inputs" },
-  { id: "dropdown", label: "Dropdown", icon: Boxes, category: "Inputs" },
-  { id: "cascader", label: "Cascader", icon: Boxes, category: "Inputs" },
-  { id: "textarea", label: "Textarea", icon: Layout, category: "Inputs" },
-
-  { id: "checkbox", label: "Checkbox", icon: CheckSquare, category: "Inputs" },
-  { id: "radio", label: "Radio Group", icon: CircleDot, category: "Inputs" },
-  { id: "otp-input", label: "OTP Input", icon: Boxes, category: "Inputs" },
-  { id: "sidebar", label: "Sidebar", icon: Layout, category: "Layout" },
-  { id: "navbar", label: "Navbar", icon: Layout, category: "Layout" },
+  {
+    id: "input",
+    label: "Input",
+    icon: Type,
+    category: "Components",
+    subCategory: "Inputs",
+  },
+  {
+    id: "dropdown",
+    label: "Dropdown",
+    icon: Boxes,
+    category: "Components",
+    subCategory: "Inputs",
+  },
+  {
+    id: "cascader",
+    label: "Cascader",
+    icon: Boxes,
+    category: "Components",
+    subCategory: "Inputs",
+  },
+  {
+    id: "textarea",
+    label: "Textarea",
+    icon: Layout,
+    category: "Components",
+    subCategory: "Inputs",
+  },
+  {
+    id: "checkbox",
+    label: "Checkbox",
+    icon: CheckSquare,
+    category: "Components",
+    subCategory: "Inputs",
+  },
+  {
+    id: "radio",
+    label: "Radio Group",
+    icon: CircleDot,
+    category: "Components",
+    subCategory: "Inputs",
+  },
+  {
+    id: "otp-input",
+    label: "OTP Input",
+    icon: Boxes,
+    category: "Components",
+    subCategory: "Inputs",
+  },
+  {
+    id: "sidebar",
+    label: "Sidebar",
+    icon: Layout,
+    category: "Components",
+    subCategory: "Layout",
+  },
+  {
+    id: "navbar",
+    label: "Navbar",
+    icon: Layout,
+    category: "Components",
+    subCategory: "Layout",
+  },
   {
     id: "menu",
     label: "Menu",
     icon: Layout,
-    category: "Overlay",
+    category: "Components",
+    subCategory: "Overlay",
   },
   {
     id: "overlay",
     label: "Overlay",
     icon: Layout,
-    category: "Overlay",
+    category: "Components",
+    subCategory: "Overlay",
   },
   {
     id: "tooltip",
     label: "Tooltip",
     icon: MousePointer2,
-    category: "Overlay",
+    category: "Components",
+    subCategory: "Overlay",
   },
   {
     id: "utilities",
@@ -114,20 +172,52 @@ export function Sidebar({
       </SidebarHeader>
 
       <SidebarContent className="px-3 mt-4">
-        {categories.map((cat) => (
-          <SidebarSection key={cat} title={cat} className="mb-2">
-            {NAV_ITEMS.filter((i) => i.category === cat).map((item) => (
-              <SidebarItem
-                key={item.id}
-                onClick={() => handlePageChange(item.id)}
-                active={activePage === item.id}
-                icon={<item.icon />}
-              >
-                {item.label}
-              </SidebarItem>
-            ))}
-          </SidebarSection>
-        ))}
+        {categories.map((cat) => {
+          const items = NAV_ITEMS.filter((i) => i.category === cat);
+          const subCategories = Array.from(
+            new Set(items.map((i) => i.subCategory).filter(Boolean))
+          );
+
+          return (
+            <SidebarSection key={cat} title={cat} className="mb-2">
+              {subCategories.length > 0 ? (
+                <>
+                  {subCategories.map((subCat) => (
+                    <SidebarNestedItem
+                      key={subCat as string}
+                      label={subCat as string}
+                      defaultExpanded={true}
+                    >
+                      {items
+                        .filter((i) => i.subCategory === subCat)
+                        .map((item) => (
+                          <SidebarItem
+                            key={item.id}
+                            onClick={() => handlePageChange(item.id)}
+                            active={activePage === item.id}
+                            icon={<item.icon />}
+                          >
+                            {item.label}
+                          </SidebarItem>
+                        ))}
+                    </SidebarNestedItem>
+                  ))}
+                </>
+              ) : (
+                items.map((item) => (
+                  <SidebarItem
+                    key={item.id}
+                    onClick={() => handlePageChange(item.id)}
+                    active={activePage === item.id}
+                    icon={<item.icon />}
+                  >
+                    {item.label}
+                  </SidebarItem>
+                ))
+              )}
+            </SidebarSection>
+          );
+        })}
       </SidebarContent>
 
       <SidebarFooter className="border-t-0 p-4 mb-2 gap-3">
