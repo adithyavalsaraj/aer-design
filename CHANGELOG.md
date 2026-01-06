@@ -13,6 +13,12 @@ All notable changes to the Aer Design project will be documented in this file.
 - **Badge**: Added a high-performance semantic marker component.
   - **Hierarchy**: 5 visual styles (filled, outline, soft, ghost, and glassmorphism aer).
   - **Semantics**: Built-in support for success, warning, error, and primary statuses.
+- **Avatar**: Introduced a premium representation system for users and entities.
+  - **Dynamic Fallbacks**: Automatically generates initials or displays custom icons if images are unavailable.
+  - **Status Integration**: Built-in indicators for online, offline, busy, and away states.
+  - **Avatar Groups**: Smart overlapping layout for teams with "more" count support and adaptive, size-aware spacing.
+  - **Auto-Contrast**: Integrated with `useContrastColor` for accessible initial colors on custom backgrounds.
+  - **Transparency Handling**: Improved "soft" variant with an opaque base layer to prevent overlap bleed-through in groups.
 - **Card**: Introduced structured flexible containers.
   - **Composition**: Modular sub-components for Title, Description, Content, and Footer.
   - **Aesthetics**: Premium Aer variant with deep glassmorphism and interactive hover transforms.

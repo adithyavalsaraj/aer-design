@@ -393,11 +393,14 @@ export function DocTabs({ tabs }: { tabs: TabItem[] }) {
   const [activeTab, setActiveTab] = React.useState(tabs[0].id);
   const { setTocItems } = useTOC();
 
-  // Sync TOC when active tab changes
+  // Sync TOC when active tab changes. Reset on unmount to prevent persistence.
   React.useEffect(() => {
     const currentTab = tabs.find((t) => t.id === activeTab);
-    // If toc is defined (even empty array), use it. If undefined, set to null to trigger App.tsx fallback.
     setTocItems(currentTab?.toc ?? null);
+
+    return () => {
+      setTocItems(null);
+    };
   }, [activeTab, tabs, setTocItems]);
 
   return (

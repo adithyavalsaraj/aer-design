@@ -20,6 +20,7 @@ import {
   Target,
   Terminal,
   Type,
+  User,
 } from "lucide-react";
 import { Branding } from "./Branding";
 
@@ -41,6 +42,13 @@ export const NAV_ITEMS = [
     id: "badge",
     label: "Badge",
     icon: Tag,
+    category: "Components",
+    subCategory: "Data Display",
+  },
+  {
+    id: "avatar",
+    label: "Avatar",
+    icon: User,
     category: "Components",
     subCategory: "Data Display",
   },

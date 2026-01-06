@@ -1,3 +1,4 @@
+import { AvatarDoc } from "../pages/AvatarDoc";
 import { BadgeDoc } from "../pages/BadgeDoc";
 import { ButtonDoc } from "../pages/ButtonDoc";
 import { CardDoc } from "../pages/CardDoc";
@@ -34,6 +35,8 @@ export function PageRenderer({ activePage }: PageRendererProps) {
       return <ButtonDoc />;
     case "badge":
       return <BadgeDoc />;
+    case "avatar":
+      return <AvatarDoc />;
     case "card":
       return <CardDoc />;
     case "cascader":

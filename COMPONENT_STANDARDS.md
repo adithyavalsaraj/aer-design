@@ -142,7 +142,7 @@ toc: [
 - [ ] **States:** Are hover/focus/loading states visually demonstrated?
 - [ ] **Granular Styling:** Is there a list of styleable "slots" or internal classes?
 - [ ] **Introduction:** Does it have 4-6 bullet points with `<strong>` tags?
-- [ ] **Code Examples:** Are both `ts` snippet and `fullCode` provided and copy-paste ready?
+- [ ] **Code Examples:** Are both `ts` snippet and `fullCode` provided? The `fullCode` MUST be a standalone, copy-paste ready React component with all necessary imports (including `aer-design` and `lucide-react`) to support the **StackBlitz** "Open in Editor" feature.
 - [ ] **Working Examples:** Does EVERY section include a live visual demonstration AND a CodeBlock?
 - [ ] **Tabs:** Are all three tabs (Overview, API, Theming) implemented?
 

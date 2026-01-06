@@ -1,7 +1,8 @@
 # Aer Design Roadmap
 
-**Version:** 0.11.0  
-**Last Updated:** January 6, 2026
+- **Version**: `v0.11.0`
+- **Last Updated**: 2026-01-06
+- **Status**: Stable
 
 ---
 
@@ -30,7 +31,7 @@
 
 ## ✅ Completed Components
 
-### Core Components (18)
+### Core Components (19)
 
 | Component    | Version | Description                  | Key Features                                                                               |
 | ------------ | ------- | ---------------------------- | ------------------------------------------------------------------------------------------ |
@@ -52,6 +53,7 @@
 | **Badge**    | v0.11.0 | Compact status markers       | 5 variants, 5 statuses, 3 sizes, aer glassmorphism variant                                 |
 | **Card**     | v0.11.0 | Structured containers        | Sub-components (Header, Body, Footer), hoverable states, aer glassmorphism variant         |
 | **Tabs**     | v0.11.0 | Responsive tab system        | Horizontal and vertical orientations, keyboard navigation, lazy loading, scroll navigation |
+| **Avatar**   | v0.11.0 | User avatar component        | Image with fallback, initials generation, sizes, status indicator, groups                  |
 
 ### Provider Components (2)
 
@@ -108,7 +110,7 @@
   - Custom icons
   - Nested accordions support
 
-#### 3. **Popover**
+#### 2. **Popover**
 
 - **Status:** Not implemented (Tooltip exists but not full Popover)
 - **Priority:** High
@@ -120,7 +122,7 @@
   - Arrow indicator
   - Rich content support (forms, buttons, etc.)
 
-#### 4. **Toast / Notification**
+#### 3. **Toast / Notification**
 
 - **Status:** Not implemented
 - **Priority:** High
@@ -135,19 +137,7 @@
 
 ### Medium Priority
 
-#### 5. **Avatar**
-
-- **Status:** Not implemented
-- **Priority:** Medium
-- **Description:** User avatar component
-- **Required Features:**
-  - Image with fallback
-  - Initials generation
-  - Sizes (xs, sm, md, lg, xl)
-  - Status indicator (online, offline, busy)
-  - Avatar groups
-
-#### 6. **Breadcrumb**
+#### 4. **Breadcrumb**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -158,7 +148,7 @@
   - Icon support
   - Current page highlighting
 
-#### 7. **Pagination**
+#### 5. **Pagination**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -170,7 +160,7 @@
   - Compact mode
   - Items per page selector
 
-#### 8. **Progress**
+#### 6. **Progress**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -182,7 +172,7 @@
   - Color variants
   - Label support
 
-#### 9. **Skeleton**
+#### 7. **Skeleton**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -193,7 +183,7 @@
   - Composable layouts
   - Theme-aware colors
 
-#### 10. **Divider / Separator**
+#### 8. **Divider / Separator**
 
 - **Status:** Partially (exists in Dropdown/Menu)
 - **Priority:** Medium
@@ -206,7 +196,7 @@
 
 ### Low Priority
 
-#### 13. **Alert**
+#### 9. **Alert**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -217,7 +207,7 @@
   - Icons
   - Title and description
 
-#### 14. **Slider**
+#### 10. **Slider**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -229,7 +219,7 @@
   - Marks and labels
   - Tooltip on drag
 
-#### 15. **Switch**
+#### 11. **Switch**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -240,7 +230,7 @@
   - Icon support
   - Label positioning
 
-#### 16. **DatePicker**
+#### 12. **DatePicker**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -253,7 +243,7 @@
   - Disabled dates
   - Multiple date formats
 
-#### 17. **TimePicker**
+#### 13. **TimePicker**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -264,7 +254,7 @@
   - Keyboard input
   - Dropdown or scroll selection
 
-#### 18. **Table**
+#### 14. **Table**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -278,7 +268,7 @@
   - Fixed headers
   - Virtualization for large datasets
 
-#### 19. **Tree**
+#### 15. **Tree**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -418,21 +408,23 @@
 ### Overall Progress
 
 ```
-Completed Components:     20/36  (55%)
-High Priority Missing:     3/36  (8%)
-Medium Priority Missing:   6/36  (17%)
-Low Priority Missing:      7/36  (20%)
+
+Completed Components: 21/36 (58%)
+High Priority Missing: 3/36 (8%)
+Medium Priority Missing: 5/36 (14%)
+Low Priority Missing: 7/36 (20%)
+
 ```
 
 ### Category Breakdown
 
 | Category          | Completed | Missing | Total |
 | ----------------- | --------- | ------- | ----- |
-| **Form Controls** | 9         | 4       | 13    |
+| **Form Controls** | 8         | 5       | 13    |
 | **Navigation**    | 3         | 3       | 6     |
-| **Feedback**      | 4         | 4       | 8     |
-| **Data Display**  | 0         | 4       | 4     |
-| **Layout**        | 1         | 1       | 2     |
+| **Feedback**      | 3         | 5       | 8     |
+| **Data Display**  | 4         | 1       | 5     |
+| **Layout**        | 0         | 2       | 2     |
 | **Providers**     | 2         | 0       | 2     |
 | **Utilities**     | 1         | 0       | 1     |
 
@@ -462,6 +454,10 @@ For detailed contribution guidelines, see `CONTRIBUTING.md` (to be created).
 
 ---
 
-**Last Updated:** January 6, 2026  
-**Maintained by:** Aer Design Team  
+**Last Updated:** January 6, 2026
+**Maintained by:** Aer Design Team
 **License:** MIT
+
+```
+
+```

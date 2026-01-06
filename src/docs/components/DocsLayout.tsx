@@ -45,11 +45,13 @@ export function DocsLayout({
           <main className="flex-1 flex gap-8 px-4 py-8 md:px-12 md:py-16">
             <div className="flex-1 max-w-5xl mx-auto w-full">{children}</div>
 
-            <div className="hidden lg:block w-64 shrink-0">
-              <div className="sticky top-20">
-                <RightTableOfContents items={displayTOC} />
+            {displayTOC.length > 0 && (
+              <div className="hidden lg:block w-64 shrink-0">
+                <div className="sticky top-20">
+                  <RightTableOfContents items={displayTOC} />
+                </div>
               </div>
-            </div>
+            )}
           </main>
         </div>
       </div>

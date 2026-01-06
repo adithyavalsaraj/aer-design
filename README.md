@@ -68,6 +68,7 @@ export function LoginForm() {
 | Component     | Description                                                                            |
 | :------------ | :------------------------------------------------------------------------------------- |
 | **Button**    | Highly interactive buttons with variants (primary, outline, ghost) and loading states. |
+| **Avatar**    | User/Entity representation with fallbacks, status indicators, and grouping.            |
 | **Input**     | Enhanced text inputs with label positioning, icons, masking, and validation.           |
 | **Dropdown**  | Virtualized select menus with search, multi-select, grouping, and auto-positioning.    |
 | **Menu**      | Context menus with 360° auto-positioning, nested submenus, and keyboard navigation.    |

@@ -36,10 +36,11 @@ export function RoadmapDoc() {
     { name: "Tooltip", version: "v0.6.2", category: "Feedback" },
     { name: "Overlay", version: "v0.9.0", category: "Feedback" },
     { name: "Dialog", version: "v0.11.0", category: "Feedback" },
-    { name: "Badge", version: "v0.11.0", category: "Feedback" },
-    { name: "Card", version: "v0.11.0", category: "Layout" },
+    { name: "Badge", version: "v0.11.0", category: "Data Display" },
+    { name: "Card", version: "v0.11.0", category: "Data Display" },
+    { name: "Tabs", version: "v0.11.0", category: "Data Display" },
+    { name: "Avatar", version: "v0.11.0", category: "Data Display" },
     { name: "Shortcut", version: "v0.8.0", category: "Utilities" },
-    { name: "Tabs", version: "v0.11.0", category: "Form Controls" },
     { name: "ThemeProvider", version: "v0.1.0", category: "Providers" },
     { name: "AerConfigProvider", version: "v0.5.0", category: "Providers" },
   ];
@@ -100,7 +101,6 @@ export function RoadmapDoc() {
   ];
 
   const mediumPriority = [
-    { name: "Avatar", description: "User avatar component" },
     { name: "Breadcrumb", description: "Navigation breadcrumb trail" },
     { name: "Pagination", description: "Page navigation component" },
     { name: "Progress", description: "Progress indicators" },
@@ -110,9 +110,9 @@ export function RoadmapDoc() {
 
   const stats = {
     total: 36,
-    completed: 20,
+    completed: 21,
     highPriority: 3,
-    mediumPriority: 6,
+    mediumPriority: 5,
     lowPriority: 7,
   };
 
@@ -121,11 +121,11 @@ export function RoadmapDoc() {
   );
 
   const categoryStats = [
-    { name: "Form Controls", completed: 9, total: 13 },
+    { name: "Form Controls", completed: 8, total: 13 },
     { name: "Navigation", completed: 3, total: 6 },
-    { name: "Feedback", completed: 4, total: 8 },
-    { name: "Data Display", completed: 0, total: 4 },
-    { name: "Layout", completed: 1, total: 2 },
+    { name: "Feedback", completed: 3, total: 8 },
+    { name: "Data Display", completed: 4, total: 5 },
+    { name: "Layout", completed: 0, total: 2 },
     { name: "Providers", completed: 2, total: 2 },
     { name: "Utilities", completed: 1, total: 1 },
   ];
