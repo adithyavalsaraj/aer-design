@@ -19,6 +19,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:docs": "tsc -b && vite build --mode docs",
     "lint": "eslint .",
     "preview": "vite preview"
   },
