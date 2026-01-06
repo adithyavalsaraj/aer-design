@@ -80,6 +80,7 @@ export function LoginForm() {
 | **Dialog**    | Advanced window system with drag, resize, and minimize/maximize capabilities.          |
 | **Badge**     | Compact and semantic status indicators with glassmorphism support.                     |
 | **Card**      | Flexible content containers with premium Aer depth and hover effects.                  |
+| **Tabs**      | Responsive tab system with lazy loading and automatic scroll navigation.               |
 
 ## Utilities
 
@@ -180,6 +181,31 @@ function Card({ bgColor, children }) {
 // The text color automatically adjusts to meet WCAG AA standards (4.5:1 ratio)
 <Card bgColor="#3498db">Accessible Text</Card> // White text
 <Card bgColor="#f1c40f">Accessible Text</Card> // Black text
+```
+
+### Performance & Lazy Loading
+
+Optimized for large-scale applications with built-in lazy loading and manual control:
+
+```tsx
+import { Tabs, TabContent } from "aer-design";
+
+function App() {
+  return (
+    <Tabs lazy defaultValue="overview">
+      <TabList>
+        <TabTrigger value="overview">Overview</TabTrigger>
+        <TabTrigger value="details">Details</TabTrigger>
+      </TabList>
+
+      {/* Overview loads immediately */}
+      <TabContent value="overview">...</TabContent>
+
+      {/* Details loads only when clicked */}
+      <TabContent value="details">...</TabContent>
+    </Tabs>
+  );
+}
 ```
 
 ### Type Safety

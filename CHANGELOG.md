@@ -19,13 +19,20 @@ All notable changes to the Aer Design project will be documented in this file.
 - **Sidebar**: Enhanced nested navigation configurability.
   - **Border Control**: Added `showNestedBorder` (Sidebar) and `showBorder` (SidebarNestedItem) to toggle left indicators.
   - **Smart Indentation**: Automatically reduces indentation when borders are disabled for a cleaner, unified look.
+- **Tabs**: Major performance and navigation overhaul.
+  - **Lazy Loading**: Introduced `lazy` and `forceMount` props for optimized tab content rendering.
+  - **Scroll Navigation**: Automatic chevron arrows for navigating overflowing tab lists in both orientations.
+  - **Interaction**: Unified keyboard arrow key navigation with visual scroll indicators.
 - **Documentation**: Standardized "Aer Variant" sections across all 15+ components.
   - Added component-specific "Pro tips" with usage guidance.
   - Consistent premium background previews in code examples.
   - Explicit recommendations for dark/colorful background compatibility.
+  - **Tabs Playground**: New interactive playground for testing variants, orientations, and overflow behavior.
 
 ### Bug Fixes
 
+- **Tabs**: Fixed navigation arrow overlap where chevrons could sit on top of tab labels.
+- **Tabs**: Fixed JSX syntax error in documentation related to nested DocSections.
 - **Overlay**: Fixed Tailwind CSS lint warning in documentation examples.
 - **Dialog**: Fixed various state z-index and click-through issues during development.
 

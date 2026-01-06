@@ -143,6 +143,13 @@ export const NAV_ITEMS = [
     subCategory: "Overlay",
   },
   {
+    id: "tabs",
+    label: "Tabs",
+    icon: Layout,
+    category: "Components",
+    subCategory: "Layout",
+  },
+  {
     id: "utilities",
     label: "Utilities",
     icon: Boxes,

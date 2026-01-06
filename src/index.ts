@@ -16,6 +16,7 @@ export * from "./components/Overlay";
 export * from "./components/Radio";
 export * from "./components/Shortcut";
 export * from "./components/Sidebar";
+export * from "./components/Tabs";
 export * from "./components/Textarea";
 export * from "./components/ThemeProvider";
 export * from "./components/Tooltip";

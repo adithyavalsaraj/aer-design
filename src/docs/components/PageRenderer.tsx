@@ -17,6 +17,7 @@ import { RadioDoc } from "../pages/RadioDoc";
 import { RoadmapDoc } from "../pages/RoadmapDoc";
 import { ShortcutDoc } from "../pages/ShortcutDoc";
 import { SidebarDoc } from "../pages/SidebarDoc";
+import { TabsDoc } from "../pages/TabsDoc";
 import { TextareaDoc } from "../pages/TextareaDoc";
 import { TooltipDoc } from "../pages/TooltipDoc";
 import { UtilitiesDoc } from "../pages/UtilitiesDoc";
@@ -61,6 +62,8 @@ export function PageRenderer({ activePage }: PageRendererProps) {
       return <OverlayDoc />;
     case "tooltip":
       return <TooltipDoc />;
+    case "tabs":
+      return <TabsDoc />;
     case "utilities":
       return <UtilitiesDoc />;
     case "positioning":

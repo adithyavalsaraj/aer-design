@@ -39,6 +39,7 @@ export function RoadmapDoc() {
     { name: "Badge", version: "v0.11.0", category: "Feedback" },
     { name: "Card", version: "v0.11.0", category: "Layout" },
     { name: "Shortcut", version: "v0.8.0", category: "Utilities" },
+    { name: "Tabs", version: "v0.11.0", category: "Form Controls" },
     { name: "ThemeProvider", version: "v0.1.0", category: "Providers" },
     { name: "AerConfigProvider", version: "v0.5.0", category: "Providers" },
   ];
@@ -93,7 +94,6 @@ export function RoadmapDoc() {
   };
 
   const highPriority = [
-    { name: "Tabs", description: "Tabbed interface component" },
     { name: "Accordion", description: "Collapsible content panels" },
     { name: "Popover", description: "Rich popover with interactive content" },
     { name: "Toast", description: "Toast notification system" },
@@ -109,10 +109,10 @@ export function RoadmapDoc() {
   ];
 
   const stats = {
-    total: 34,
-    completed: 19,
-    highPriority: 4,
-    mediumPriority: 4,
+    total: 36,
+    completed: 20,
+    highPriority: 3,
+    mediumPriority: 6,
     lowPriority: 7,
   };
 
@@ -121,13 +121,13 @@ export function RoadmapDoc() {
   );
 
   const categoryStats = [
-    { name: "Form Controls", completed: 7, total: 10 },
-    { name: "Navigation", completed: 4, total: 6 },
-    { name: "Feedback", completed: 4, total: 7 },
-    { name: "Data Display", completed: 2, total: 5 },
+    { name: "Form Controls", completed: 9, total: 13 },
+    { name: "Navigation", completed: 3, total: 6 },
+    { name: "Feedback", completed: 4, total: 8 },
+    { name: "Data Display", completed: 0, total: 4 },
     { name: "Layout", completed: 1, total: 2 },
     { name: "Providers", completed: 2, total: 2 },
-    { name: "Utilities", completed: 3, total: 6 },
+    { name: "Utilities", completed: 1, total: 1 },
   ];
 
   return (
