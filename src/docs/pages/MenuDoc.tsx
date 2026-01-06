@@ -214,6 +214,14 @@ export default function AerMenuExample() {
   );
 }`}
         />
+        <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+          <p className="text-sm text-blue-700 dark:text-blue-400">
+            <strong>Pro tip:</strong> Use the Aer variant for menus in high-end
+            interfaces where you want to emphasize hierarchy through depth. It
+            is particularly effective for profile dropdowns, workspace
+            switchers, and premium action sets on dark or vibrant backgrounds.
+          </p>
+        </div>
       </DocSection>
 
       <DocSection

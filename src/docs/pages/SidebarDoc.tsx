@@ -48,6 +48,7 @@ function SidebarPlayground() {
     overlay: false,
     backdrop: true,
     autoOverlay: true, // Default mobile behavior
+    showNestedBorder: true,
   });
 
   const [isOpen, setIsOpen] = React.useState(true);
@@ -226,6 +227,7 @@ function SidebarPlayground() {
       isOpen={activeMode === "overlay" ? isOpen : true}
       onOpenChange={setIsOpen}
       onBackdropClick={() => setIsOpen(false)}
+      showNestedBorder={config.showNestedBorder}
       className="border-aer-border"
     >
       <SidebarHeader>
@@ -426,6 +428,12 @@ function SidebarPlayground() {
               // Actually user wants to customize it.
               description="Switch to overlay on small screens?"
             />
+            <Checkbox
+              label="Nested Borders"
+              checked={config.showNestedBorder}
+              onChange={(e) => set("showNestedBorder", e.target.checked)}
+              description="Show left border indicator for nested items"
+            />
           </div>
         </div>
 
@@ -527,7 +535,9 @@ function SidebarPlayground() {
           config.autoOverlay
         } ? isOpen : true}\n  ${
           config.mode !== "icon" ? `collapsed={${config.collapsed}}\n` : ""
-        }  onBackdropClick={() => setIsOpen(false)}\n>\n  <SidebarHeader>\n     <Logo />\n     {!collapsed && <Title />}\n  </SidebarHeader>\n  ...\n</Sidebar>`}
+        }  onBackdropClick={() => setIsOpen(false)}\n  ${
+          config.showNestedBorder === false ? "showNestedBorder={false}\n" : ""
+        }>\n  <SidebarHeader>\n     <Logo />\n     {!collapsed && <Title />}\n  </SidebarHeader>\n  ...\n</Sidebar>`}
         fullCode={`import { Sidebar, SidebarHeader, SidebarContent, SidebarFooter, SidebarItem, SidebarSection, useSidebar } from "aer-design";\nimport { Home, User, Settings, Search, Menu } from "lucide-react";\nimport { useState, useEffect } from "react";\n\nfunction useMediaQuery(query: string) {\n  const [matches, setMatches] = useState(false);\n  useEffect(() => {\n    const media = window.matchMedia(query);\n    if (media.matches !== matches) setMatches(media.matches);\n    const listener = () => setMatches(media.matches);\n    media.addEventListener("change", listener);\n    return () => media.removeEventListener("change", listener);\n  }, [matches, query]);\n  return matches;\n}\n\n// Separate component to safely use the hook inside the provider\nfunction AppLogo() {\n    const { collapsed } = useSidebar();\n    return (\n        <div className="flex items-center gap-2 px-2 font-bold text-xl">\n          <div className="size-8 rounded bg-blue-600 text-white flex items-center justify-center">A</div>\n          {!collapsed && <span>Aer Design</span>}\n        </div>\n    )\n}\n\nexport default function ResponsiveApp() {\n  const [isOpen, setIsOpen] = useState(false);\n  // Optional: Manage collapsed state if not using 'icon' mode\n  const [collapsed, setCollapsed] = useState(${
           config.collapsed
         });\n  \n  const isMobile = useMediaQuery("(max-width: 768px)");\n  // Customizable Mobile Behavior: ${
@@ -836,6 +846,15 @@ export default function NestedSidebarExample() {
           ts={`<div className="bg-zinc-950 p-12 rounded-xl relative overflow-hidden">\n  <Sidebar\n    variant="aer"\n    mode="sticky"\n    className="bg-transparent border-r border-white/10"\n  >\n    {/* Sidebar Content */}\n  </Sidebar>\n</div>`}
           fullCode={`import { Sidebar, SidebarHeader, SidebarContent, SidebarSection, SidebarItem } from "aer-design";\nimport { Home, User, Settings } from "lucide-react";\nimport { useState } from "react";\n\nexport default function AerSidebarExample() {\n  const [activeItem, setActiveItem] = useState("home");\n\n  return (\n    <div className="relative flex items-center justify-center p-16 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">\n      <div className="absolute inset-0 bg-linear-to-br from-sky-600/20 via-transparent to-blue-600/20" />\n      \n      <div className="relative z-10 w-full h-[300px] border border-white/10 rounded-xl overflow-hidden bg-white/5 backdrop-blur-md shadow-2xl flex">\n         <Sidebar\n          mode="sticky"\n          position="left"\n          className="h-full bg-transparent border-r border-white/10"\n          variant="aer"\n        >\n          <SidebarHeader className="border-white/10">\n            <div className="flex items-center gap-3">\n              <div className="size-8 rounded-full bg-linear-to-tr from-sky-500 to-cyan-500" />\n              <span className="font-bold text-white">Aer</span>\n            </div>\n          </SidebarHeader>\n          <SidebarContent>\n            <SidebarSection>\n              <SidebarItem \n                icon={<Home className="text-white" />} \n                active={activeItem === "home"} \n                onClick={() => setActiveItem("home")}\n                className="text-white hover:bg-white/10 hover:text-white"\n              >\n                Home\n              </SidebarItem>\n              <SidebarItem \n                icon={<User className="text-white/70" />} \n                active={activeItem === "team"} \n                onClick={() => setActiveItem("team")}\n                className="text-white/70 hover:bg-white/10 hover:text-white"\n              >\n                Team\n              </SidebarItem>\n              <SidebarItem \n                icon={<Settings className="text-white/70" />} \n                active={activeItem === "settings"} \n                onClick={() => setActiveItem("settings")}\n                className="text-white/70 hover:bg-white/10 hover:text-white"\n              >\n                Settings\n              </SidebarItem>\n            </SidebarSection>\n          </SidebarContent>\n        </Sidebar>\n        <div className="flex-1 p-6 text-white/50 text-sm font-mono">\n          Main Content Area\n        </div>\n      </div>\n    </div>\n  );\n}`}
         />
+        <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+          <p className="text-sm text-blue-700 dark:text-blue-400">
+            <strong>Pro tip:</strong> The Aer variant for sidebars is perfected
+            for "App Shell" experiences. It transforms a standard functional
+            component into a premium design element, best utilized when your
+            application features a dynamic, vibrant background or a dark mode
+            that needs extra depth.
+          </p>
+        </div>
       </DocSection>
 
       <DocSection
@@ -1019,6 +1038,13 @@ export default function NestedSidebarExample() {
               default: "-",
               description: "Additional CSS classes for styling.",
             },
+            {
+              prop: "showNestedBorder",
+              type: "boolean",
+              default: "true",
+              description:
+                "Whether to show a left border indicator for nested items globally. When false, indentation is automatically reduced for a cleaner look.",
+            },
           ]}
         />
       </div>
@@ -1070,6 +1096,13 @@ export default function NestedSidebarExample() {
               type: "string",
               default: "-",
               description: "Additional CSS classes for styling.",
+            },
+            {
+              prop: "showBorder",
+              type: "boolean",
+              default: "inherited",
+              description:
+                "Override the global showNestedBorder setting for this specific item. Automatically reduces indentation when set to false.",
             },
           ]}
         />

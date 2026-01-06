@@ -131,27 +131,15 @@ export function TextareaDoc() {
         </div>
         <CodeBlock
           ts={`<Textarea variant="aer" placeholder="Premium textarea" rows={4} />`}
-          fullCode={`import { Textarea } from "aer-design";
-
-export default function AerTextareaExample() {
-  return (
-    <div className="p-12 bg-linear-to-br from-blue-600 to-sky-600 rounded-2xl">
-      <div className="max-w-xl">
-        <Textarea 
-          variant="aer"
-          placeholder="Premium glassmorphism textarea..."
-          rows={4}
-        />
-      </div>
-    </div>
-  );
-}`}
+          fullCode={`import { Textarea } from "aer-design";\n\nexport default function AerTextareaExample() {\n  return (\n    <div className="relative flex flex-col items-center justify-center p-16 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">\n      <div className="absolute inset-0 bg-linear-to-br from-sky-600/20 via-transparent to-blue-600/20" />\n      \n      <div className="relative z-10 w-full max-w-xl">\n        <Textarea \n          variant="aer"\n          placeholder="Premium glassmorphism textarea..."\n          rows={4}\n        />\n      </div>\n    </div>\n  );\n}`}
         />
         <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
           <p className="text-sm text-blue-700 dark:text-blue-400">
-            <strong>Pro tip:</strong> The Aer variant creates a premium
-            glassmorphism effect. Best used on colorful or dark backgrounds for
-            maximum visual impact.
+            <strong>Pro tip:</strong> The Aer variant for Textareas is ideal for
+            feedback forms, editor sidebars, or message inputs in premium
+            dashboards. It works best on dark or colorful backgrounds, where the
+            glassy container feels substantial yet lightweight, making long-form
+            input feel more refined.
           </p>
         </div>
       </DocSection>

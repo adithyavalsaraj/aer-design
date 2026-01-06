@@ -1,6 +1,7 @@
 import { ButtonDoc } from "../pages/ButtonDoc";
 import { CascaderDoc } from "../pages/CascaderDoc";
 import { CheckboxDoc } from "../pages/CheckboxDoc";
+import { DialogDoc } from "../pages/DialogDoc";
 import { DropdownDoc } from "../pages/DropdownDoc";
 import { GetStartedDoc } from "../pages/GetStarted";
 import { InputDoc } from "../pages/InputDoc";
@@ -30,6 +31,8 @@ export function PageRenderer({ activePage }: PageRendererProps) {
       return <CascaderDoc />;
     case "input":
       return <InputDoc />;
+    case "dialog":
+      return <DialogDoc />;
     case "dropdown":
       return <DropdownDoc />;
     case "textarea":

@@ -100,6 +100,7 @@ export interface SidebarProps
   onCollapse?: (collapsed: boolean) => void;
   closeOnBackdropClick?: boolean;
   closeOnEscape?: boolean;
+  showNestedBorder?: boolean; // Toggles left border for nested items
 }
 
 // --- Context for Items ---
@@ -108,11 +109,13 @@ interface SidebarContextValue {
   position?: "left" | "right" | "top" | "bottom" | null;
   variant?: "default" | "aer";
   onOpenChange?: (isOpen: boolean) => void;
+  showNestedBorder?: boolean;
 }
 const SidebarContext = React.createContext<SidebarContextValue>({
   collapsed: false,
   position: "left",
   variant: "default",
+  showNestedBorder: true,
 });
 
 export const useSidebar = () => React.useContext(SidebarContext);
@@ -137,6 +140,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
       onMouseLeave,
       closeOnBackdropClick = true,
       closeOnEscape = true,
+      showNestedBorder = true,
       ...props
     },
     ref
@@ -209,6 +213,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
           position,
           variant: variant || "default",
           onOpenChange: props.onOpenChange,
+          showNestedBorder,
         }}
       >
         {/* Backdrop for Overlay Mode */}
@@ -533,6 +538,7 @@ interface SidebarNestedItemProps {
   indent?: string; // Indentation with CSS unit (default: "1rem")
   children: React.ReactNode;
   className?: string;
+  showBorder?: boolean; // Override global setting
 }
 
 const SidebarNestedItem = ({
@@ -542,8 +548,12 @@ const SidebarNestedItem = ({
   indent = "1rem", // Default 1rem
   children,
   className,
+  showBorder,
 }: SidebarNestedItemProps) => {
-  const { collapsed, position, variant } = React.useContext(SidebarContext);
+  const { collapsed, position, variant, showNestedBorder } =
+    React.useContext(SidebarContext);
+
+  const effectiveShowBorder = showBorder ?? showNestedBorder ?? true;
   const [isExpanded, setIsExpanded] = React.useState(defaultExpanded);
   const [isPanelOpen, setIsPanelOpen] = React.useState(false);
   const isHorizontal = position === "top" || position === "bottom";
@@ -749,10 +759,15 @@ const SidebarNestedItem = ({
       </button>
       {isExpanded && (
         <div
-          className="mt-1 space-y-0.5 border-s-2 border-aer-border/30 animate-in slide-in-from-top-2 fade-in duration-200"
+          className={cn(
+            "mt-1 space-y-0.5 animate-in slide-in-from-top-2 fade-in duration-200",
+            effectiveShowBorder && "border-s-2 border-aer-border/30"
+          )}
           style={{
-            marginInlineStart: indent,
-            paddingInlineStart: `calc(${indent} / 2)`,
+            marginInlineStart: effectiveShowBorder
+              ? indent
+              : `calc(${indent} / 2)`,
+            paddingInlineStart: effectiveShowBorder ? `calc(${indent} / 2)` : 0,
           }}
         >
           {children}

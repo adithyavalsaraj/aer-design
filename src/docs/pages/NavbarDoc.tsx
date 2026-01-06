@@ -164,6 +164,14 @@ export function NavbarDoc() {
           ts={`<Navbar variant="aer" position="static" className="rounded-xl">\n  {/* Navbar content... */}\n</Navbar>`}
           fullCode={`import { Navbar, NavbarItem, NavbarSpacer } from "aer-design";\n\nexport default function AerNavbarExample() {\n  return (\n    <div className="relative flex items-center justify-center p-16 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">\n      <div className="absolute inset-0 bg-linear-to-br from-sky-600/20 via-transparent to-blue-600/20" />\n      \n      <div className="relative z-10 w-full max-w-2xl">\n        <Navbar variant="aer" position="top" mode="static" className="rounded-xl border border-white/10">\n          <div className="font-bold text-white text-lg mr-4">Aer</div>\n          <NavbarItem active className="text-white">Dashboard</NavbarItem>\n          <NavbarItem className="text-white/70 hover:text-white">Projects</NavbarItem>\n          <NavbarSpacer />\n          <div className="flex items-center gap-2">\n             <div className="size-8 rounded-full bg-white/10" />\n          </div>\n        </Navbar>\n      </div>\n    </div>\n  );\n}`}
         />
+        <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+          <p className="text-sm text-blue-700 dark:text-blue-400">
+            <strong>Pro tip:</strong> The Aer variant for navbars creates a
+            sleek, modern header that feels light and integrated. It works best
+            on dark or colorful backgrounds, making it a sophisticated choice
+            for fixed top-navigation or floating bars in premium SaaS platforms.
+          </p>
+        </div>
       </DocSection>
 
       <DocSection

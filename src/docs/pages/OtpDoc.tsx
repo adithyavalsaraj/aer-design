@@ -161,6 +161,15 @@ export function OtpDoc() {
           ts={`<div className="bg-zinc-950 p-12 rounded-xl relative overflow-hidden">\n  <OtpInput\n    length={6}\n    variant="aer"\n  />\n</div>`}
           fullCode={`import { OtpInput } from "aer-design";\n\nexport default function AerOtpExample() {\n  return (\n    <div className="relative flex flex-col items-center justify-center p-16 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">\n      <div className="absolute inset-0 bg-linear-to-br from-sky-600/20 via-transparent to-blue-600/20" />\n      \n      <div className="relative z-10">\n        <h4 className="text-white/80 text-center mb-4 text-sm font-medium">Enter Verification Code</h4>\n            <OtpInput\n              length={6}\n              variant="aer"\n            />\n      </div>\n    </div>\n  );\n}`}
         />
+        <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+          <p className="text-sm text-blue-700 dark:text-blue-400">
+            <strong>Pro tip:</strong> Use the Aer variant for OTP inputs to
+            create a high-security, high-end feel during critical verification
+            steps. It works best on dark or colorful backgrounds, where the
+            glassmorphism cells stand out beautifully and make the process feel
+            like a premium experience.
+          </p>
+        </div>
       </DocSection>
 
       <DocSection

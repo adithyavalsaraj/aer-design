@@ -169,6 +169,15 @@ export default function BasicOverlay() {
         <CodeBlock
           ts={`<div className="aer-vibrant-container h-48">\n  <div className="aer-vibrant-bg" />\n  <Overlay variant="aer">\n    <Button variant="outline" className="bg-white/10 text-white border-white/20">\n      Open Aer Variant\n    </Button>\n  </Overlay>\n</div>`}
         />
+        <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+          <p className="text-sm text-blue-700 dark:text-blue-400">
+            <strong>Pro tip:</strong> The Aer variant is ideal for contextual
+            popovers and floating panels. It works best on dark or colorful
+            backgrounds, where it provides a high-contrast, immersive feel that
+            draws the user's focus without fully obscuring the underlying
+            content.
+          </p>
+        </div>
       </DocSection>
 
       <DocSection
@@ -820,7 +829,7 @@ function OverlayStylingExample() {
 
       {/* 2. Tinted Backdrop Demo */}
       <div className="relative h-72 rounded-xl border border-aer-border bg-aer-muted/5 flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-grid-slate-200/50 [mask-image:linear-gradient(0deg,white,transparent)] dark:bg-grid-slate-700/50" />
+        <div className="absolute inset-0 bg-grid-slate-200/50 mask-[linear-gradient(0deg,white,transparent)] dark:bg-grid-slate-700/50" />
         <Overlay
           backdrop
           backdropClassName="bg-zinc-950/40 backdrop-blur-[2px]"

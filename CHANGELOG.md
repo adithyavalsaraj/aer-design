@@ -2,6 +2,27 @@
 
 All notable changes to the Aer Design project will be documented in this file.
 
+## [v0.11.0] - 2026-01-06
+
+### New Features
+
+- **Dialog**: Introduced a full-featured, accessible modal system.
+  - **Interaction**: Support for draggable and resizable dialogs with position/size memory.
+  - **Window Management**: Minimize/Maximize support with intelligent taskbar-style restoration.
+  - **Granular Control**: Specific components for Header, Content, and Footer with flexible layout options.
+- **Sidebar**: Enhanced nested navigation configurability.
+  - **Border Control**: Added `showNestedBorder` (Sidebar) and `showBorder` (SidebarNestedItem) to toggle left indicators.
+  - **Smart Indentation**: Automatically reduces indentation when borders are disabled for a cleaner, unified look.
+- **Documentation**: Standardized "Aer Variant" sections across all 15+ components.
+  - Added component-specific "Pro tips" with usage guidance.
+  - Consistent premium background previews in code examples.
+  - Explicit recommendations for dark/colorful background compatibility.
+
+### Bug Fixes
+
+- **Overlay**: Fixed Tailwind CSS lint warning in documentation examples.
+- **Dialog**: Fixed various state z-index and click-through issues during development.
+
 ## [v0.10.0] - 2026-01-05
 
 ### New Features

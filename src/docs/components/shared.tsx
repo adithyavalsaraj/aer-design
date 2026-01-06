@@ -318,11 +318,11 @@ export function CodeBlock({ ts, js, fullCode }: CodeBlockProps) {
         <div className="max-h-[500px] overflow-auto scrollbar-thin scrollbar-thumb-aer-border scrollbar-track-transparent">
           {highlightedHtml ? (
             <div
-              className="[&>pre]:!p-4 [&>pre]:!bg-zinc-950 [&>pre]:min-w-full [&>pre]:whitespace-pre-wrap [&>pre]:break-words [&>pre]:font-mono"
+              className="[&>pre]:p-4! [&>pre]:bg-zinc-950! [&>pre]:min-w-full [&>pre]:whitespace-pre-wrap [&>pre]:wrap-break-word [&>pre]:font-mono"
               dangerouslySetInnerHTML={{ __html: highlightedHtml }}
             />
           ) : (
-            <pre className="p-4 bg-zinc-950 text-zinc-50 min-w-full whitespace-pre-wrap break-words">
+            <pre className="p-4 bg-zinc-950 text-zinc-50 min-w-full whitespace-pre-wrap wrap-break-word">
               <code>{currentCode}</code>
             </pre>
           )}

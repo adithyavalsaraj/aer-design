@@ -264,9 +264,10 @@ import { Search } from "lucide-react";
 
 export default function AerInputExample() {
   return (
-    <div className="aer-vibrant-container h-48">
-      <div className="aer-vibrant-bg" />
-      <div className="max-w-sm space-y-4">
+    <div className="relative flex flex-col items-center justify-center p-16 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">
+      <div className="absolute inset-0 bg-linear-to-br from-sky-600/20 via-transparent to-blue-600/20" />
+      
+      <div className="relative z-10 w-full max-w-sm space-y-4">
         <Input 
           variant="aer" 
           placeholder="Premium glassmorphism input"
@@ -283,9 +284,11 @@ export default function AerInputExample() {
         />
         <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
           <p className="text-sm text-blue-700 dark:text-blue-400">
-            <strong>Pro tip:</strong> The Aer variant works best on dark or
-            colorful backgrounds. It features a glassmorphism effect with
-            backdrop blur and semi-transparent styling.
+            <strong>Pro tip:</strong> The Aer variant for Inputs is perfect for
+            search bars or login forms on high-impact landing pages. It works
+            best on dark or colorful backgrounds, where the glassmorphism effect
+            creates a sense of depth and focus that feels integrated yet
+            distinct.
           </p>
         </div>
       </DocSection>

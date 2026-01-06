@@ -292,6 +292,15 @@ export default function AerCascaderExample() {
   );
 }`}
         />
+        <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+          <p className="text-sm text-blue-700 dark:text-blue-400">
+            <strong>Pro tip:</strong> The Aer variant for Cascaders excels in
+            complex data selection flows. It works best on dark or colorful
+            backgrounds, where the multi-layered glassmorphism panels provide a
+            depth and clarity that makes navigating deep hierarchies feel
+            effortless.
+          </p>
+        </div>
       </DocSection>
 
       <DocSection

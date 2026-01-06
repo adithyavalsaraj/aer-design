@@ -184,20 +184,26 @@ import { Sparkles } from "lucide-react";
 
 export default function AerButton() {
   return (
-    <div className="flex items-center justify-center p-12 bg-linear-to-br from-zinc-900 to-zinc-950 rounded-2xl border border-white/10">
-      <Button variant="aer" size="lg">
-        <Sparkles className="w-4 h-4 mr-2" />
-        Join the Movement
-      </Button>
+    <div className="relative flex items-center justify-center p-16 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">
+      <div className="absolute inset-0 bg-linear-to-br from-sky-600/20 via-transparent to-blue-600/20" />
+      
+      <div className="relative z-10">
+        <Button variant="aer" size="lg">
+          <Sparkles className="w-4 h-4 mr-2" />
+          Join the Movement
+        </Button>
+      </div>
     </div>
   );
 }`}
         />
         <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
           <p className="text-sm text-blue-700 dark:text-blue-400">
-            <strong>Pro tip:</strong> The Aer variant works best on dark
-            backgrounds and for hero CTAs. It features a subtle glassmorphism
-            effect with animated gradients.
+            <strong>Pro tip:</strong> The Aer variant for Buttons is designed
+            for your most critical calls-to-action. It works best on dark or
+            colorful backgrounds, where the subtle animated gradients and
+            glassmorphism effect naturally draw the user's eye and make hero
+            sections feel premium.
           </p>
         </div>
       </DocSection>

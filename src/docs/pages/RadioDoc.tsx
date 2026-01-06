@@ -157,13 +157,15 @@ export function RadioDoc() {
         </div>
         <CodeBlock
           ts={`<RadioGroup variant="aer" defaultValue="1">\n  <RadioItem value="1" label="Premium selection" />\n  <RadioItem value="2" label="Glassmorphism" />\n</RadioGroup>`}
-          fullCode={`import { RadioGroup, RadioItem } from "aer-design";\n\nexport default function AerRadio() {\n  return (\n    <div className="p-12 bg-linear-to-br from-blue-600 to-sky-600 rounded-2xl">\n      <RadioGroup variant="aer" defaultValue="1">\n        <RadioItem value="1" label="Premium selection" />\n        <RadioItem value="2" label="Glassmorphism" />\n      </RadioGroup>\n    </div>\n  );\n}`}
+          fullCode={`import { RadioGroup, RadioItem } from "aer-design";\n\nexport default function AerRadio() {\n  return (\n    <div className="relative flex items-center justify-center p-16 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">\n      <div className="absolute inset-0 bg-linear-to-br from-sky-600/20 via-transparent to-blue-600/20" />\n      \n      <div className="relative z-10">\n        <RadioGroup variant="aer" defaultValue="1" className="space-y-4">\n          <RadioItem value="1" label="Premium selection" />\n          <RadioItem value="2" label="Glassmorphism effect" />\n        </RadioGroup>\n      </div>\n    </div>\n  );\n}`}
         />
         <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
           <p className="text-sm text-blue-700 dark:text-blue-400">
-            <strong>Pro tip:</strong> The Aer variant features a premium
-            glassmorphism effect. It's best used on colorful or dark
-            backgrounds.
+            <strong>Pro tip:</strong> The Aer variant for Radio buttons is
+            perfect for elective choices in high-end onboarding flows or
+            preference menus. It works best on dark or colorful backgrounds,
+            where the glassmorphism effect provides a tactile, "floating" feel
+            that makes selection feel more interactive.
           </p>
         </div>
       </DocSection>

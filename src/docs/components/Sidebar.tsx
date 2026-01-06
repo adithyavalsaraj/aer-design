@@ -48,6 +48,13 @@ export const NAV_ITEMS = [
     subCategory: "Inputs",
   },
   {
+    id: "dialog",
+    label: "Dialog",
+    icon: Layout,
+    category: "Components",
+    subCategory: "Overlay",
+  },
+  {
     id: "cascader",
     label: "Cascader",
     icon: Boxes,
@@ -163,6 +170,7 @@ export function Sidebar({
       mode="fixed"
       overlay={true}
       backdrop={true}
+      showNestedBorder={false}
       onBackdropClick={onClose}
       className="z-50 border-r border-dashed md:ltr:translate-x-0 md:rtl:translate-x-0 md:opacity-100 md:top-14 md:h-[calc(100vh-3.5rem)]"
     >

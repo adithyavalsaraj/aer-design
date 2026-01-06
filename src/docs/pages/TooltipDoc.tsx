@@ -197,6 +197,14 @@ export default function AerTooltipExample() {
   );
 }`}
         />
+        <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+          <p className="text-sm text-blue-700 dark:text-blue-400">
+            <strong>Pro tip:</strong> The Aer variant provides a subtle,
+            crystalline effect for contextual hints. Use it when tooltips need
+            to stand out on dark, textured, or high-vibrancy backgrounds without
+            visually cluttering the interface.
+          </p>
+        </div>
       </DocSection>
 
       <DocSection
