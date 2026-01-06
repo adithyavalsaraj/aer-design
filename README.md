@@ -78,6 +78,8 @@ export function LoginForm() {
 | **Textarea**  | Auto-resizing text areas with character counts and label positioning.                  |
 | **OTP Input** | Secure and accessible one-time password inputs.                                        |
 | **Dialog**    | Advanced window system with drag, resize, and minimize/maximize capabilities.          |
+| **Badge**     | Compact and semantic status indicators with glassmorphism support.                     |
+| **Card**      | Flexible content containers with premium Aer depth and hover effects.                  |
 
 ## Utilities
 

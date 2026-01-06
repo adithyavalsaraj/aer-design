@@ -10,6 +10,12 @@ All notable changes to the Aer Design project will be documented in this file.
   - **Interaction**: Support for draggable and resizable dialogs with position/size memory.
   - **Window Management**: Minimize/Maximize support with intelligent taskbar-style restoration.
   - **Granular Control**: Specific components for Header, Content, and Footer with flexible layout options.
+- **Badge**: Added a high-performance semantic marker component.
+  - **Hierarchy**: 5 visual styles (filled, outline, soft, ghost, and glassmorphism aer).
+  - **Semantics**: Built-in support for success, warning, error, and primary statuses.
+- **Card**: Introduced structured flexible containers.
+  - **Composition**: Modular sub-components for Title, Description, Content, and Footer.
+  - **Aesthetics**: Premium Aer variant with deep glassmorphism and interactive hover transforms.
 - **Sidebar**: Enhanced nested navigation configurability.
   - **Border Control**: Added `showNestedBorder` (Sidebar) and `showBorder` (SidebarNestedItem) to toggle left indicators.
   - **Smart Indentation**: Automatically reduces indentation when borders are disabled for a cleaner, unified look.

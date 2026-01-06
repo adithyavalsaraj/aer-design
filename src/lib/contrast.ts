@@ -39,22 +39,34 @@ export function hexToRgb(
 }
 
 /**
- * Parse RGB/RGBA color string to RGB values
- * @param rgb - RGB color string (e.g., "rgb(255, 87, 51)" or "rgba(255, 87, 51, 0.5)")
- * @returns RGB object with r, g, b values (0-255)
+ * Parse RGB/RGBA color string to RGBA values
+ * @param color - Color string (e.g., "rgb(255, 87, 51)", "rgba(255, 87, 51, 0.5)", "#FF5733")
+ * @returns RGBA object with r, g, b values (0-255) and a (0-1)
  */
-export function parseRgb(
-  rgb: string
-): { r: number; g: number; b: number } | null {
-  const match = rgb.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+export function parseRgba(
+  color: string
+): { r: number; g: number; b: number; a: number } | null {
+  if (!color) return null;
+  const cleanColor = color.trim().toLowerCase();
 
-  return match
-    ? {
-        r: parseInt(match[1], 10),
-        g: parseInt(match[2], 10),
-        b: parseInt(match[3], 10),
-      }
-    : null;
+  if (cleanColor.startsWith("#")) {
+    const rgb = hexToRgb(cleanColor);
+    return rgb ? { ...rgb, a: 1 } : null;
+  }
+
+  // Matches rgb(r, g, b), rgba(r, g, b, a), rgb(r g b), rgba(r g b / a)
+  const match = cleanColor.match(
+    /rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)(?:[,\s\/]+([\d.]+))?\s*\)/
+  );
+
+  if (!match) return null;
+
+  return {
+    r: parseInt(match[1], 10),
+    g: parseInt(match[2], 10),
+    b: parseInt(match[3], 10),
+    a: match[4] ? parseFloat(match[4]) : 1,
+  };
 }
 
 /**
@@ -86,16 +98,19 @@ export function getLuminance(r: number, g: number, b: number): number {
  * @see https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html
  */
 export function getContrastRatio(color1: string, color2: string): number {
-  const rgb1 = color1.startsWith("#") ? hexToRgb(color1) : parseRgb(color1);
-  const rgb2 = color2.startsWith("#") ? hexToRgb(color2) : parseRgb(color2);
+  const rgba1 = parseRgba(color1);
+  const rgba2 = parseRgba(color2);
 
-  if (!rgb1 || !rgb2) {
-    console.warn("Invalid color format provided to getContrastRatio");
+  if (!rgba1 || !rgba2) {
+    console.warn("Invalid color format provided to getContrastRatio", {
+      color1,
+      color2,
+    });
     return 1;
   }
 
-  const lum1 = getLuminance(rgb1.r, rgb1.g, rgb1.b);
-  const lum2 = getLuminance(rgb2.r, rgb2.g, rgb2.b);
+  const lum1 = getLuminance(rgba1.r, rgba1.g, rgba1.b);
+  const lum2 = getLuminance(rgba2.r, rgba2.g, rgba2.b);
 
   const lighter = Math.max(lum1, lum2);
   const darker = Math.min(lum1, lum2);
@@ -140,13 +155,6 @@ export interface ContrastOptions {
  * @param backgroundColor - Background color (hex, rgb, or rgba)
  * @param options - Configuration options
  * @returns Accessible text color (light or dark)
- *
- * @example
- * ```ts
- * getAccessibleTextColor('#3498db') // Returns '#ffffff' (white)
- * getAccessibleTextColor('#f1c40f') // Returns '#000000' (black)
- * getAccessibleTextColor('rgb(52, 152, 219)') // Returns '#ffffff' (white)
- * ```
  */
 export function getAccessibleTextColor(
   backgroundColor: string,
@@ -177,23 +185,15 @@ export function getAccessibleTextColor(
   if (darkMeetsStandard) return darkColor;
 
   // If neither meets standards, use the one with higher contrast
-  // and log a warning
-  console.warn(
-    `Neither light nor dark color meets WCAG ${wcagLevel} standards for background ${backgroundColor}. ` +
-      `Light contrast: ${lightContrast.toFixed(
-        2
-      )}, Dark contrast: ${darkContrast.toFixed(2)}`
-  );
-
   return lightContrast > darkContrast ? lightColor : darkColor;
 }
 
 /**
- * Get computed background color of an element
- * Useful for calculating contrast when background is set via CSS
+ * Get computed background color of an element, blending semi-transparent
+ * layers with their parents to find the actual visual background.
  *
  * @param element - DOM element to get background color from
- * @returns Background color in rgb format, or null if transparent
+ * @returns Background color in rgb format, or null if detection fails
  */
 export function getComputedBackgroundColor(
   element: HTMLElement
@@ -201,15 +201,36 @@ export function getComputedBackgroundColor(
   const computed = window.getComputedStyle(element);
   const bgColor = computed.backgroundColor;
 
-  // Check if transparent
-  if (bgColor === "transparent" || bgColor === "rgba(0, 0, 0, 0)") {
-    // Try to get parent's background
+  if (!bgColor || bgColor === "transparent" || bgColor === "rgba(0, 0, 0, 0)") {
     const parent = element.parentElement;
-    if (parent) {
-      return getComputedBackgroundColor(parent);
-    }
-    return null;
+    return parent ? getComputedBackgroundColor(parent) : null;
   }
 
-  return bgColor;
+  const rgba = parseRgba(bgColor);
+
+  if (!rgba || rgba.a === 0) {
+    const parent = element.parentElement;
+    return parent ? getComputedBackgroundColor(parent) : null;
+  }
+
+  // If fully opaque, we're done
+  if (rgba.a === 1) {
+    return bgColor;
+  }
+
+  // If semi-transparent, blend with parent
+  const parent = element.parentElement;
+  const parentBg = parent ? getComputedBackgroundColor(parent) : null;
+
+  if (!parentBg) return null;
+
+  const parentRgba = parseRgba(parentBg);
+  if (!parentRgba) return null;
+
+  // Alpha blending formula: C = C1 * a1 + C2 * (1 - a1)
+  const r = Math.round(rgba.r * rgba.a + parentRgba.r * (1 - rgba.a));
+  const g = Math.round(rgba.g * rgba.a + parentRgba.g * (1 - rgba.a));
+  const b = Math.round(rgba.b * rgba.a + parentRgba.b * (1 - rgba.a));
+
+  return `rgb(${r}, ${g}, ${b})`;
 }

@@ -11,9 +11,13 @@ import {
   Boxes,
   CheckSquare,
   CircleDot,
+  CreditCard,
+  GitBranch,
   Github,
   Layout,
   MousePointer2,
+  Tag,
+  Target,
   Terminal,
   Type,
 } from "lucide-react";
@@ -32,6 +36,20 @@ export const NAV_ITEMS = [
     icon: MousePointer2,
     category: "Components",
     subCategory: "Inputs",
+  },
+  {
+    id: "badge",
+    label: "Badge",
+    icon: Tag,
+    category: "Components",
+    subCategory: "Data Display",
+  },
+  {
+    id: "card",
+    label: "Card",
+    icon: CreditCard,
+    category: "Components",
+    subCategory: "Data Display",
   },
   {
     id: "input",
@@ -141,6 +159,18 @@ export const NAV_ITEMS = [
     label: "Positioning",
     icon: MousePointer2,
     category: "Utilities",
+  },
+  {
+    id: "roadmap",
+    label: "Roadmap",
+    icon: Target,
+    category: "Resources",
+  },
+  {
+    id: "contributing",
+    label: "Contributing",
+    icon: GitBranch,
+    category: "Resources",
   },
 ];
 

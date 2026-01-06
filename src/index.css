@@ -232,12 +232,14 @@
 
   /* Documentation Example Backgrounds */
   .aer-vibrant-container {
-    @apply relative flex items-center justify-center p-16 rounded-2xl isolate z-10;
+    @apply relative flex items-center justify-center p-16 rounded-2xl isolate z-10 bg-zinc-950 border border-zinc-800 overflow-hidden;
+    --color-aer-foreground: hsl(210 40% 98%);
+    --color-aer-muted-foreground: hsl(215 20.2% 65.1%);
+    --color-aer-card-foreground: hsl(210 40% 98%);
+    color: var(--color-aer-foreground);
   }
 
-  .aer-vibrant-bg-wrapper {
-    @apply absolute inset-0 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden pointer-events-none z-0;
-  }
+  /* Removed aer-vibrant-bg-wrapper as background is now on container */
 
   .aer-vibrant-bg {
     @apply absolute inset-0 bg-linear-to-br from-sky-600/20 via-transparent to-blue-600/20 pointer-events-none;

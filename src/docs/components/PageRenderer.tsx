@@ -1,6 +1,9 @@
+import { BadgeDoc } from "../pages/BadgeDoc";
 import { ButtonDoc } from "../pages/ButtonDoc";
+import { CardDoc } from "../pages/CardDoc";
 import { CascaderDoc } from "../pages/CascaderDoc";
 import { CheckboxDoc } from "../pages/CheckboxDoc";
+import { ContributingDoc } from "../pages/ContributingDoc";
 import { DialogDoc } from "../pages/DialogDoc";
 import { DropdownDoc } from "../pages/DropdownDoc";
 import { GetStartedDoc } from "../pages/GetStarted";
@@ -11,6 +14,7 @@ import { OtpDoc } from "../pages/OtpDoc";
 import { OverlayDoc } from "../pages/OverlayDoc";
 import { PositioningDoc } from "../pages/PositioningDoc";
 import { RadioDoc } from "../pages/RadioDoc";
+import { RoadmapDoc } from "../pages/RoadmapDoc";
 import { ShortcutDoc } from "../pages/ShortcutDoc";
 import { SidebarDoc } from "../pages/SidebarDoc";
 import { TextareaDoc } from "../pages/TextareaDoc";
@@ -27,6 +31,10 @@ export function PageRenderer({ activePage }: PageRendererProps) {
       return <GetStartedDoc />;
     case "button":
       return <ButtonDoc />;
+    case "badge":
+      return <BadgeDoc />;
+    case "card":
+      return <CardDoc />;
     case "cascader":
       return <CascaderDoc />;
     case "input":
@@ -59,6 +67,10 @@ export function PageRenderer({ activePage }: PageRendererProps) {
       return <PositioningDoc />;
     case "shortcuts":
       return <ShortcutDoc />;
+    case "roadmap":
+      return <RoadmapDoc />;
+    case "contributing":
+      return <ContributingDoc />;
     default:
       return <GetStartedDoc />;
   }

@@ -28,12 +28,21 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const { size: globalSize, autoContrast } = useAerConfig();
     const computedSize = size || globalSize;
 
-    // Auto Contrast Logic
+    // Auto Contrast Logic - only apply when backgroundColor is explicitly set via style prop
+    const buttonRef = React.useRef<HTMLButtonElement>(null);
     const backgroundColor = style?.backgroundColor as string;
-    const contrastColor = useContrastColor(backgroundColor || "");
+    const contrastColor = useContrastColor(
+      backgroundColor || "",
+      {},
+      buttonRef
+    );
 
     const finalStyle = { ...style };
-    if (autoContrast && backgroundColor) {
+    // Only override color if:
+    // 1. autoContrast is enabled globally
+    // 2. A backgroundColor was explicitly provided via style prop
+    // 3. We successfully calculated a contrast color
+    if (autoContrast && backgroundColor && contrastColor) {
       finalStyle.color = contrastColor;
     }
 
@@ -42,7 +51,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(
           buttonVariants({ variant, size: computedSize, className })
         )}
-        ref={ref}
+        ref={(node) => {
+          buttonRef.current = node;
+          if (typeof ref === "function") ref(node);
+          else if (ref) ref.current = node;
+        }}
         disabled={isLoading || disabled}
         style={finalStyle}
         {...props}

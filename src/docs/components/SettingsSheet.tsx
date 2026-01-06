@@ -1,5 +1,6 @@
 import { useAerConfig } from "@/components/AerConfigProvider";
-import { AlignLeft, AlignRight, Check, X } from "lucide-react";
+import { Badge } from "@/components/Badge";
+import { AlignLeft, AlignRight, Check, TriangleAlert, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { ModeToggle } from "./ModeToggle";
 import { ThemePicker } from "./ThemePicker";
@@ -33,7 +34,7 @@ export function SettingsSheet({ isOpen, onClose }: SettingsSheetProps) {
   if (!isVisible && !isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex justify-end isolate">
+    <div className="fixed inset-0 z-100 flex justify-end isolate">
       {/* Backdrop */}
       <div
         className={`fixed inset-0 bg-black/20 backdrop-blur-sm transition-opacity duration-300 ${
@@ -144,8 +145,11 @@ export function SettingsSheet({ isOpen, onClose }: SettingsSheetProps) {
 
           {/* Accessibility Section */}
           <div className="space-y-3">
-            <h3 className="text-sm font-medium text-aer-muted-foreground uppercase tracking-wider">
+            <h3 className="text-sm font-medium text-aer-muted-foreground uppercase tracking-wider flex items-center justify-between">
               Accessibility
+              <Badge variant="soft" status="primary" size="sm" rounded="full">
+                Beta
+              </Badge>
             </h3>
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
@@ -170,6 +174,20 @@ export function SettingsSheet({ isOpen, onClose }: SettingsSheetProps) {
                   )}
                 </div>
               </button>
+            </div>
+            <div className="p-3 bg-red-500 dark:bg-red-600 border-2 border-red-600 dark:border-red-500 rounded-aer-md">
+              <div className="flex gap-3 items-start">
+                <TriangleAlert className="size-5 text-white shrink-0 mt-0.5" />
+                <p className="text-[11px] text-white leading-relaxed font-semibold">
+                  <strong className="font-bold">EXPERIMENTAL:</strong>{" "}
+                  Auto-contrast only applies when you set{" "}
+                  <code className="bg-white/20 px-1.5 py-0.5 rounded text-[10px] font-mono">
+                    style={`{{ backgroundColor }}`}
+                  </code>{" "}
+                  on a component. It does NOT override color tokens. May produce
+                  incorrect results with gradients.
+                </p>
+              </div>
             </div>
           </div>
         </div>

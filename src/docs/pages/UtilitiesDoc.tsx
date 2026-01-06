@@ -1,10 +1,19 @@
 import { useAerConfig } from "@/components/AerConfigProvider";
+import { Badge } from "@/components/Badge";
 import { Button } from "@/components/Button";
 import { Checkbox } from "@/components/Checkbox";
 import { Input } from "@/components/Input";
 import { useContrastColor } from "@/hooks";
 import { getContrastRatio, meetsWCAG } from "@/lib/contrast";
-import { Check, Globe, Monitor, Settings, Type, X } from "lucide-react";
+import {
+  Check,
+  Globe,
+  Monitor,
+  Settings,
+  TriangleAlert,
+  Type,
+  X,
+} from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
 
@@ -309,10 +318,32 @@ export default function SettingsPanel() {
       </DocSection>
 
       <DocSection
-        title="Automatic Contrast"
+        title={
+          <div className="flex items-center gap-3">
+            Automatic Contrast
+            <Badge variant="soft" status="primary" size="sm" rounded="full">
+              Beta
+            </Badge>
+          </div>
+        }
         id="automatic-contrast"
         description="WCAG 2.1 compliant text color calculation for accessible interfaces."
       >
+        <div className="mb-4 p-3 bg-red-500 dark:bg-red-600 border-2 border-red-600 dark:border-red-500 rounded-aer-md">
+          <div className="flex gap-3 items-start">
+            <TriangleAlert className="size-5 text-white shrink-0 mt-0.5" />
+            <p className="text-[11px] text-white leading-relaxed font-semibold">
+              <strong className="font-bold">EXPERIMENTAL:</strong> Auto-contrast
+              only applies when you set{" "}
+              <code className="bg-white/20 px-1.5 py-0.5 rounded text-[10px] font-mono">
+                style={`{{ backgroundColor: '...' }}`}
+              </code>{" "}
+              on a component. It does NOT override the design system's color
+              tokens. Complex gradients or semi-transparent backgrounds may
+              produce incorrect results.
+            </p>
+          </div>
+        </div>
         <AutomaticContrastDemo />
       </DocSection>
 
@@ -681,7 +712,7 @@ function DemoSettingsPanel() {
 function AutomaticContrastDemo() {
   const [bgColor, setBgColor] = useState("#3498db");
   const textColor = useContrastColor(bgColor);
-  const contrastRatio = getContrastRatio(bgColor, textColor);
+  const contrastRatio = getContrastRatio(bgColor, textColor || "#000000");
   const meetsAA = meetsWCAG(contrastRatio, "AA");
   const meetsAAA = meetsWCAG(contrastRatio, "AAA");
 

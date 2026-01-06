@@ -20,6 +20,11 @@ Every component documentation must have **three tabs**:
 
 ### Required Sections (in order)
 
+Every section (unless specified as text-only) MUST contain:
+
+1.  **A live working example** (rendered component).
+2.  **A `CodeBlock`** showing the implementation.
+
 #### 1. Introduction
 
 Explain what the component does and its key features.
@@ -138,6 +143,7 @@ toc: [
 - [ ] **Granular Styling:** Is there a list of styleable "slots" or internal classes?
 - [ ] **Introduction:** Does it have 4-6 bullet points with `<strong>` tags?
 - [ ] **Code Examples:** Are both `ts` snippet and `fullCode` provided and copy-paste ready?
+- [ ] **Working Examples:** Does EVERY section include a live visual demonstration AND a CodeBlock?
 - [ ] **Tabs:** Are all three tabs (Overview, API, Theming) implemented?
 
 ---

@@ -105,7 +105,7 @@ root.render(
 // --- Components ---
 
 interface SectionProps {
-  title: string;
+  title: React.ReactNode;
   description?: string;
   children: React.ReactNode;
   id?: string;

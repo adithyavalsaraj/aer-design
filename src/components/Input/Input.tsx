@@ -79,11 +79,16 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const size = sizeProp || globalSize;
 
     // Auto Contrast Logic
+    const containerRef = React.useRef<HTMLDivElement>(null);
     const backgroundColor = style?.backgroundColor as string;
-    const contrastColor = useContrastColor(backgroundColor || "");
+    const contrastColor = useContrastColor(
+      backgroundColor || "",
+      {},
+      containerRef
+    );
 
     const finalStyle = { ...style };
-    if (autoContrast && backgroundColor) {
+    if (autoContrast) {
       finalStyle.color = contrastColor;
     }
 
@@ -160,6 +165,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
     const inputContent = (
       <div
+        ref={containerRef}
         className={cn(
           "flex items-stretch group/input",
           !(className || containerClassName)?.includes("w-") && "w-full",

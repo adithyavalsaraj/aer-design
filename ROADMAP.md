@@ -30,7 +30,7 @@
 
 ## ✅ Completed Components
 
-### Core Components (15)
+### Core Components (17)
 
 | Component    | Version | Description                  | Key Features                                                                             |
 | ------------ | ------- | ---------------------------- | ---------------------------------------------------------------------------------------- |
@@ -49,6 +49,8 @@
 | **Overlay**  | v0.9.0  | Modal overlay system         | Glassmorphism, backdrop blur, z-index management                                         |
 | **Shortcut** | v0.8.0  | Keyboard shortcut system     | Customizable keybindings, conflict handling, persistence                                 |
 | **Dialog**   | v0.11.0 | Advanced modal system        | Draggable, resizable, minimize/maximize, position memory, aer variant                    |
+| **Badge**    | v0.11.0 | Compact status markers       | 5 variants, 5 statuses, 3 sizes, aer glassmorphism variant                               |
+| **Card**     | v0.11.0 | Structured containers        | Sub-components (Header, Body, Footer), hoverable states, aer glassmorphism variant       |
 
 ### Provider Components (2)
 
@@ -145,18 +147,7 @@
 
 ### Medium Priority
 
-#### 5. **Badge**
-
-- **Status:** Not implemented
-- **Priority:** Medium
-- **Description:** Small status indicators
-- **Required Features:**
-  - Variants (default, primary, success, warning, error)
-  - Sizes (sm, md, lg)
-  - Dot variant
-  - Removable badges
-
-#### 6. **Avatar**
+#### 5. **Avatar**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -168,19 +159,7 @@
   - Status indicator (online, offline, busy)
   - Avatar groups
 
-#### 7. **Card**
-
-- **Status:** Not implemented
-- **Priority:** Medium
-- **Description:** Content container component
-- **Required Features:**
-  - Header, body, footer sections
-  - Variants (elevated, outlined, filled)
-  - Hover effects
-  - Clickable cards
-  - Aer glassmorphism variant
-
-#### 8. **Breadcrumb**
+#### 6. **Breadcrumb**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -191,7 +170,7 @@
   - Icon support
   - Current page highlighting
 
-#### 9. **Pagination**
+#### 7. **Pagination**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -203,7 +182,7 @@
   - Compact mode
   - Items per page selector
 
-#### 10. **Progress**
+#### 8. **Progress**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -215,7 +194,7 @@
   - Color variants
   - Label support
 
-#### 11. **Skeleton**
+#### 9. **Skeleton**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -226,7 +205,7 @@
   - Composable layouts
   - Theme-aware colors
 
-#### 12. **Divider / Separator**
+#### 10. **Divider / Separator**
 
 - **Status:** Partially (exists in Dropdown/Menu)
 - **Priority:** Medium
@@ -451,10 +430,10 @@
 ### Overall Progress
 
 ```
-Completed Components:     17/36  (47%)
-High Priority Missing:     4/36  (11%)
-Medium Priority Missing:   8/36  (22%)
-Low Priority Missing:      7/36  (19%)
+Completed Components:     19/34  (56%)
+High Priority Missing:     4/34  (12%)
+Medium Priority Missing:   4/34  (12%)
+Low Priority Missing:      7/34  (21%)
 ```
 
 ### Category Breakdown
@@ -463,9 +442,9 @@ Low Priority Missing:      7/36  (19%)
 | ----------------- | --------- | ------- | ----- |
 | **Form Controls** | 7         | 3       | 10    |
 | **Navigation**    | 4         | 2       | 6     |
-| **Feedback**      | 2         | 5       | 7     |
-| **Data Display**  | 0         | 5       | 5     |
-| **Layout**        | 1         | 2       | 3     |
+| **Feedback**      | 4         | 3       | 7     |
+| **Data Display**  | 2         | 3       | 5     |
+| **Layout**        | 1         | 1       | 2     |
 | **Providers**     | 2         | 0       | 2     |
 | **Utilities**     | 3         | 3       | 6     |
 

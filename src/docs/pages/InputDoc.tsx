@@ -240,12 +240,10 @@ export function InputDoc() {
         id="aer-variant"
         description="Premium glassmorphism effect for modern, high-end interfaces."
       >
-        <div className="aer-vibrant-container">
-          <div className="aer-vibrant-bg-wrapper">
-            <div className="aer-vibrant-bg" />
-            <div className="aer-vibrant-blob w-40 h-40 bg-sky-500/30 top-1/4 left-1/3" />
-            <div className="aer-vibrant-blob w-40 h-40 bg-blue-500/30 bottom-1/4 right-1/3" />
-          </div>
+        <div className="aer-vibrant-container dark">
+          <div className="aer-vibrant-bg" />
+          <div className="aer-vibrant-blob w-40 h-40 bg-sky-500/30 top-1/4 left-1/3" />
+          <div className="aer-vibrant-blob w-40 h-40 bg-blue-500/30 bottom-1/4 right-1/3" />
 
           <div className="relative z-10 max-w-sm mx-auto space-y-4">
             <Input

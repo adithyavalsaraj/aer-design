@@ -574,13 +574,11 @@ export default function UserProfileForm() {
 
   function AerVariantExample() {
     return (
-      <div className="aer-vibrant-container">
-        <div className="aer-vibrant-bg-wrapper">
-          <div className="aer-vibrant-bg" />
-          <div className="aer-vibrant-blob top-1/3 left-1/4 w-40 h-40 bg-sky-500/30" />
-          <div className="aer-vibrant-blob bottom-1/3 right-1/4 w-40 h-40 bg-blue-500/30" />
-          <div className="aer-vibrant-blob top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-sky-500/30" />
-        </div>
+      <div className="aer-vibrant-container dark">
+        <div className="aer-vibrant-bg" />
+        <div className="aer-vibrant-blob top-1/3 left-1/4 w-40 h-40 bg-sky-500/30" />
+        <div className="aer-vibrant-blob bottom-1/3 right-1/4 w-40 h-40 bg-blue-500/30" />
+        <div className="aer-vibrant-blob top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-sky-500/30" />
 
         <Button variant="aer" size="lg" className="relative z-10">
           <Sparkles className="w-4 h-4 mr-2" />
