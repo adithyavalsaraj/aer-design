@@ -85,6 +85,48 @@ export function DropdownDoc() {
     );
   }
 
+  function ScrollBehaviorExample() {
+    const [behavior, setBehavior] = React.useState<"reposition" | "close">(
+      "reposition"
+    );
+
+    return (
+      <div className="space-y-6 w-full">
+        <div className="flex flex-col items-center gap-x-4 gap-y-2 p-4 bg-aer-muted/20 rounded-lg border border-aer-border">
+          <div className="w-full">
+            <label className="text-sm font-medium text-aer-foreground mb-3 block">
+              Scroll Behavior
+            </label>
+            <RadioGroup
+              value={behavior}
+              onChange={(val) => setBehavior(val as "reposition" | "close")}
+              className="flex flex-row gap-4"
+            >
+              <RadioItem value="reposition" label="Reposition (Follow)" />
+              <RadioItem value="close" label="Close on Scroll" />
+            </RadioGroup>
+          </div>
+        </div>
+
+        <div className="p-12 border border-aer-border rounded-lg bg-aer-muted/5 flex flex-col items-center">
+          <p className="text-xs text-aer-muted-foreground mb-4 italic">
+            Open the dropdown and scroll this section or the page
+          </p>
+          <Dropdown
+            scrollBehavior={behavior}
+            options={basicOptions}
+            placeholder="Interaction test..."
+            className="max-w-xs"
+          />
+        </div>
+
+        <CodeBlock
+          ts={`<Dropdown \n  scrollBehavior="${behavior}" \n  options={options} \n/>`}
+        />
+      </div>
+    );
+  }
+
   const overview = (
     <div className="space-y-12">
       <DocSection
@@ -682,6 +724,14 @@ export default function GroupedDropdown() {
         />
       </DocSection>
 
+      <DocSection
+        title="Scroll Behavior"
+        id="scroll-behavior"
+        description="Control how the dropdown panel reacts when the page or parent container scrolls."
+      >
+        <ScrollBehaviorExample />
+      </DocSection>
+
       <DocSection title="Real World Example" id="real-world">
         <RealWorldExample />
         <div className="mt-4">
@@ -958,6 +1008,12 @@ export default function UserSettings() {
               default: "false",
               description:
                 "Shows a loading spinner. Useful for async data fetching.",
+            },
+            {
+              prop: "scrollBehavior",
+              type: "'reposition' | 'close'",
+              default: "'reposition'",
+              description: "Behavior when the page or container scrolls.",
             },
             {
               prop: "label",
@@ -1320,6 +1376,7 @@ export default function UserSettings() {
               { id: "addons-icons", title: "Addons & Icons" },
               { id: "granular-styling", title: "Granular Styling" },
               { id: "validation", title: "Validation" },
+              { id: "scroll-behavior", title: "Scroll Behavior" },
               { id: "real-world", title: "Real World Example" },
             ],
           },

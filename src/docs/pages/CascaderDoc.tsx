@@ -11,6 +11,67 @@ import {
 import * as React from "react";
 
 export function CascaderDoc() {
+  function ScrollBehaviorExample() {
+    const [behavior, setBehavior] = React.useState<"reposition" | "close">(
+      "reposition"
+    );
+
+    const geoOptions = [
+      {
+        label: "North America",
+        value: "na",
+        children: [
+          {
+            label: "USA",
+            value: "usa",
+            children: [{ label: "New York", value: "ny" }],
+          },
+        ],
+      },
+      {
+        label: "Europe",
+        value: "eu",
+        children: [{ label: "France", value: "fr" }],
+      },
+    ];
+
+    return (
+      <div className="space-y-6 w-full">
+        <div className="flex flex-col items-center gap-x-4 gap-y-2 p-4 bg-aer-muted/20 rounded-lg border border-aer-border">
+          <div className="w-full">
+            <label className="text-sm font-medium text-aer-foreground mb-3 block">
+              Scroll Behavior
+            </label>
+            <RadioGroup
+              value={behavior}
+              onChange={(val) => setBehavior(val as "reposition" | "close")}
+              className="flex flex-row gap-4"
+            >
+              <RadioItem value="reposition" label="Reposition (Follow)" />
+              <RadioItem value="close" label="Close on Scroll" />
+            </RadioGroup>
+          </div>
+        </div>
+
+        <div className="p-12 border border-aer-border rounded-lg bg-aer-muted/5 flex flex-col items-center">
+          <p className="text-xs text-aer-muted-foreground mb-4 italic">
+            Open the menu and scroll this section or the page
+          </p>
+          <Cascader
+            scrollBehavior={behavior}
+            options={geoOptions}
+            placeholder="Interaction test..."
+            className="w-64"
+          />
+        </div>
+
+        <CodeBlock
+          ts={`<Cascader \n  scrollBehavior="${behavior}" \n  options={options} \n/>`}
+        />
+      </div>
+    );
+  }
+
   const geoOptions = [
     {
       label: "North America",
@@ -482,6 +543,14 @@ export default function CascaderStyling() {
       </DocSection>
 
       <DocSection
+        title="Scroll Behavior"
+        id="scroll-behavior"
+        description="Control how the cascader menus react when the page or parent container scrolls."
+      >
+        <ScrollBehaviorExample />
+      </DocSection>
+
+      <DocSection
         id="real-world"
         title="Real World Example"
         description="A category selector within a settings form."
@@ -594,6 +663,12 @@ export default function ProductForm() {
               type: "string",
               default: '"Select..."',
               description: "Text displayed when no value is selected.",
+            },
+            {
+              prop: "scrollBehavior",
+              type: "'reposition' | 'close'",
+              default: "'reposition'",
+              description: "Behavior when the page or container scrolls.",
             },
             {
               prop: "displayRender",
@@ -765,7 +840,8 @@ export default function ProductForm() {
               { id: "disabled-state", title: "Disabled State" },
               { id: "error-state", title: "Error State" },
               { id: "show-last-item", title: "Show Last Item" },
-              { id: "granular-styling", title: "Granular Styling" },
+              { id: "validation", title: "Validation" },
+              { id: "scroll-behavior", title: "Scroll Behavior" },
               { id: "real-world", title: "Real World Example" },
             ],
           },

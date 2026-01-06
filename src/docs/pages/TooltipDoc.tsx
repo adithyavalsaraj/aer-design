@@ -1,4 +1,5 @@
 import { Button } from "@/components/Button";
+import { RadioGroup, RadioItem } from "@/components/Radio";
 import { Tooltip } from "@/components/Tooltip";
 import {
   AlertCircle,
@@ -13,6 +14,49 @@ import * as React from "react";
 import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
 
 export function TooltipDoc() {
+  function ScrollBehaviorExample() {
+    const [behavior, setBehavior] = React.useState<"reposition" | "close">(
+      "close"
+    );
+
+    return (
+      <div className="space-y-6 w-full">
+        <div className="flex flex-col items-center gap-x-4 gap-y-2 p-4 bg-aer-muted/20 rounded-lg border border-aer-border">
+          <div className="w-full">
+            <label className="text-sm font-medium text-aer-foreground mb-3 block">
+              Scroll Behavior
+            </label>
+            <RadioGroup
+              value={behavior}
+              onChange={(val) => setBehavior(val as "reposition" | "close")}
+              className="flex flex-row gap-4"
+            >
+              <RadioItem value="reposition" label="Reposition (Follow)" />
+              <RadioItem value="close" label="Close on Scroll" />
+            </RadioGroup>
+          </div>
+        </div>
+
+        <div className="p-12 border border-aer-border rounded-lg bg-aer-muted/5 flex flex-col items-center">
+          <p className="text-xs text-aer-muted-foreground mb-4 italic">
+            Open the tooltip and scroll this section or the page
+          </p>
+          <Tooltip
+            scrollBehavior={behavior}
+            content="Context follows on scroll!"
+            className="max-w-xs"
+          >
+            <Button variant="outline">Interactive test</Button>
+          </Tooltip>
+        </div>
+
+        <CodeBlock
+          ts={`<Tooltip \n  scrollBehavior="${behavior}" \n  content="..."\n>\n  <Button>...</Button>\n</Tooltip>`}
+        />
+      </div>
+    );
+  }
+
   const overview = (
     <div className="space-y-12">
       <DocSection
@@ -429,6 +473,14 @@ export default function TooltipDelays() {
       </DocSection>
 
       <DocSection
+        title="Scroll Behavior"
+        id="scroll-behavior"
+        description="Control how the tooltip panel reacts when the page or parent container scrolls."
+      >
+        <ScrollBehaviorExample />
+      </DocSection>
+
+      <DocSection
         title="Granular Styling"
         id="granular-styling"
         description="Customize the tooltip bubble and arrow with utility classes."
@@ -650,6 +702,12 @@ export default function Toolbar() {
               description: "Disable the tooltip completely.",
             },
             {
+              prop: "scrollBehavior",
+              type: "'reposition' | 'close'",
+              default: "'close'",
+              description: "Behavior when the page or container scrolls.",
+            },
+            {
               prop: "className",
               type: "string",
               default: "-",
@@ -798,6 +856,7 @@ export default function Toolbar() {
               { id: "alignment", title: "Alignment" },
               { id: "trigger", title: "Trigger Modes" },
               { id: "delay", title: "Delay Configuration" },
+              { id: "scroll-behavior", title: "Scroll Behavior" },
               { id: "granular-styling", title: "Granular Styling" },
               { id: "real-world", title: "Real World Example" },
             ],

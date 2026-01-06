@@ -140,6 +140,7 @@ function Tooltip({ content, children }) {
     isOpen,
     side: "top",
     align: "center",
+    scrollBehavior: "reposition", // Smoothly follow trigger on scroll
   });
 
   return (

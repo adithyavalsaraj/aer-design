@@ -9,6 +9,7 @@ import {
   MenuTrigger,
   SubMenu,
 } from "@/components/Menu";
+import { RadioGroup, RadioItem } from "@/components/Radio";
 import {
   ApiTable,
   CodeBlock,
@@ -29,9 +30,54 @@ import {
   UserPlus,
   Users,
 } from "lucide-react";
+import React from "react";
 
 export function MenuDoc() {
-  /* Introduction and When to Use sections */
+  function ScrollBehaviorExample() {
+    const [behavior, setBehavior] = React.useState<"reposition" | "close">(
+      "reposition"
+    );
+
+    return (
+      <div className="space-y-6 w-full">
+        <div className="flex flex-col items-center gap-x-4 gap-y-2 p-4 bg-aer-muted/20 rounded-lg border border-aer-border">
+          <div className="w-full">
+            <label className="text-sm font-medium text-aer-foreground mb-3 block">
+              Scroll Behavior
+            </label>
+            <RadioGroup
+              value={behavior}
+              onChange={(val) => setBehavior(val as "reposition" | "close")}
+              className="flex flex-row gap-4"
+            >
+              <RadioItem value="reposition" label="Reposition (Follow)" />
+              <RadioItem value="close" label="Close on Scroll" />
+            </RadioGroup>
+          </div>
+        </div>
+
+        <div className="p-12 border border-aer-border rounded-lg bg-aer-muted/5 flex flex-col items-center">
+          <p className="text-xs text-aer-muted-foreground mb-4 italic">
+            Open the menu and scroll this section or the page
+          </p>
+          <Menu>
+            <MenuTrigger asChild>
+              <Button variant="outline">Open Menu</Button>
+            </MenuTrigger>
+            <MenuContent scrollBehavior={behavior} className="w-56">
+              <MenuItem>Item 1</MenuItem>
+              <MenuItem>Item 2</MenuItem>
+              <MenuItem>Item 3</MenuItem>
+            </MenuContent>
+          </Menu>
+        </div>
+
+        <CodeBlock
+          ts={`<MenuContent scrollBehavior="${behavior}">\n  <MenuItem>...</MenuItem>\n</MenuContent>`}
+        />
+      </div>
+    );
+  }
   const overview = (
     <div className="space-y-12">
       <DocSection
@@ -737,6 +783,14 @@ export default function MenuStyling() {
       </DocSection>
 
       <DocSection
+        title="Scroll Behavior"
+        id="scroll-behavior"
+        description="Control how the menu panel reacts when the page or parent container scrolls."
+      >
+        <ScrollBehaviorExample />
+      </DocSection>
+
+      <DocSection
         id="real-world"
         title="Real World Example"
         description="A complete User Profile menu with groups, submenus, and keyboard shortcuts."
@@ -1043,7 +1097,13 @@ export default function UserMenu() {
               prop: "sideOffset",
               type: "number",
               default: "4",
-              description: "Distance in pixels from the trigger.",
+              description: "Additional distance from the trigger.",
+            },
+            {
+              prop: "scrollBehavior",
+              type: "'reposition' | 'close'",
+              default: "'reposition'",
+              description: "Behavior when the page or container scrolls.",
             },
             {
               prop: "className",
@@ -1247,6 +1307,7 @@ export default function UserMenu() {
               { id: "icons", title: "Icons & Shortcuts" },
               { id: "nested", title: "Nested Submenus" },
               { id: "positioning", title: "Positioning" },
+              { id: "scroll-behavior", title: "Scroll Behavior" },
               { id: "granular-styling", title: "Granular Styling" },
               { id: "real-world", title: "Real World Example" },
             ],

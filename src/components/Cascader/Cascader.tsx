@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
 import { ChevronDown, X } from "lucide-react";
 import * as React from "react";
+import { createPortal } from "react-dom";
 import { CascaderMenu } from "./CascaderMenu";
 import type { CascaderOption, CascaderProps } from "./types";
 import { getOptionPath } from "./utils";
@@ -86,6 +87,7 @@ export function Cascader({
   addonAfter,
   virtualized,
   itemHeight = 32,
+  scrollBehavior = "reposition",
 }: CascaderProps) {
   const { size: globalSize } = useAerConfig();
   const size = sizeProp || globalSize || "default";
@@ -99,6 +101,9 @@ export function Cascader({
       side: "bottom",
       align: "start",
       sideOffset: 4,
+      strategy: "fixed",
+      scrollBehavior,
+      onScroll: () => setIsOpen(false),
     });
 
   // Handle outside interactions and scroll
@@ -130,26 +135,14 @@ export function Cascader({
       }
     };
 
-    const handleScroll = (e: Event) => {
-      // Close on scroll to prevent detached menu
-      // Check if the scroll event comes from within the menu itself (if we want to allow internal scrolling)
-      if (elements.floating && elements.floating.contains(e.target as Node)) {
-        return;
-      }
-      setIsOpen(false);
-    };
-
     document.addEventListener("mousedown", handleInteractOutside);
     document.addEventListener("touchstart", handleInteractOutside);
     document.addEventListener("keydown", handleEscape);
-    // Capture scroll events to handle scrolling of parent containers
-    document.addEventListener("scroll", handleScroll, true);
 
     return () => {
       document.removeEventListener("mousedown", handleInteractOutside);
       document.removeEventListener("touchstart", handleInteractOutside);
       document.removeEventListener("keydown", handleEscape);
-      document.removeEventListener("scroll", handleScroll, true);
     };
   }, [isOpen, elements.floating, elements.reference]);
 
@@ -376,31 +369,34 @@ export function Cascader({
         )}
       </div>
 
-      {isOpen && (
-        <div
-          ref={floatingRef}
-          style={{ ...floatingStyles, zIndex: 1000 }}
-          className={cn("animate-in fade-in zoom-in-95", menuClassName)}
-        >
-          <CascaderMenu
-            options={options}
-            onSelect={handleSelect}
-            selectedValue={value}
-            loadData={loadData}
-            itemClassName={cn(
-              itemClassName,
-              variant === "aer" &&
-                "hover:bg-white/10 hover:text-white focus:bg-white/10"
-            )}
-            className={cn(
-              variant === "aer" &&
-                "bg-white/10 backdrop-blur-2xl border-white/10 shadow-2xl"
-            )}
-            virtualized={virtualized}
-            itemHeight={itemHeight}
-          />
-        </div>
-      )}
+      {isOpen &&
+        createPortal(
+          <div
+            ref={floatingRef}
+            style={{ ...floatingStyles, zIndex: 1000 }}
+            className={cn("animate-in fade-in zoom-in-95", menuClassName)}
+          >
+            <CascaderMenu
+              options={options}
+              onSelect={handleSelect}
+              selectedValue={value}
+              loadData={loadData}
+              itemClassName={cn(
+                itemClassName,
+                variant === "aer" &&
+                  "hover:bg-white/10 hover:text-white focus:bg-white/10"
+              )}
+              className={cn(
+                variant === "aer" &&
+                  "bg-white/10 backdrop-blur-2xl border-white/10 shadow-2xl"
+              )}
+              virtualized={virtualized}
+              itemHeight={itemHeight}
+              scrollBehavior={scrollBehavior}
+            />
+          </div>,
+          document.body
+        )}
       {typeof error === "string" && (
         <div
           className={cn(

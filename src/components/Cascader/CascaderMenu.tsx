@@ -1,3 +1,4 @@
+import { useAutoPosition } from "@/hooks/useAutoPosition";
 import { cn } from "@/lib/utils";
 import { Check, ChevronRight, Loader2 } from "lucide-react";
 import * as React from "react";
@@ -16,6 +17,7 @@ interface CascaderMenuProps {
   itemHeight?: number;
   className?: string; // Appears as 'className' on the root element
   menuClassName?: string; // Propagated class for submenus
+  scrollBehavior?: "close" | "reposition";
 }
 
 export function CascaderMenu({
@@ -30,6 +32,7 @@ export function CascaderMenu({
   itemHeight = 32,
   className,
   menuClassName,
+  scrollBehavior = "reposition",
 }: CascaderMenuProps) {
   const [hoveredOption, setHoveredOption] =
     React.useState<CascaderOption | null>(null);
@@ -110,6 +113,7 @@ export function CascaderMenu({
               virtualized={virtualized}
               itemHeight={itemHeight}
               menuClassName={effectiveMenuClass}
+              scrollBehavior={scrollBehavior}
             />
           ))}
         </div>
@@ -131,6 +135,7 @@ interface CascaderMenuItemProps {
   virtualized?: boolean;
   itemHeight?: number;
   menuClassName?: string;
+  scrollBehavior?: "close" | "reposition";
 }
 
 function CascaderMenuItem({
@@ -146,6 +151,7 @@ function CascaderMenuItem({
   virtualized,
   itemHeight,
   menuClassName,
+  scrollBehavior,
 }: CascaderMenuItemProps) {
   const triggerRef = React.useRef<HTMLDivElement>(null);
   const isLeaf =
@@ -234,6 +240,7 @@ function CascaderMenuItem({
           virtualized={virtualized}
           itemHeight={itemHeight}
           menuClassName={menuClassName}
+          scrollBehavior={scrollBehavior}
         />
       )}
     </div>
@@ -251,6 +258,7 @@ function CascaderSubMenu({
   virtualized,
   itemHeight,
   menuClassName,
+  scrollBehavior,
 }: {
   triggerRef: React.RefObject<HTMLDivElement | null>;
   option: CascaderOption;
@@ -262,6 +270,7 @@ function CascaderSubMenu({
   virtualized?: boolean;
   itemHeight?: number;
   menuClassName?: string;
+  scrollBehavior?: "close" | "reposition";
 }) {
   return ReactDOM.createPortal(
     <CascaderSubMenuContent
@@ -275,6 +284,7 @@ function CascaderSubMenu({
       virtualized={virtualized}
       itemHeight={itemHeight}
       menuClassName={menuClassName}
+      scrollBehavior={scrollBehavior}
     />,
     document.body
   );
@@ -291,6 +301,7 @@ function CascaderSubMenuContent({
   virtualized,
   itemHeight,
   menuClassName,
+  scrollBehavior,
 }: {
   triggerRef: React.RefObject<HTMLDivElement | null>;
   option: CascaderOption;
@@ -302,46 +313,30 @@ function CascaderSubMenuContent({
   virtualized?: boolean;
   itemHeight?: number;
   menuClassName?: string;
+  scrollBehavior?: "close" | "reposition";
 }) {
-  const ref = React.useRef<HTMLDivElement>(null);
-  const [style, setStyle] = React.useState<React.CSSProperties>({
-    top: -9999,
-    left: -9999,
-    position: "fixed",
+  const { referenceRef, floatingRef, floatingStyles } = useAutoPosition({
+    isOpen: true,
+    side: "right",
+    align: "start",
+    sideOffset: 4,
+    strategy: "fixed",
+    scrollBehavior,
   });
 
+  // Link triggerRef to referenceRef
   React.useLayoutEffect(() => {
-    if (triggerRef.current && ref.current) {
-      const triggerRect = triggerRef.current.getBoundingClientRect();
-      const rect = ref.current.getBoundingClientRect();
-      const { innerWidth, innerHeight } = window;
-
-      const newStyle: React.CSSProperties = {
-        position: "fixed",
-        zIndex: 1005 + depth,
-      };
-
-      let left = triggerRect.right + 4;
-      let top = triggerRect.top;
-
-      if (left + rect.width > innerWidth) {
-        left = triggerRect.left - rect.width - 4;
-      }
-
-      if (top + rect.height > innerHeight) {
-        top = innerHeight - rect.height - 10;
-      }
-      if (top < 0) top = 10;
-
-      newStyle.left = `${left}px`;
-      newStyle.top = `${top}px`;
-
-      setStyle(newStyle);
+    if (triggerRef.current) {
+      referenceRef(triggerRef.current);
     }
-  }, [depth, triggerRef]);
+  }, [triggerRef, referenceRef]);
 
   return (
-    <div ref={ref} className="animate-in fade-in zoom-in-95" style={style}>
+    <div
+      ref={floatingRef}
+      className="animate-in fade-in zoom-in-95"
+      style={{ ...floatingStyles, zIndex: 1005 + depth }}
+    >
       <div
         style={{
           position: "absolute",
@@ -364,6 +359,7 @@ function CascaderSubMenuContent({
         itemHeight={itemHeight}
         className={menuClassName}
         menuClassName={menuClassName}
+        scrollBehavior={scrollBehavior}
       />
     </div>
   );

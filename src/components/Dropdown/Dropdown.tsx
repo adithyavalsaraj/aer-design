@@ -1,9 +1,10 @@
 import { useAerConfig } from "@/components/AerConfigProvider";
-import { calculateOptimalPosition } from "@/hooks";
+import { useAutoPosition } from "@/hooks/useAutoPosition";
 import { cn } from "@/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Check, ChevronDown, Loader2, Search, X } from "lucide-react";
 import * as React from "react";
+import { createPortal } from "react-dom";
 import { Checkbox } from "../Checkbox";
 
 // --- Variants ---
@@ -114,6 +115,8 @@ export interface DropdownProps
   /** CSS classes for the error message text */
   errorClassName?: string;
   size?: "sm" | "default" | "lg";
+  /** Behavior when the page or parent container scrolls. @default "reposition" */
+  scrollBehavior?: "close" | "reposition";
 }
 
 // --- Helper Functions ---
@@ -177,6 +180,7 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
       disabled,
       error,
       virtualized,
+      scrollBehavior = "reposition",
       itemHeight = 36,
       onLoadMore,
       hasMore,
@@ -208,15 +212,19 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
     const [focusedIndex, setFocusedIndex] = React.useState<number>(-1);
     const containerRef = React.useRef<HTMLDivElement>(null);
     const listRef = React.useRef<HTMLDivElement>(null);
-    const menuRef = React.useRef<HTMLDivElement>(null);
 
     const hasAddon = addonBefore || addonAfter;
 
-    // Auto-positioning state
-    const [menuPosition, setMenuPosition] = React.useState<{
-      side: "top" | "bottom";
-      align: "start" | "center" | "end";
-    }>({ side: "bottom", align: "start" });
+    // Auto-positioning hook
+    const { referenceRef, floatingRef, floatingStyles } = useAutoPosition({
+      isOpen,
+      side: "bottom",
+      align: "start",
+      sideOffset: 4,
+      strategy: "fixed",
+      scrollBehavior,
+      onScroll: () => setIsOpen(false),
+    });
 
     // Flatten all selectable options from groups
     const allSelectableOptions = React.useMemo(
@@ -343,26 +351,7 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
       onChange?.(newValue);
     };
 
-    // Auto-positioning logic
-    React.useLayoutEffect(() => {
-      if (isOpen && containerRef.current && menuRef.current) {
-        const triggerRect = containerRef.current.getBoundingClientRect();
-        const menuRect = menuRef.current.getBoundingClientRect();
-
-        const result = calculateOptimalPosition({
-          referenceRect: triggerRect,
-          floatingRect: menuRect,
-          side: "bottom",
-          align: "start",
-          sideOffset: 4,
-        });
-
-        setMenuPosition({
-          side: result.side as "top" | "bottom",
-          align: result.align,
-        });
-      }
-    }, [isOpen]);
+    // Close on outside click is handled by a listener below
 
     // Close on outside click
     React.useEffect(() => {
@@ -465,9 +454,13 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
             </div>
           )}
 
-          {/* Trigger */}
           <div
-            ref={ref as any}
+            ref={(node) => {
+              referenceRef(node as any);
+              (containerRef as any).current = node;
+              if (typeof ref === "function") ref(node as any);
+              else if (ref) (ref as any).current = node;
+            }}
             className={cn(
               dropdownTriggerVariants({
                 variant,
@@ -631,218 +624,221 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
         </div>
 
         {/* Dropdown Menu */}
-        {isOpen && (
-          <div
-            ref={menuRef}
-            className={cn(
-              "absolute w-full border rounded-aer-md shadow-lg overflow-hidden animate-in fade-in-0 zoom-in-95",
-              variant === "aer"
-                ? "z-[100] bg-white/5 backdrop-blur-xl border-white/10 shadow-2xl ring-1 ring-white/5"
-                : "z-50 bg-aer-background border-aer-border",
-              menuPosition.side === "top"
-                ? "bottom-full mb-1"
-                : "top-full mt-1",
-              menuClassName
-            )}
-          >
-            {/* Search Input */}
-            {searchable && (
-              <div className="p-2 border-b border-aer-border">
-                <div className="relative">
-                  <Search className="absolute left-2.5 top-2.5 w-4 h-4 text-aer-muted-foreground" />
-                  <input
-                    autoFocus
-                    className="w-full pl-8 pr-3 py-1.5 text-sm bg-transparent placeholder:text-aer-muted-foreground outline-none rounded-md focus:bg-aer-muted/50"
-                    placeholder="Search..."
-                    value={searchQuery}
-                    onClick={(e) => e.stopPropagation()}
-                    onChange={(e) => {
-                      setSearchQuery(e.target.value);
-                      onSearch?.(e.target.value);
-                    }}
-                  />
-                </div>
-              </div>
-            )}
-
-            {/* Options List */}
+        {isOpen &&
+          createPortal(
             <div
-              ref={listRef}
-              className="overflow-y-auto max-h-[250px]"
-              style={{
-                position: "relative",
-                height: virtualized ? listHeight : "auto",
-              }}
-              onScroll={handleScroll}
+              ref={floatingRef}
+              style={{ ...floatingStyles, zIndex: 1000 }}
+              className={cn(
+                "fixed border rounded-aer-md shadow-lg overflow-hidden animate-in fade-in-0 zoom-in-95",
+                variant === "aer"
+                  ? "bg-white/5 backdrop-blur-xl border-white/10 shadow-2xl ring-1 ring-white/5"
+                  : "bg-aer-background border-aer-border",
+                menuClassName
+              )}
             >
-              {loading && options.length === 0 ? (
-                <div className="flex items-center justify-center py-6 text-sm text-aer-muted-foreground">
-                  <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                  Loading...
+              {/* Search Input */}
+              {searchable && (
+                <div className="p-2 border-b border-aer-border">
+                  <div className="relative">
+                    <Search className="absolute left-2.5 top-2.5 w-4 h-4 text-aer-muted-foreground" />
+                    <input
+                      autoFocus
+                      className="w-full pl-8 pr-3 py-1.5 text-sm bg-transparent placeholder:text-aer-muted-foreground outline-none rounded-md focus:bg-aer-muted/50"
+                      placeholder="Search..."
+                      value={searchQuery}
+                      onClick={(e) => e.stopPropagation()}
+                      onChange={(e) => {
+                        setSearchQuery(e.target.value);
+                        onSearch?.(e.target.value);
+                      }}
+                    />
+                  </div>
                 </div>
-              ) : selectableItems.length === 0 ? (
-                <div className="py-6 text-center text-sm text-aer-muted-foreground">
-                  No options found.
-                </div>
-              ) : (
-                <div className="p-1">
-                  {renderableItems.map((item, itemIndex) => {
-                    if (isGroup(item)) {
-                      // Render group label + its items
-                      return (
-                        <div key={`group-${itemIndex}`}>
-                          <div className="px-2 py-1.5 text-xs font-semibold text-aer-muted-foreground uppercase tracking-wide">
-                            {item.label}
-                          </div>
-                          {item.items.map((option) => {
-                            // Find this option's index in selectableItems for keyboard navigation
-                            const selectableIndex = selectableItems.findIndex(
-                              (si) => si.value === option.value
-                            );
-                            const isOptSelected = isSelected(option.value);
+              )}
 
-                            return (
-                              <div
-                                key={option.value}
-                                onClick={() =>
-                                  !option.disabled && handleSelect(option.value)
-                                }
-                                className={cn(
-                                  "flex items-center gap-2 px-3 py-2 text-sm cursor-pointer transition-colors select-none rounded-sm",
-                                  isOptSelected &&
-                                    !multiple &&
-                                    (variant === "aer"
-                                      ? "bg-white/20 font-medium"
-                                      : "bg-aer-primary/10 text-aer-primary font-medium"),
-                                  isOptSelected && multiple && "bg-transparent",
-                                  !isOptSelected &&
-                                    selectableIndex === focusedIndex &&
-                                    (variant === "aer"
-                                      ? "bg-white/10"
-                                      : "bg-aer-accent"),
-                                  !isOptSelected &&
-                                    selectableIndex !== focusedIndex &&
-                                    (variant === "aer"
-                                      ? "hover:bg-white/10"
-                                      : "hover:bg-aer-muted/50"),
-                                  option.disabled &&
-                                    "opacity-50 cursor-not-allowed pointer-events-none",
-                                  itemClassName
-                                )}
-                              >
-                                {multiple && (
-                                  <Checkbox
-                                    checked={isOptSelected}
-                                    className="pointer-events-none w-auto"
-                                    readOnly
-                                  />
-                                )}
-                                <span
+              {/* Options List */}
+              <div
+                ref={listRef}
+                className="overflow-y-auto max-h-[250px]"
+                style={{
+                  position: "relative",
+                  height: virtualized ? listHeight : "auto",
+                }}
+                onScroll={handleScroll}
+              >
+                {loading && options.length === 0 ? (
+                  <div className="flex items-center justify-center py-6 text-sm text-aer-muted-foreground">
+                    <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                    Loading...
+                  </div>
+                ) : selectableItems.length === 0 ? (
+                  <div className="py-6 text-center text-sm text-aer-muted-foreground">
+                    No options found.
+                  </div>
+                ) : (
+                  <div className="p-1">
+                    {renderableItems.map((item, itemIndex) => {
+                      if (isGroup(item)) {
+                        // Render group label + its items
+                        return (
+                          <div key={`group-${itemIndex}`}>
+                            <div className="px-2 py-1.5 text-xs font-semibold text-aer-muted-foreground uppercase tracking-wide">
+                              {item.label}
+                            </div>
+                            {item.items.map((option) => {
+                              // Find this option's index in selectableItems for keyboard navigation
+                              const selectableIndex = selectableItems.findIndex(
+                                (si) => si.value === option.value
+                              );
+                              const isOptSelected = isSelected(option.value);
+
+                              return (
+                                <div
+                                  key={option.value}
+                                  onClick={() =>
+                                    !option.disabled &&
+                                    handleSelect(option.value)
+                                  }
                                   className={cn(
-                                    "truncate flex-1",
-                                    variant === "aer"
-                                      ? "!text-white [text-shadow:0_1px_2px_rgba(0,0,0,0.8)]"
-                                      : "text-aer-foreground"
+                                    "flex items-center gap-2 px-3 py-2 text-sm cursor-pointer transition-colors select-none rounded-sm",
+                                    isOptSelected &&
+                                      !multiple &&
+                                      (variant === "aer"
+                                        ? "bg-white/20 font-medium"
+                                        : "bg-aer-primary/10 text-aer-primary font-medium"),
+                                    isOptSelected &&
+                                      multiple &&
+                                      "bg-transparent",
+                                    !isOptSelected &&
+                                      selectableIndex === focusedIndex &&
+                                      (variant === "aer"
+                                        ? "bg-white/10"
+                                        : "bg-aer-accent"),
+                                    !isOptSelected &&
+                                      selectableIndex !== focusedIndex &&
+                                      (variant === "aer"
+                                        ? "hover:bg-white/10"
+                                        : "hover:bg-aer-muted/50"),
+                                    option.disabled &&
+                                      "opacity-50 cursor-not-allowed pointer-events-none",
+                                    itemClassName
                                   )}
                                 >
-                                  {option.label}
-                                </span>
-                                {!multiple && isOptSelected && (
-                                  <Check
+                                  {multiple && (
+                                    <Checkbox
+                                      checked={isOptSelected}
+                                      className="pointer-events-none w-auto"
+                                      readOnly
+                                    />
+                                  )}
+                                  <span
                                     className={cn(
-                                      "w-4 h-4 text-aer-primary ml-auto",
-                                      iconClassName
+                                      "truncate flex-1",
+                                      variant === "aer"
+                                        ? "text-white! [text-shadow:0_1px_2px_rgba(0,0,0,0.8)]"
+                                        : "text-aer-foreground"
                                     )}
-                                  />
-                                )}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      );
-                    } else if (isSeparator(item)) {
-                      // Render separator
-                      return (
-                        <div
-                          key={`separator-${itemIndex}`}
-                          className="my-1 h-px bg-aer-border"
-                        />
-                      );
-                    } else {
-                      // Render regular option
-                      const selectableIndex = selectableItems.findIndex(
-                        (si) => si.value === item.value
-                      );
-                      const isOptSelected = isSelected(item.value);
+                                  >
+                                    {option.label}
+                                  </span>
+                                  {!multiple && isOptSelected && (
+                                    <Check
+                                      className={cn(
+                                        "w-4 h-4 text-aer-primary ml-auto",
+                                        iconClassName
+                                      )}
+                                    />
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        );
+                      } else if (isSeparator(item)) {
+                        // Render separator
+                        return (
+                          <div
+                            key={`separator-${itemIndex}`}
+                            className="my-1 h-px bg-aer-border"
+                          />
+                        );
+                      } else {
+                        // Render regular option
+                        const selectableIndex = selectableItems.findIndex(
+                          (si) => si.value === item.value
+                        );
+                        const isOptSelected = isSelected(item.value);
 
-                      return (
-                        <div
-                          key={item.value}
-                          onClick={() =>
-                            !item.disabled && handleSelect(item.value)
-                          }
-                          className={cn(
-                            "flex items-center gap-2 px-3 py-2 text-sm cursor-pointer transition-colors select-none rounded-sm",
-                            isOptSelected &&
-                              !multiple &&
-                              (variant === "aer"
-                                ? "bg-white/20 text-white font-medium"
-                                : "bg-aer-primary/10 text-aer-primary font-medium"),
-                            isOptSelected && multiple && "bg-transparent",
-                            !isOptSelected &&
-                              selectableIndex === focusedIndex &&
-                              (variant === "aer"
-                                ? "bg-white/10"
-                                : "bg-aer-accent"),
-                            !isOptSelected &&
-                              selectableIndex !== focusedIndex &&
-                              (variant === "aer"
-                                ? "hover:bg-white/10"
-                                : "hover:bg-aer-muted/50"),
-                            item.disabled &&
-                              "opacity-50 cursor-not-allowed pointer-events-none",
-                            itemClassName
-                          )}
-                        >
-                          {multiple && (
-                            <Checkbox
-                              checked={isOptSelected}
-                              className="pointer-events-none w-auto"
-                              readOnly
-                            />
-                          )}
-                          <span
+                        return (
+                          <div
+                            key={item.value}
+                            onClick={() =>
+                              !item.disabled && handleSelect(item.value)
+                            }
                             className={cn(
-                              "truncate flex-1",
-                              variant === "aer"
-                                ? "!text-white [text-shadow:0_1px_2px_rgba(0,0,0,0.8)]"
-                                : "text-aer-foreground"
+                              "flex items-center gap-2 px-3 py-2 text-sm cursor-pointer transition-colors select-none rounded-sm",
+                              isOptSelected &&
+                                !multiple &&
+                                (variant === "aer"
+                                  ? "bg-white/20 text-white font-medium"
+                                  : "bg-aer-primary/10 text-aer-primary font-medium"),
+                              isOptSelected && multiple && "bg-transparent",
+                              !isOptSelected &&
+                                selectableIndex === focusedIndex &&
+                                (variant === "aer"
+                                  ? "bg-white/10"
+                                  : "bg-aer-accent"),
+                              !isOptSelected &&
+                                selectableIndex !== focusedIndex &&
+                                (variant === "aer"
+                                  ? "hover:bg-white/10"
+                                  : "hover:bg-aer-muted/50"),
+                              item.disabled &&
+                                "opacity-50 cursor-not-allowed pointer-events-none",
+                              itemClassName
                             )}
                           >
-                            {item.label}
-                          </span>
-                          {!multiple && isOptSelected && (
-                            <Check
+                            {multiple && (
+                              <Checkbox
+                                checked={isOptSelected}
+                                className="pointer-events-none w-auto"
+                                readOnly
+                              />
+                            )}
+                            <span
                               className={cn(
-                                "w-4 h-4 text-aer-primary ml-auto",
-                                iconClassName
+                                "truncate flex-1",
+                                variant === "aer"
+                                  ? "text-white! [text-shadow:0_1px_2px_rgba(0,0,0,0.8)]"
+                                  : "text-aer-foreground"
                               )}
-                            />
-                          )}
-                        </div>
-                      );
-                    }
-                  })}
-                </div>
-              )}
-              {loading && options.length > 0 && (
-                <div className="py-2 text-center">
-                  <Loader2 className="w-4 h-4 animate-spin mx-auto text-aer-muted-foreground" />
-                </div>
-              )}
-            </div>
-          </div>
-        )}
+                            >
+                              {item.label}
+                            </span>
+                            {!multiple && isOptSelected && (
+                              <Check
+                                className={cn(
+                                  "w-4 h-4 text-aer-primary ml-auto",
+                                  iconClassName
+                                )}
+                              />
+                            )}
+                          </div>
+                        );
+                      }
+                    })}
+                  </div>
+                )}
+                {loading && options.length > 0 && (
+                  <div className="py-2 text-center">
+                    <Loader2 className="w-4 h-4 animate-spin mx-auto text-aer-muted-foreground" />
+                  </div>
+                )}
+              </div>
+            </div>,
+            document.body
+          )}
         {typeof error === "string" && (
           <div
             className={cn(

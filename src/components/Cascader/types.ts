@@ -168,4 +168,9 @@ export interface CascaderProps {
    * @default 32
    */
   itemHeight?: number;
+  /**
+   * Behavior when the page or parent container scrolls.
+   * @default "reposition"
+   */
+  scrollBehavior?: "close" | "reposition";
 }

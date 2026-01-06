@@ -164,6 +164,12 @@ export interface UseAutoPositionOptions {
   alignOffset?: number;
   /** Enable collision detection and auto-repositioning */
   avoidCollisions?: boolean;
+  /** Positioning strategy. @default "absolute" */
+  strategy?: "absolute" | "fixed";
+  /** Behavior when the page or parent container scrolls. @default "reposition" */
+  scrollBehavior?: "close" | "reposition";
+  /** Callback when scrolling is detected. Useful for closing. */
+  onScroll?: () => void;
 }
 
 export interface UseAutoPositionReturn {
@@ -201,6 +207,9 @@ export function useAutoPosition(
     sideOffset = 4,
     alignOffset = 0,
     avoidCollisions = true,
+    strategy = "absolute",
+    scrollBehavior = "reposition",
+    onScroll,
   } = options;
 
   const [referenceElement, setReferenceElement] =
@@ -212,12 +221,18 @@ export function useAutoPosition(
   const [effectiveAlign, setEffectiveAlign] = React.useState<Align>(align);
   const [floatingStyles, setFloatingStyles] =
     React.useState<React.CSSProperties>({});
+  const [tick, setTick] = React.useState(0);
 
   // Update effective values when props change
   React.useEffect(() => {
     setEffectiveSide(side);
     setEffectiveAlign(align);
   }, [side, align]);
+
+  // Force re-calculation of styles
+  const updatePosition = React.useCallback(() => {
+    setTick((t) => t + 1);
+  }, []);
 
   // Auto-positioning logic
   React.useLayoutEffect(() => {
@@ -251,6 +266,7 @@ export function useAutoPosition(
     effectiveSide,
     effectiveAlign,
     avoidCollisions,
+    tick,
   ]);
 
   // Calculate styles based on effective placement
@@ -261,41 +277,83 @@ export function useAutoPosition(
     }
 
     const styles: React.CSSProperties = {
-      position: "absolute",
-      zIndex: 50,
+      position: strategy,
+      zIndex: 1000, // Higher z-index for portals
     };
 
-    // Calculate position based on side
-    if (effectiveSide === "top") {
-      styles.bottom = `calc(100% + ${sideOffset}px)`;
-    } else if (effectiveSide === "bottom") {
-      styles.top = `calc(100% + ${sideOffset}px)`;
-    } else if (effectiveSide === "left") {
-      styles.right = `calc(100% + ${sideOffset}px)`;
-    } else if (effectiveSide === "right") {
-      styles.left = `calc(100% + ${sideOffset}px)`;
-    }
+    const referenceRect = referenceElement.getBoundingClientRect();
+    const floatingRect = floatingElement.getBoundingClientRect();
 
-    // Calculate alignment
-    if (effectiveSide === "top" || effectiveSide === "bottom") {
-      // Horizontal alignment
-      if (effectiveAlign === "start") {
-        styles.left = `${alignOffset}px`;
-      } else if (effectiveAlign === "center") {
-        styles.left = "50%";
-        styles.transform = "translateX(-50%)";
-      } else if (effectiveAlign === "end") {
-        styles.right = `${alignOffset}px`;
+    if (strategy === "absolute") {
+      // Calculate position based on side
+      if (effectiveSide === "top") {
+        styles.bottom = `calc(100% + ${sideOffset}px)`;
+      } else if (effectiveSide === "bottom") {
+        styles.top = `calc(100% + ${sideOffset}px)`;
+      } else if (effectiveSide === "left") {
+        styles.right = `calc(100% + ${sideOffset}px)`;
+      } else if (effectiveSide === "right") {
+        styles.left = `calc(100% + ${sideOffset}px)`;
+      }
+
+      // Calculate alignment
+      if (effectiveSide === "top" || effectiveSide === "bottom") {
+        if (effectiveAlign === "start") {
+          styles.left = `${alignOffset}px`;
+        } else if (effectiveAlign === "center") {
+          styles.left = "50%";
+          styles.transform = "translateX(-50%)";
+        } else if (effectiveAlign === "end") {
+          styles.right = `${alignOffset}px`;
+        }
+      } else {
+        if (effectiveAlign === "start") {
+          styles.top = `${alignOffset}px`;
+        } else if (effectiveAlign === "center") {
+          styles.top = "50%";
+          styles.transform = "translateY(-50%)";
+        } else if (effectiveAlign === "end") {
+          styles.bottom = `${alignOffset}px`;
+        }
       }
     } else {
-      // Vertical alignment
-      if (effectiveAlign === "start") {
-        styles.top = `${alignOffset}px`;
-      } else if (effectiveAlign === "center") {
-        styles.top = "50%";
-        styles.transform = "translateY(-50%)";
-      } else if (effectiveAlign === "end") {
-        styles.bottom = `${alignOffset}px`;
+      // Fixed positioning - relative to viewport
+      // Vertical Positioning
+      if (effectiveSide === "top") {
+        styles.top = referenceRect.top - floatingRect.height - sideOffset;
+      } else if (effectiveSide === "bottom") {
+        styles.top = referenceRect.bottom + sideOffset;
+      } else if (effectiveSide === "left" || effectiveSide === "right") {
+        if (effectiveAlign === "start") {
+          styles.top = referenceRect.top + alignOffset;
+        } else if (effectiveAlign === "center") {
+          styles.top =
+            referenceRect.top +
+            referenceRect.height / 2 -
+            floatingRect.height / 2 +
+            alignOffset;
+        } else if (effectiveAlign === "end") {
+          styles.top = referenceRect.bottom - floatingRect.height + alignOffset;
+        }
+      }
+
+      // Horizontal Positioning
+      if (effectiveSide === "left") {
+        styles.left = referenceRect.left - floatingRect.width - sideOffset;
+      } else if (effectiveSide === "right") {
+        styles.left = referenceRect.right + sideOffset;
+      } else if (effectiveSide === "top" || effectiveSide === "bottom") {
+        if (effectiveAlign === "start") {
+          styles.left = referenceRect.left + alignOffset;
+        } else if (effectiveAlign === "center") {
+          styles.left =
+            referenceRect.left +
+            referenceRect.width / 2 -
+            floatingRect.width / 2 +
+            alignOffset;
+        } else if (effectiveAlign === "end") {
+          styles.left = referenceRect.right - floatingRect.width + alignOffset;
+        }
       }
     }
 
@@ -308,7 +366,61 @@ export function useAutoPosition(
     effectiveAlign,
     sideOffset,
     alignOffset,
+    strategy,
+    tick,
   ]);
+
+  // Scroll and Resize Listeners
+  React.useEffect(() => {
+    if (!isOpen || !referenceElement) return;
+
+    const handleInteraction = (e: Event) => {
+      // If we're scrolling inside the floating element itself, don't close/update
+      if (floatingElement && floatingElement.contains(e.target as Node)) {
+        return;
+      }
+
+      if (scrollBehavior === "close") {
+        onScroll?.();
+      } else {
+        updatePosition();
+      }
+    };
+
+    // Find all scrollable parent elements
+    const scrollableParents: (Element | Window)[] = [window];
+    let element = referenceElement.parentElement;
+
+    while (element) {
+      const { overflow, overflowY, overflowX } =
+        window.getComputedStyle(element);
+      const isScrollable =
+        overflow === "auto" ||
+        overflow === "scroll" ||
+        overflowY === "auto" ||
+        overflowY === "scroll" ||
+        overflowX === "auto" ||
+        overflowX === "scroll";
+
+      if (isScrollable) {
+        scrollableParents.push(element);
+      }
+      element = element.parentElement;
+    }
+
+    // Add listeners
+    scrollableParents.forEach((p) =>
+      p.addEventListener("scroll", handleInteraction)
+    );
+    window.addEventListener("resize", updatePosition);
+
+    return () => {
+      scrollableParents.forEach((p) =>
+        p.removeEventListener("scroll", handleInteraction)
+      );
+      window.removeEventListener("resize", updatePosition);
+    };
+  }, [isOpen, referenceElement, scrollBehavior, onScroll, updatePosition]);
 
   return {
     referenceRef: setReferenceElement,

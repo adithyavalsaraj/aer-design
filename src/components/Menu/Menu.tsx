@@ -1,8 +1,9 @@
-import { calculateOptimalPosition } from "@/hooks";
+import { useAutoPosition } from "@/hooks/useAutoPosition";
 import { cn } from "@/lib/utils";
 import { Slot } from "@radix-ui/react-slot";
 import { ChevronRight } from "lucide-react";
 import * as React from "react";
+import { createPortal } from "react-dom";
 import { MenuContext, useMenu } from "./MenuContext";
 import {
   type MenuContentProps,
@@ -23,6 +24,7 @@ export function Menu({
   isOpen: controlledOpen,
   onOpenChange,
   variant,
+  scrollBehavior = "reposition",
 }: MenuProps) {
   const [uncontrolledOpen, setUncontrolledOpen] = React.useState(false);
   const isControlled = controlledOpen !== undefined;
@@ -45,6 +47,7 @@ export function Menu({
     [isOpen, setIsOpen]
   );
 
+  const triggerRef = React.useRef<HTMLElement | null>(null);
   const contextValue = React.useMemo(
     () => ({
       isOpen,
@@ -53,8 +56,18 @@ export function Menu({
       openMenu,
       toggleMenu,
       variant: variant || "default",
+      triggerRef,
+      scrollBehavior,
     }),
-    [isOpen, setIsOpen, closeMenu, openMenu, toggleMenu, variant]
+    [
+      isOpen,
+      setIsOpen,
+      closeMenu,
+      openMenu,
+      toggleMenu,
+      variant,
+      scrollBehavior,
+    ]
   );
 
   return (
@@ -70,7 +83,7 @@ export const MenuTrigger = React.forwardRef<
   HTMLButtonElement,
   MenuTriggerProps
 >(({ className, onClick, children, asChild = false, ...props }, ref) => {
-  const { isOpen, toggleMenu, closeMenu } = useMenu();
+  const { isOpen, toggleMenu, closeMenu, triggerRef } = useMenu();
   const Comp = asChild ? Slot : "button";
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -86,7 +99,11 @@ export const MenuTrigger = React.forwardRef<
 
   return (
     <Comp
-      ref={ref}
+      ref={(node: any) => {
+        triggerRef.current = node;
+        if (typeof ref === "function") ref(node);
+        else if (ref) (ref as any).current = node;
+      }}
       type={asChild ? undefined : "button"}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
@@ -111,20 +128,43 @@ export const MenuContent = React.forwardRef<HTMLDivElement, MenuContentProps>(
       align = "start",
       side = "bottom",
       sideOffset = 4,
+      scrollBehavior = "reposition",
       asChild = false,
       ...props
     },
     ref
   ) => {
-    const { isOpen, closeMenu } = useMenu();
-    const contentRef = React.useRef<HTMLDivElement | null>(null);
+    const { isOpen, closeMenu, triggerRef } = useMenu();
+
+    const { scrollBehavior: contextBehavior } = useMenu();
+    const activeScrollBehavior =
+      scrollBehavior || contextBehavior || "reposition";
+
+    const {
+      referenceRef,
+      floatingRef,
+      floatingStyles,
+      elements: { floating: contentElement },
+    } = useAutoPosition({
+      isOpen,
+      side,
+      align,
+      sideOffset,
+      strategy: "fixed",
+      scrollBehavior: activeScrollBehavior,
+      onScroll: () => closeMenu(),
+    });
+
+    // Link triggerRef from context to referenceRef from hook
+    React.useLayoutEffect(() => {
+      if (triggerRef && triggerRef.current) {
+        referenceRef(triggerRef.current);
+      }
+    }, [triggerRef, referenceRef]);
 
     React.useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
-        if (
-          contentRef.current &&
-          !contentRef.current.contains(event.target as Node)
-        ) {
+        if (contentElement && !contentElement.contains(event.target as Node)) {
           closeMenu();
         }
       };
@@ -148,7 +188,7 @@ export const MenuContent = React.forwardRef<HTMLDivElement, MenuContentProps>(
       return () => {
         document.removeEventListener("mousedown", handleClickOutside);
       };
-    }, [isOpen, closeMenu]);
+    }, [isOpen, closeMenu, contentElement]);
 
     React.useEffect(() => {
       const handleKeyDown = (event: KeyboardEvent) => {
@@ -163,63 +203,29 @@ export const MenuContent = React.forwardRef<HTMLDivElement, MenuContentProps>(
       return () => {
         document.removeEventListener("keydown", handleKeyDown);
       };
-    }, [isOpen, closeMenu]);
+    }, [isOpen, closeMenu, contentElement]);
 
     // Focus first item on open
     React.useEffect(() => {
-      if (isOpen && contentRef.current) {
+      if (isOpen && contentElement) {
         // Small timeout to allow render
         requestAnimationFrame(() => {
-          const firstItem = contentRef.current?.querySelector(
+          const firstItem = contentElement.querySelector(
             '[role="menuitem"]:not([data-disabled])'
           ) as HTMLElement;
           firstItem?.focus();
         });
       }
-    }, [isOpen]);
+    }, [isOpen, contentElement]);
 
-    const [effectiveSide, setEffectiveSide] = React.useState(side);
-    const [effectiveAlign, setEffectiveAlign] = React.useState(align);
-
-    // Reset effective positions when closed or props change
-    React.useEffect(() => {
-      if (!isOpen) {
-        // Reset to defaults when closed so next open starts fresh
-        setEffectiveSide(side);
-        setEffectiveAlign(align);
-      }
-    }, [isOpen, side, align]);
-
-    React.useLayoutEffect(() => {
-      if (isOpen && contentRef.current) {
-        const menuRect = contentRef.current.getBoundingClientRect();
-        const triggerRect =
-          contentRef.current.parentElement?.getBoundingClientRect();
-
-        if (!triggerRect) return;
-
-        // Use shared positioning utility
-        const result = calculateOptimalPosition({
-          referenceRect: triggerRect,
-          floatingRect: menuRect,
-          side,
-          align,
-          sideOffset,
-        });
-
-        if (result.side !== effectiveSide || result.align !== effectiveAlign) {
-          setEffectiveSide(result.side);
-          setEffectiveAlign(result.align);
-        }
-      }
-    }, [isOpen, side, align, sideOffset, effectiveSide, effectiveAlign]);
+    // Auto-positioning and collision detection is handled by useAutoPosition hook
 
     // Focus Management
     const handleContentKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
       if (!isOpen) return;
 
       const items = Array.from(
-        contentRef.current?.querySelectorAll(
+        contentElement?.querySelectorAll(
           '[role="menuitem"]:not([data-disabled])'
         ) || []
       ) as HTMLElement[];
@@ -287,58 +293,24 @@ export const MenuContent = React.forwardRef<HTMLDivElement, MenuContentProps>(
 
     if (!isOpen) return null;
 
-    const positions: Record<
-      NonNullable<MenuContentProps["side"]>,
-      React.CSSProperties
-    > = {
-      bottom: { top: "100%", marginTop: sideOffset },
-      top: { bottom: "100%", marginBottom: sideOffset },
-      left: { right: "100%", marginRight: sideOffset },
-      right: { left: "100%", marginLeft: sideOffset },
-    };
-
-    const alignments: Record<
-      NonNullable<MenuContentProps["align"]>,
-      React.CSSProperties
-    > = {
-      start:
-        effectiveSide === "left" || effectiveSide === "right"
-          ? { top: 0 }
-          : { left: 0 },
-      end:
-        effectiveSide === "left" || effectiveSide === "right"
-          ? { bottom: 0 }
-          : { right: 0 },
-      center:
-        effectiveSide === "left" || effectiveSide === "right"
-          ? { top: "50%", transform: "translateY(-50%)" }
-          : { left: "50%", transform: "translateX(-50%)" },
-    };
-
-    const style = {
-      ...positions[effectiveSide as keyof typeof positions],
-      ...alignments[effectiveAlign as keyof typeof alignments],
-    };
-
     const Comp = asChild ? Slot : "div";
 
-    return (
+    return createPortal(
       <Comp
-        ref={(node) => {
-          contentRef.current = node;
+        ref={(node: any) => {
+          floatingRef(node);
           if (typeof ref === "function") ref(node);
-          else if (ref)
-            (ref as React.MutableRefObject<HTMLDivElement | null>).current =
-              node;
+          else if (ref) (ref as any).current = node;
         }}
         className={cn(menuContentVariants({ className }))}
-        style={style}
+        style={{ ...floatingStyles, zIndex: 1000 }}
         role="menu"
         onKeyDown={handleContentKeyDown}
         {...props}
       >
         {children}
-      </Comp>
+      </Comp>,
+      document.body
     );
   }
 );
@@ -437,8 +409,13 @@ MenuSeparator.displayName = "MenuSeparator";
 // --- Sub Menu ---
 
 export const SubMenu = React.forwardRef<HTMLDivElement, SubMenuProps>(
-  ({ className, trigger, children, disabled, ...props }, ref) => {
-    const { variant } = useMenu();
+  (
+    { className, trigger, children, disabled, scrollBehavior, ...props },
+    ref
+  ) => {
+    const { variant, scrollBehavior: contextBehavior } = useMenu();
+    const activeScrollBehavior =
+      scrollBehavior || contextBehavior || "reposition";
     const [isOpen, setIsOpen] = React.useState(false);
     const timeoutRef = React.useRef<number | null>(null);
 
@@ -455,55 +432,6 @@ export const SubMenu = React.forwardRef<HTMLDivElement, SubMenuProps>(
 
     const innerRef = React.useRef<HTMLDivElement>(null);
     React.useImperativeHandle(ref, () => innerRef.current as HTMLDivElement);
-
-    const subContentRef = React.useRef<HTMLDivElement>(null);
-    const [positionStyle, setPositionStyle] =
-      React.useState<React.CSSProperties>({
-        left: "100%",
-        top: 0,
-      });
-
-    React.useLayoutEffect(() => {
-      if (isOpen && subContentRef.current) {
-        const rect = subContentRef.current.getBoundingClientRect();
-        const { innerWidth, innerHeight } = window;
-
-        const newStyle: React.CSSProperties = { top: 0 };
-
-        // Match width to parent trigger if not specified in className
-        // We use minWidth so it can grow if content is wider
-        if (innerRef.current) {
-          (newStyle as any)[
-            "--aer-submenu-parent-width"
-          ] = `${innerRef.current.offsetWidth}px`;
-        }
-
-        // Horizontal: Right by default (left: 100%)
-        // If right edge > viewport width, flip to left (right: 100%)
-        if (rect.right > innerWidth) {
-          newStyle.left = "auto";
-          newStyle.right = "100%";
-          newStyle.marginRight = "4px"; // Match the ml-1 gap/overlap logic roughly or use -mr-1
-        } else {
-          newStyle.left = "100%";
-        }
-
-        // Vertical: If bottom goes off screen, shift up
-        if (rect.bottom > innerHeight) {
-          // Simple shift: bottom aligned with trigger bottom?
-          // Or just translate Y?
-          // Let's try to align bottom to parent bottom if it overflows
-          // But we don't have parent rect easily here without ref to trigger parent
-          // But we can check how much it overflows and translate up
-          const overflowY = rect.bottom - innerHeight + 10; // +10 padding
-          if (overflowY > 0) {
-            newStyle.top = `-${overflowY}px`;
-          }
-        }
-
-        setPositionStyle(newStyle);
-      }
-    }, [isOpen]);
 
     return (
       <div
@@ -529,25 +457,70 @@ export const SubMenu = React.forwardRef<HTMLDivElement, SubMenuProps>(
         </MenuItem>
 
         {isOpen && !disabled && (
-          <div
-            ref={subContentRef}
-            className={cn(
-              menuContentVariants({ variant: variant as any }),
-              // Default width behavior:
-              // 1. Minimum 8rem
-              // 2. Matches parent width if larger than 8rem
-              // 3. Can be overridden by user using `w-` or `min-w-` classes cause tailwind-merge handles the conflict
-              "absolute min-w-[max(8rem,var(--aer-submenu-parent-width,0px))] -ml-1 z-100"
-            )}
-            style={positionStyle}
-            role="menu"
-            data-submenu-content=""
+          <SubMenuContent
+            parentRef={innerRef}
+            variant={variant}
+            scrollBehavior={activeScrollBehavior}
           >
             {children}
-          </div>
+          </SubMenuContent>
         )}
       </div>
     );
   }
 );
+export function SubMenuContent({
+  parentRef,
+  variant,
+  children,
+  scrollBehavior: propBehavior,
+}: {
+  parentRef: React.RefObject<HTMLDivElement | null>;
+  variant: any;
+  children: React.ReactNode;
+  scrollBehavior?: "close" | "reposition";
+}) {
+  const { scrollBehavior: contextBehavior, setIsOpen } = useMenu();
+  const scrollBehavior = propBehavior || contextBehavior || "reposition";
+
+  const { referenceRef, floatingRef, floatingStyles } = useAutoPosition({
+    isOpen: true,
+    side: "right",
+    align: "start",
+    sideOffset: -4, // Slight overlap
+    strategy: "fixed",
+    scrollBehavior,
+    onScroll: () => setIsOpen(false),
+  });
+
+  React.useLayoutEffect(() => {
+    if (parentRef.current) {
+      referenceRef(parentRef.current);
+    }
+  }, [parentRef, referenceRef]);
+
+  return createPortal(
+    <div
+      ref={floatingRef}
+      role="menu"
+      data-submenu-content=""
+      className={cn(
+        menuContentVariants({ variant }),
+        "z-1001 min-w-[max(8rem,var(--aer-submenu-parent-width,0px))] animate-in fade-in zoom-in-95"
+      )}
+      style={{
+        ...floatingStyles,
+        // We can still pass the width variable if needed, but useAutoPosition should handle positioning
+      }}
+    >
+      <div
+        className="absolute inset-y-0 -left-2 w-2"
+        onMouseEnter={() => {}} // Bridge gap for hover
+      />
+      {children}
+    </div>,
+    document.body
+  );
+}
+
 SubMenu.displayName = "SubMenu";

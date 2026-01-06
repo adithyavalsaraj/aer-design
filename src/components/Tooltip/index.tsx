@@ -1,8 +1,9 @@
 import { useAerConfig } from "@/components/AerConfigProvider";
-import { calculateOptimalPosition } from "@/hooks";
+import { useAutoPosition } from "@/hooks/useAutoPosition";
 import { useContrastColor } from "@/hooks/useContrastColor";
 import { cn } from "@/lib/utils";
 import * as React from "react";
+import { createPortal } from "react-dom";
 import { type TooltipProps } from "./types";
 import { tooltipVariants } from "./variants";
 
@@ -23,6 +24,7 @@ export const Tooltip = ({
   onOpenChange,
   className,
   style,
+  scrollBehavior = "close",
   ...props
 }: TooltipProps) => {
   const { autoContrast } = useAerConfig();
@@ -42,9 +44,6 @@ export const Tooltip = ({
     },
     [isOpen, onOpenChange]
   );
-  const [effectiveSide, setEffectiveSide] = React.useState<typeof side>(side);
-  const [effectiveAlign, setEffectiveAlign] =
-    React.useState<typeof align>(align);
 
   const triggerRef = React.useRef<HTMLElement>(null);
   const tooltipRef = React.useRef<HTMLDivElement>(null);
@@ -59,24 +58,23 @@ export const Tooltip = ({
     };
   }, []);
 
-  // Auto-positioning logic
+  // Auto-positioning hook
+  const { referenceRef, floatingRef, floatingStyles } = useAutoPosition({
+    isOpen,
+    side,
+    align,
+    sideOffset,
+    strategy: "fixed",
+    scrollBehavior,
+    onScroll: () => setIsOpen(false),
+  });
+
+  // Re-attach internal triggerRef to hook's referenceRef
   React.useLayoutEffect(() => {
-    if (isOpen && triggerRef.current && tooltipRef.current) {
-      const triggerRect = triggerRef.current.getBoundingClientRect();
-      const tooltipRect = tooltipRef.current.getBoundingClientRect();
-
-      const result = calculateOptimalPosition({
-        referenceRect: triggerRect,
-        floatingRect: tooltipRect,
-        side,
-        align,
-        sideOffset,
-      });
-
-      setEffectiveSide(result.side as typeof side);
-      setEffectiveAlign(result.align);
+    if (triggerRef.current) {
+      referenceRef(triggerRef.current);
     }
-  }, [isOpen, side, align, sideOffset]);
+  }, [referenceRef]);
 
   const handleShow = () => {
     if (disabled) return;
@@ -110,48 +108,6 @@ export const Tooltip = ({
       document.addEventListener("keydown", handleEscape);
       return () => document.removeEventListener("keydown", handleEscape);
     }
-  }, [isOpen]);
-
-  // Close on scroll (including nested scrollable containers)
-  React.useEffect(() => {
-    if (!isOpen || !triggerRef.current) return;
-
-    const handleScroll = () => {
-      setIsOpen(false);
-    };
-
-    // Find all scrollable parent elements
-    const scrollableParents: (Element | Window)[] = [window];
-    let element = triggerRef.current.parentElement;
-
-    while (element) {
-      const { overflow, overflowY, overflowX } =
-        window.getComputedStyle(element);
-      const isScrollable =
-        overflow === "auto" ||
-        overflow === "scroll" ||
-        overflowY === "auto" ||
-        overflowY === "scroll" ||
-        overflowX === "auto" ||
-        overflowX === "scroll";
-
-      if (isScrollable) {
-        scrollableParents.push(element);
-      }
-
-      element = element.parentElement;
-    }
-
-    // Add scroll listeners to all scrollable parents
-    scrollableParents.forEach((parent) => {
-      parent.addEventListener("scroll", handleScroll);
-    });
-
-    return () => {
-      scrollableParents.forEach((parent) => {
-        parent.removeEventListener("scroll", handleScroll);
-      });
-    };
   }, [isOpen]);
 
   // Close on outside click for click trigger
@@ -197,59 +153,12 @@ export const Tooltip = ({
     "aria-describedby": isOpen ? "tooltip" : undefined,
   } as any);
 
-  // Calculate position styles
-  const getPositionStyles = (): React.CSSProperties => {
-    if (!triggerRef.current) return {};
-
-    const triggerRect = triggerRef.current.getBoundingClientRect();
-    const styles: React.CSSProperties = { position: "fixed" };
-
-    // Vertical positioning
-    if (effectiveSide === "top") {
-      styles.bottom = `${window.innerHeight - triggerRect.top + sideOffset}px`;
-    } else if (effectiveSide === "bottom") {
-      styles.top = `${triggerRect.bottom + sideOffset}px`;
-    } else {
-      // For left/right, center vertically
-      if (effectiveAlign === "start") {
-        styles.top = `${triggerRect.top}px`;
-      } else if (effectiveAlign === "end") {
-        styles.bottom = `${window.innerHeight - triggerRect.bottom}px`;
-      } else {
-        styles.top = `${triggerRect.top + triggerRect.height / 2}px`;
-        styles.transform = "translateY(-50%)";
-      }
-    }
-
-    // Horizontal positioning
-    if (effectiveSide === "left") {
-      styles.right = `${window.innerWidth - triggerRect.left + sideOffset}px`;
-    } else if (effectiveSide === "right") {
-      styles.left = `${triggerRect.right + sideOffset}px`;
-    } else {
-      // For top/bottom, align horizontally
-      if (effectiveAlign === "start") {
-        styles.left = `${triggerRect.left}px`;
-      } else if (effectiveAlign === "end") {
-        styles.right = `${window.innerWidth - triggerRect.right}px`;
-      } else {
-        styles.left = `${triggerRect.left + triggerRect.width / 2}px`;
-        styles.transform = styles.transform
-          ? `${styles.transform} translateX(-50%)`
-          : "translateX(-50%)";
-      }
-    }
-
-    return styles;
-  };
-
   // Auto Contrast Logic
   const backgroundColor = style?.backgroundColor as string;
   const contrastColor = useContrastColor(backgroundColor || "");
 
   const getMergedStyles = (): React.CSSProperties => {
-    const positionStyles = getPositionStyles();
-    const finalStyle = { ...positionStyles, ...style };
+    const finalStyle = { ...floatingStyles, ...style, zIndex: 2000 };
 
     if (autoContrast && backgroundColor) {
       finalStyle.color = contrastColor;
@@ -260,18 +169,21 @@ export const Tooltip = ({
   return (
     <>
       {triggerElement}
-      {isOpen && !disabled && (
-        <div
-          ref={tooltipRef}
-          role="tooltip"
-          id="tooltip"
-          className={cn(tooltipVariants({ variant }), className)}
-          style={getMergedStyles()}
-          {...props}
-        >
-          <div className="relative z-10">{content}</div>
-        </div>
-      )}
+      {isOpen &&
+        !disabled &&
+        createPortal(
+          <div
+            ref={floatingRef}
+            role="tooltip"
+            id="tooltip"
+            className={cn(tooltipVariants({ variant }), className)}
+            style={getMergedStyles()}
+            {...props}
+          >
+            <div className="relative z-10">{content}</div>
+          </div>,
+          document.body
+        )}
     </>
   );
 };

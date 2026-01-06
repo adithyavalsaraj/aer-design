@@ -9,7 +9,8 @@ export interface MenuContextValue {
   openMenu: () => void;
   toggleMenu: () => void;
   variant: "default" | "aer";
-  // Focus management can be added here
+  triggerRef: React.RefObject<HTMLElement | null>;
+  scrollBehavior?: "close" | "reposition";
 }
 
 export interface MenuProps {
@@ -17,6 +18,7 @@ export interface MenuProps {
   isOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
   variant?: "default" | "aer";
+  scrollBehavior?: "close" | "reposition";
 }
 
 export interface MenuTriggerProps
@@ -31,6 +33,8 @@ export interface MenuContentProps
   side?: "top" | "bottom" | "left" | "right";
   sideOffset?: number;
   asChild?: boolean;
+  /** Behavior when the page or parent container scrolls. @default "reposition" */
+  scrollBehavior?: "close" | "reposition";
 }
 
 export interface MenuItemProps
@@ -59,4 +63,5 @@ export interface SubMenuProps extends React.HTMLAttributes<HTMLDivElement> {
   trigger: React.ReactNode;
   children: React.ReactNode;
   disabled?: boolean;
+  scrollBehavior?: "close" | "reposition";
 }

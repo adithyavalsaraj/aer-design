@@ -2,6 +2,7 @@ import { Checkbox } from "@/components/Checkbox";
 import type { SidebarProps } from "@/components/Sidebar";
 import {
   Sidebar,
+  SidebarClose,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
@@ -31,7 +32,7 @@ function PlaygroundBrand() {
         A
       </div>
       {!collapsed && (
-        <span className="font-bold animate-in fade-in duration-300">
+        <span className="font-bold shrink-0 animate-in fade-in duration-300">
           Aer Design
         </span>
       )}
@@ -64,13 +65,6 @@ function SidebarPlayground() {
       return next;
     });
   };
-
-  React.useEffect(() => {
-    // Auto-open if overlay mode is disabled to avoid confusion
-    if (!config.overlay && !isOpen) {
-      setIsOpen(true);
-    }
-  }, [config.overlay, isOpen]);
 
   // Responsive Mobile Logic
   const [isMobile, setIsMobile] = React.useState(false);
@@ -232,6 +226,11 @@ function SidebarPlayground() {
     >
       <SidebarHeader>
         <PlaygroundBrand />
+        {(activeMode === "overlay" ||
+          activeMode === "absolute" ||
+          config.autoOverlay) && (
+          <SidebarClose className="ms-auto shrink-0 z-50" />
+        )}
       </SidebarHeader>
       <SidebarContent>
         <SidebarSection title="Platform">
@@ -452,14 +451,12 @@ function SidebarPlayground() {
                 !config.overlay && !isMobile ? "text-aer-muted-foreground" : ""
               }
             />
-            {(config.overlay || (isMobile && config.autoOverlay)) && (
-              <button
-                onClick={() => setIsOpen(!isOpen)}
-                className="w-full mt-2 px-3 py-1.5 bg-aer-primary text-aer-primary-foreground text-xs font-bold rounded-md"
-              >
-                {isOpen ? "Close Sidebar" : "Open Sidebar"}
-              </button>
-            )}
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="w-full mt-2 px-3 py-1.5 bg-aer-primary text-aer-primary-foreground text-xs font-bold rounded-md"
+            >
+              {isOpen ? "Close Sidebar" : "Open Sidebar"}
+            </button>
           </div>
         </div>
       </div>

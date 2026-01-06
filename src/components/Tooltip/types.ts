@@ -31,4 +31,6 @@ export interface TooltipProps
   defaultOpen?: boolean;
   /** Callback when open state changes */
   onOpenChange?: (open: boolean) => void;
+  /** Behavior when the page or parent container scrolls. @default "reposition" */
+  scrollBehavior?: "close" | "reposition";
 }

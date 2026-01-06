@@ -23,6 +23,9 @@ All notable changes to the Aer Design project will be documented in this file.
   - **Lazy Loading**: Introduced `lazy` and `forceMount` props for optimized tab content rendering.
   - **Scroll Navigation**: Automatic chevron arrows for navigating overflowing tab lists in both orientations.
   - **Interaction**: Unified keyboard arrow key navigation with visual scroll indicators.
+- **Positioning**: Introduced customizable scroll behavior for all overlay components.
+  - **`scrollBehavior` Prop**: New option to either `"reposition"` (panel follows trigger) or `"close"` (panel dismisses) on container scroll.
+  - **Centralized Logic**: Integrated this behavior into `Dropdown`, `Cascader`, `Menu`, and `Tooltip` via a unified `useAutoPosition` hook.
 - **Documentation**: Standardized "Aer Variant" sections across all 15+ components.
   - Added component-specific "Pro tips" with usage guidance.
   - Consistent premium background previews in code examples.
@@ -34,6 +37,9 @@ All notable changes to the Aer Design project will be documented in this file.
 - **Tabs**: Fixed navigation arrow overlap where chevrons could sit on top of tab labels.
 - **Tabs**: Fixed JSX syntax error in documentation related to nested DocSections.
 - **Overlay**: Fixed Tailwind CSS lint warning in documentation examples.
+- **Overlay**: Fixed a critical issue where nested menus in `Cascader` and `Menu` would detach from their parent triggers or get clipped by parent containers during scroll.
+  - **Portals**: All nested menu levels are now rendered via Portals with `fixed` strategy for unobstructed visibility.
+  - **Auto-Positioning**: Submenus now leverage the full `useAutoPosition` engine for collision detection and scroll-following.
 - **Dialog**: Fixed various state z-index and click-through issues during development.
 
 ## [v0.10.0] - 2026-01-05

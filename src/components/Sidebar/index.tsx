@@ -135,6 +135,8 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
       backdrop = true,
       variant = "default",
       onBackdropClick,
+      onOpenChange,
+      onCollapse,
       children,
       onMouseEnter,
       onMouseLeave,
@@ -155,17 +157,17 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === "Escape" && showOverlay && closeOnEscape) {
           // Should only close if overlay is active/visible
-          props.onOpenChange?.(false);
+          onOpenChange?.(false);
         }
       };
       if (showOverlay) {
         window.addEventListener("keydown", handleKeyDown);
       }
       return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [showOverlay, closeOnEscape, props.onOpenChange]);
+    }, [showOverlay, closeOnEscape, onOpenChange]);
 
     const handleBackdropClick = () => {
-      if (closeOnBackdropClick) props.onOpenChange?.(false);
+      if (closeOnBackdropClick) onOpenChange?.(false);
       onBackdropClick?.();
     };
 
@@ -192,11 +194,9 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
 
       switch (position) {
         case "left":
-          // Start Sidebar: LTR=Left (hide -X), RTL=Right (hide +X)
-          return "ltr:-translate-x-full rtl:translate-x-full opacity-0";
+          return "-translate-x-full opacity-0";
         case "right":
-          // End Sidebar: LTR=Right (hide +X), RTL=Left (hide -X)
-          return "ltr:translate-x-full rtl:-translate-x-full opacity-0";
+          return "translate-x-full opacity-0";
         case "top":
           return "-translate-y-full opacity-0";
         case "bottom":
@@ -212,14 +212,14 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
           collapsed: !!isActuallyCollapsed,
           position,
           variant: variant || "default",
-          onOpenChange: props.onOpenChange,
+          onOpenChange,
           showNestedBorder,
         }}
       >
         {/* Backdrop for Overlay Mode */}
         {overlay && isOpen && backdrop && (
           <div
-            className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm transition-opacity duration-300 animate-in fade-in"
+            className="absolute inset-0 z-40 bg-black/20 backdrop-blur-sm transition-opacity duration-300 animate-in fade-in"
             onClick={handleBackdropClick}
             aria-hidden="true"
           />
@@ -806,7 +806,7 @@ const SidebarClose = React.forwardRef<
       type="button"
       onClick={handleClick}
       className={cn(
-        "p-2 rounded-md hover:bg-aer-muted text-aer-foreground transition-colors",
+        "p-2 rounded-md hover:bg-aer-muted transition-colors",
         className
       )}
       {...props}
