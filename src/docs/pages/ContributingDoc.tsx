@@ -107,7 +107,7 @@ export function ContributingDoc() {
                 { title: "Visual Variants", desc: "All available variants" },
                 {
                   title: "The Aer Variant",
-                  desc: "Premium glassmorphism variant",
+                  desc: "Premium glassmorphism variant with Pro Tip",
                 },
                 { title: "Sizes", desc: "All size options" },
                 { title: "Custom Usage", desc: "Advanced customization" },
@@ -219,6 +219,18 @@ export function ContributingDoc() {
                   Show how the component behaves in different scenarios: long
                   text, empty states, error states, loading states, and
                   responsive layouts.
+                </p>
+              </div>
+              <div className="p-4 rounded-aer-lg bg-blue-500/5 border border-blue-500/20">
+                <h4 className="font-semibold text-sm mb-2">
+                  ✨ Include Aer Variant Pro Tips
+                </h4>
+                <p className="text-xs text-aer-muted-foreground">
+                  Every Aer Variant section MUST include a Pro Tip explaining
+                  background requirements (dark/colorful), glassmorphism
+                  benefits, and component-specific use cases. This helps users
+                  understand when and how to use the premium variant
+                  effectively.
                 </p>
               </div>
             </div>

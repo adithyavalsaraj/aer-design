@@ -238,6 +238,15 @@ export function AvatarDoc() {
           ts={`<Avatar variant="aer" />`}
           fullCode={`import { Avatar } from "aer-design";\n\nexport default function AerAvatar() {\n  return (\n    <div className="bg-vibrant-gradient p-12">\n      <Avatar variant="aer" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=128&h=128" />\n    </div>\n  );\n}`}
         />
+        <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+          <p className="text-sm text-blue-700 dark:text-blue-400">
+            <strong>Pro tip:</strong> The Aer variant for Avatars adds a
+            distinct glassmorphism border and subtle inner shadow. It's
+            especially effective in user lists or profile headers where you want
+            to emphasize premium user tiers or highlight specific individuals
+            against complex backgrounds.
+          </p>
+        </div>
       </DocSection>
 
       <DocSection

@@ -71,8 +71,25 @@ Descriptive titles for unique logic (e.g., "Keyboard Shortcuts", "Virtual Scroll
     ts={`<Component variant="aer" />`}
     fullCode={`// Show example with backdrop-blur and specific aer-borders`}
   />
+  <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+    <p className="text-sm text-blue-700 dark:text-blue-400">
+      <strong>Pro tip:</strong> The Aer variant for [Component] works best on
+      dark or colorful backgrounds where the glassmorphism effect can shine.
+      [Add component-specific usage guidance here.]
+    </p>
+  </div>
 </DocSection>
 ```
+
+**Requirements:**
+
+- ✅ Must include a live example with vibrant background (`aer-vibrant-container`)
+- ✅ Must include both `ts` snippet and `fullCode` in CodeBlock
+- ✅ **Must include a Pro Tip** explaining:
+  - Background requirements (dark/colorful)
+  - Glassmorphism benefits
+  - Component-specific use cases
+  - When to use vs. other variants
 
 #### 9. Interaction States
 
@@ -139,6 +156,7 @@ toc: [
 
 - [ ] **Positioning:** Does it explain IDE layout behavior?
 - [ ] **Aer Variant:** Is the flagship style given its own high-visibility section?
+- [ ] **Aer Variant Pro Tip:** Does the Aer Variant section include a Pro Tip explaining background requirements and use cases?
 - [ ] **States:** Are hover/focus/loading states visually demonstrated?
 - [ ] **Granular Styling:** Is there a list of styleable "slots" or internal classes?
 - [ ] **Introduction:** Does it have 4-6 bullet points with `<strong>` tags?

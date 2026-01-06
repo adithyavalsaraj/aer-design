@@ -43,6 +43,8 @@ export function RoadmapDoc() {
     { name: "Shortcut", version: "v0.8.0", category: "Utilities" },
     { name: "ThemeProvider", version: "v0.1.0", category: "Providers" },
     { name: "AerConfigProvider", version: "v0.5.0", category: "Providers" },
+    { name: "Divider", version: "v0.11.0", category: "Layout" },
+    { name: "Skeleton", version: "v0.11.0", category: "Layout" },
   ];
 
   const componentSpecs: Record<
@@ -104,15 +106,13 @@ export function RoadmapDoc() {
     { name: "Breadcrumb", description: "Navigation breadcrumb trail" },
     { name: "Pagination", description: "Page navigation component" },
     { name: "Progress", description: "Progress indicators" },
-    { name: "Skeleton", description: "Loading placeholder" },
-    { name: "Divider", description: "Standalone divider component" },
   ];
 
   const stats = {
     total: 36,
-    completed: 21,
+    completed: 23,
     highPriority: 3,
-    mediumPriority: 5,
+    mediumPriority: 3,
     lowPriority: 7,
   };
 
@@ -121,11 +121,11 @@ export function RoadmapDoc() {
   );
 
   const categoryStats = [
-    { name: "Form Controls", completed: 8, total: 13 },
+    { name: "Form Controls", completed: 8, total: 12 },
     { name: "Navigation", completed: 3, total: 6 },
-    { name: "Feedback", completed: 3, total: 8 },
-    { name: "Data Display", completed: 4, total: 5 },
-    { name: "Layout", completed: 0, total: 2 },
+    { name: "Feedback", completed: 3, total: 7 },
+    { name: "Data Display", completed: 4, total: 6 },
+    { name: "Layout", completed: 2, total: 2 },
     { name: "Providers", completed: 2, total: 2 },
     { name: "Utilities", completed: 1, total: 1 },
   ];

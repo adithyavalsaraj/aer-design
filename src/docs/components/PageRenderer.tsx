@@ -6,6 +6,7 @@ import { CascaderDoc } from "../pages/CascaderDoc";
 import { CheckboxDoc } from "../pages/CheckboxDoc";
 import { ContributingDoc } from "../pages/ContributingDoc";
 import { DialogDoc } from "../pages/DialogDoc";
+import { DividerDoc } from "../pages/DividerDoc";
 import { DropdownDoc } from "../pages/DropdownDoc";
 import { GetStartedDoc } from "../pages/GetStarted";
 import { InputDoc } from "../pages/InputDoc";
@@ -18,6 +19,7 @@ import { RadioDoc } from "../pages/RadioDoc";
 import { RoadmapDoc } from "../pages/RoadmapDoc";
 import { ShortcutDoc } from "../pages/ShortcutDoc";
 import { SidebarDoc } from "../pages/SidebarDoc";
+import { SkeletonDoc } from "../pages/SkeletonDoc";
 import { TabsDoc } from "../pages/TabsDoc";
 import { TextareaDoc } from "../pages/TextareaDoc";
 import { TooltipDoc } from "../pages/TooltipDoc";
@@ -45,6 +47,8 @@ export function PageRenderer({ activePage }: PageRendererProps) {
       return <InputDoc />;
     case "dialog":
       return <DialogDoc />;
+    case "divider":
+      return <DividerDoc />;
     case "dropdown":
       return <DropdownDoc />;
     case "textarea":
@@ -63,6 +67,8 @@ export function PageRenderer({ activePage }: PageRendererProps) {
       return <MenuDoc />;
     case "overlay":
       return <OverlayDoc />;
+    case "skeleton":
+      return <SkeletonDoc />;
     case "tooltip":
       return <TooltipDoc />;
     case "tabs":
