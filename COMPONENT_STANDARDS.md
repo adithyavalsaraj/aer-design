@@ -1,8 +1,8 @@
-# Aer Design Documentation Standards
+# Aer Design Documentation Standards (Updated)
 
 ## Overview
 
-This document defines the quality standards and structure for all component documentation in Aer Design. All components should follow this template to ensure consistency, completeness, and excellent user experience.
+This document defines the quality standards and structure for all component documentation in Aer Design. All components must follow this template to ensure consistency, specifically highlighting the **Aer Variant** as the flagship feature.
 
 ---
 
@@ -10,9 +10,9 @@ This document defines the quality standards and structure for all component docu
 
 Every component documentation must have **three tabs**:
 
-1. **Overview** - Examples and usage patterns
-2. **API** - Complete props documentation
-3. **Theming** - CSS variables and customization
+1. **Overview** - Examples, feature deep-dives, and real-world usage.
+2. **API** - Complete props documentation and variant guides.
+3. **Theming** - CSS variables and granular styling.
 
 ---
 
@@ -22,662 +22,137 @@ Every component documentation must have **three tabs**:
 
 #### 1. Introduction
 
-**Purpose:** Explain what the component does and its key features
-
-**Structure:**
-
-```tsx
-<DocSection
-  id="introduction"
-  title="Introduction"
-  description="Brief one-line description of the component."
->
-  <div className="prose prose-sm max-w-none">
-    <p className="text-aer-muted-foreground">
-      Detailed explanation of the component's purpose and capabilities.
-    </p>
-    <ul className="list-disc pl-6 space-y-2 text-aer-muted-foreground">
-      <li>
-        <strong>Feature 1</strong> - Description
-      </li>
-      <li>
-        <strong>Feature 2</strong> - Description
-      </li>
-      <li>
-        <strong>Feature 3</strong> - Description
-      </li>
-      {/* List 4-6 key features */}
-    </ul>
-  </div>
-</DocSection>
-```
-
-**Quality Criteria:**
-
-- ✅ Clear explanation of component purpose
-- ✅ 4-6 bullet points highlighting key features
-- ✅ Uses `<strong>` tags for feature names
-- ✅ Concise but comprehensive
-
----
+Explain what the component does and its key features.
+**Quality:** 4-6 bullet points using `<strong>` for feature names.
 
 #### 2. When to Use
 
-**Purpose:** Guide users on choosing the right variant/component
+Guide users on choosing the right variant. Use the 2-4 category grid layout defined in original standards.
 
+#### 3. Basic Usage
+
+The simplest implementation using standard TypeScript/React patterns.
+
+#### 4. Visual Variants
+
+Standard stylistic variations (e.g., Primary, Ghost, Outline). Use the title "**Visual Variants**."
+
+#### 5. Custom Usage
+
+How to extend the component, pass custom children, or utilize render props.
+
+#### 6. Positioning
+
+**Purpose:** Guidance on IDE layout integration.
+**Requirement:** Describe behavior in sidebars, editor panes, or floating overlays. Explain alignment, z-index logic, or container constraints.
+
+#### 7. Feature Sections (Component Specific)
+
+Descriptive titles for unique logic (e.g., "Keyboard Shortcuts", "Virtual Scrolling").
+
+#### 8. The Aer Variant (Key Selling Variant)
+
+**Purpose:** Highlight the premium "Aer" aesthetic. It must be given its own high-visibility section.
 **Structure:**
 
 ```tsx
 <DocSection
-  id="when-to-use"
-  title="When to Use"
-  description="Choose the right [variant/feature] for your use case."
+  id="aer-variant"
+  title="The Aer Variant"
+  description="The flagship Aer aesthetic featuring glassmorphism and elevated depth."
 >
-  <div className="grid md:grid-cols-2 gap-6">
-    <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-      <h4 className="font-semibold mb-3 text-aer-foreground">
-        Use Case Category 1
-      </h4>
-      <p className="text-sm text-aer-muted-foreground mb-3">
-        Use{" "}
-        <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-          variant
-        </code>{" "}
-        for:
-      </p>
-      <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-        <li>Specific use case 1</li>
-        <li>Specific use case 2</li>
-        <li>Specific use case 3</li>
-      </ul>
-    </div>
-    {/* Repeat for 2-4 categories */}
-  </div>
-</DocSection>
-```
-
-**Quality Criteria:**
-
-- ✅ 2-4 category cards in grid layout
-- ✅ Each card has clear heading
-- ✅ Specific, actionable use cases
-- ✅ Uses inline `<code>` for prop/variant names
-
----
-
-#### 3. Basic Usage / Basic Variants
-
-**Purpose:** Show the simplest usage pattern
-
-**Structure:**
-
-```tsx
-<DocSection
-  id="basic"
-  title="Basic Usage" // or "Basic Variants"
-  description="Simple [component] for common use cases."
->
-  <BasicExample />
+  <AerExample />
   <CodeBlock
-    ts={`// Minimal code snippet`}
-    fullCode={`// Complete, copy-paste ready example`}
+    ts={`<Component variant="aer" />`}
+    fullCode={`// Show example with backdrop-blur and specific aer-borders`}
   />
 </DocSection>
 ```
 
-**Quality Criteria:**
+#### 9. Interaction States
 
-- ✅ Interactive demo component
-- ✅ Short `ts` snippet (3-5 lines)
-- ✅ Complete `fullCode` example (15-30 lines)
-- ✅ Shows all basic variants if applicable
+**Purpose:** Document interaction states.
+**Requirements:** Must visually demonstrate **Hover**, **Active**, **Disabled**, **Loading**, and **Focused** states using Tailwind modifiers (e.g., `hover:`, `focus-visible:`).
 
----
+#### 10. Specialized Contexts
 
-#### 4-N. Feature Sections
+**Purpose:** Context-aware versions of the component.
+**Example:** How the component behaves differently in "Debug Mode" vs. "Writing Mode."
 
-**Purpose:** Demonstrate each major feature with examples
+#### 11. Validation & Errors
 
-**Naming Convention:**
+**Purpose:** Error handling and data constraints.
+**Requirements:** Show error rings, helper text, and `aria-invalid` implementation.
 
-- Use descriptive titles: "With Icons", "Loading State", "Size Variants"
-- NOT generic titles: "Icons", "Loading", "Sizes"
+#### 12. Granular Styling
 
-**Structure:**
+**Purpose:** How to override internal slots.
+**Structure:** Explain the `classNames` or `styles` prop for targeting internal elements (e.g., root, label, icon). Provide a list of styleable "slots" or internal classes.
 
-```tsx
-<DocSection
-  id="feature-name"
-  title="Descriptive Feature Title"
-  description="Clear explanation of what this feature does."
->
-  <FeatureExample />
-  <CodeBlock
-    ts={`// Feature-specific snippet`}
-    fullCode={`// Complete example`}
-  />
-  {/* Optional: Pro tip or best practice */}
-  <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
-    <p className="text-sm text-blue-700 dark:text-blue-400">
-      <strong>Pro tip:</strong> Best practice or important note
-    </p>
-  </div>
-</DocSection>
-```
+#### 13. Real World Example
 
-**Quality Criteria:**
-
-- ✅ One feature per section
-- ✅ Clear, descriptive title
-- ✅ Interactive demo
-- ✅ Code examples for both snippet and full code
-- ✅ Pro tips for complex features (optional)
-
-**Common Feature Sections:**
-
-- Variants (if multiple visual styles)
-- Sizes (if size prop exists)
-- States (loading, disabled, error)
-- Icons/Addons (if supported)
-- Advanced features (masking, validation, etc.)
-
----
-
-#### Last Section: Real World Example
-
-**Purpose:** Show production-ready implementation
-
-**Structure:**
-
-```tsx
-<DocSection
-  id="real-world"
-  title="Real World Example"
-  description="Complete [use case] with multiple features working together."
->
-  <RealWorldExample />
-  <CodeBlock
-    ts={`// Brief overview comment`}
-    fullCode={`// Complete, production-ready code (30-60 lines)
-// Should demonstrate:
-// - Multiple features combined
-// - State management
-// - Event handling
-// - Best practices`}
-  />
-</DocSection>
-```
-
-**Quality Criteria:**
-
-- ✅ Realistic use case (form, dashboard, etc.)
-- ✅ Combines 3+ component features
-- ✅ Includes state management
-- ✅ Shows best practices
-- ✅ 30-60 lines of complete code
+**Purpose:** A 30-60 line production-ready implementation (e.g., a complex IDE form or dashboard widget).
 
 ---
 
 ## API Tab Requirements
 
-### Required Sections
-
-#### 1. Component Props Table
-
-**Structure:**
-
-```tsx
-<div>
-  <h3 id="component-props" className="text-lg font-bold mb-4">
-    ComponentProps
-  </h3>
-  <p className="text-sm text-aer-muted-foreground mb-4">
-    The [Component] extends native HTML [element] attributes and adds additional
-    props for [key features].
-  </p>
-  <ApiTable
-    data={[
-      {
-        prop: "propName",
-        type: "TypeScript type",
-        default: "default value or '-'",
-        description: "Detailed description with use cases and examples.",
-      },
-      // Order: Most important props first
-      // Group related props together
-    ]}
-  />
-</div>
-```
-
-**Quality Criteria:**
-
-- ✅ Introductory paragraph explaining the component
-- ✅ All props documented
-- ✅ Detailed descriptions (not just "prop for X")
-- ✅ Include use cases in descriptions
-- ✅ Proper TypeScript types
-- ✅ Accurate default values
-
-**Description Guidelines:**
-
-- ❌ Bad: "Size of the button"
-- ✅ Good: "Button size affecting height and padding. Can be overridden globally via AerConfigProvider."
-
-- ❌ Bad: "Icon at start"
-- ✅ Good: "Icon displayed at the start of input. Typically used for search, user, or contextual icons."
-
----
-
-#### 2. Variant/Feature Usage Guide
-
-**Purpose:** Explain when to use each variant
-
-**Structure:**
-
-```tsx
-<div>
-  <h3 id="variant-guide" className="text-lg font-bold mb-4">
-    Variant Usage Guide
-  </h3>
-  <div className="space-y-4">
-    <div className="p-4 border border-aer-border rounded-lg">
-      <h4 className="font-semibold mb-2">variant-name</h4>
-      <p className="text-sm text-aer-muted-foreground">
-        Detailed explanation of when and why to use this variant. Include visual
-        characteristics and best use cases.
-      </p>
-    </div>
-    {/* Repeat for each variant */}
-  </div>
-</div>
-```
-
-**Quality Criteria:**
-
-- ✅ One card per variant
-- ✅ Explains visual characteristics
-- ✅ Provides specific use cases
-- ✅ Helps users make informed decisions
-
----
-
-#### 3. Additional Type Definitions (if applicable)
-
-**Purpose:** Document complex types, specialized components, or hooks
-
-**Examples:**
-
-- Specialized components (PasswordInput, EmailInput)
-- Hook return values
-- Complex type unions
-- Callback signatures
+1. **Component Props Table:** Detailed TS types and default values. Descriptions must explain use cases.
+2. **Variant Usage Guide:** Cards explaining the "Why" behind each style.
 
 ---
 
 ## Theming Tab Requirements
 
-### Required Content
-
-```tsx
-<DocSection
-  title="CSS Variables"
-  id="css-variables"
-  description="Customize [component] appearance using CSS variables."
->
-  <div className="space-y-4">
-    <p className="text-sm text-aer-muted-foreground">
-      [Component] uses the following CSS variables from your theme:
-    </p>
-    <CodeBlock
-      ts={`:root {
-  --aer-primary: 221.2 83.2% 53.3%;
-  --aer-foreground: 222.2 47.4% 11.2%;
-  /* List relevant variables */
-}`}
-      fullCode={`/* styles/globals.css or your theme file */
-:root {
-  /* Component-specific variables */
-  --aer-primary: 221.2 83.2% 53.3%;
-  --aer-primary-foreground: 210 40% 98%;
-  
-  /* Add all relevant variables with comments */
-}
-
-/* Dark mode */
-.dark {
-  --aer-primary: 217.2 91.2% 59.8%;
-  /* Dark mode overrides */
-}`}
-    />
-    <div className="mt-4 p-4 bg-purple-500/10 border border-purple-500/20 rounded-lg">
-      <p className="text-sm text-purple-700 dark:text-purple-400">
-        <strong>Tip:</strong> Use the ThemeProvider to switch between 8 built-in
-        themes, or customize these variables to match your brand colors.
-      </p>
-    </div>
-  </div>
-</DocSection>
-```
-
-**Quality Criteria:**
-
-- ✅ Lists all relevant CSS variables
-- ✅ Shows both light and dark mode
-- ✅ Includes helpful tip about ThemeProvider
-- ✅ Variables are properly commented
+1. **CSS Variables:** List all `:root` variables.
+2. **Auto-Contrast:** Document support for the `useContrastColor` hook and WCAG 2.1 compliance.
 
 ---
 
-## Table of Contents (TOC)
-
-### Overview Tab TOC
+## Updated Overview Tab TOC
 
 ```tsx
 toc: [
   { id: "introduction", title: "Introduction" },
   { id: "when-to-use", title: "When to Use" },
-  { id: "basic", title: "Basic Usage" }, // or "Basic Variants"
-  { id: "feature-1", title: "Descriptive Feature Title" },
-  { id: "feature-2", title: "Another Feature Title" },
-  // ... more features
+  { id: "basic", title: "Basic Usage" },
+  { id: "variants", title: "Visual Variants" },
+  { id: "custom", title: "Custom Usage" },
+  { id: "positioning", title: "Positioning" },
+  { id: "aer-variant", title: "The Aer Variant" },
+  { id: "states", title: "Interaction States" },
+  { id: "specialized", title: "Specialized Contexts" },
+  { id: "validation", title: "Validation & Errors" },
+  { id: "styling", title: "Granular Styling" },
   { id: "real-world", title: "Real World Example" },
 ];
-```
-
-### API Tab TOC
-
-```tsx
-toc: [
-  { id: "component-props", title: "ComponentProps" },
-  { id: "variant-guide", title: "Variant Usage Guide" },
-  // Additional sections as needed
-];
-```
-
-### Theming Tab TOC
-
-```tsx
-toc: [{ id: "css-variables", title: "CSS Variables" }];
-```
-
----
-
-## Code Examples Best Practices
-
-### TypeScript Snippet (`ts` prop)
-
-- **Length:** 3-10 lines
-- **Purpose:** Quick reference
-- **Content:** Core usage pattern only
-- **No imports or boilerplate**
-
-### Full Code (`fullCode` prop)
-
-- **Length:** 15-60 lines
-- **Purpose:** Copy-paste ready example
-- **Content:** Complete, working code
-- **Includes:** Imports, component definition, export
-- **Quality:** Production-ready, follows best practices
-
-### Example:
-
-```tsx
-<CodeBlock
-  ts={`<Button variant="aer" size="lg">
-  <Sparkles className="w-4 h-4 mr-2" />
-  Get Started
-</Button>`}
-  fullCode={`import { Button } from "aer-design";
-import { Sparkles } from "lucide-react";
-
-export default function HeroButton() {
-  return (
-    <div className="flex items-center justify-center p-12 bg-gradient-to-br from-zinc-900 to-zinc-950 rounded-2xl">
-      <Button variant="aer" size="lg">
-        <Sparkles className="w-4 h-4 mr-2" />
-        Join the Movement
-      </Button>
-    </div>
-  );
-}`}
-/>
-```
-
----
-
-## Interactive Examples
-
-### Component Structure
-
-```tsx
-function ExampleComponent() {
-  const [state, setState] = React.useState(initialValue);
-
-  // Keep examples simple but realistic
-  // Show state management when relevant
-  // Include event handlers
-
-  return (
-    <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5">
-      {/* Component demo */}
-    </div>
-  );
-}
-```
-
-**Quality Criteria:**
-
-- ✅ Wrapped in styled container
-- ✅ Uses theme-aware colors
-- ✅ Interactive when appropriate
-- ✅ Clean, readable code
-- ✅ Demonstrates the feature clearly
-
----
-
-## Pro Tips and Best Practices
-
-Use colored alert boxes for important information:
-
-### Blue - Pro Tips
-
-```tsx
-<div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
-  <p className="text-sm text-blue-700 dark:text-blue-400">
-    <strong>Pro tip:</strong> Your helpful tip here
-  </p>
-</div>
-```
-
-### Amber - Best Practices
-
-```tsx
-<div className="mt-4 p-4 bg-amber-500/10 border border-amber-500/20 rounded-lg">
-  <p className="text-sm text-amber-700 dark:text-amber-400">
-    <strong>Best practice:</strong> Your recommendation here
-  </p>
-</div>
-```
-
-### Purple - Theme Tips
-
-```tsx
-<div className="mt-4 p-4 bg-purple-500/10 border border-purple-500/20 rounded-lg">
-  <p className="text-sm text-purple-700 dark:text-purple-400">
-    <strong>Tip:</strong> Theme-related information
-  </p>
-</div>
 ```
 
 ---
 
 ## Quality Checklist
 
-Before considering documentation complete, verify:
-
-### Overview Tab
-
-- [ ] Introduction with 4-6 key features
-- [ ] When to Use guide with 2-4 categories
-- [ ] Basic usage example
-- [ ] All major features demonstrated
-- [ ] Real world example (30-60 lines)
-- [ ] All sections have descriptions
-- [ ] All code examples work
-- [ ] TOC is complete and accurate
-
-### API Tab
-
-- [ ] Component props table with detailed descriptions
-- [ ] Introductory paragraph
-- [ ] Variant/feature usage guide
-- [ ] All props documented
-- [ ] TypeScript types are accurate
-- [ ] Default values are correct
-- [ ] Descriptions include use cases
-
-### Theming Tab
-
-- [ ] CSS variables listed
-- [ ] Light and dark mode shown
-- [ ] Helpful tip included
-- [ ] Variables are commented
-
-### General
-
-- [ ] No spelling or grammar errors
-- [ ] Consistent terminology
-- [ ] All links work
-- [ ] All examples are copy-paste ready
-- [ ] Component renders correctly in dev server
+- [ ] **Positioning:** Does it explain IDE layout behavior?
+- [ ] **Aer Variant:** Is the flagship style given its own high-visibility section?
+- [ ] **States:** Are hover/focus/loading states visually demonstrated?
+- [ ] **Granular Styling:** Is there a list of styleable "slots" or internal classes?
+- [ ] **Introduction:** Does it have 4-6 bullet points with `<strong>` tags?
+- [ ] **Code Examples:** Are both `ts` snippet and `fullCode` provided and copy-paste ready?
+- [ ] **Tabs:** Are all three tabs (Overview, API, Theming) implemented?
 
 ---
 
-## Reference Examples
+## Maintenance & Release Protocol
 
-**Gold Standard Documentation:**
+Whenever a new feature is added or removed, the following files MUST be updated:
 
-1. `PositioningDoc.tsx` - Perfect structure and detail
-2. `ButtonDoc.tsx` - Excellent variant coverage
-3. `InputDoc.tsx` - Comprehensive feature documentation
-
-**Study these files for:**
-
-- Section structure
-- Description quality
-- Code example patterns
-- API documentation detail
-- Pro tip usage
-
----
-
-## Common Mistakes to Avoid
-
-❌ **Generic section titles**
-
-- Bad: "Variants", "Sizes", "States"
-- Good: "Visual Variants", "Size Variants", "Loading State"
-
-❌ **Vague descriptions**
-
-- Bad: "Size of the button"
-- Good: "Button size affecting height and padding. Can be overridden globally via AerConfigProvider."
-
-❌ **Missing when-to-use guidance**
-
-- Every component should help users choose the right variant/feature
-
-❌ **Incomplete code examples**
-
-- Always provide both `ts` snippet and `fullCode`
-- Full code must be copy-paste ready
-
-❌ **No real-world example**
-
-- Users need to see features working together
-
-❌ **Poor API descriptions**
-
-- Descriptions should explain use cases, not just repeat the prop name
-
----
-
-## Template Checklist
-
-Use this when creating new documentation:
-
-```markdown
-## Component: [Name]
-
-### Overview Tab
-
-- [ ] Introduction section
-- [ ] When to Use section
-- [ ] Basic usage
-- [ ] Feature 1: [name]
-- [ ] Feature 2: [name]
-- [ ] Feature 3: [name]
-- [ ] Real World Example
-
-### API Tab
-
-- [ ] ComponentProps table
-- [ ] Variant Usage Guide
-- [ ] Additional types (if needed)
-
-### Theming Tab
-
-- [ ] CSS Variables section
-
-### Quality
-
-- [ ] All TOCs updated
-- [ ] All code examples tested
-- [ ] All descriptions detailed
-- [ ] Pro tips added where helpful
-```
-
----
-
-## Accessibility Standards
-
-### Automatic Contrast
-
-All components that accept background colors (via variants or style props) MUST support automatic contrast adjustment to ensure WCAG 2.1 compliance.
-
-**Requirements:**
-
-1.  **Use `useContrastColor` Hook**: Components should use this hook to calculate the optimal text color.
-2.  **Respect Global Setting**: Contrast adjustment should only happen if the global `autoContrast` setting is enabled (via `useAerConfig`).
-3.  **Handle Style Props**: Check given `style.backgroundColor` prop.
-4.  **Fallback**: Provide safe defaults if calculation is not applicable.
-5.  **Documentation**: Add a "Theming" note about Auto-Contrast support.
-
-**Implementation Pattern:**
-
-```tsx
-const { autoContrast } = useAerConfig();
-const contrastColor = useContrastColor(style?.backgroundColor);
-
-const finalStyle = { ...style };
-if (autoContrast && style?.backgroundColor) {
-  finalStyle.color = contrastColor;
-}
-```
-
----
-
-## Summary
-
-**Every component documentation must:**
-
-1. ✅ Have Introduction and When to Use sections
-2. ✅ Use descriptive section titles
-3. ✅ Provide detailed API documentation
-4. ✅ Include real-world examples
-5. ✅ Have complete, copy-paste ready code
-6. ✅ Cover Overview, API, and Theming tabs
-7. ✅ Match the quality of Positioning and Button docs
-
-**Goal:** Users should be able to understand, implement, and customize any component without external resources.
+1.  **CHANGELOG.md**:
+    - Add a new version entry if needed.
+    - Categorize changes under "New Features", "Component Enhancements", or "Bug Fixes".
+2.  **ROADMAP.md**:
+    - Update the project version and last updated date.
+    - Move implemented components from "Missing" to "Completed".
+    - Update overall progress metrics and completion counts.
+3.  **README.md**:
+    - Update the component/utility tables with new additions.
+    - Ensure the "Key Features" or "Installation" sections reflect significant changes.
