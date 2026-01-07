@@ -409,6 +409,7 @@ export function BadgeDoc() {
         </div>
         <CodeBlock
           ts={`<div className="flex items-center justify-between p-4 border rounded-lg">\n  <div className="flex gap-3 items-center">\n    <Star className="text-blue-500" />\n    <div>\n      <p>Design System Pro</p>\n    </div>\n  </div>\n  <Badge status="success" rounded="full">Updated</Badge>\n</div>`}
+          fullCode={`import { Badge } from "aer-design";\nimport { Star } from "lucide-react";\n\nexport default function BadgeCard() {\n  return (\n    <div className="flex items-center justify-between max-w-md p-4 bg-aer-background border rounded-lg shadow-sm">\n      <div className="flex gap-3 items-center">\n        <div className="size-10 rounded bg-blue-500/10 flex items-center justify-center">\n          <Star className="size-5 text-blue-500" />\n        </div>\n        <div>\n          <p className="font-semibold text-sm text-aer-foreground">Design System Pro</p>\n          <p className="text-xs text-aer-muted-foreground">\n            Latest Version: v12.4.0\n          </p>\n        </div>\n      </div>\n      <Badge status="success" rounded="full">\n        Updated\n      </Badge>\n    </div>\n  );\n}`}
         />
       </DocSection>
     </div>

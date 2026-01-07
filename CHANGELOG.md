@@ -2,6 +2,30 @@
 
 All notable changes to the Aer Design project will be documented in this file.
 
+## [v0.12.0] - 2026-01-07
+
+### Documentation Remediation
+
+- **100% fullCode Coverage**: Completed the documentation remediation for all 16 major components as per `COMPONENT_STANDARDS.md`.
+- **Production-Ready Examples**: All code examples now feature a `fullCode` prop, providing standalone, copy-pasteable React components with all required imports.
+- **Improved DX**: Simplified the developer experience by ensuring every documentation section has a functional, self-contained code snippet.
+
+### Component Enhancements
+
+- **Cascader**: Added `onBlur` prop support to enable standard validation patterns.
+- **Cascader**: Reordered documentation TOC and sections for better logical flow and compliance with standards.
+- **Standards**: Established strict **Code Push Guidelines** in `COMPONENT_STANDARDS.md` to maintain documentation integrity.
+
+### Bug Fixes
+
+- **Dropdown**: Fixed a critical bug where the menu would close upon selection due to portal interaction issues. Introduced `menuRef` for more accurate "outside-click" detection.
+- **Cascader**: Fixed stateless interactive examples that were failing to update visual selection states.
+
+### Project Sustainability
+
+- **Roadmap Sync**: Synchronized `ROADMAP.md` and `RoadmapDoc.tsx` with latest completion metrics (23/36 components).
+- **Contributing Guide**: Updated `ContributingDoc.tsx` to reflect the refined documentation structure requirements.
+
 ## [v0.11.0] - 2026-01-06
 
 ### New Features

@@ -212,6 +212,7 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
     const [focusedIndex, setFocusedIndex] = React.useState<number>(-1);
     const containerRef = React.useRef<HTMLDivElement>(null);
     const listRef = React.useRef<HTMLDivElement>(null);
+    const menuRef = React.useRef<HTMLDivElement>(null); // Ref for the floating menu
 
     const hasAddon = addonBefore || addonAfter;
 
@@ -356,10 +357,15 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
     // Close on outside click
     React.useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
-        if (
-          containerRef.current &&
-          !containerRef.current.contains(event.target as Node)
-        ) {
+        const target = event.target as Node;
+
+        // Check if click is outside both the container AND the floating menu
+        const isOutsideContainer =
+          containerRef.current && !containerRef.current.contains(target);
+        const isOutsideMenu =
+          menuRef.current && !menuRef.current.contains(target);
+
+        if (isOutsideContainer && isOutsideMenu) {
           setIsOpen(false);
         }
       };
@@ -627,7 +633,10 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
         {isOpen &&
           createPortal(
             <div
-              ref={floatingRef}
+              ref={(node) => {
+                floatingRef(node);
+                menuRef.current = node;
+              }}
               style={{ ...floatingStyles, zIndex: 1000 }}
               className={cn(
                 "fixed border rounded-aer-md shadow-lg overflow-hidden animate-in fade-in-0 zoom-in-95",

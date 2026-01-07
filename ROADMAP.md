@@ -1,7 +1,7 @@
 # Aer Design Roadmap
 
-- **Version**: `v0.11.0`
-- **Last Updated**: 2026-01-06
+- **Version**: `v0.12.0`
+- **Last Updated**: 2026-01-07
 - **Status**: Stable
 
 ---

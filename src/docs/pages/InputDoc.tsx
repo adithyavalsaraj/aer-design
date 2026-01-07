@@ -65,11 +65,65 @@ function LabelExample() {
       <CodeBlock
         ts={`<Input
   label="Username"
-  labelPosition="${labelPosition}"${required ? "\n  required" : ""}${
-          helperText ? '\n  helperText="Enter your username"' : ""
+  labelPosition="${labelPosition}"${required ? "\\n  required" : ""}${
+          helperText ? '\\n  helperText="Enter your username"' : ""
         }
   placeholder="johndoe"
 />`}
+        fullCode={`import { Input } from "aer-design";
+import { RadioGroup, RadioItem } from "aer-design";
+import { Checkbox } from "aer-design";
+import { useState } from "react";
+
+export default function LabelExample() {
+  const [labelPosition, setLabelPosition] = useState<"top" | "left">("top");
+  const [required, setRequired] = useState(false);
+  const [helperText, setHelperText] = useState(false);
+
+  return (
+    <div className="space-y-6">
+      {/* Controls */}
+      <div className="flex flex-col items-center gap-x-4 gap-y-2 p-4 bg-aer-muted/20 rounded-lg border border-aer-border">
+        <div className="w-full">
+          <label className="text-sm font-medium text-aer-foreground mb-3 block">
+            Label Position
+          </label>
+          <RadioGroup
+            value={labelPosition}
+            onChange={(val) => setLabelPosition(val as "top" | "left")}
+            className="flex flex-row gap-4"
+          >
+            <RadioItem value="top" label="Top" />
+            <RadioItem value="left" label="Left" />
+          </RadioGroup>
+        </div>
+        <div className="flex w-full items-center gap-4">
+          <Checkbox
+            checked={required}
+            onChange={(e) => setRequired(e.target.checked)}
+            label="Required"
+          />
+          <Checkbox
+            checked={helperText}
+            onChange={(e) => setHelperText(e.target.checked)}
+            label="Helper Text"
+          />
+        </div>
+      </div>
+
+      {/* Example */}
+      <div className="max-w-2xl">
+        <Input
+          label="Username"
+          labelPosition={labelPosition}
+          required={required}
+          helperText={helperText ? "Enter your username" : undefined}
+          placeholder="johndoe"
+        />
+      </div>
+    </div>
+  );
+}`}
       />
     </div>
   );

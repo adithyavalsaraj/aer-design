@@ -6,15 +6,15 @@ import { Globe, User } from "lucide-react";
 import * as React from "react";
 import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
 
-export function DropdownDoc() {
-  const basicOptions: DropdownOption[] = [
-    { label: "Option 1", value: "1" },
-    { label: "Option 2", value: "2" },
-    { label: "Option 3", value: "3" },
-    { label: "Disabled Option", value: "4", disabled: true },
-    { label: "Option 5", value: "5" },
-  ];
+const basicOptions: DropdownOption[] = [
+  { label: "Option 1", value: "1" },
+  { label: "Option 2", value: "2" },
+  { label: "Option 3", value: "3" },
+  { label: "Disabled Option", value: "4", disabled: true },
+  { label: "Option 5", value: "5" },
+];
 
+export function DropdownDoc() {
   function DropdownLabelExample() {
     const [labelPosition, setLabelPosition] = React.useState<"top" | "left">(
       "top"
@@ -122,6 +122,53 @@ export function DropdownDoc() {
 
         <CodeBlock
           ts={`<Dropdown \n  scrollBehavior="${behavior}" \n  options={options} \n/>`}
+          fullCode={`import { Dropdown } from "aer-design";
+import { RadioGroup, RadioItem } from "aer-design";
+import { useState } from "react";
+
+const options = [
+  { label: "Option 1", value: "1" },
+  { label: "Option 2", value: "2" },
+  { label: "Option 3", value: "3" },
+  { label: "Option 4", value: "4" },
+  { label: "Option 5", value: "5" },
+];
+
+export default function ScrollBehaviorExample() {
+  const [behavior, setBehavior] = useState<"reposition" | "close">("reposition");
+
+  return (
+    <div className="space-y-6 w-full">
+      <div className="flex flex-col items-center gap-x-4 gap-y-2 p-4 bg-aer-muted/20 rounded-lg border border-aer-border">
+        <div className="w-full">
+          <label className="text-sm font-medium text-aer-foreground mb-3 block">
+            Scroll Behavior
+          </label>
+          <RadioGroup
+            value={behavior}
+            onChange={(val) => setBehavior(val as "reposition" | "close")}
+            className="flex flex-row gap-4"
+          >
+            <RadioItem value="reposition" label="Reposition (Follow)" />
+            <RadioItem value="close" label="Close on Scroll" />
+          </RadioGroup>
+        </div>
+      </div>
+
+      <div className="p-12 border border-aer-border rounded-lg bg-aer-muted/5 flex flex-col items-center">
+        <p className="text-xs text-aer-muted-foreground mb-4 italic">
+          Open the dropdown and scroll this section or the page
+        </p>
+        <Dropdown
+          scrollBehavior={behavior}
+          options={options}
+          placeholder="Interaction test..."
+          className="max-w-xs"
+        />
+      </div>
+    </div>
+  );
+}`}
         />
       </div>
     );
@@ -711,6 +758,37 @@ export default function GroupedDropdown() {
         </div>
         <CodeBlock
           ts={`<Dropdown \n  className="p-4 border rounded-2xl bg-aer-primary/5" \n  triggerClassName="bg-white rounded-full border-2 border-aer-primary" \n  options={options} \n/>\n\n<Dropdown \n  itemClassName="hover:bg-sky-500 hover:text-white rounded-none" \n  iconClassName="text-sky-500" \n  options={options} \n/>`}
+          fullCode={`import { Dropdown } from "aer-design";
+import { User } from "lucide-react";
+
+const options = [
+  { label: "Option 1", value: "1" },
+  { label: "Option 2", value: "2" },
+  { label: "Option 3", value: "3" },
+];
+
+export default function GranularStylingDemo() {
+  return (
+    <div className="space-y-6 max-w-sm p-8 bg-zinc-900 rounded-xl">
+      {/* Custom root and trigger */}
+      <Dropdown 
+        className="p-4 border rounded-2xl bg-aer-primary/5" 
+        triggerClassName="bg-white rounded-full border-2 border-aer-primary" 
+        options={options} 
+        placeholder="Custom root and trigger"
+      />
+      
+      {/* Custom items and icons */}
+      <Dropdown 
+        itemClassName="hover:bg-sky-500 hover:text-white rounded-none" 
+        iconClassName="text-sky-500" 
+        startIcon={<User className="w-4 h-4" />} 
+        options={options} 
+        placeholder="Custom items and icons"
+      />
+    </div>
+  );
+}`}
         />
       </DocSection>
 
@@ -720,7 +798,42 @@ export default function GroupedDropdown() {
         </div>
         <CodeBlock
           ts={`<Dropdown error placeholder="Error state" />`}
-          // No fullCode needed for simple example
+          fullCode={`import { Dropdown } from "aer-design";
+import { useState } from "react";
+
+const options = [
+  { label: "Option 1", value: "1" },
+  { label: "Option 2", value: "2" },
+  { label: "Option 3", value: "3" },
+];
+
+export default function ValidationExample() {
+  const [value, setValue] = useState("");
+  const [touched, setTouched] = useState(false);
+  
+  const isInvalid = touched && !value;
+
+  return (
+    <div className="max-w-sm space-y-1.5 p-6 border rounded-xl bg-aer-muted/5">
+      <label className="text-sm font-medium text-aer-foreground flex items-center gap-1">
+        Select an option <span className="text-red-500 font-bold">*</span>
+      </label>
+      <Dropdown 
+        value={value}
+        onChange={setValue}
+        onBlur={() => setTouched(true)}
+        error={isInvalid}
+        options={options}
+        placeholder="Required field" 
+      />
+      {isInvalid && (
+        <span className="text-xs text-red-500 font-medium">
+          This field is required
+        </span>
+      )}
+    </div>
+  );
+}`}
         />
       </DocSection>
 

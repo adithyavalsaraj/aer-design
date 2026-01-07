@@ -219,6 +219,7 @@ export function CheckboxDoc() {
         </div>
         <CodeBlock
           ts={`<Checkbox size="sm" label="Small" />\n<Checkbox size="default" label="Default" />\n<Checkbox size="lg" label="Large" />`}
+          fullCode={`import { Checkbox } from "aer-design";\n\nexport default function CheckboxSizes() {\n  return (\n    <div className="flex items-end gap-x-8">\n      <Checkbox size="sm" label="Small Checkbox" defaultChecked />\n      <Checkbox size="default" label="Default Checkbox" defaultChecked />\n      <Checkbox size="lg" label="Large Checkbox" defaultChecked />\n    </div>\n  );\n}`}
         />
       </DocSection>
 

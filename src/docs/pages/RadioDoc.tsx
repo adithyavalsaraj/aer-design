@@ -184,6 +184,7 @@ export function RadioDoc() {
         </div>
         <CodeBlock
           ts={`<RadioGroup size="sm">\n  <RadioItem value="1" label="Small" />\n</RadioGroup>`}
+          fullCode={`import { RadioGroup, RadioItem } from "aer-design";\n\nexport default function RadioSizes() {\n  return (\n    <div className="flex items-start gap-x-8">\n      <RadioGroup size="sm" defaultValue="1">\n        <RadioItem value="1" label="Small Radio" />\n      </RadioGroup>\n      <RadioGroup size="default" defaultValue="1">\n        <RadioItem value="1" label="Default Radio" />\n      </RadioGroup>\n      <RadioGroup size="lg" defaultValue="1">\n        <RadioItem value="1" label="Large Radio" />\n      </RadioGroup>\n    </div>\n  );\n}`}
         />
       </DocSection>
 
@@ -285,6 +286,7 @@ export function RadioDoc() {
         </div>
         <CodeBlock
           ts={`<RadioItem className="mb-4 p-4 border rounded-xl" label="Root style" />\n\n<RadioItem \n  radioClassName="border-sky-600 text-sky-600 peer-checked:bg-sky-600 peer-checked:text-white" \n  dotClassName="bg-current" \n  label="Custom colors" \n/>`}
+          fullCode={`import { RadioGroup, RadioItem } from "aer-design";\n\nexport default function GranularStyling() {\n  return (\n    <div className="space-y-6 max-w-sm">\n      <RadioGroup>\n        <RadioItem \n          className="mb-4 p-4 border rounded-xl bg-aer-primary/5" \n          value="1" \n          label="Spaced and styled container" \n        />\n      </RadioGroup>\n      <RadioGroup>\n        <RadioItem \n          radioClassName="border-sky-600 text-sky-600 peer-checked:bg-sky-600 peer-checked:text-white" \n          dotClassName="bg-current" \n          value="1" \n          label="Sky radio with white dot" \n        />\n      </RadioGroup>\n    </div>\n  );\n}`}
         />
       </DocSection>
 

@@ -168,7 +168,7 @@ toc: [
 
 ## Maintenance & Release Protocol
 
-Whenever a new feature is added or removed, the following files MUST be updated:
+Whenever a new feature is added or removed, or a component is updated, the following files MUST be updated:
 
 1.  **CHANGELOG.md**:
     - Add a new version entry if needed.
@@ -180,3 +180,22 @@ Whenever a new feature is added or removed, the following files MUST be updated:
 3.  **README.md**:
     - Update the component/utility tables with new additions.
     - Ensure the "Key Features" or "Installation" sections reflect significant changes.
+
+---
+
+## Code Push Guidelines
+
+Before pushing any code to the repository, you MUST follow these steps to ensure documentation integrity:
+
+1.  **Update Project Documentation**: Synchronize the following files with your changes:
+    - [CHANGELOG.md](./CHANGELOG.md)
+    - [README.md](./README.md)
+    - [ROADMAP.md](./ROADMAP.md)
+    - [src/docs/pages/RoadmapDoc.tsx](./src/docs/pages/RoadmapDoc.tsx)
+    - [src/docs/pages/ContributingDoc.tsx](./src/docs/pages/ContributingDoc.tsx)
+2.  **Component Documentation Audit**: For any updated or edited components, thoroughly verify:
+    - **TOC**: The Table of Contents matches the section order.
+    - **API**: The API table reflects all new or changed props.
+    - **Theming**: CSS variables and granular styling details are accurate.
+    - **Examples**: Live examples and `CodeBlock` (both `ts` and `fullCode`) are functional and up-to-date.
+3.  **Standard Compliance**: Ensure the "Aer Variant" Pro Tip is present and the overview tab follows the required 3-tab layout.

@@ -243,6 +243,7 @@ export function NavbarDoc() {
         </div>
         <CodeBlock
           ts={`<Navbar className="bg-sky-500/10 border-sky-500/20 rounded-lg">\n  <NavbarItem className="hover:bg-sky-500/20 text-sky-600" />\n</Navbar>`}
+          fullCode={`import { Navbar, NavbarItem, NavbarSpacer } from "aer-design";\n\nexport default function CustomNavbar() {\n  return (\n    <div className="p-8 flex justify-center bg-gray-50 rounded-xl">\n      <Navbar\n        mode="static"\n        className="bg-sky-500/10 border-sky-500/20 rounded-lg max-w-md w-full"\n      >\n        <div className="font-bold text-sky-600">Styled</div>\n        <NavbarSpacer />\n        <NavbarItem className="hover:bg-sky-500/20 text-sky-600 rounded-md">\n          Custom Item\n        </NavbarItem>\n      </Navbar>\n    </div>\n  );\n}`}
         />
       </DocSection>
 
@@ -252,10 +253,14 @@ export function NavbarDoc() {
         description="Combine Top and Bottom Navigation for a complete mobile-first application."
       >
         <div className="p-6 border rounded-lg bg-aer-muted/5">
-          <p className="text-sm text-aer-muted-foreground text-center italic">
+          <p className="text-sm text-aer-muted-foreground text-center italic mb-4">
             Our documentation site itself uses the Navbar to guide users through
-            components.
+            components. Below is a complete app header snippet.
           </p>
+          <CodeBlock
+            ts={`<Navbar position="top" mode="fixed">\n  <Logo />\n  <NavbarItem active>Dashboard</NavbarItem>\n  <NavbarSpacer />\n  <Actions />\n</Navbar>`}
+            fullCode={`import { Navbar, NavbarItem, NavbarSpacer } from "aer-design";\nimport { Home, Bell, Search, User, Settings, LogOut } from "lucide-react";\nimport { useState } from "react";\n\nexport default function AppHeader() {\n  const [activeTab, setActiveTab] = useState("dashboard");\n\n  return (\n    <div className="min-h-screen bg-gray-50">\n      <Navbar position="top" mode="sticky" className="border-b bg-white px-6">\n        <div className="flex items-center gap-2 mr-8">\n          <div className="size-8 rounded bg-indigo-600 flex items-center justify-center text-white font-bold">A</div>\n          <span className="font-bold text-xl tracking-tight">Aer Design</span>\n        </div>\n\n        <div className="flex items-center gap-1">\n          <NavbarItem \n            active={activeTab === "dashboard"}\n            onClick={() => setActiveTab("dashboard")}\n            className="px-4"\n          >\n            Dashboard\n          </NavbarItem>\n          <NavbarItem \n            active={activeTab === "analytics"}\n            onClick={() => setActiveTab("analytics")}\n          >\n            Analytics\n          </NavbarItem>\n          <NavbarItem \n            active={activeTab === "settings"}\n            onClick={() => setActiveTab("settings")}\n          >\n            Settings\n          </NavbarItem>\n        </div>\n\n        <NavbarSpacer />\n\n        <div className="flex items-center gap-4">\n          <div className="relative group">\n            <Search className="size-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 group-focus-within:text-indigo-500 transition-colors" />\n            <input\n              className="h-9 w-64 rounded-full border border-gray-200 bg-gray-50 pl-10 pr-4 text-sm focus:outline-hidden focus:ring-2 focus:ring-indigo-500/20 focus:bg-white transition-all"\n              placeholder="Search components..."\n            />\n          </div>\n\n          <button className="p-2 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-colors relative">\n            <Bell className="size-5" />\n            <span className="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white" />\n          </button>\n\n          <div className="h-6 w-px bg-gray-200 mx-2" />\n\n          <div className="flex items-center gap-3 pl-2 opacity-80 hover:opacity-100 cursor-pointer transition-opacity">\n            <div className="text-right hidden sm:block">\n              <p className="text-xs font-bold leading-tight">Adithya Valsaraj</p>\n              <p className="text-[10px] text-gray-500">Administrator</p>\n            </div>\n            <div className="size-8 rounded-full bg-indigo-100 border border-indigo-200 flex items-center justify-center text-indigo-700 font-bold text-xs">\n              AV\n            </div>\n          </div>\n        </div>\n      </Navbar>\n\n      <main className="p-8">\n        <div className="max-w-6xl mx-auto">\n          <div className="h-64 rounded-2xl bg-white border border-gray-200 border-dashed flex items-center justify-center text-gray-400 font-medium">\n            Page Content ({activeTab})\n          </div>\n        </div>\n      </main>\n    </div>\n  );\n}`}
+          />
         </div>
       </DocSection>
     </div>

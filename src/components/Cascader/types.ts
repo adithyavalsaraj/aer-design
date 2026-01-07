@@ -173,4 +173,8 @@ export interface CascaderProps {
    * @default "reposition"
    */
   scrollBehavior?: "close" | "reposition";
+  /**
+   * Callback when the component loses focus.
+   */
+  onBlur?: () => void;
 }

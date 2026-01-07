@@ -101,10 +101,27 @@ export function ContributingDoc() {
             </p>
             <div className="space-y-2">
               {[
-                { title: "Introduction", desc: "Brief overview and purpose" },
-                { title: "When to Use", desc: "Use cases and best practices" },
-                { title: "Basic Usage", desc: "Simple example with code" },
-                { title: "Visual Variants", desc: "All available variants" },
+                {
+                  title: "Introduction",
+                  desc: "Brief overview and purpose (4-6 bullets)",
+                },
+                {
+                  title: "When to Use",
+                  desc: "Use cases and best practices (2-4 grid)",
+                },
+                {
+                  title: "Basic Usage",
+                  desc: "Simple implementation with CodeBlock",
+                },
+                {
+                  title: "Visual Variants",
+                  desc: "Standard stylistic variations",
+                },
+                { title: "Custom Usage", desc: "Extensions and render props" },
+                {
+                  title: "Positioning",
+                  desc: "IDE layout and container behavior",
+                },
                 {
                   title: "The Aer Variant",
                   desc: "Premium glassmorphism variant with Pro Tip",
@@ -114,12 +131,12 @@ export function ContributingDoc() {
                 { title: "Positioning", desc: "Layout and placement" },
                 {
                   title: "Interaction States",
-                  desc: "Hover, focus, disabled, etc.",
+                  desc: "Hover, focus, disabled, loading, etc.",
                 },
                 { title: "Specialized Contexts", desc: "Specific use cases" },
                 {
                   title: "Validation & Errors",
-                  desc: "Error states and validation",
+                  desc: "Error states, Validation and helper text",
                 },
                 { title: "Granular Styling", desc: "Custom styling examples" },
                 {
@@ -310,6 +327,52 @@ export function ContributingDoc() {
                     <strong>Premium:</strong> Modern glassmorphism aesthetics
                   </span>
                 </li>
+              </ul>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Code Push Guidelines */}
+      <Card id="push-guidelines" className="border-amber-500/20 bg-amber-500/5">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <CheckCircle2 className="size-5 text-amber-500" />
+            Code Push Guidelines
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-sm text-aer-muted-foreground">
+            Before pushing any code, you must synchronize all project
+            documentation:
+          </p>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <h4 className="text-sm font-bold flex items-center gap-2">
+                <Badge variant="soft" status="warning" size="sm">
+                  Step 1
+                </Badge>
+                Sync Project Files
+              </h4>
+              <ul className="text-xs text-aer-muted-foreground space-y-1 list-disc pl-4">
+                <li>Update CHANGELOG.md (v0.x.x)</li>
+                <li>Update README.md features/tables</li>
+                <li>Update ROADMAP.md & RoadmapDoc.tsx</li>
+                <li>Update ContributingDoc.tsx if standards changed</li>
+              </ul>
+            </div>
+            <div className="space-y-2">
+              <h4 className="text-sm font-bold flex items-center gap-2">
+                <Badge variant="soft" status="warning" size="sm">
+                  Step 2
+                </Badge>
+                Audit Component Docs
+              </h4>
+              <ul className="text-xs text-aer-muted-foreground space-y-1 list-disc pl-4">
+                <li>Verify TOC matches section order</li>
+                <li>Check API table for all current props</li>
+                <li>Ensure fullCode contains all imports</li>
+                <li>Confirm Pro Tip is present for Aer Variant</li>
               </ul>
             </div>
           </div>

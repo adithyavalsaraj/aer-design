@@ -110,6 +110,7 @@ export function OtpDoc() {
         </div>
         <CodeBlock
           ts={`<OtpInput variant="outline" length={4} />\n<OtpInput variant="filled" length={4} />\n<OtpInput variant="underlined" length={4} />`}
+          fullCode={`import { OtpInput } from "aer-design";\n\nexport default function OtpVariants() {\n  return (\n    <div className="flex flex-col gap-8">\n      <div className="space-y-2">\n        <h4 className="text-sm font-medium">Outline</h4>\n        <OtpInput variant="outline" length={4} />\n      </div>\n      <div className="space-y-2">\n        <h4 className="text-sm font-medium">Filled</h4>\n        <OtpInput variant="filled" length={4} />\n      </div>\n      <div className="space-y-2">\n        <h4 className="text-sm font-medium">Underlined</h4>\n        <OtpInput variant="underlined" length={4} />\n      </div>\n    </div>\n  );\n}`}
         />
       </DocSection>
 
@@ -136,6 +137,7 @@ export function OtpDoc() {
         </div>
         <CodeBlock
           ts={`<OtpInput size="sm" length={4} />\n<OtpInput size="default" length={4} />\n<OtpInput size="lg" length={4} />`}
+          fullCode={`import { OtpInput } from "aer-design";\n\nexport default function OtpSizes() {\n  return (\n    <div className="flex flex-col gap-6">\n      <div className="space-y-1.5">\n        <span className="text-xs font-semibold uppercase text-aer-muted-foreground tracking-wider">Small</span>\n        <OtpInput size="sm" length={4} />\n      </div>\n      <div className="space-y-1.5">\n        <span className="text-xs font-semibold uppercase text-aer-muted-foreground tracking-wider">Default</span>\n        <OtpInput size="default" length={4} />\n      </div>\n      <div className="space-y-1.5">\n        <span className="text-xs font-semibold uppercase text-aer-muted-foreground tracking-wider">Large</span>\n        <OtpInput size="lg" length={4} />\n      </div>\n    </div>\n  );\n}`}
         />
       </DocSection>
 

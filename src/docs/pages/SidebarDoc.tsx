@@ -930,6 +930,7 @@ export default function NestedSidebarExample() {
         </div>
         <CodeBlock
           ts={`<Sidebar\n  className="bg-sky-500/5 rounded-xl"\n  headerClassName="bg-sky-500/10"\n  contentClassName="px-2"\n>\n  <SidebarItem className="rounded-lg hover:bg-sky-500/10" />\n</Sidebar>`}
+          fullCode={`import { Sidebar, SidebarHeader, SidebarContent, SidebarSection, SidebarItem } from "aer-design";\nimport { Home } from "lucide-react";\n\nexport default function CustomSidebar() {\n  return (\n    <div className="h-[400px] w-full relative border rounded-xl overflow-hidden">\n      <Sidebar\n        mode="absolute"\n        position="left"\n        className="h-full border-none bg-sky-500/5"\n        headerClassName="bg-sky-500/10 border-sky-500/10"\n      >\n        <SidebarHeader>\n          <div className="size-8 rounded-lg bg-sky-500" />\n          <span className="font-bold">Aer</span>\n        </SidebarHeader>\n        <SidebarContent>\n          <SidebarSection>\n            <SidebarItem\n              icon={<Home className="text-sky-500" />}\n              className="rounded-lg hover:bg-sky-500/10"\n            >\n              Styled Item\n            </SidebarItem>\n          </SidebarSection>\n        </SidebarContent>\n      </Sidebar>\n    </div>\n  );\n}`}
         />
       </DocSection>
 
@@ -939,10 +940,14 @@ export default function NestedSidebarExample() {
         description="A complete application shell with responsive behavior."
       >
         <div className="p-6 border rounded-lg bg-aer-muted/5">
-          <p className="text-sm text-aer-muted-foreground text-center italic">
+          <p className="text-sm text-aer-muted-foreground text-center italic mb-4">
             The main playground at the top serves as our primary real-world
-            demonstration.
+            demonstration. Below is a complete app shell snippet.
           </p>
+          <CodeBlock
+            ts={`<div className="flex h-screen">\n  <Sidebar mode="fixed" position="left">...</Sidebar>\n  <main className="flex-1 overflow-auto p-8">...</main>\n</div>`}
+            fullCode={`import { Sidebar, SidebarHeader, SidebarContent, SidebarFooter, SidebarItem, SidebarSection, SidebarNestedItem } from "aer-design";\nimport { Home, User, Settings, Search, Bell, Mail, MessageSquare, Terminal, Users, PenTool } from "lucide-react";\nimport { useState } from "react";\n\nexport default function AppShell() {\n  const [activeItem, setActiveItem] = useState("dashboard");\n\n  return (\n    <div className="flex h-screen bg-aer-background text-aer-foreground">\n      <Sidebar mode="fixed" position="left" className="border-r border-aer-border">\n        <SidebarHeader className="h-16 flex items-center px-4">\n          <div className="size-8 rounded-lg bg-aer-primary flex items-center justify-center text-white font-bold">A</div>\n          <span className="ml-3 font-bold text-lg">Aer Design</span>\n        </SidebarHeader>\n        \n        <SidebarContent>\n          <SidebarSection title="Platform">\n            <SidebarItem \n              icon={<Home className="w-4 h-4" />}\n              active={activeItem === "dashboard"}\n              onClick={() => setActiveItem("dashboard")}\n            >\n              Dashboard\n            </SidebarItem>\n            <SidebarNestedItem icon={<Users className="w-4 h-4" />} label="Team" defaultExpanded>\n              <SidebarItem icon={<User className="w-3 h-3" />}>Members</SidebarItem>\n              <SidebarItem icon={<PenTool className="w-3 h-3" />}>Permissions</SidebarItem>\n            </SidebarNestedItem>\n          </SidebarSection>\n          \n          <SidebarSection title="Utilities">\n            <SidebarItem icon={<Search className="w-4 h-4" />}>Search</SidebarItem>\n            <SidebarItem icon={<Bell className="w-4 h-4" />}>Notifications</SidebarItem>\n          </SidebarSection>\n        </SidebarContent>\n\n        <SidebarFooter>\n          <SidebarItem icon={<Settings className="w-4 h-4" />}>Settings</SidebarItem>\n          <SidebarItem icon={<Terminal className="w-4 h-4" />}>Console</SidebarItem>\n        </SidebarFooter>\n      </Sidebar>\n\n      <main className="flex-1 overflow-auto p-8">\n        <div className="max-w-4xl mx-auto">\n          <h1 className="text-3xl font-bold mb-6">Dashboard</h1>\n          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">\n            {Array.from({ length: 9 }).map((_, i) => (\n              <div key={i} className="h-32 rounded-xl bg-aer-muted/10 border border-aer-border flex items-center justify-center">\n                <p className="text-aer-muted-foreground text-sm font-medium">Widget {i + 1}</p>\n              </div>\n            ))}\n          </div>\n        </div>\n      </main>\n    </div>\n  );\n}`}
+          />
         </div>
       </DocSection>
     </div>

@@ -67,6 +67,61 @@ export function CascaderDoc() {
 
         <CodeBlock
           ts={`<Cascader \n  scrollBehavior="${behavior}" \n  options={options} \n/>`}
+          fullCode={`import { Cascader } from "aer-design";
+import { RadioGroup, RadioItem } from "aer-design";
+import { useState } from "react";
+
+const options = [
+  {
+    label: "North America",
+    value: "na",
+    children: [
+      { label: "USA", value: "usa", children: [{ label: "New York", value: "ny" }] },
+      { label: "Canada", value: "can" }
+    ]
+  },
+  {
+    label: "Europe",
+    value: "eu",
+    children: [{ label: "France", value: "fr" }]
+  }
+];
+
+export default function ScrollBehaviorExample() {
+  const [behavior, setBehavior] = useState<"reposition" | "close">("reposition");
+
+  return (
+    <div className="space-y-6 w-full">
+      <div className="flex flex-col items-center gap-x-4 gap-y-2 p-4 bg-aer-muted/20 rounded-lg border border-aer-border">
+        <div className="w-full">
+          <label className="text-sm font-medium text-aer-foreground mb-3 block">
+            Scroll Behavior
+          </label>
+          <RadioGroup
+            value={behavior}
+            onChange={(val) => setBehavior(val as "reposition" | "close")}
+            className="flex flex-row gap-4"
+          >
+            <RadioItem value="reposition" label="Reposition (Follow)" />
+            <RadioItem value="close" label="Close on Scroll" />
+          </RadioGroup>
+        </div>
+      </div>
+
+      <div className="p-12 border border-aer-border rounded-lg bg-aer-muted/5 flex flex-col items-center">
+        <p className="text-xs text-aer-muted-foreground mb-4 italic">
+          Open the menu and scroll this section or the page
+        </p>
+        <Cascader
+          scrollBehavior={behavior}
+          options={options}
+          placeholder="Interaction test..."
+          className="w-64"
+        />
+      </div>
+    </div>
+  );
+}`}
         />
       </div>
     );
@@ -285,6 +340,57 @@ export default function CustomDisplay() {
 <Cascader variant="filled" ... />
 <Cascader variant="underlined" ... />
 <Cascader variant="aer" ... />`}
+          fullCode={`import { Cascader } from "aer-design";
+import { useState } from "react";
+
+const options = [
+  {
+    label: "North America",
+    value: "na",
+    children: [
+      { label: "USA", value: "usa", children: [{ label: "New York", value: "ny" }] },
+      { label: "Canada", value: "can" }
+    ]
+  },
+  {
+    label: "Europe",
+    value: "eu",
+    children: [
+      { label: "France", value: "fr" },
+      { label: "Germany", value: "de" }
+    ]
+  }
+];
+
+export default function VariantsExample() {
+  const [val, setVal] = useState<string | number>();
+
+  return (
+    <div className="flex flex-col gap-4 w-full max-w-xs p-8 bg-zinc-900 rounded-xl">
+      <Cascader
+        options={options}
+        value={val}
+        onChange={setVal}
+        variant="outline"
+        placeholder="Outline (Default)"
+      />
+      <Cascader
+        options={options}
+        value={val}
+        onChange={setVal}
+        variant="filled"
+        placeholder="Filled"
+      />
+      <Cascader
+        options={options}
+        value={val}
+        onChange={setVal}
+        variant="underlined"
+        placeholder="Underlined"
+      />
+    </div>
+  );
+}`}
         />
       </DocSection>
 
@@ -376,56 +482,42 @@ export default function AerCascaderExample() {
           ts={`<Cascader size="sm" ... />
 <Cascader size="default" ... />
 <Cascader size="lg" ... />`}
-        />
-      </DocSection>
-
-      <DocSection
-        id="error-state"
-        title="Error State"
-        description="Display validation errors."
-      >
-        <div className="flex flex-col gap-4 p-6 border rounded-lg bg-aer-muted/5 items-center">
-          <ErrorExample options={geoOptions} />
-        </div>
-        <CodeBlock
-          ts={`<Cascader error ... />
-<Cascader error="Selection is required" ... />`}
-        />
-      </DocSection>
-
-      <DocSection
-        id="show-last-item"
-        title="Show Last Item Only"
-        description="Display only the selected leaf node's label instead of the full path."
-      >
-        <div className="flex flex-col gap-4 p-6 border rounded-lg bg-aer-muted/5 items-center">
-          <ShowLastItemExample options={geoOptions} />
-        </div>
-        <CodeBlock
-          ts={`<Cascader 
-    options={options} 
-    displayRender={(labels) => labels[labels.length - 1]} 
-/>`}
           fullCode={`import { Cascader } from "aer-design";
 import { useState } from "react";
 
 const options = [
-    { label: "North America", value: "na", children: [{ label: "USA", value: "usa", children: [{ label: "New York", value: "ny" }] }] }
+  { label: "Option 1", value: "1", children: [{ label: "Sub 1", value: "1-1" }] },
+  { label: "Option 2", value: "2" }
 ];
 
-export default function ShowLastItem() {
-    const [value, setValue] = useState<string | number>("ny");
+export default function SizesExample() {
+  const [val, setVal] = useState<string | number>();
 
-    return (
-        <div className="w-64">
-            <Cascader 
-                options={options} 
-                value={value} 
-                onChange={setValue} 
-                displayRender={(labels) => labels[labels.length - 1]} 
-            />
-        </div>
-    );
+  return (
+    <div className="flex flex-col gap-4 w-full max-w-xs p-8 bg-zinc-900 rounded-xl">
+      <Cascader
+        options={options}
+        value={val}
+        onChange={setVal}
+        size="sm"
+        placeholder="Small"
+      />
+      <Cascader
+        options={options}
+        value={val}
+        onChange={setVal}
+        size="default"
+        placeholder="Default"
+      />
+      <Cascader
+        options={options}
+        value={val}
+        onChange={setVal}
+        size="lg"
+        placeholder="Large"
+      />
+    </div>
+  );
 }`}
         />
       </DocSection>
@@ -438,6 +530,44 @@ export default function ShowLastItem() {
         <div className="flex flex-col gap-4 p-6 border rounded-lg bg-aer-muted/5">
           <CascaderLabelExample options={geoOptions} />
         </div>
+        <CodeBlock
+          ts={`<Cascader
+  label="Location"
+  labelPosition="top"
+  required
+  helperText="Select your region"
+  options={options}
+/>`}
+          fullCode={`import { Cascader } from "aer-design";
+import { useState } from "react";
+
+const options = [
+  {
+    label: "North America",
+    value: "na",
+    children: [{ label: "USA", value: "usa" }]
+  }
+];
+
+export default function LabelExample() {
+  const [value, setValue] = useState<string | number>();
+
+  return (
+    <div className="max-w-md p-6 border rounded-xl bg-aer-muted/5">
+      <Cascader
+        label="Location"
+        labelPosition="top"
+        required
+        helperText="Select your region"
+        options={options}
+        value={value}
+        onChange={setValue}
+        placeholder="Choose location"
+      />
+    </div>
+  );
+}`}
+        />
       </DocSection>
 
       <DocSection
@@ -497,6 +627,150 @@ export default function DisabledExample() {
           { label: "Disabled Option", value: "2", disabled: true }
         ]} 
       />
+    </div>
+  );
+}`}
+        />
+      </DocSection>
+
+      <DocSection
+        id="error-state"
+        title="Error State"
+        description="Display validation errors."
+      >
+        <div className="flex flex-col gap-4 p-6 border rounded-lg bg-aer-muted/5 items-center">
+          <ErrorExample options={geoOptions} />
+        </div>
+        <CodeBlock
+          ts={`<Cascader error ... />
+<Cascader error="Selection is required" ... />`}
+          fullCode={`import { Cascader } from "aer-design";
+import { useState } from "react";
+
+const options = [
+  { label: "Option 1", value: "1" },
+  { label: "Option 2", value: "2" }
+];
+
+export default function ErrorExample() {
+  const [value, setValue] = useState<string | number>();
+  const [touched, setTouched] = useState(false);
+  const isInvalid = touched && !value;
+
+  return (
+    <div className="max-w-xs space-y-1.5 p-6 border rounded-xl bg-aer-muted/5">
+      <label className="text-sm font-medium text-aer-foreground flex items-center gap-1">
+        Select an option <span className="text-red-500 font-bold">*</span>
+      </label>
+      <Cascader
+        options={options}
+        value={value}
+        onChange={setValue}
+        onBlur={() => setTouched(true)}
+        error={isInvalid ? "Selection is required" : false}
+        placeholder="Required field"
+      />
+      {isInvalid && (
+        <span className="text-xs text-red-500 font-medium">
+          This field is required
+        </span>
+      )}
+    </div>
+  );
+}`}
+        />
+      </DocSection>
+
+      <DocSection
+        id="show-last-item"
+        title="Show Last Item Only"
+        description="Display only the selected leaf node's label instead of the full path."
+      >
+        <div className="flex flex-col gap-4 p-6 border rounded-lg bg-aer-muted/5 items-center">
+          <ShowLastItemExample options={geoOptions} />
+        </div>
+        <CodeBlock
+          ts={`<Cascader 
+    options={options} 
+    displayRender={(labels) => labels[labels.length - 1]} 
+/>`}
+          fullCode={`import { Cascader } from "aer-design";
+import { useState } from "react";
+
+const options = [
+    { label: "North America", value: "na", children: [{ label: "USA", value: "usa", children: [{ label: "New York", value: "ny" }] }] }
+];
+
+export default function ShowLastItem() {
+    const [value, setValue] = useState<string | number>("ny");
+
+    return (
+        <div className="w-64">
+            <Cascader 
+                options={options} 
+                value={value} 
+                onChange={setValue} 
+                displayRender={(labels) => labels[labels.length - 1]} 
+            />
+        </div>
+    );
+}`}
+        />
+      </DocSection>
+
+      <DocSection
+        id="validation"
+        title="Validation"
+        description="Validate cascader selections with error states and feedback."
+      >
+        <div className="flex flex-col gap-4 p-6 border rounded-lg bg-aer-muted/5 items-center">
+          <ValidationExample options={geoOptions} />
+        </div>
+        <CodeBlock
+          ts={`<Cascader 
+  error={isInvalid} 
+  onBlur={() => setTouched(true)}
+  ... 
+/>`}
+          fullCode={`import { Cascader } from "aer-design";
+import { useState } from "react";
+
+const options = [
+  { label: "Option 1", value: "1" },
+  { label: "Option 2", value: "2" }
+];
+
+export default function ValidationExample() {
+  const [value, setValue] = useState<string | number>();
+  const [touched, setTouched] = useState(false);
+  const showError = touched && !value;
+
+  const handleChange = (newValue: string | number) => {
+    setValue(newValue);
+  };
+
+  const handleBlur = () => {
+    setTouched(true);
+  };
+
+  return (
+    <div className="max-w-xs space-y-1.5 p-6 border rounded-xl bg-aer-muted/5">
+      <label className="text-sm font-medium text-aer-foreground flex items-center gap-1">
+        Select a category <span className="text-red-500 font-bold">*</span>
+      </label>
+      <Cascader
+        options={options}
+        value={value}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        error={showError}
+        placeholder="Required field"
+      />
+      {showError && (
+        <span className="text-xs text-red-500 font-medium">
+          This field is required
+        </span>
+      )}
     </div>
   );
 }`}
@@ -841,6 +1115,7 @@ export default function ProductForm() {
               { id: "error-state", title: "Error State" },
               { id: "show-last-item", title: "Show Last Item" },
               { id: "validation", title: "Validation" },
+              { id: "granular-styling", title: "Granular Styling" },
               { id: "scroll-behavior", title: "Scroll Behavior" },
               { id: "real-world", title: "Real World Example" },
             ],
@@ -1062,6 +1337,43 @@ export default function ProductForm() {
           </div>
         </div>
       </DocSection>
+    );
+  }
+
+  function ValidationExample({ options }: { options: any[] }) {
+    const [value, setValue] = React.useState<string | number>();
+    const [touched, setTouched] = React.useState(false);
+    const showError = touched && !value;
+
+    const handleChange = (newValue: string | number) => {
+      setValue(newValue);
+    };
+
+    const handleBlur = () => {
+      setTouched(true);
+    };
+
+    return (
+      <div className="flex flex-col gap-4 w-full max-w-xs">
+        <label className="text-sm font-medium text-aer-foreground flex items-center gap-1">
+          Select a category <span className="text-red-500 font-bold">*</span>
+        </label>
+        <div className="flex flex-col">
+          <Cascader
+            options={options}
+            value={value}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={showError}
+            placeholder="Required field"
+          />
+          {showError && (
+            <span className="text-xs text-red-500 font-medium">
+              This field is required
+            </span>
+          )}
+        </div>
+      </div>
     );
   }
 

@@ -233,7 +233,7 @@ export function Sidebar({
       backdrop={true}
       showNestedBorder={false}
       onBackdropClick={onClose}
-      className="z-50 border-r border-dashed md:ltr:translate-x-0 md:rtl:translate-x-0 md:opacity-100 md:top-14 md:h-[calc(100vh-3.5rem)]"
+      className="z-40 border-r border-dashed md:ltr:translate-x-0 md:rtl:translate-x-0 md:opacity-100 top-14 h-[calc(100vh-3.5rem)]"
     >
       <SidebarHeader className="h-16 flex justify-center border-b-0 px-6 mt-2 md:hidden">
         {/* Only show branding on mobile sidebar, since Desktop has Topbar branding */}

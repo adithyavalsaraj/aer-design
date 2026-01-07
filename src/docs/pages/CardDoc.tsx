@@ -492,6 +492,7 @@ export function CardDoc() {
         </div>
         <CodeBlock
           ts={`<Card variant="glass">\n  <CardHeader>\n    <CardTitle>Activity</CardTitle>\n  </CardHeader>\n  <CardContent>\n    <div className="text-2xl font-bold">+2,350</div>\n    <ProgressBar value={66} />\n  </CardContent>\n</Card>`}
+          fullCode={`import { Card, CardHeader, CardTitle, CardContent } from "aer-design";\nimport { Star } from "lucide-react";\n\nexport default function ActivityCard() {\n  return (\n    <Card className="w-full max-w-sm" variant="glass">\n      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">\n        <CardTitle className="text-sm font-medium">Activity</CardTitle>\n        <Star className="h-4 w-4 text-aer-muted-foreground" />\n      </CardHeader>\n      <CardContent>\n        <div className="text-2xl font-bold">+2,350</div>\n        <p className="text-xs text-aer-muted-foreground">\n          +20.1% from last month\n        </p>\n        <div className="mt-4 h-2 w-full bg-aer-muted rounded-full overflow-hidden">\n          <div className="h-full bg-aer-primary w-2/3" />\n        </div>\n      </CardContent>\n    </Card>\n  );\n}`}
         />
       </DocSection>
     </div>

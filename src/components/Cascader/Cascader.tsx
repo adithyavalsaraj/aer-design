@@ -88,6 +88,7 @@ export function Cascader({
   virtualized,
   itemHeight = 32,
   scrollBehavior = "reposition",
+  onBlur,
 }: CascaderProps) {
   const { size: globalSize } = useAerConfig();
   const size = sizeProp || globalSize || "default";
@@ -103,7 +104,10 @@ export function Cascader({
       sideOffset: 4,
       strategy: "fixed",
       scrollBehavior,
-      onScroll: () => setIsOpen(false),
+      onScroll: () => {
+        setIsOpen(false);
+        onBlur?.();
+      },
     });
 
   // Handle outside interactions and scroll
@@ -126,12 +130,14 @@ export function Cascader({
         !isInsideMenu
       ) {
         setIsOpen(false);
+        onBlur?.();
       }
     };
 
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setIsOpen(false);
+        onBlur?.();
       }
     };
 
@@ -163,6 +169,7 @@ export function Cascader({
     if (isLeaf) {
       onChange?.(option.value);
       setIsOpen(false);
+      onBlur?.();
     }
     // Non-leaf clicks just expand, handled by CascaderMenu hover/click logic internally
   };

@@ -15,6 +15,7 @@ Aer Design is a modern, accessible, and highly customizable component library bu
 - ⚡ **Performance**: Optimized for speed with minimal re-renders.
 - 🎯 **TypeScript**: Full TypeScript support with comprehensive type definitions.
 - 🔍 **Auto-Contrast**: Automatic text color calculation for WCAG AA/AAA compliance.
+- 📚 **Production-Ready Docs**: 100% components include copy-pasteable, standalone `fullCode` examples.
 
 ## Installation
 

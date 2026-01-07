@@ -241,7 +241,41 @@ export default function GranularStyling() {
         <div className="max-w-xl">
           <Textarea placeholder="Error state" error />
         </div>
-        <CodeBlock ts={`<Textarea placeholder="Error state" error />`} />
+        <CodeBlock
+          ts={`<Textarea placeholder="Error state" error />`}
+          fullCode={`import { Textarea } from "aer-design";
+import { useState } from "react";
+
+export default function ValidationExample() {
+  const [value, setValue] = useState("");
+  const [touched, setTouched] = useState(false);
+  const isInvalid = touched && value.trim().length < 10;
+
+  return (
+    <div className="max-w-xl space-y-1.5 p-6 border rounded-xl bg-aer-muted/5">
+      <label className="text-sm font-medium text-aer-foreground flex items-center gap-1">
+        Description <span className="text-red-500 font-bold">*</span>
+      </label>
+      <Textarea
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onBlur={() => setTouched(true)}
+        error={isInvalid}
+        placeholder="Please describe your issue (min 10 chars)..."
+        className="min-h-[120px]"
+      />
+      {isInvalid && (
+        <span className="text-xs text-red-500 font-medium">
+          Description must be at least 10 characters
+        </span>
+      )}
+      <div className="text-xs text-aer-muted-foreground">
+        {value.length} / 10 characters
+      </div>
+    </div>
+  );
+}`}
+        />
       </DocSection>
 
       <DocSection title="Real World Example" id="real-world-validation">
