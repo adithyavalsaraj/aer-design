@@ -688,13 +688,13 @@ export default function AdvancedWindowManager() {
         <div className="flex bg-aer-muted/10 p-1 rounded-md border">
           <button 
             onClick={() => dialogStackingManager.setStackingMode("wrap")}
-            className={\`px-3 py-1 text-xs rounded \${mode === 'wrap' ? 'bg-white shadow-sm' : ''}\`}
+            className={\`px-3 py-1 text-xs rounded \${mode === 'wrap' ? 'bg-white dark:bg-aer-muted/20 shadow-sm text-aer-foreground border border-aer-border' : ''}\`}
           >
             Wrap Grid
           </button>
           <button 
             onClick={() => dialogStackingManager.setStackingMode("scroll")}
-            className={\`px-3 py-1 text-xs rounded \${mode === 'scroll' ? 'bg-white shadow-sm' : ''}\`}
+            className={\`px-3 py-1 text-xs rounded \${mode === 'scroll' ? 'bg-white dark:bg-aer-muted/20 shadow-sm text-aer-foreground border border-aer-border' : ''}\`}
           >
             Scroll Taskbar
           </button>
@@ -1596,7 +1596,7 @@ export default function UserProfileDialog() {
                 className={cn(
                   "px-3 py-1 text-xs font-medium rounded-md transition-all",
                   mode === "wrap"
-                    ? "bg-white shadow-sm text-aer-foreground border border-aer-border"
+                    ? "bg-white dark:bg-aer-muted/20 shadow-sm text-aer-foreground border border-aer-border"
                     : "text-aer-muted-foreground hover:text-aer-foreground"
                 )}
               >
@@ -1607,7 +1607,7 @@ export default function UserProfileDialog() {
                 className={cn(
                   "px-3 py-1 text-xs font-medium rounded-md transition-all",
                   mode === "scroll"
-                    ? "bg-white shadow-sm text-aer-foreground border border-aer-border"
+                    ? "bg-white dark:bg-aer-muted/20 shadow-sm text-aer-foreground border border-aer-border"
                     : "text-aer-muted-foreground hover:text-aer-foreground"
                 )}
               >
