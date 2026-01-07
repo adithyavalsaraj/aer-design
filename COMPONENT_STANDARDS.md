@@ -24,7 +24,6 @@ Every section (unless specified as text-only) MUST contain:
 
 1.  **A live working example** (rendered component).
 2.  **A `CodeBlock`** showing the implementation.
-
 #### 1. Introduction
 
 Explain what the component does and its key features.
@@ -40,7 +39,7 @@ The simplest implementation using standard TypeScript/React patterns.
 
 #### 4. Visual Variants
 
-Standard stylistic variations (e.g., Primary, Ghost, Outline). Use the title "**Visual Variants**."
+Standard stylistic variations (e.g., Primary, Ghost, Outline). Use the title '**Visual Variants**.'
 
 #### 5. Custom Usage
 
@@ -51,14 +50,16 @@ How to extend the component, pass custom children, or utilize render props.
 **Purpose:** Guidance on IDE layout integration.
 **Requirement:** Describe behavior in sidebars, editor panes, or floating overlays. Explain alignment, z-index logic, or container constraints.
 
-#### 7. Feature Sections (Component Specific)
-
-Descriptive titles for unique logic (e.g., "Keyboard Shortcuts", "Virtual Scrolling").
-
-#### 8. The Aer Variant (Key Selling Variant)
+#### 7. The Aer Variant
 
 **Purpose:** Highlight the premium "Aer" aesthetic. It must be given its own high-visibility section.
-**Structure:**
+**Requirements:**
+- ✅ Must include a live example with vibrant background (`aer-vibrant-container`)
+- ✅ Must include both `ts` snippet and `fullCode` in CodeBlock
+- ✅ **Must include a Pro Tip** explaining:
+  - Background requirements (dark/colorful)
+  - Glassmorphism benefits
+  - Component-specific use cases
 
 ```tsx
 <DocSection
@@ -81,37 +82,27 @@ Descriptive titles for unique logic (e.g., "Keyboard Shortcuts", "Virtual Scroll
 </DocSection>
 ```
 
-**Requirements:**
-
-- ✅ Must include a live example with vibrant background (`aer-vibrant-container`)
-- ✅ Must include both `ts` snippet and `fullCode` in CodeBlock
-- ✅ **Must include a Pro Tip** explaining:
-  - Background requirements (dark/colorful)
-  - Glassmorphism benefits
-  - Component-specific use cases
-  - When to use vs. other variants
-
-#### 9. Interaction States
+#### 8. Interaction States
 
 **Purpose:** Document interaction states.
-**Requirements:** Must visually demonstrate **Hover**, **Active**, **Disabled**, **Loading**, and **Focused** states using Tailwind modifiers (e.g., `hover:`, `focus-visible:`).
+**Requirements:** Must visually demonstrate **Hover**, **Active**, **Disabled**, **Loading**, and **Focused** states using Tailwind modifiers.
 
-#### 10. Specialized Contexts
+#### 9. Specialized Contexts
 
 **Purpose:** Context-aware versions of the component.
-**Example:** How the component behaves differently in "Debug Mode" vs. "Writing Mode."
+**Example:** How the component behaves differently in 'Debug Mode' vs. 'Writing Mode.'
 
-#### 11. Validation & Errors
+#### 10. Validation & Errors
 
 **Purpose:** Error handling and data constraints.
 **Requirements:** Show error rings, helper text, and `aria-invalid` implementation.
 
-#### 12. Granular Styling
+#### 11. Granular Styling
 
 **Purpose:** How to override internal slots.
-**Structure:** Explain the `classNames` or `styles` prop for targeting internal elements (e.g., root, label, icon). Provide a list of styleable "slots" or internal classes.
+**Structure:** Explain the `classNames` or `styles` prop for targeting internal elements (e.g., root, label, icon).
 
-#### 13. Real World Example
+#### 12. Real World Example
 
 **Purpose:** A 30-60 line production-ready implementation (e.g., a complex IDE form or dashboard widget).
 
@@ -131,27 +122,6 @@ Descriptive titles for unique logic (e.g., "Keyboard Shortcuts", "Virtual Scroll
 
 ---
 
-## Updated Overview Tab TOC
-
-```tsx
-toc: [
-  { id: "introduction", title: "Introduction" },
-  { id: "when-to-use", title: "When to Use" },
-  { id: "basic", title: "Basic Usage" },
-  { id: "variants", title: "Visual Variants" },
-  { id: "custom", title: "Custom Usage" },
-  { id: "positioning", title: "Positioning" },
-  { id: "aer-variant", title: "The Aer Variant" },
-  { id: "states", title: "Interaction States" },
-  { id: "specialized", title: "Specialized Contexts" },
-  { id: "validation", title: "Validation & Errors" },
-  { id: "styling", title: "Granular Styling" },
-  { id: "real-world", title: "Real World Example" },
-];
-```
-
----
-
 ## Quality Checklist
 
 - [ ] **Positioning:** Does it explain IDE layout behavior?
@@ -160,7 +130,7 @@ toc: [
 - [ ] **States:** Are hover/focus/loading states visually demonstrated?
 - [ ] **Granular Styling:** Is there a list of styleable "slots" or internal classes?
 - [ ] **Introduction:** Does it have 4-6 bullet points with `<strong>` tags?
-- [ ] **Code Examples:** Are both `ts` snippet and `fullCode` provided? The `fullCode` MUST be a standalone, copy-paste ready React component with all necessary imports (including `aer-design` and `lucide-react`) to support the **StackBlitz** "Open in Editor" feature.
+- [ ] **Code Examples:** Are both `ts` snippet and `fullCode` provided? The `fullCode` MUST be a standalone, copy-paste ready React component.
 - [ ] **Working Examples:** Does EVERY section include a live visual demonstration AND a CodeBlock?
 - [ ] **Tabs:** Are all three tabs (Overview, API, Theming) implemented?
 
@@ -187,15 +157,14 @@ Whenever a new feature is added or removed, or a component is updated, the follo
 
 Before pushing any code to the repository, you MUST follow these steps to ensure documentation integrity:
 
-1.  **Update Project Documentation**: Synchronize the following files with your changes:
-    - [CHANGELOG.md](./CHANGELOG.md)
-    - [README.md](./README.md)
-    - [ROADMAP.md](./ROADMAP.md)
-    - [src/docs/pages/RoadmapDoc.tsx](./src/docs/pages/RoadmapDoc.tsx)
-    - [src/docs/pages/ContributingDoc.tsx](./src/docs/pages/ContributingDoc.tsx)
-2.  **Component Documentation Audit**: For any updated or edited components, thoroughly verify:
-    - **TOC**: The Table of Contents matches the section order.
-    - **API**: The API table reflects all new or changed props.
-    - **Theming**: CSS variables and granular styling details are accurate.
-    - **Examples**: Live examples and `CodeBlock` (both `ts` and `fullCode`) are functional and up-to-date.
+1.  **Sync Project Files**: Synchronize the following files with your changes:
+    - Update [CHANGELOG.md](./CHANGELOG.md) (v0.x.x)
+    - Update [README.md](./README.md) features/tables
+    - Update [ROADMAP.md](./ROADMAP.md) & RoadmapDoc.tsx
+    - Update ContributingDoc.tsx if standards changed
+2.  **Audit Component Docs**: For any updated or edited components, thoroughly verify:
+    - Verify TOC matches section order
+    - Check API table for all current props
+    - Ensure fullCode contains all imports
+    - Confirm Pro Tip is present for Aer Variant
 3.  **Standard Compliance**: Ensure the "Aer Variant" Pro Tip is present and the overview tab follows the required 3-tab layout.

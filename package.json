@@ -20,6 +20,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "build:docs": "tsc -b && vite build --mode docs",
+    "gen:roadmap": "npx tsx scripts/generate-roadmap.ts",
+    "gen:standards": "npx tsx scripts/generate-standards.ts",
     "lint": "eslint .",
     "preview": "vite preview"
   },

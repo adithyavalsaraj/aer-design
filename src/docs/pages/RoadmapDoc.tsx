@@ -2,18 +2,14 @@ import { Badge } from "@/components/Badge";
 import { Button } from "@/components/Button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/Card";
 import { Dialog, DialogContent, DialogHeader } from "@/components/Dialog";
+import { ROADMAP_DATA, getCategoryStats, getStats } from "@/data/roadmap";
 import { Check, Clock, Sparkles, Target, TrendingUp } from "lucide-react";
 import { useState } from "react";
 
 /**
  * RoadmapDoc - Visual representation of the project roadmap
  *
- * ⚠️ IMPORTANT: Keep this data synchronized with /ROADMAP.md
- * When components are added/completed, update both files:
- * 1. Move completed components from highPriority/mediumPriority to completedComponents
- * 2. Update stats object (total, completed, highPriority, mediumPriority counts)
- * 3. Update categoryStats with new completion numbers
- * 4. Update ROADMAP.md to remove completed items from "Missing Components"
+ * Powered by Single Source of Truth: src/data/roadmap.ts
  */
 export function RoadmapDoc() {
   const [selectedComponent, setSelectedComponent] = useState<string | null>(
@@ -21,159 +17,22 @@ export function RoadmapDoc() {
   );
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const completedComponents = [
-    { name: "Button", version: "v0.1.0", category: "Form Controls" },
-    { name: "Input", version: "v0.12.0", category: "Form Controls" },
-    { name: "Textarea", version: "v0.12.0", category: "Form Controls" },
-    { name: "Checkbox", version: "v0.12.0", category: "Form Controls" },
-    { name: "Radio", version: "v0.12.0", category: "Form Controls" },
-    { name: "Dropdown", version: "v0.12.0", category: "Form Controls" },
-    { name: "Cascader", version: "v0.12.0", category: "Form Controls" },
-    { name: "OtpInput", version: "v0.12.0", category: "Form Controls" },
-    { name: "Menu", version: "v0.12.0", category: "Navigation" },
-    { name: "Sidebar", version: "v0.12.0", category: "Navigation" },
-    { name: "Navbar", version: "v0.12.0", category: "Navigation" },
-    { name: "Tooltip", version: "v0.12.0", category: "Feedback" },
-    { name: "Overlay", version: "v0.12.0", category: "Feedback" },
-    { name: "Dialog", version: "v0.12.0", category: "Feedback" },
-    { name: "Badge", version: "v0.12.0", category: "Data Display" },
-    { name: "Card", version: "v0.12.0", category: "Data Display" },
-    { name: "Tabs", version: "v0.11.0", category: "Data Display" },
-    { name: "Avatar", version: "v0.12.0", category: "Data Display" },
-    { name: "Shortcut", version: "v0.8.0", category: "Utilities" },
-    { name: "ThemeProvider", version: "v0.1.0", category: "Providers" },
-    { name: "AerConfigProvider", version: "v0.5.0", category: "Providers" },
-    { name: "Divider", version: "v0.11.0", category: "Layout" },
-    { name: "Skeleton", version: "v0.11.0", category: "Layout" },
-  ];
-
-  const componentSpecs: Record<
-    string,
-    { description: string; features: string[] }
-  > = {
-    Tabs: {
-      description:
-        "Tabbed interface component for organizing content into switchable panels",
-      features: [
-        "Horizontal and vertical orientations",
-        "Keyboard navigation (Arrow keys)",
-        "Lazy loading of tab content",
-        "Controlled and uncontrolled modes",
-        "Custom tab indicators",
-        "Variants (line, enclosed, pills)",
-      ],
-    },
-    Accordion: {
-      description: "Collapsible content panels for progressive disclosure",
-      features: [
-        "Single and multiple expansion modes",
-        "Smooth animations",
-        "Keyboard navigation",
-        "Custom icons",
-        "Nested accordions support",
-      ],
-    },
-    Popover: {
-      description: "Rich popover with interactive content and auto-positioning",
-      features: [
-        "Auto-positioning (reuse existing utilities)",
-        "Click and hover triggers",
-        "Close on outside click",
-        "Arrow indicator",
-        "Rich content support (forms, buttons, etc.)",
-      ],
-    },
-    Toast: {
-      description: "Toast notification system for user feedback",
-      features: [
-        "Multiple positions (top-left, top-right, bottom-left, bottom-right, top-center, bottom-center)",
-        "Auto-dismiss with configurable duration",
-        "Action buttons",
-        "Variants (success, error, warning, info)",
-        "Queue management",
-        "Stacking and animation",
-      ],
-    },
-    Autocomplete: {
-      description: "Searchable input with suggestion list",
-      features: [
-        "Remote data fetching",
-        "Custom filtering",
-        "Grouping",
-        "Multiple selection",
-        "Custom renderers for options",
-      ],
-    },
-    Chips: {
-      description: "Compact elements for input, attribute, or action",
-      features: [
-        "Input chips (dismissible)",
-        "Choice chips (single select)",
-        "Filter chips (multi select)",
-        "Action chips",
-        "Avatar support",
-      ],
-    },
-    FAB: {
-      description: "Primary action button for screen",
-      features: [
-        "Extended variant (icon + label)",
-        "Scroll behavior (hide/shrink)",
-        "Animation transitions",
-        "Anchoring",
-      ],
-    },
-    SpeedDial: {
-      description: "Floating button that expands into multiple actions",
-      features: [
-        "Custom directions (up, down, left, right)",
-        "Icon rotation",
-        "Tooltip labels",
-        "Delay control",
-      ],
-    },
-  };
-
-  const highPriority = [
-    { name: "Accordion", description: "Collapsible content panels" },
-    { name: "Popover", description: "Rich popover with interactive content" },
-    { name: "Toast", description: "Toast notification system" },
-    {
-      name: "Autocomplete",
-      description: "Searchable input with suggestion list",
-    },
-  ];
-
-  const mediumPriority = [
-    { name: "Breadcrumb", description: "Navigation breadcrumb trail" },
-    { name: "Pagination", description: "Page navigation component" },
-    { name: "Progress", description: "Progress indicators" },
-    { name: "Chips", description: "Compact elements for input/action" },
-    { name: "FAB", description: "Floating Action Button" },
-    { name: "SpeedDial", description: "Floating button with actions" },
-  ];
-
-  const stats = {
-    total: 48,
-    completed: 23,
-    highPriority: 4,
-    mediumPriority: 6,
-    lowPriority: 15,
-  };
-
+  const stats = getStats();
+  const categoryStats = getCategoryStats();
   const completionPercentage = Math.round(
     (stats.completed / stats.total) * 100
   );
 
-  const categoryStats = [
-    { name: "Form Controls", completed: 8, total: 14 },
-    { name: "Navigation", completed: 3, total: 7 },
-    { name: "Feedback", completed: 3, total: 7 },
-    { name: "Data Display", completed: 4, total: 9 },
-    { name: "Layout", completed: 2, total: 2 },
-    { name: "Providers", completed: 2, total: 2 },
-    { name: "Utilities", completed: 1, total: 1 },
-  ];
+  const completedComponents = ROADMAP_DATA.filter(
+    (i) => i.status === "Completed"
+  );
+  const highPriority = ROADMAP_DATA.filter((i) => i.priority === "High");
+  const mediumPriority = ROADMAP_DATA.filter((i) => i.priority === "Medium");
+  const lowPriority = ROADMAP_DATA.filter((i) => i.priority === "Low");
+
+  const selectedItem = selectedComponent
+    ? ROADMAP_DATA.find((i) => i.name === selectedComponent)
+    : null;
 
   return (
     <div className="space-y-12 pb-16" id="hero">
@@ -433,24 +292,11 @@ export function RoadmapDoc() {
           </div>
         </div>
         <div className="grid md:grid-cols-4 gap-3">
-          {[
-            { name: "Alert", desc: "Inline alert messages" },
-            { name: "Slider", desc: "Range slider input" },
-            { name: "Switch", desc: "Toggle switch" },
-            { name: "DatePicker", desc: "Date selection" },
-            { name: "TimePicker", desc: "Time selection" },
-            { name: "Table", desc: "Data table component" },
-            { name: "Tree", desc: "Hierarchical tree view" },
-            { name: "Timeline", desc: "Event display" },
-            { name: "List", desc: "Styled list containers" },
-            { name: "Steps", desc: "Navigation stepper" },
-            { name: "Rating", desc: "Star rating input" },
-            { name: "Carousel", desc: "Content slider" },
-          ].map((component) => (
+          {lowPriority.map((component) => (
             <Card key={component.name} variant="outline" className="p-3">
               <h3 className="font-semibold text-sm mb-1">{component.name}</h3>
               <p className="text-xs text-aer-muted-foreground">
-                {component.desc}
+                {component.description}
               </p>
               <Badge variant="ghost" size="sm" className="mt-2">
                 Future
@@ -497,30 +343,34 @@ export function RoadmapDoc() {
       <Dialog isOpen={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
         <DialogContent className="max-w-2xl">
           <DialogHeader title={`${selectedComponent} Specification`} />
-          {selectedComponent && componentSpecs[selectedComponent] && (
+          {selectedItem && (
             <div className="space-y-6 p-6">
               <div>
                 <h3 className="font-semibold text-lg mb-2">Description</h3>
                 <p className="text-aer-muted-foreground">
-                  {componentSpecs[selectedComponent].description}
+                  {selectedItem.description}
                 </p>
               </div>
               <div>
                 <h3 className="font-semibold text-lg mb-3">
                   Required Features
                 </h3>
-                <ul className="space-y-2">
-                  {componentSpecs[selectedComponent].features.map(
-                    (feature, i) => (
+                {selectedItem.features && selectedItem.features.length > 0 ? (
+                  <ul className="space-y-2">
+                    {selectedItem.features.map((feature, i) => (
                       <li key={i} className="flex items-start gap-3">
                         <Check className="size-5 text-green-500 shrink-0 mt-0.5" />
                         <span className="text-sm text-aer-muted-foreground">
                           {feature}
                         </span>
                       </li>
-                    )
-                  )}
-                </ul>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-sm text-aer-muted-foreground italic">
+                    Feature list not yet defined.
+                  </p>
+                )}
               </div>
               <div className="pt-4 border-t border-aer-border">
                 <p className="text-sm text-aer-muted-foreground">

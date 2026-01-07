@@ -1,6 +1,13 @@
 import { Badge } from "@/components/Badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/Card";
 import {
+  BEST_PRACTICES,
+  CODE_PUSH_GUIDELINES,
+  DESIGN_PRINCIPLES,
+  DOC_STRUCTURE,
+  REQUIRED_FEATURES,
+} from "@/data/standards";
+import {
   BookOpen,
   CheckCircle2,
   Code2,
@@ -100,63 +107,22 @@ export function ContributingDoc() {
               Every component documentation must follow this exact structure:
             </p>
             <div className="space-y-2">
-              {[
-                {
-                  title: "Introduction",
-                  desc: "Brief overview and purpose (4-6 bullets)",
-                },
-                {
-                  title: "When to Use",
-                  desc: "Use cases and best practices (2-4 grid)",
-                },
-                {
-                  title: "Basic Usage",
-                  desc: "Simple implementation with CodeBlock",
-                },
-                {
-                  title: "Visual Variants",
-                  desc: "Standard stylistic variations",
-                },
-                { title: "Custom Usage", desc: "Extensions and render props" },
-                {
-                  title: "Positioning",
-                  desc: "IDE layout and container behavior",
-                },
-                {
-                  title: "The Aer Variant",
-                  desc: "Premium glassmorphism variant with Pro Tip",
-                },
-                { title: "Sizes", desc: "All size options" },
-                { title: "Custom Usage", desc: "Advanced customization" },
-                { title: "Positioning", desc: "Layout and placement" },
-                {
-                  title: "Interaction States",
-                  desc: "Hover, focus, disabled, loading, etc.",
-                },
-                { title: "Specialized Contexts", desc: "Specific use cases" },
-                {
-                  title: "Validation & Errors",
-                  desc: "Error states, Validation and helper text",
-                },
-                { title: "Granular Styling", desc: "Custom styling examples" },
-                {
-                  title: "Real World Example",
-                  desc: "Production-ready example",
-                },
-              ].map((section, i) => (
-                <div
-                  key={i}
-                  className="flex items-start gap-3 p-3 rounded-aer-md bg-aer-muted/5 border border-aer-border/50"
-                >
-                  <CheckCircle2 className="size-4 text-green-500 shrink-0 mt-0.5" />
-                  <div>
-                    <div className="font-medium text-sm">{section.title}</div>
-                    <div className="text-xs text-aer-muted-foreground">
-                      {section.desc}
+              <div className="space-y-2">
+                {DOC_STRUCTURE.map((section, i) => (
+                  <div
+                    key={i}
+                    className="flex items-start gap-3 p-3 rounded-aer-md bg-aer-muted/5 border border-aer-border/50"
+                  >
+                    <CheckCircle2 className="size-4 text-green-500 shrink-0 mt-0.5" />
+                    <div>
+                      <div className="font-medium text-sm">{section.title}</div>
+                      <div className="text-xs text-aer-muted-foreground">
+                        {section.shortDesc}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
 
@@ -198,57 +164,24 @@ export function ContributingDoc() {
               Best Practices
             </h3>
             <div className="space-y-3">
-              <div className="p-4 rounded-aer-lg bg-aer-muted/5 border border-aer-border/50">
-                <h4 className="font-semibold text-sm mb-2">
-                  ✨ Make Examples Beautiful
-                </h4>
-                <p className="text-xs text-aer-muted-foreground">
-                  Don't show "Simple Content Card" - create realistic, visually
-                  appealing examples that showcase the component's capabilities.
-                  Use real-world data, icons, and proper styling.
-                </p>
-              </div>
-              <div className="p-4 rounded-aer-lg bg-aer-muted/5 border border-aer-border/50">
-                <h4 className="font-semibold text-sm mb-2">
-                  🎨 Show Visual Differences
-                </h4>
-                <p className="text-xs text-aer-muted-foreground">
-                  For variant examples, make each variant visually distinct. Add
-                  icons, descriptions, and context so users can immediately see
-                  the differences.
-                </p>
-              </div>
-              <div className="p-4 rounded-aer-lg bg-aer-muted/5 border border-aer-border/50">
-                <h4 className="font-semibold text-sm mb-2">
-                  📝 Provide Context
-                </h4>
-                <p className="text-xs text-aer-muted-foreground">
-                  Every code example should be production-ready. Include
-                  imports, proper TypeScript types, and realistic use cases that
-                  developers can copy directly into their projects.
-                </p>
-              </div>
-              <div className="p-4 rounded-aer-lg bg-aer-muted/5 border border-aer-border/50">
-                <h4 className="font-semibold text-sm mb-2">
-                  🔍 Demonstrate Edge Cases
-                </h4>
-                <p className="text-xs text-aer-muted-foreground">
-                  Show how the component behaves in different scenarios: long
-                  text, empty states, error states, loading states, and
-                  responsive layouts.
-                </p>
-              </div>
-              <div className="p-4 rounded-aer-lg bg-blue-500/5 border border-blue-500/20">
-                <h4 className="font-semibold text-sm mb-2">
-                  ✨ Include Aer Variant Pro Tips
-                </h4>
-                <p className="text-xs text-aer-muted-foreground">
-                  Every Aer Variant section MUST include a Pro Tip explaining
-                  background requirements (dark/colorful), glassmorphism
-                  benefits, and component-specific use cases. This helps users
-                  understand when and how to use the premium variant
-                  effectively.
-                </p>
+              <div className="space-y-3">
+                {BEST_PRACTICES.map((practice, i) => (
+                  <div
+                    key={i}
+                    className={`p-4 rounded-aer-lg border ${
+                      practice.highlight
+                        ? "bg-blue-500/5 border-blue-500/20"
+                        : "bg-aer-muted/5 border-aer-border/50"
+                    }`}
+                  >
+                    <h4 className="font-semibold text-sm mb-2">
+                      {practice.title}
+                    </h4>
+                    <p className="text-xs text-aer-muted-foreground">
+                      {practice.desc}
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -268,65 +201,25 @@ export function ContributingDoc() {
             <div>
               <h4 className="font-semibold mb-2">✅ Required Features</h4>
               <ul className="space-y-2 text-sm text-aer-muted-foreground">
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="size-4 text-green-500 shrink-0 mt-0.5" />
-                  <span>TypeScript with comprehensive types</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="size-4 text-green-500 shrink-0 mt-0.5" />
-                  <span>WAI-ARIA accessibility compliance</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="size-4 text-green-500 shrink-0 mt-0.5" />
-                  <span>Keyboard navigation support</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="size-4 text-green-500 shrink-0 mt-0.5" />
-                  <span>RTL (Right-to-Left) support</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="size-4 text-green-500 shrink-0 mt-0.5" />
-                  <span>Theme-aware styling with CSS variables</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="size-4 text-green-500 shrink-0 mt-0.5" />
-                  <span>Aer glassmorphism variant</span>
-                </li>
+                {REQUIRED_FEATURES.map((feature, i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <CheckCircle2 className="size-4 text-green-500 shrink-0 mt-0.5" />
+                    <span>{feature}</span>
+                  </li>
+                ))}
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-2">🎯 Design Principles</h4>
               <ul className="space-y-2 text-sm text-aer-muted-foreground">
-                <li className="flex items-start gap-2">
-                  <span className="text-blue-500 shrink-0">•</span>
-                  <span>
-                    <strong>Weightless:</strong> Minimal runtime overhead
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-blue-500 shrink-0">•</span>
-                  <span>
-                    <strong>Composable:</strong> Small, focused components
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-blue-500 shrink-0">•</span>
-                  <span>
-                    <strong>Accessible:</strong> WCAG 2.1 AA compliant
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-blue-500 shrink-0">•</span>
-                  <span>
-                    <strong>Themable:</strong> CSS variable-based theming
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-blue-500 shrink-0">•</span>
-                  <span>
-                    <strong>Premium:</strong> Modern glassmorphism aesthetics
-                  </span>
-                </li>
+                {DESIGN_PRINCIPLES.map((principle, i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <span className="text-blue-500 shrink-0">•</span>
+                    <span>
+                      <strong>{principle.label}:</strong> {principle.value}
+                    </span>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
@@ -352,13 +245,12 @@ export function ContributingDoc() {
                 <Badge variant="soft" status="warning" size="sm">
                   Step 1
                 </Badge>
-                Sync Project Files
+                {CODE_PUSH_GUIDELINES.step1.title}
               </h4>
               <ul className="text-xs text-aer-muted-foreground space-y-1 list-disc pl-4">
-                <li>Update CHANGELOG.md (v0.x.x)</li>
-                <li>Update README.md features/tables</li>
-                <li>Update ROADMAP.md & RoadmapDoc.tsx</li>
-                <li>Update ContributingDoc.tsx if standards changed</li>
+                {CODE_PUSH_GUIDELINES.step1.items.map((item, i) => (
+                  <li key={i}>{item}</li>
+                ))}
               </ul>
             </div>
             <div className="space-y-2">
@@ -366,13 +258,12 @@ export function ContributingDoc() {
                 <Badge variant="soft" status="warning" size="sm">
                   Step 2
                 </Badge>
-                Audit Component Docs
+                {CODE_PUSH_GUIDELINES.step2.title}
               </h4>
               <ul className="text-xs text-aer-muted-foreground space-y-1 list-disc pl-4">
-                <li>Verify TOC matches section order</li>
-                <li>Check API table for all current props</li>
-                <li>Ensure fullCode contains all imports</li>
-                <li>Confirm Pro Tip is present for Aer Variant</li>
+                {CODE_PUSH_GUIDELINES.step2.items.map((item, i) => (
+                  <li key={i}>{item}</li>
+                ))}
               </ul>
             </div>
           </div>
