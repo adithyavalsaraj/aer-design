@@ -612,6 +612,7 @@
 - [ ] Create separate package for utilities only
 - [ ] Add CDN distribution
 - [ ] Create framework adapters (Vue, Svelte, Angular)
+- [ ] Implement Web Components wrapper for universal support
 
 ### Advanced Features
 

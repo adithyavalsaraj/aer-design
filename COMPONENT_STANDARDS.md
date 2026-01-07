@@ -82,27 +82,35 @@ How to extend the component, pass custom children, or utilize render props.
 </DocSection>
 ```
 
-#### 8. Interaction States
+#### 8. Framework Agnostic Design
+
+Avoid passing complex React Nodes as props where a simple string, number, or boolean would suffice. This ensures easier migration to other frameworks (Vue/Angular) via Web Components in the future.
+
+#### 9. Accessibility First
+
+Every interactive element must have proper ARIA attributes, keyboard support, and focus management.
+
+#### 10. Interaction States
 
 **Purpose:** Document interaction states.
 **Requirements:** Must visually demonstrate **Hover**, **Active**, **Disabled**, **Loading**, and **Focused** states using Tailwind modifiers.
 
-#### 9. Specialized Contexts
+#### 11. Specialized Contexts
 
 **Purpose:** Context-aware versions of the component.
 **Example:** How the component behaves differently in 'Debug Mode' vs. 'Writing Mode.'
 
-#### 10. Validation & Errors
+#### 12. Validation & Errors
 
 **Purpose:** Error handling and data constraints.
 **Requirements:** Show error rings, helper text, and `aria-invalid` implementation.
 
-#### 11. Granular Styling
+#### 13. Granular Styling
 
 **Purpose:** How to override internal slots.
 **Structure:** Explain the `classNames` or `styles` prop for targeting internal elements (e.g., root, label, icon).
 
-#### 12. Real World Example
+#### 14. Real World Example
 
 **Purpose:** A 30-60 line production-ready implementation (e.g., a complex IDE form or dashboard widget).
 

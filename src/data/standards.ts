@@ -67,6 +67,20 @@ export const DOC_STRUCTURE: DocSection[] = [
   - Component-specific use cases`,
   },
   {
+    title: "Framework Agnostic Design",
+    shortDesc: "Design for future framework migrations",
+    fullDesc:
+      "Avoid passing complex React Nodes as props where a simple string, number, or boolean would suffice. This ensures easier migration to other frameworks (Vue/Angular) via Web Components in the future.",
+    id: "framework-agnostic",
+  },
+  {
+    title: "Accessibility First",
+    shortDesc: "ARIA, keyboard, and focus management",
+    fullDesc:
+      "Every interactive element must have proper ARIA attributes, keyboard support, and focus management.",
+    id: "a11y",
+  },
+  {
     title: "Interaction States",
     id: "states",
     shortDesc: "Hover, focus, disabled, loading, etc.",
