@@ -703,13 +703,14 @@ Low Priority Missing: 20/{{TOTAL_STAT}} (32%)
 
 | Category | Completed | Missing | Total |
 | -------- | --------- | ------- | ----- |
-| **Form Controls** | 8 | 14 | 22 |
-| **Data Display** | 4 | 11 | 15 |
-| **Feedback** | 3 | 6 | 9 |
+| **Data Entry** | 7 | 15 | 22 |
+| **Data Display** | 4 | 12 | 16 |
 | **Navigation** | 3 | 5 | 8 |
+| **Feedback** | 3 | 5 | 8 |
 | **Layout** | 2 | 2 | 4 |
-| **Providers** | 2 | 0 | 2 |
-| **Utilities** | 1 | 1 | 2 |
+| **Configuration** | 2 | 0 | 2 |
+| **General** | 1 | 0 | 1 |
+| **Utilities** | 1 | 0 | 1 |
 
 ---
 

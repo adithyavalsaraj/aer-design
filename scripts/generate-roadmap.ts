@@ -292,7 +292,7 @@ function generateCompletedTable() {
   return ROADMAP_DATA.filter(
     (i) =>
       i.status === "Completed" &&
-      i.category !== "Providers" &&
+      i.category !== "Configuration" &&
       i.category !== "Utilities"
   )
     .map(
@@ -310,7 +310,7 @@ function generateCompletedTable() {
 
 function generateProviderTable() {
   return ROADMAP_DATA.filter(
-    (i) => i.status === "Completed" && i.category === "Providers"
+    (i) => i.status === "Completed" && i.category === "Configuration"
   )
     .map((i) => `| **${i.name}** | ${i.version} | ${i.description} |`)
     .join("\n");
@@ -380,11 +380,11 @@ const stats = getStats();
 const completedCount = ROADMAP_DATA.filter(
   (i) =>
     i.status === "Completed" &&
-    i.category !== "Providers" &&
+    i.category !== "Configuration" &&
     i.category !== "Utilities"
 ).length;
 const providerCount = ROADMAP_DATA.filter(
-  (i) => i.status === "Completed" && i.category === "Providers"
+  (i) => i.status === "Completed" && i.category === "Configuration"
 ).length;
 
 let content = HEADER.replace(

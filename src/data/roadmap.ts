@@ -5,12 +5,13 @@ export type RoadmapStatus =
   | "not-implemented";
 export type Priority = "High" | "Medium" | "Low";
 export type Category =
-  | "Form Controls"
-  | "Navigation"
-  | "Feedback"
-  | "Data Display"
+  | "General"
   | "Layout"
-  | "Providers"
+  | "Navigation"
+  | "Data Entry"
+  | "Data Display"
+  | "Feedback"
+  | "Configuration"
   | "Utilities";
 
 export interface ComponentSpec {
@@ -28,56 +29,56 @@ export const ROADMAP_DATA: ComponentSpec[] = [
   {
     name: "Button",
     version: "v0.1.0",
-    category: "Form Controls",
+    category: "General",
     status: "Completed",
     description: "Interactive button component",
   },
   {
     name: "Input",
     version: "v0.12.0",
-    category: "Form Controls",
+    category: "Data Entry",
     status: "Completed",
     description: "Enhanced text input",
   },
   {
     name: "Textarea",
     version: "v0.12.0",
-    category: "Form Controls",
+    category: "Data Entry",
     status: "Completed",
     description: "Auto-resizing text area",
   },
   {
     name: "Checkbox",
     version: "v0.12.0",
-    category: "Form Controls",
+    category: "Data Entry",
     status: "Completed",
     description: "Tri-state checkbox",
   },
   {
     name: "Radio",
     version: "v0.12.0",
-    category: "Form Controls",
+    category: "Data Entry",
     status: "Completed",
     description: "Radio button groups",
   },
   {
     name: "Dropdown",
     version: "v0.12.0",
-    category: "Form Controls",
+    category: "Data Entry",
     status: "Completed",
     description: "Advanced select menu",
   },
   {
     name: "Cascader",
     version: "v0.12.0",
-    category: "Form Controls",
+    category: "Data Entry",
     status: "Completed",
     description: "Cascading selection",
   },
   {
     name: "OtpInput",
     version: "v0.12.0",
-    category: "Form Controls",
+    category: "Data Entry",
     status: "Completed",
     description: "One-time password input",
   },
@@ -176,14 +177,14 @@ export const ROADMAP_DATA: ComponentSpec[] = [
   {
     name: "ThemeProvider",
     version: "v0.1.0",
-    category: "Providers",
+    category: "Configuration",
     status: "Completed",
     description: "Theme management",
   },
   {
     name: "AerConfigProvider",
     version: "v0.5.0",
-    category: "Providers",
+    category: "Configuration",
     status: "Completed",
     description: "Global configuration",
   },
@@ -212,7 +213,7 @@ export const ROADMAP_DATA: ComponentSpec[] = [
   },
   {
     name: "Popover",
-    category: "Feedback",
+    category: "Data Display",
     status: "Planned",
     priority: "High",
     description: "Rich popover with interactive content and auto-positioning",
@@ -241,7 +242,7 @@ export const ROADMAP_DATA: ComponentSpec[] = [
   },
   {
     name: "Autocomplete",
-    category: "Form Controls",
+    category: "Data Entry",
     status: "Planned",
     priority: "High",
     description: "Searchable input with suggestion list",
@@ -255,7 +256,7 @@ export const ROADMAP_DATA: ComponentSpec[] = [
   },
   {
     name: "Calendar",
-    category: "Form Controls",
+    category: "Data Entry",
     status: "Planned",
     priority: "High",
     description: "Comprehensive date and time selection system",
@@ -320,7 +321,7 @@ export const ROADMAP_DATA: ComponentSpec[] = [
   },
   {
     name: "Chips",
-    category: "Form Controls",
+    category: "Data Entry",
     status: "Planned",
     priority: "Medium",
     description: "Compact elements for input, attribute, or action",
@@ -334,7 +335,7 @@ export const ROADMAP_DATA: ComponentSpec[] = [
   },
   {
     name: "FAB",
-    category: "Form Controls",
+    category: "Data Entry",
     status: "Planned",
     priority: "Medium",
     description: "Primary action button for screen",
@@ -347,7 +348,7 @@ export const ROADMAP_DATA: ComponentSpec[] = [
   },
   {
     name: "SpeedDial",
-    category: "Form Controls",
+    category: "Data Entry",
     status: "Planned",
     priority: "Medium",
     description: "Floating button that expands into multiple actions",
@@ -415,7 +416,7 @@ export const ROADMAP_DATA: ComponentSpec[] = [
   },
   {
     name: "RichTextEditor",
-    category: "Form Controls",
+    category: "Data Entry",
     status: "Planned",
     priority: "Medium",
     description: "WYSIWYG editor for rich text content",
@@ -443,7 +444,7 @@ export const ROADMAP_DATA: ComponentSpec[] = [
   },
   {
     name: "FileUpload",
-    category: "Form Controls",
+    category: "Data Entry",
     status: "Planned",
     priority: "Medium",
     description: "File selection and upload interface",
@@ -457,7 +458,7 @@ export const ROADMAP_DATA: ComponentSpec[] = [
   },
   {
     name: "TreeSelect",
-    category: "Form Controls",
+    category: "Data Entry",
     status: "Planned",
     priority: "Medium",
     description: "Tree structure selection dropdown",
@@ -486,7 +487,7 @@ export const ROADMAP_DATA: ComponentSpec[] = [
   },
   {
     name: "Slider",
-    category: "Form Controls",
+    category: "Data Entry",
     status: "Planned",
     priority: "Low",
     description: "Range slider input",
@@ -500,7 +501,7 @@ export const ROADMAP_DATA: ComponentSpec[] = [
   },
   {
     name: "Switch",
-    category: "Form Controls",
+    category: "Data Entry",
     status: "Planned",
     priority: "Low",
     description: "Toggle switch",
@@ -582,7 +583,7 @@ export const ROADMAP_DATA: ComponentSpec[] = [
   },
   {
     name: "Rating",
-    category: "Form Controls",
+    category: "Data Entry",
     status: "Planned",
     priority: "Low",
     description: "Star/Icon rating input",
@@ -610,7 +611,7 @@ export const ROADMAP_DATA: ComponentSpec[] = [
   },
   {
     name: "Transfer",
-    category: "Data Display",
+    category: "Data Entry",
     status: "Planned",
     priority: "Low",
     description: "Double-list transfer interface",
@@ -686,7 +687,7 @@ export const ROADMAP_DATA: ComponentSpec[] = [
   },
   {
     name: "Watermark",
-    category: "Utilities",
+    category: "Data Display",
     status: "Planned",
     priority: "Low",
     description: "Security/Copyright overlays",
@@ -699,7 +700,7 @@ export const ROADMAP_DATA: ComponentSpec[] = [
   },
   {
     name: "ColorPicker",
-    category: "Form Controls",
+    category: "Data Entry",
     status: "Planned",
     priority: "Low",
     description: "Hex and Gradient color selection",
@@ -712,7 +713,7 @@ export const ROADMAP_DATA: ComponentSpec[] = [
   },
   {
     name: "Mentions",
-    category: "Form Controls",
+    category: "Data Entry",
     status: "Planned",
     priority: "Low",
     description: "Input with @mention support",
@@ -725,7 +726,7 @@ export const ROADMAP_DATA: ComponentSpec[] = [
   },
   {
     name: "SignaturePad",
-    category: "Form Controls",
+    category: "Data Entry",
     status: "Planned",
     priority: "Low",
     description: "Digital signature canvas",
@@ -752,12 +753,13 @@ export const getStats = () => {
 
 export const getCategoryStats = () => {
   const categories: Category[] = [
-    "Form Controls",
-    "Navigation",
-    "Feedback",
-    "Data Display",
+    "General",
     "Layout",
-    "Providers",
+    "Navigation",
+    "Data Entry",
+    "Data Display",
+    "Feedback",
+    "Configuration",
     "Utilities",
   ];
 
