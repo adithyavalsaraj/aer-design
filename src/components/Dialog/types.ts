@@ -23,6 +23,8 @@ export interface DialogProps {
   // Core
   isOpen: boolean;
   onClose: () => void;
+  title?: string; // For accessibility and taskbar
+  icon?: React.ReactNode; // For header and taskbar
 
   // Positioning (mutually exclusive with x,y)
   position?: DialogPosition;

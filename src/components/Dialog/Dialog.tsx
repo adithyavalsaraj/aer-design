@@ -58,6 +58,8 @@ export const Dialog = ({
   onMaximize,
   onMinimize,
   onRestore,
+  title,
+  icon,
 }: DialogProps) => {
   const dialogRef = useRef<HTMLDivElement>(null);
   const savedPositionBeforeMinMax = useRef<{ x: number; y: number } | null>(
@@ -180,6 +182,27 @@ export const Dialog = ({
     const z = dialogStackingManager.getZIndex(instanceIdStr);
     return z === -1 ? 50 : z;
   });
+
+  const [stackingMode, setStackingModeState] = React.useState(
+    dialogStackingManager.getStackingMode()
+  );
+
+  React.useEffect(() => {
+    const handleStackUpdate = () => {
+      setStackingModeState(dialogStackingManager.getStackingMode());
+    };
+    return dialogStackingManager.subscribe(handleStackUpdate);
+  }, []);
+
+  // Sync metadata for taskbar
+  React.useEffect(() => {
+    dialogStackingManager.updateMetadata(instanceIdStr, {
+      title,
+      icon,
+      onRestore: () => restore(),
+    });
+  }, [instanceIdStr, title, icon, restore]);
+
   const [windowWidth, setWindowWidth] = React.useState(
     typeof window !== "undefined" ? window.innerWidth : 1200
   );
@@ -372,6 +395,10 @@ export const Dialog = ({
 
     // Minimized state
     if (dialogState.isMinimized) {
+      if (stackingMode === "scroll") {
+        return { display: "none" };
+      }
+
       // Calculate wrapping
       const gap = 20;
       const width = 240;
@@ -435,7 +462,9 @@ export const Dialog = ({
       className={cn(
         "fixed inset-0 flex transition-all duration-200",
         dialogState.isMinimized
-          ? "items-end justify-start p-4 pointer-events-none"
+          ? stackingMode === "scroll"
+            ? "pointer-events-none opacity-0 invisible"
+            : "items-end justify-start p-4 pointer-events-none"
           : !dialogState.isMaximized && positionClasses[position],
         // Allow click-through when no backdrop is shown and not maximized
         !showBackdrop && !dialogState.isMaximized && "pointer-events-none",

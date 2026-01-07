@@ -4,7 +4,10 @@ import {
   DialogContent,
   DialogFooter,
   DialogHeader,
+  DialogTaskbar,
+  dialogStackingManager,
 } from "@/components/Dialog";
+import { cn } from "@/lib/utils";
 import {
   AlertTriangle,
   CheckCircle2,
@@ -22,7 +25,7 @@ export function DialogDoc() {
       <DocSection
         id="introduction"
         title="Introduction"
-        description="A feature-rich, highly customizable dialog/modal component."
+        description="A feature-rich, highly customizable dialog/modal component that functions as a Desktop-Class Window System. It features intelligent z-index stacking, viewport-aware auto-positioning, and a customizable minimized window taskbar with both grid (wrap) and scrollable modes."
       >
         <div className="prose prose-sm max-w-none">
           <p className="text-aer-muted-foreground">
@@ -639,76 +642,93 @@ export default function DialogSizes() {
         </div>
         <MinimizedStackingExample />
         <CodeBlock
-          ts={`// Open multiple dialogs
-// 1. Minimized dialogs stack at bottom-left
-// 2. Active dialogs jump to front on click
-<Dialog minimizable instanceId="d1" />
-<Dialog minimizable instanceId="d2" />`}
-          fullCode={`import { Dialog, DialogHeader, DialogContent, Button } from "aer-design";
-import { useState } from "react";
+          ts={`// 1. Mount the global Taskbar anywhere in your app (once)
+<DialogTaskbar />
 
-export default function MinimizedStacking() {
+// 2. Control stacking modes via the manager
+<button onClick={() => dialogStackingManager.setStackingMode("scroll")}>
+  Switch to Taskbar
+</button>
+
+// 3. Open windows with metadata
+<Dialog 
+  minimizable 
+  title="Project Explorer" 
+  icon={<Folder />} 
+/>`}
+          fullCode={`import { 
+  Dialog, 
+  DialogHeader, 
+  DialogContent, 
+  DialogTaskbar, 
+  dialogStackingManager, 
+  Button 
+} from "aer-design";
+import { Sparkles, LayoutGrid, Layers } from "lucide-react";
+import { useState, useEffect } from "react";
+
+export default function AdvancedWindowManager() {
   const [dialogs, setDialogs] = useState<number[]>([]);
+  const [mode, setMode] = useState(dialogStackingManager.getStackingMode());
+
+  // Synchronize local state with global manager
+  useEffect(() => {
+    return dialogStackingManager.subscribe(() => {
+      setMode(dialogStackingManager.getStackingMode());
+    });
+  }, []);
 
   const addDialog = () => {
     setDialogs(prev => [...prev, Date.now()]);
   };
 
-  const removeDialog = (id: number) => {
-    setDialogs(prev => prev.filter(d => d !== id));
-  };
-
-  // Intelligent cascading logic
-  const getCascadePosition = (index: number) => {
-    const step = 40;
-    const margin = 60;
-    const dialogWidth = 320;
-    const dialogHeight = 240;
-    
-    const usableWidth = window.innerWidth - dialogWidth - margin;
-    const usableHeight = window.innerHeight - dialogHeight - margin;
-    const itemsPerRow = Math.max(1, Math.floor(usableWidth / step));
-    const itemsPerCol = Math.max(1, Math.floor(usableHeight / step));
-    
-    const maxItems = itemsPerRow * itemsPerCol;
-    const localIndex = index % maxItems;
-    
-    return {
-      x: margin + (localIndex % itemsPerRow) * step,
-      y: margin + Math.floor(localIndex / itemsPerRow) * step
-    };
-  };
-
   return (
     <div className="space-y-4">
-      <Button onClick={addDialog}>Open New Window</Button>
-      
-      {dialogs.map((id, index) => {
-        const pos = getCascadePosition(index);
-        return (
-          <Dialog 
-            key={id}
-            isOpen={true}
-            onClose={() => removeDialog(id)}
-            minimizable
-            maximizable
-            draggable
-            resizable
-            showBackdrop={false}
-            x={pos.x}
-            y={pos.y}
-            className="w-80"
+      <div className="flex items-center gap-4 bg-aer-muted/5 p-4 rounded-lg border">
+        <div className="flex bg-aer-muted/10 p-1 rounded-md border">
+          <button 
+            onClick={() => dialogStackingManager.setStackingMode("wrap")}
+            className={\`px-3 py-1 text-xs rounded \${mode === 'wrap' ? 'bg-white shadow-sm' : ''}\`}
           >
-            <DialogHeader title={\`Window \${index + 1}\`} />
-            <DialogContent>
-              <p>I am dialog window #\${index + 1}.</p>
-              <p className="text-sm text-aer-muted-foreground mt-2 font-medium">
-                Try dragging, resizing, or minimizing me to the taskbar!
-              </p>
-            </DialogContent>
-          </Dialog>
-        );
-      })}
+            Wrap Grid
+          </button>
+          <button 
+            onClick={() => dialogStackingManager.setStackingMode("scroll")}
+            className={\`px-3 py-1 text-xs rounded \${mode === 'scroll' ? 'bg-white shadow-sm' : ''}\`}
+          >
+            Scroll Taskbar
+          </button>
+        </div>
+        <Button onClick={addDialog} size="sm">Open Window</Button>
+      </div>
+
+      {/* Renders all minimized windows in "scroll" mode */}
+      <DialogTaskbar />
+      
+      {dialogs.map((id, index) => (
+        <Dialog 
+          key={id}
+          isOpen={true}
+          title={\`Window \${index + 1}\`}
+          icon={<Sparkles className="w-4 h-4" />}
+          minimizable
+          maximizable
+          draggable
+          resizable
+          showBackdrop={false}
+          className="w-80"
+          x={60 + (index % 5) * 40}
+          y={60 + Math.floor(index / 5) * 40}
+        >
+          <DialogHeader title={\`System Window \${index + 1}\`} />
+          <DialogContent>
+            <p>I am part of a desktop-class window system.</p>
+            <p className="text-sm mt-2 text-aer-muted-foreground">
+              Minimize me to see me in the <strong>{mode}</strong> stack!
+            </p>
+          </DialogContent>
+        </Dialog>
+      ))}
     </div>
   );
 }`}
@@ -1511,6 +1531,16 @@ export default function UserProfileDialog() {
 
   function MinimizedStackingExample() {
     const [dialogs, setDialogs] = React.useState<number[]>([]);
+    const [mode, setMode] = React.useState<"wrap" | "scroll">(
+      dialogStackingManager.getStackingMode()
+    );
+
+    React.useEffect(() => {
+      const handleUpdate = () => {
+        setMode(dialogStackingManager.getStackingMode());
+      };
+      return dialogStackingManager.subscribe(handleUpdate);
+    }, []);
 
     const addDialog = () => {
       setDialogs((prev) => [...prev, Date.now()]);
@@ -1559,10 +1589,37 @@ export default function UserProfileDialog() {
               remain within viewport bounds.
             </p>
           </div>
-          <Button onClick={addDialog} size="sm">
-            Open New Dialog
-          </Button>
+          <div className="flex items-center gap-2">
+            <div className="flex items-center p-1 bg-aer-muted/10 rounded-lg mr-4 border border-aer-border">
+              <button
+                onClick={() => dialogStackingManager.setStackingMode("wrap")}
+                className={cn(
+                  "px-3 py-1 text-xs font-medium rounded-md transition-all",
+                  mode === "wrap"
+                    ? "bg-white shadow-sm text-aer-foreground border border-aer-border"
+                    : "text-aer-muted-foreground hover:text-aer-foreground"
+                )}
+              >
+                Wrap Grid
+              </button>
+              <button
+                onClick={() => dialogStackingManager.setStackingMode("scroll")}
+                className={cn(
+                  "px-3 py-1 text-xs font-medium rounded-md transition-all",
+                  mode === "scroll"
+                    ? "bg-white shadow-sm text-aer-foreground border border-aer-border"
+                    : "text-aer-muted-foreground hover:text-aer-foreground"
+                )}
+              >
+                Scroll Taskbar
+              </button>
+            </div>
+            <Button onClick={addDialog} size="sm">
+              Open New Dialog
+            </Button>
+          </div>
         </div>
+        <DialogTaskbar />
 
         <div className="flex gap-2 flex-wrap">
           {dialogs.length === 0 && (
@@ -1587,6 +1644,8 @@ export default function UserProfileDialog() {
               key={id}
               isOpen={true}
               onClose={() => removeDialog(id)}
+              title={`Demo Window ${index + 1}`}
+              icon={<Sparkles className="w-4 h-4" />}
               minimizable
               maximizable
               draggable
@@ -1818,14 +1877,29 @@ export default function UserProfileDialog() {
             {
               prop: "isOpen",
               type: "boolean",
-              default: "-",
-              description: "Controls the visibility of the dialog. Required.",
+              default: "false",
+              description: "Whether the dialog is currently visible.",
             },
             {
               prop: "onClose",
               type: "() => void",
               default: "-",
-              description: "Callback when dialog should close. Required.",
+              description:
+                "Callback function called when the dialog requests to close.",
+            },
+            {
+              prop: "title",
+              type: "string",
+              default: "-",
+              description:
+                "Top-level title for the dialog. Used for the default header and to identify the window in the Taskbar.",
+            },
+            {
+              prop: "icon",
+              type: "ReactNode",
+              default: "-",
+              description:
+                "Icon associated with the dialog. Displayed in the default header and the Taskbar.",
             },
             {
               prop: "position",
@@ -2207,6 +2281,26 @@ export default function UserProfileDialog() {
               type: "string",
               default: "-",
               description: "Additional CSS classes for footer.",
+            },
+          ]}
+        />
+
+        <h3 id="dialog-taskbar-props" className="text-lg font-bold mt-12 mb-4">
+          DialogTaskbar
+        </h3>
+        <p className="text-sm text-aer-muted-foreground mb-4">
+          A standalone component that renders a horizontal, scrollable dock for
+          all minimized dialogs. It automatically handles mode switching and
+          registration via the <code>dialogStackingManager</code>.
+        </p>
+        <ApiTable
+          data={[
+            {
+              prop: "-",
+              type: "-",
+              default: "-",
+              description:
+                "Currently accepts no props. Automatically interacts with the global stacking manager.",
             },
           ]}
         />

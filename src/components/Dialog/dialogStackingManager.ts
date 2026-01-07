@@ -7,26 +7,57 @@ class DialogStackingManager {
   // Minimized ids subset (for calculating horizontal offset)
   private minimizedIds: string[] = [];
 
+  // Configuration
+  private stackingMode: "wrap" | "scroll" = "wrap";
+
+  // Metadata for taskbar display
+  private metadata: Map<
+    string,
+    { title?: string; icon?: any; onRestore?: () => void }
+  > = new Map();
+
   subscribe(listener: () => void) {
     this.listeners.add(listener);
-    return () => this.listeners.delete(listener);
+    return () => {
+      this.listeners.delete(listener);
+    };
   }
 
   notify() {
     this.listeners.forEach((l) => l());
   }
 
+  setStackingMode(mode: "wrap" | "scroll") {
+    if (this.stackingMode !== mode) {
+      this.stackingMode = mode;
+      this.notify();
+    }
+  }
+
+  getStackingMode() {
+    return this.stackingMode;
+  }
+
+  updateMetadata(
+    id: string,
+    data: { title?: string; icon?: any; onRestore?: () => void }
+  ) {
+    this.metadata.set(id, { ...this.metadata.get(id), ...data });
+    this.notify();
+  }
+
+  getMetadata(id: string) {
+    return this.metadata.get(id);
+  }
+
   // Register a new dialog instance or bring it to front
   bringToFront(id: string) {
     const currentIdx = this.stack.indexOf(id);
-    // If already at the top and stack is not empty, no need to notify
     if (currentIdx === this.stack.length - 1 && this.stack.length > 0) {
       return;
     }
 
-    // Remove if exists
     this.stack = this.stack.filter((i) => i !== id);
-    // Push to end (top)
     this.stack.push(id);
     this.notify();
   }
@@ -35,6 +66,7 @@ class DialogStackingManager {
     if (!this.stack.includes(id) && !this.minimizedIds.includes(id)) return;
     this.stack = this.stack.filter((i) => i !== id);
     this.minimizedIds = this.minimizedIds.filter((i) => i !== id);
+    this.metadata.delete(id);
     this.notify();
   }
 
@@ -61,6 +93,10 @@ class DialogStackingManager {
 
   getMinimizedIndex(id: string) {
     return this.minimizedIds.indexOf(id);
+  }
+
+  getMinimizedIds() {
+    return [...this.minimizedIds];
   }
 }
 
