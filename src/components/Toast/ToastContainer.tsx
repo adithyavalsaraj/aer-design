@@ -43,7 +43,7 @@ export const ToastContainer: React.FC<ToastContainerProps> = ({
   }, {} as Record<string, ToastProps[]>);
 
   return createPortal(
-    <div className="fixed inset-0 z-[9999] pointer-events-none overflow-hidden flex flex-col justify-between">
+    <div className="fixed inset-0 z-9999 pointer-events-none overflow-hidden flex flex-col justify-between">
       {/* Render 9 Layout Areas */}
       {POSITIONS.map((pos) => {
         const items = groupedToasts[pos] || [];

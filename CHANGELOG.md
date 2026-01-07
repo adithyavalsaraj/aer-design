@@ -2,6 +2,18 @@
 
 All notable changes to the Aer Design project will be documented in this file.
 
+## [v0.13.0] - 2026-01-08
+
+### New Features
+
+- **Desktop-Class Window System**
+  - **Taskbar Stacking**: Minimized dialogs automatically arrange at the bottom-left with multi-row wrapping.
+  - **Global Z-Order**: Interacting with any window automatically brings it to the front of the stack.
+  - **Viewport Safety**: Intelligent cascading and auto-clamping ensure windows stay visible on all screen sizes.
+  - **Non-Blocking Overlays**: Support for multi-window workflows with interactive backdrops.
+- **Granular Styling** - Access to every internal layer via specialized class names.
+- **State Memory**: Dialogs remember their precise size and position before being minimized, restoring seamlessly when reactivated.
+
 ## [v0.12.0] - 2026-01-07
 
 ### Documentation Remediation

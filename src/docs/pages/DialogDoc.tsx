@@ -45,6 +45,11 @@ export function DialogDoc() {
               dialog to bottom-left, hides backdrop, and allows page interaction
             </li>
             <li>
+              <strong>Advanced Window Management</strong> - Taskbar-style
+              stacking with multi-row wrapping and global z-index management for
+              a true desktop experience.
+            </li>
+            <li>
               <strong>4 variants</strong> including glassmorphism
             </li>
             <li>
@@ -591,6 +596,120 @@ export default function DialogSizes() {
         <DialogContent>Takes entire viewport</DialogContent>
       </Dialog>
     </>
+  );
+}`}
+        />
+      </DocSection>
+
+      <DocSection
+        id="minimized-stacking"
+        title="Advanced Window Management"
+        description="Desktop-class window capabilities including taskbar stacking and z-index management."
+      >
+        <div className="prose prose-sm max-w-none mb-6">
+          <p className="text-aer-muted-foreground">
+            Aer Design Dialogs behave like OS-level windows. They feature an
+            intelligent layout engine that manages:
+          </p>
+          <ul className="list-disc pl-6 space-y-2 text-aer-muted-foreground">
+            <li>
+              <strong>Taskbar Stacking:</strong> Minimized dialogs automatically
+              stack at the bottom-left of the viewport. If the taskbar fills up,
+              windows intelligently <strong>wrap into multiple rows</strong>{" "}
+              stacking upwards.
+            </li>
+            <li>
+              <strong>Intelligent Layout:</strong> Newly opened windows use a
+              dynamic cascading algorithm to fill available screen space, and
+              are automatically <strong>rescued</strong> (clamped) to stay
+              within viewport bounds on resize.
+            </li>
+            <li>
+              <strong>Global Z-Order:</strong> The{" "}
+              <code>DialogStackingManager</code> tracks interactions. Clicking,
+              dragging, or maximizing any dialog automatically brings it to the
+              front of the visual stack.
+            </li>
+            <li>
+              <strong>State Memory:</strong> Dialogs remember their size and
+              position before minimization, ensuring a seamless restore
+              animation.
+            </li>
+          </ul>
+        </div>
+        <MinimizedStackingExample />
+        <CodeBlock
+          ts={`// Open multiple dialogs
+// 1. Minimized dialogs stack at bottom-left
+// 2. Active dialogs jump to front on click
+<Dialog minimizable instanceId="d1" />
+<Dialog minimizable instanceId="d2" />`}
+          fullCode={`import { Dialog, DialogHeader, DialogContent, Button } from "aer-design";
+import { useState } from "react";
+
+export default function MinimizedStacking() {
+  const [dialogs, setDialogs] = useState<number[]>([]);
+
+  const addDialog = () => {
+    setDialogs(prev => [...prev, Date.now()]);
+  };
+
+  const removeDialog = (id: number) => {
+    setDialogs(prev => prev.filter(d => d !== id));
+  };
+
+  // Intelligent cascading logic
+  const getCascadePosition = (index: number) => {
+    const step = 40;
+    const margin = 60;
+    const dialogWidth = 320;
+    const dialogHeight = 240;
+    
+    const usableWidth = window.innerWidth - dialogWidth - margin;
+    const usableHeight = window.innerHeight - dialogHeight - margin;
+    const itemsPerRow = Math.max(1, Math.floor(usableWidth / step));
+    const itemsPerCol = Math.max(1, Math.floor(usableHeight / step));
+    
+    const maxItems = itemsPerRow * itemsPerCol;
+    const localIndex = index % maxItems;
+    
+    return {
+      x: margin + (localIndex % itemsPerRow) * step,
+      y: margin + Math.floor(localIndex / itemsPerRow) * step
+    };
+  };
+
+  return (
+    <div className="space-y-4">
+      <Button onClick={addDialog}>Open New Window</Button>
+      
+      {dialogs.map((id, index) => {
+        const pos = getCascadePosition(index);
+        return (
+          <Dialog 
+            key={id}
+            isOpen={true}
+            onClose={() => removeDialog(id)}
+            minimizable
+            maximizable
+            draggable
+            resizable
+            showBackdrop={false}
+            x={pos.x}
+            y={pos.y}
+            className="w-80"
+          >
+            <DialogHeader title={\`Window \${index + 1}\`} />
+            <DialogContent>
+              <p>I am dialog window #\${index + 1}.</p>
+              <p className="text-sm text-aer-muted-foreground mt-2 font-medium">
+                Try dragging, resizing, or minimizing me to the taskbar!
+              </p>
+            </DialogContent>
+          </Dialog>
+        );
+      })}
+    </div>
   );
 }`}
         />
@@ -1390,6 +1509,111 @@ export default function UserProfileDialog() {
     );
   }
 
+  function MinimizedStackingExample() {
+    const [dialogs, setDialogs] = React.useState<number[]>([]);
+
+    const addDialog = () => {
+      setDialogs((prev) => [...prev, Date.now()]);
+    };
+
+    const removeDialog = (id: number) => {
+      setDialogs((prev) => prev.filter((d) => d !== id));
+    };
+
+    const getCascadePosition = (index: number) => {
+      if (typeof window === "undefined") return { x: 100, y: 100 };
+
+      const step = 40;
+      const margin = 60; // Start margin
+      const dialogWidth = 320; // Width of w-80
+      const dialogHeight = 240; // Estimated height
+
+      const usableWidth = window.innerWidth - dialogWidth - margin;
+      const usableHeight = window.innerHeight - dialogHeight - margin;
+
+      const itemsPerRow = Math.max(1, Math.floor(usableWidth / step));
+      const itemsPerCol = Math.max(1, Math.floor(usableHeight / step));
+
+      // Total items before we strictly MUST wrap
+      const maxItems = itemsPerRow * itemsPerCol;
+      const localIndex = index % maxItems;
+
+      const col = localIndex % itemsPerRow;
+      const row = Math.floor(localIndex / itemsPerRow);
+
+      return {
+        x: margin + col * step,
+        y: margin + row * step,
+      };
+    };
+
+    return (
+      <div className="space-y-4 p-6 border border-aer-border rounded-lg bg-aer-muted/5">
+        <div className="flex items-center justify-between">
+          <div>
+            <h4 className="text-sm font-semibold mb-1">
+              Window Management Demo
+            </h4>
+            <p className="text-sm text-aer-muted-foreground">
+              Open multiple dialogs. Windows will cascade intelligently and
+              remain within viewport bounds.
+            </p>
+          </div>
+          <Button onClick={addDialog} size="sm">
+            Open New Dialog
+          </Button>
+        </div>
+
+        <div className="flex gap-2 flex-wrap">
+          {dialogs.length === 0 && (
+            <p className="text-xs text-aer-muted-foreground italic w-full text-center py-4">
+              No active dialogs. Click "Open New Dialog" to start.
+            </p>
+          )}
+          {dialogs.map((id, index) => (
+            <div
+              key={id}
+              className="text-xs border px-2 py-1 rounded bg-aer-muted/20"
+            >
+              Dialog #{index + 1} (Active)
+            </div>
+          ))}
+        </div>
+
+        {dialogs.map((id, index) => {
+          const pos = getCascadePosition(index);
+          return (
+            <Dialog
+              key={id}
+              isOpen={true}
+              onClose={() => removeDialog(id)}
+              minimizable
+              maximizable
+              draggable
+              resizable
+              position="center"
+              x={pos.x}
+              y={pos.y}
+              className="w-80"
+              showBackdrop={false} // Disable backdrop for multi-window demo
+            >
+              <DialogHeader title={`Dialog ${index + 1}`} />
+              <DialogContent>
+                <p className="text-sm text-aer-muted-foreground mb-4">
+                  I am dialog window #{index + 1}.
+                </p>
+                <p className="text-xs">
+                  Click the <strong>_</strong> button in the header to minimize
+                  me.
+                </p>
+              </DialogContent>
+            </Dialog>
+          );
+        })}
+      </div>
+    );
+  }
+
   function CustomUsageExample() {
     const [isOpen, setIsOpen] = React.useState(false);
 
@@ -1608,7 +1832,7 @@ export default function UserProfileDialog() {
               type: '"center" | "top" | "bottom" | "left" | "right" | "top-left" | "top-right" | "bottom-left" | "bottom-right"',
               default: '"center"',
               description:
-                "Preset position for the dialog. Cannot be used with x,y props.",
+                "Preset position for the dialog. Cannot be used with x,y props. Automatically clamps to viewport safety bounds on resize.",
             },
             {
               prop: "x",
@@ -1672,7 +1896,8 @@ export default function UserProfileDialog() {
               prop: "showBackdrop",
               type: "boolean",
               default: "true",
-              description: "Show backdrop overlay.",
+              description:
+                "Show backdrop overlay. When false, the overlay uses 'pointer-events-none' to allow interacting with content behind the dialog (optimized for multi-window setups).",
             },
             {
               prop: "backdropBlur",
@@ -1685,26 +1910,28 @@ export default function UserProfileDialog() {
               type: "boolean",
               default: "false",
               description:
-                "Enable dragging by header. Disabled when maximized.",
+                "Enable dragging by header. Disabled when maximized. Interacting with the header automatically brings the dialog to the front of the visual stack.",
             },
             {
               prop: "resizable",
               type: "boolean",
               default: "false",
-              description: "Enable resize handles. Disabled when maximized.",
+              description:
+                "Enable resize handles. Disabled when maximized. Resizing automatically brings the dialog to the front.",
             },
             {
               prop: "maximizable",
               type: "boolean",
               default: "false",
-              description: "Show maximize button in header.",
+              description:
+                "Show maximize button in header. Maximizing automatically brings the window to the front.",
             },
             {
               prop: "minimizable",
               type: "boolean",
               default: "false",
               description:
-                "Show minimize button in header. When minimized: dialog moves to bottom-left (256px width), hides backdrop, unlocks page scroll, allows page interaction, and remembers position. Click header to restore to original position.",
+                "Show minimize button in header. When minimized: dialog moves to bottom-left, hides backdrop, and enables click-through on the overlay area while remaining interactive itself. Features multi-row wrapping for many windows.",
             },
             {
               prop: "defaultMaximized",
@@ -2232,6 +2459,7 @@ export default function CustomStyledDialog() {
               { id: "draggable", title: "Draggable Dialog" },
               { id: "resizable", title: "Resizable Dialog" },
               { id: "maximize-minimize", title: "Maximize & Minimize" },
+              { id: "minimized-stacking", title: "Advanced Window Management" },
               { id: "sizes", title: "Dialog Sizes" },
               { id: "close-mechanisms", title: "Close Mechanisms" },
               { id: "states", title: "Interaction States" },

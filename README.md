@@ -66,26 +66,26 @@ export function LoginForm() {
 
 ## Components
 
-| Component     | Description                                                                            |
-| :------------ | :------------------------------------------------------------------------------------- |
-| **Button**    | Highly interactive buttons with variants (primary, outline, ghost) and loading states. |
-| **Avatar**    | User/Entity representation with fallbacks, status indicators, and grouping.            |
-| **Input**     | Enhanced text inputs with label positioning, icons, masking, and validation.           |
-| **Dropdown**  | Virtualized select menus with search, multi-select, grouping, and auto-positioning.    |
-| **Menu**      | Context menus with 360° auto-positioning, nested submenus, and keyboard navigation.    |
-| **Checkbox**  | Tri-state checkboxes with rich layout options (card mode, descriptions).               |
-| **Radio**     | Radio groups for single-selection, supporting card layouts.                            |
-| **Sidebar**   | Responsive, collapsible navigation sidebar with overlay and rail modes.                |
-| **Navbar**    | Adaptive top navigation bar with branding and actions.                                 |
-| **Textarea**  | Auto-resizing text areas with character counts and label positioning.                  |
-| **OTP Input** | Secure and accessible one-time password inputs.                                        |
-| **Dialog**    | Advanced window system with drag, resize, and minimize/maximize capabilities.          |
-| **Badge**     | Compact and semantic status indicators with glassmorphism support.                     |
-| **Card**      | Flexible content containers with premium Aer depth and hover effects.                  |
-| **Tabs**      | Responsive tab system with lazy loading and automatic scroll navigation.               |
-| **Toast**     | Non-blocking notifications with swipe gestures, stacking, and 9 positioning zones.     |
-| **Divider**   | A visual separator to group content or define sections.                                |
-| **Skeleton**  | Placeholder loading states for content, improving perceived performance.               |
+| Component     | Description                                                                                         |
+| :------------ | :-------------------------------------------------------------------------------------------------- |
+| **Button**    | Highly interactive buttons with variants (primary, outline, ghost) and loading states.              |
+| **Avatar**    | User/Entity representation with fallbacks, status indicators, and grouping.                         |
+| **Input**     | Enhanced text inputs with label positioning, icons, masking, and validation.                        |
+| **Dropdown**  | Virtualized select menus with search, multi-select, grouping, and auto-positioning.                 |
+| **Menu**      | Context menus with 360° auto-positioning, nested submenus, and keyboard navigation.                 |
+| **Checkbox**  | Tri-state checkboxes with rich layout options (card mode, descriptions).                            |
+| **Radio**     | Radio groups for single-selection, supporting card layouts.                                         |
+| **Sidebar**   | Responsive, collapsible navigation sidebar with overlay and rail modes.                             |
+| **Navbar**    | Adaptive top navigation bar with branding and actions.                                              |
+| **Textarea**  | Auto-resizing text areas with character counts and label positioning.                               |
+| **OTP Input** | Secure and accessible one-time password inputs.                                                     |
+| **Dialog**    | **Desktop-class** window system with drag, resize, taskbar stacking, and active Z-index management. |
+| **Badge**     | Compact and semantic status indicators with glassmorphism support.                                  |
+| **Card**      | Flexible content containers with premium Aer depth and hover effects.                               |
+| **Tabs**      | Responsive tab system with lazy loading and automatic scroll navigation.                            |
+| **Toast**     | Non-blocking notifications with swipe gestures, stacking, and 9 positioning zones.                  |
+| **Divider**   | A visual separator to group content or define sections.                                             |
+| **Skeleton**  | Placeholder loading states for content, improving perceived performance.                            |
 
 ## Utilities
 
@@ -162,6 +162,17 @@ function Tooltip({ content, children }) {
   );
 }
 ```
+
+### Desktop-Class Window System
+
+Aer Design's Dialog component isn't just a modal—it's a full-**Desktop-Class Window System**.
+
+- **Taskbar Stacking**: Minimized dialogs automatically arrange at the bottom-left with multi-row wrapping.
+- **Global Z-Order**: Interacting with any window automatically brings it to the front of the stack.
+- **Viewport Safety**: Intelligent cascading and auto-clamping ensure windows stay visible on all screen sizes.
+- **Non-Blocking Overlays**: Support for multi-window workflows with interactive backdrops.
+- **Granular Styling**: Access to every internal layer via specialized class names.
+- **State Persistence**: Remembers position and size when toggling between maximized and restored states.
 
 ### Auto-Positioning
 

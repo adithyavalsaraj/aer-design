@@ -7,10 +7,13 @@ import { DialogContent } from "./DialogContent";
 import { DialogContext } from "./DialogContext";
 import { DialogFooter } from "./DialogFooter";
 import { DialogHeader } from "./DialogHeader";
+import { dialogStackingManager } from "./dialogStackingManager";
 import type { DialogProps } from "./types";
 import { useDialog } from "./useDialog";
 import { useDraggable } from "./useDraggable";
 import { useResizable } from "./useResizable";
+
+let dialogCounter = 0;
 
 export const Dialog = ({
   isOpen,
@@ -60,8 +63,12 @@ export const Dialog = ({
   const savedPositionBeforeMinMax = useRef<{ x: number; y: number } | null>(
     null
   );
-  // Use timestamp as unique instance ID for z-index stacking
-  const instanceId = useRef(Date.now());
+  // Use a global counter for unique instance ID to prevent collisions during rapid creation
+  const instanceId = useRef<string>(null!);
+  if (!instanceId.current) {
+    instanceId.current = `dialog-${++dialogCounter}`;
+  }
+  const instanceIdStr = instanceId.current;
 
   // Validate positioning
   useEffect(() => {
@@ -135,6 +142,146 @@ export const Dialog = ({
     dragPosition,
     setPosition,
   ]);
+
+  // Sync initial position from props with viewport safety
+  React.useEffect(() => {
+    if (isOpen && x !== undefined && y !== undefined) {
+      const winWidth = typeof window !== "undefined" ? window.innerWidth : 1200;
+      const winHeight =
+        typeof window !== "undefined" ? window.innerHeight : 800;
+
+      // Get actual dialog dimensions if available
+      let dialogWidth = 400; // Default estimate
+      let dialogHeight = 300; // Default estimate
+
+      if (dialogRef.current) {
+        const rect = dialogRef.current.getBoundingClientRect();
+        if (rect.width > 0) dialogWidth = rect.width;
+        if (rect.height > 0) dialogHeight = rect.height;
+      }
+
+      // Ensure all four sides stay within the viewport with a 20px margin
+      const maxX = Math.max(0, winWidth - dialogWidth - 20);
+      const maxY = Math.max(0, winHeight - dialogHeight - 20);
+
+      const safeX = Math.max(20, Math.min(Number(x), maxX));
+      const safeY = Math.max(20, Math.min(Number(y), maxY));
+
+      setPosition({ x: safeX, y: safeY });
+    }
+  }, [isOpen, x, y, setPosition]);
+
+  // Stacking Logic
+  const [minimizedIndex, setMinimizedIndex] = React.useState(() => {
+    const idx = dialogStackingManager.getMinimizedIndex(instanceIdStr);
+    return idx;
+  });
+  const [zIndex, setZIndex] = React.useState(() => {
+    const z = dialogStackingManager.getZIndex(instanceIdStr);
+    return z === -1 ? 50 : z;
+  });
+  const [windowWidth, setWindowWidth] = React.useState(
+    typeof window !== "undefined" ? window.innerWidth : 1200
+  );
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+
+      if (isOpen && !dialogState.isMaximized && !dialogState.isMinimized) {
+        if (!dialogRef.current) return;
+
+        const rect = dialogRef.current.getBoundingClientRect();
+        const dialogWidth = rect.width;
+        const dialogHeight = rect.height;
+
+        // Determine if we are currently using fixed dragPosition or CSS centering
+        const isUsingDragPos = dragPosition.x !== 0 || dragPosition.y !== 0;
+
+        // Calculate limits for the top-left corner
+        const maxX = Math.max(20, window.innerWidth - dialogWidth - 20);
+        const maxY = Math.max(20, window.innerHeight - dialogHeight - 20);
+
+        if (isUsingDragPos) {
+          // Case 1: Already using fixed positioning. Clamp it.
+          const safeX = Math.max(20, Math.min(dragPosition.x, maxX));
+          const safeY = Math.max(20, Math.min(dragPosition.y, maxY));
+
+          if (safeX !== dragPosition.x || safeY !== dragPosition.y) {
+            setPosition({ x: safeX, y: safeY });
+          }
+        } else {
+          // Case 2: Centered via CSS (0,0). Rescue only if it actually hits an edge.
+          const isOffLeft = rect.left < 20;
+          const isOffTop = rect.top < 20;
+          const isOffRight = rect.right > window.innerWidth - 20;
+          const isOffBottom = rect.bottom > window.innerHeight - 20;
+
+          if (isOffLeft || isOffTop || isOffRight || isOffBottom) {
+            const rescueX = Math.max(20, Math.min(rect.left, maxX));
+            const rescueY = Math.max(20, Math.min(rect.top, maxY));
+            setPosition({ x: rescueX, y: rescueY });
+          }
+        }
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [
+    isOpen,
+    dialogState.isMaximized,
+    dialogState.isMinimized,
+    dragPosition,
+    setPosition,
+  ]);
+
+  // Bring to front on interaction or maximize
+  const bringToFront = () => {
+    dialogStackingManager.bringToFront(instanceIdStr);
+  };
+
+  // Handle overall lifecycle registration
+  React.useEffect(() => {
+    if (isOpen) {
+      dialogStackingManager.bringToFront(instanceIdStr);
+    }
+    return () => {
+      dialogStackingManager.remove(instanceIdStr);
+    };
+  }, [isOpen, instanceIdStr]);
+
+  // Handle maximized elevation
+  React.useEffect(() => {
+    if (dialogState.isMaximized) {
+      dialogStackingManager.bringToFront(instanceIdStr);
+    }
+  }, [dialogState.isMaximized, instanceIdStr]);
+
+  // Handle minimized registration
+  React.useEffect(() => {
+    if (dialogState.isMinimized) {
+      dialogStackingManager.addMinimized(instanceIdStr);
+    } else {
+      dialogStackingManager.removeMinimized(instanceIdStr);
+    }
+  }, [dialogState.isMinimized, instanceIdStr]);
+
+  // Stacking Subscription
+  React.useEffect(() => {
+    const handleUpdate = () => {
+      const idx = dialogStackingManager.getMinimizedIndex(instanceIdStr);
+      const z = dialogStackingManager.getZIndex(instanceIdStr);
+      setMinimizedIndex(idx);
+      setZIndex(z);
+    };
+
+    const unsubscribe = dialogStackingManager.subscribe(handleUpdate);
+    handleUpdate();
+
+    return () => {
+      unsubscribe();
+    };
+  }, [instanceIdStr]);
 
   // Auto Contrast Logic
   const { autoContrast } = useAerConfig();
@@ -225,10 +372,33 @@ export const Dialog = ({
 
     // Minimized state
     if (dialogState.isMinimized) {
+      // Calculate wrapping
+      const gap = 20;
+      const width = 240;
+      const totalWidth = width + gap;
+      // How many fit in one row? (Available width - margin) / item width
+      // We assume left margin 20px.
+      const maxPerRow = Math.max(
+        1,
+        Math.floor((windowWidth - 40) / totalWidth)
+      );
+
+      const row = Math.floor(minimizedIndex / maxPerRow);
+      const col = minimizedIndex % maxPerRow;
+
+      // Stack upwards from bottom: 20px (base) + row * (60px height + 10px gap)
+      const bottomOffset = 20 + row * 70;
+      const leftOffset = 20 + col * totalWidth;
+
       return {
         height: "auto",
         maxHeight: "60px",
         overflow: "hidden",
+        width: `${width}px`, // Fixed width for minimized tabs
+        left: minimizedIndex >= 0 ? `${leftOffset}px` : "20px",
+        bottom: `${bottomOffset}px`,
+        position: "fixed",
+        margin: 0,
       };
     }
 
@@ -242,13 +412,14 @@ export const Dialog = ({
     }
 
     // Custom position or dragged position
-    if (draggable && (dragPosition.x !== 0 || dragPosition.y !== 0)) {
+    if (dragPosition.x !== 0 || dragPosition.y !== 0) {
       styles.position = "fixed";
       styles.left = dragPosition.x;
       styles.top = dragPosition.y;
       styles.transform = "none";
       styles.margin = 0;
     } else if (x !== undefined && y !== undefined && position === "center") {
+      // Fallback for first render before effect kicks in
       styles.position = "fixed";
       styles.left = x;
       styles.top = y;
@@ -262,24 +433,25 @@ export const Dialog = ({
   const dialogContent = (
     <div
       className={cn(
-        "fixed inset-0 z-50 flex",
+        "fixed inset-0 flex transition-all duration-200",
         dialogState.isMinimized
           ? "items-end justify-start p-4 pointer-events-none"
           : !dialogState.isMaximized && positionClasses[position],
+        // Allow click-through when no backdrop is shown and not maximized
+        !showBackdrop && !dialogState.isMaximized && "pointer-events-none",
         overlayClassName
       )}
       style={{
+        zIndex,
         animation: `fadeIn ${animationDuration}ms ease-out`,
-        ...(dialogState.isMinimized && {
-          zIndex: 50 + (instanceId.current % 100),
-        }),
       }}
+      onMouseDownCapture={bringToFront}
     >
       {/* Backdrop - hidden when minimized */}
       {showBackdrop && !dialogState.isMinimized && (
         <div
           className={cn(
-            "absolute inset-0 bg-black/50",
+            "absolute inset-0 bg-black/50 pointer-events-auto",
             backdropBlurClasses[backdropBlur],
             backdropClassName
           )}
@@ -296,7 +468,7 @@ export const Dialog = ({
         aria-label={ariaLabel}
         aria-describedby={ariaDescribedBy}
         className={cn(
-          "relative z-10 flex flex-col max-h-[90vh] max-w-[95vw] overflow-hidden",
+          "relative z-10 flex flex-col max-h-[90vh] max-w-[95vw] overflow-hidden pointer-events-auto",
           !dialogState.isMaximized && !headless && "rounded-lg shadow-xl",
           !dialogState.isMaximized &&
             !dialogState.isMinimized &&
@@ -393,7 +565,6 @@ export const Dialog = ({
   return createPortal(dialogContent, document.body);
 };
 
-// Re-export sub-components
 Dialog.Header = DialogHeader;
 Dialog.Content = DialogContent;
 Dialog.Footer = DialogFooter;
