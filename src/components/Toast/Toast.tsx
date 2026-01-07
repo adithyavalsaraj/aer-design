@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import * as React from "react";
 import { cn } from "../../lib/utils";
+import { globalToastManager } from "./globalToastManager";
 import type { ToastPosition, ToastProps } from "./types.ts";
 
 const toastVariants = cva(
@@ -80,12 +81,86 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
       x,
       y,
       id,
+      isRenderedByContainer,
+      dismissOnUnmount = true,
+      swipeDirection = "right",
       ...props
     },
     ref
   ) => {
-    // Internal state for standalone mode if 'open' is undefined
     const [isVisible, setIsVisible] = React.useState(open ?? true);
+    const [isPaused, setIsPaused] = React.useState(false);
+    const [touchStart, setTouchStart] = React.useState<{
+      x: number;
+      y: number;
+    } | null>(null);
+    const [swipeOffset, setSwipeOffset] = React.useState(0);
+
+    // Handle Declarative Standalone Mode
+    const activeToastId = React.useRef<string | null>(null);
+    const internalId = React.useRef(
+      id || `toast-${Math.random().toString(36).substr(2, 9)}`
+    ).current;
+
+    React.useEffect(() => {
+      // If NOT rendered by container, we delegate to the global manager
+      if (!isRenderedByContainer) {
+        if (open !== false) {
+          // Add to global manager
+          // We reconstruct the props object to pass it along
+          const toastProps: ToastProps = {
+            className,
+            variant,
+            title,
+            description,
+            action,
+            open,
+            onOpenChange,
+            duration,
+            position,
+            x,
+            y,
+            id: internalId,
+            ...props,
+          };
+
+          // If we already have an active ID, we might ideally update it, but for now we just add new.
+          // To prevent duplicates on re-renders, we could check if activeToastId.current is set?
+          // But if props changed, we can't update.
+          // Simplest for now: Only add if not active, or just rely on mount/unmount.
+          // But useEffect runs on dep change.
+          // Let's assume this effect runs only on 'open' change for now to be safe.
+
+          if (!activeToastId.current) {
+            activeToastId.current = globalToastManager.add({
+              ...toastProps,
+              onOpenChange: (isOpen) => {
+                onOpenChange?.(isOpen);
+                if (!isOpen) activeToastId.current = null;
+              },
+            });
+          }
+        } else {
+          // Dismiss if open becomes false
+          if (activeToastId.current) {
+            globalToastManager.dismiss(activeToastId.current);
+            activeToastId.current = null;
+          }
+        }
+      }
+
+      return () => {
+        // Cleanup on unmount or re-run
+        if (!isRenderedByContainer && activeToastId.current) {
+          if (dismissOnUnmount) {
+            globalToastManager.dismiss(activeToastId.current);
+          }
+          activeToastId.current = null;
+        }
+      };
+    }, [open, isRenderedByContainer, dismissOnUnmount]);
+
+    if (!isRenderedByContainer) return null;
 
     React.useEffect(() => {
       if (open !== undefined) {
@@ -93,16 +168,64 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
       }
     }, [open]);
 
-    // Handle auto-dismiss
+    // Handle auto-dismiss with pause support
     React.useEffect(() => {
-      if (!isVisible || duration === Infinity) return;
+      if (!isVisible || duration === Infinity || isPaused) return;
 
       const timer = setTimeout(() => {
         handleDismiss();
       }, duration);
 
       return () => clearTimeout(timer);
-    }, [isVisible, duration]);
+    }, [isVisible, duration, isPaused]);
+
+    // Handle Swipe Gestures
+    const handleTouchStart = (e: React.TouchEvent) => {
+      setTouchStart({
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY,
+      });
+      setIsPaused(true);
+    };
+
+    const handleTouchMove = (e: React.TouchEvent) => {
+      if (!touchStart) return;
+
+      const currentX = e.touches[0].clientX;
+      const currentY = e.touches[0].clientY;
+      const diffX = currentX - touchStart.x;
+      const diffY = currentY - touchStart.y;
+
+      const direction = swipeDirection ?? "right";
+      const isVertical =
+        direction === "up" || direction === "down" || direction === "vertical";
+      const isHorizontal = !isVertical; // "left", "right", "horizontal"
+
+      // Vertical Logic
+      if (isVertical) {
+        if (direction === "up" && diffY < 0) setSwipeOffset(diffY);
+        else if (direction === "down" && diffY > 0) setSwipeOffset(diffY);
+        else if (direction === "vertical") setSwipeOffset(diffY);
+        return;
+      }
+
+      // Horizontal Logic
+      if (isHorizontal) {
+        if (direction === "right" && diffX > 0) setSwipeOffset(diffX);
+        else if (direction === "left" && diffX < 0) setSwipeOffset(diffX);
+        else if (direction === "horizontal") setSwipeOffset(diffX);
+      }
+    };
+
+    const handleTouchEnd = () => {
+      if (Math.abs(swipeOffset) > 100) {
+        handleDismiss();
+      } else {
+        setSwipeOffset(0);
+      }
+      setTouchStart(null);
+      setIsPaused(false);
+    };
 
     const handleDismiss = () => {
       if (onOpenChange) {
@@ -114,18 +237,30 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
 
     if (!isVisible) return null;
 
+    const isVerticalSwipe =
+      swipeDirection === "up" ||
+      swipeDirection === "down" ||
+      swipeDirection === "vertical";
+
+    // Dynamic transform based on active axis
+    const swipeTransform = isVerticalSwipe
+      ? `translateY(${swipeOffset}px)`
+      : `translateX(${swipeOffset}px)`;
+
     const isFixed = !!position || (x !== undefined && y !== undefined);
 
-    const getOpacity = (level?: string | number) => {
-      if (!level) return "1"; // Default to fully opaque
-      return String(level); // Use the provided value directly
+    const getOpacity = (level?: number) => {
+      if (level === undefined) return "0.95"; // Default to 0.95
+      return String(level);
     };
 
     // Style for standalone positioning and transparency
     const style: React.CSSProperties = {
       ...(x !== undefined && { left: x }),
       ...(y !== undefined && { top: y }),
-      ...(isFixed && (x !== undefined || y !== undefined)
+      ...(!isRenderedByContainer &&
+      isFixed &&
+      (x !== undefined || y !== undefined)
         ? { position: "fixed", zIndex: 100 }
         : {}),
       // @ts-ignore
@@ -134,11 +269,23 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
       ...(variant !== "aer" && props.transparency
         ? { opacity: getOpacity(props.transparency) }
         : {}),
+      // Swipe transform
+      transform: swipeTransform,
+      transition: swipeOffset === 0 ? "transform 0.2s ease-out" : "none",
+      // Prevent browser handling of gestures in swipe direction
+      touchAction: isVerticalSwipe
+        ? "pan-x" // If vertical swipe, allow horizontal pan, block vertical
+        : "pan-y", // If horizontal swipe, allow vertical pan, block horizontal
     };
 
     // If strictly standalone using "position='top-right'", we apply fixed classes
+    // Only apply if NOT rendered by container
     const standaloneClasses =
-      isFixed && x === undefined && y === undefined && position
+      !isRenderedByContainer &&
+      isFixed &&
+      x === undefined &&
+      y === undefined &&
+      position
         ? getFixedPositionClass(position)
         : "";
 
@@ -154,6 +301,11 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
           className
         )}
         style={style}
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
         {...props}
       >
         <ToastIcon variant={variant} />
@@ -171,8 +323,12 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
 
         {action && (
           <button
-            onClick={action.onClick}
-            className="group inline-flex h-8 items-center justify-center rounded-md border border-aer-border bg-transparent px-3 text-xs font-medium transition-colors hover:bg-aer-muted focus:outline-none focus:ring-1 focus:ring-aer-ring disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-aaer-destructive/30 group-[.destructive]:hover:border-aer-destructive/30 group-[.destructive]:hover:bg-aer-destructive group-[.destructive]:hover:text-aer-destructive-foreground group-[.destructive]:focus:ring-aer-destructive shrink-0"
+            type="button"
+            onClick={(e) => {
+              action.onClick();
+              handleDismiss();
+            }}
+            className="group inline-flex h-8 items-center justify-center rounded-md border border-aer-border bg-transparent px-3 text-xs font-medium transition-colors hover:bg-aer-muted focus:outline-none focus:ring-1 focus:ring-aer-ring disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-aer-destructive/30 group-[.destructive]:hover:border-aer-destructive/30 group-[.destructive]:hover:bg-aer-destructive group-[.destructive]:hover:text-aer-destructive-foreground group-[.destructive]:focus:ring-aer-destructive shrink-0"
           >
             {action.label}
           </button>

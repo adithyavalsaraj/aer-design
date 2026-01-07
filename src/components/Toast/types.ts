@@ -28,13 +28,16 @@ export interface ToastAction {
 
 export interface ToastProps {
   /**
+   * Direction for swipe-to-dismiss interaction.
+   * @default "right"
+   */
+  swipeDirection?: "left" | "right" | "up" | "down" | "horizontal" | "vertical";
+  /**
    * unique identifier for the toast
    */
   id?: string;
   /**
-   * Opacity level of the toast background.
-   * Can be a preset ("light" | "medium" | "dark" | "solid") or any valid CSS value.
-   * @default "0.95"
+   * @default 0.95
    */
   transparency?: number;
   /**
@@ -80,6 +83,16 @@ export interface ToastProps {
    * Callback for open state change (for standalone mode)
    */
   onOpenChange?: (open: boolean) => void;
+  /**
+   * Internal flag to indicate if rendered by container.
+   */
+  isRenderedByContainer?: boolean;
+  /**
+   * Whether to dismiss the toast when the component unmounts.
+   * Set to false for "fire-and-forget" behavior where toast persists until duration ends.
+   * @default true
+   */
+  dismissOnUnmount?: boolean;
   /**
    * Optional custom class name
    */

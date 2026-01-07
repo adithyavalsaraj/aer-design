@@ -83,6 +83,7 @@ export function LoginForm() {
 | **Badge**     | Compact and semantic status indicators with glassmorphism support.                     |
 | **Card**      | Flexible content containers with premium Aer depth and hover effects.                  |
 | **Tabs**      | Responsive tab system with lazy loading and automatic scroll navigation.               |
+| **Toast**     | Non-blocking notifications with swipe gestures, stacking, and 9 positioning zones.     |
 | **Divider**   | A visual separator to group content or define sections.                                |
 | **Skeleton**  | Placeholder loading states for content, improving perceived performance.               |
 

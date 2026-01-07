@@ -1,12 +1,14 @@
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
+import { Toast, toast, type ToastPosition } from "@/components/Toast/index.tsx";
 import {
-  Toast,
-  type ToastPosition,
-  ToastProvider,
-  useToast,
-} from "@/components/Toast/index.tsx";
-import { Bell, CheckCircle, Sparkles, X } from "lucide-react";
+  AlertTriangle,
+  CheckCircle,
+  Hash,
+  Info,
+  Sparkles,
+  X,
+} from "lucide-react";
 import * as React from "react";
 import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
 
@@ -34,8 +36,8 @@ export function ToastDoc() {
               visual overlap.
             </li>
             <li>
-              <strong>Dual Mode Architecture</strong>: Use globally via Provider
-              or as a standalone component.
+              <strong>Dual Mode Architecture</strong>: Use globally (Zero
+              Config) or as a standalone component.
             </li>
             <li>
               <strong>Aer Flagship Variant</strong>: Premium glassmorphism with
@@ -45,7 +47,129 @@ export function ToastDoc() {
               <strong>Zero Dependencies</strong>: Lightweight (3kb gzipped) and
               accessible by default.
             </li>
+            <li>
+              <strong>Multidirectional Swipe</strong>: Built-in support for
+              swipe-to-dismiss interactions (horizontal, vertical, or both).
+            </li>
           </ul>
+        </div>
+
+        <div className="mt-8 space-y-8 border-t pt-8">
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Accessibility First</h3>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="p-4 border rounded-lg bg-aer-muted/5">
+                <h4 className="font-semibold mb-2">ARIA Features</h4>
+                <ul className="text-sm space-y-1 list-disc pl-5 text-aer-muted-foreground">
+                  <li>
+                    <strong>Role="status"</strong>: For success, info, and
+                    loading toasts (polite announcement).
+                  </li>
+                  <li>
+                    <strong>Role="alert"</strong>: For error and warning toasts
+                    (assertive announcement).
+                  </li>
+                  <li>
+                    <strong>Aria-live</strong>: Automatically managed based on
+                    variant.
+                  </li>
+                </ul>
+              </div>
+              <div className="p-4 border rounded-lg bg-aer-muted/5">
+                <h4 className="font-semibold mb-2">Keyboard Support</h4>
+                <ul className="text-sm space-y-1 list-disc pl-5 text-aer-muted-foreground">
+                  <li>
+                    <strong>Esc</strong>: Dismisses the focused toast.
+                  </li>
+                  <li>
+                    <strong>Tab</strong>: Focus stays trapped within the toast
+                    actions until dismissed.
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-4">
+              Framework Agnostic Design
+            </h3>
+            <div className="prose prose-sm max-w-none text-aer-muted-foreground">
+              <p>
+                The Toast component uses primitive types (strings, numbers,
+                booleans) for its core properties involving state and
+                positioning. Complex rendering is handled via standard{" "}
+                <code>ReactNode</code> children or helper functions, ensuring
+                the logic remains portable.
+              </p>
+              <ul className="list-disc pl-5 mt-2">
+                <li>
+                  <strong>Strings for Content</strong>: Title and description
+                  accept simple strings.
+                </li>
+                <li>
+                  <strong>Boolean Flags</strong>: Controls for behavior like
+                  `open` or `duration`.
+                </li>
+                <li>
+                  <strong>Standard CSS</strong>: Styling relies on standard CSS
+                  variables and utility classes, not framework-specific runtime
+                  styles.
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-4">
+              Architecture & Internals
+            </h3>
+            <div className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="p-4 border rounded-lg bg-aer-muted/5">
+                  <h4 className="font-semibold mb-2 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-blue-500" />
+                    Global Singleton
+                  </h4>
+                  <p className="text-sm text-aer-muted-foreground">
+                    The content is managed by <code>globalToastManager</code>, a
+                    vanilla JS singleton. This allows <code>toast()</code> to
+                    work anywhere, even outside React components.
+                  </p>
+                </div>
+                <div className="p-4 border rounded-lg bg-aer-muted/5">
+                  <h4 className="font-semibold mb-2 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-purple-500" />
+                    Auto-Injection
+                  </h4>
+                  <p className="text-sm text-aer-muted-foreground">
+                    If no container is found when <code>toast()</code> is
+                    called, the system automatically mounts a{" "}
+                    <code>GlobalToastContainer</code> into a new{" "}
+                    <code>div</code> in the document body.
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-4 border border-amber-500/20 bg-amber-500/5 rounded-lg">
+                <h4 className="font-semibold text-amber-600 dark:text-amber-400 mb-2">
+                  Context Isolation Warning
+                </h4>
+                <p className="text-sm text-aer-muted-foreground">
+                  The auto-injected container runs in a{" "}
+                  <strong>separate React Root</strong>. This means it cannot
+                  access your App's contexts (like <code>Redux</code>,
+                  <code>React Router</code>, or <code>ThemeContext</code>).
+                  <br />
+                  <br />
+                  If your toasts need access to Context (e.g. using{" "}
+                  <code>Link</code> components inside a toast), you should
+                  manually mount <code>&lt;GlobalToastContainer /&gt;</code>{" "}
+                  inside your App providers.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </DocSection>
 
@@ -85,11 +209,11 @@ export function ToastDoc() {
       <DocSection
         id="basic"
         title="Basic Usage"
-        description="Triggering toasts using the useToast hook."
+        description="Triggering toasts programmatically using the global function."
       >
         <BasicUsageExample />
         <CodeBlock
-          ts={`const { toast } = useToast();
+          ts={`import { toast } from "aer-design";
 
 const showSuccess = () => {
   toast({
@@ -98,11 +222,9 @@ const showSuccess = () => {
     variant: "success",
   });
 };`}
-          fullCode={`import { Button, useToast } from "aer-design";
+          fullCode={`import { Button, toast } from "aer-design";
 
 export default function BasicToast() {
-  const { toast } = useToast();
-
   return (
     <div className="flex gap-4">
       <Button 
@@ -129,6 +251,77 @@ export default function BasicToast() {
   );
 }`}
         />
+      </DocSection>
+
+      <DocSection
+        id="standalone"
+        title="Standalone Mode"
+        description="Use toasts globally without a provider (like PrimeReact)."
+      >
+        <div className="mb-6">
+          <StandaloneExample />
+        </div>
+        <CodeBlock
+          ts={`const [seed, setSeed] = useState(0);
+
+return (
+  <>
+    <Button onClick={() => setSeed(s => s + 1)}>
+      Show Stacked Toast
+    </Button>
+    
+    {/* 
+      Using 'key' forces a new instance.
+      'dismissOnUnmount={false}' prevents the old one from closing 
+      when the component updates.
+    */}
+    {seed > 0 && (
+      <Toast 
+        key={seed}
+        dismissOnUnmount={false}
+        title="Declarative"
+        description={\`ID: \${seed}\`}
+        variant="success"
+      />
+    )}
+  </>
+);`}
+          fullCode={`import { Toast, Button } from "aer-design";
+import { useState } from "react";
+
+// Zero Setup: GlobalToastContainer is auto-injected if missing!
+
+// 2. Isolate your stacking logic
+export default function StackedToasts() {
+  const [seed, setSeed] = useState(0);
+
+  return (
+    <div className="flex flex-col gap-4">
+       <Button onClick={() => setSeed(s => s + 1)}>
+         Show Stacked Toast
+       </Button>
+
+       {seed > 0 && (
+         <Toast
+           key={seed}
+           dismissOnUnmount={false}
+           title="Declarative Toast"
+           description={\`Instance ID: \${seed}\`}
+           variant="success"
+         />
+       )}
+    </div>
+  );
+}`}
+        />
+        <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+          <p className="text-sm text-blue-700 dark:text-blue-400">
+            <strong>Pro tip:</strong> Even when using{" "}
+            <code>&lt;Toast /&gt;</code> declaratively, it delegates rendering
+            to the Global Manager. This ensures improper overlapping is
+            impossible, and z-index stacking is handled automatically.
+          </p>
+        </div>
       </DocSection>
 
       <DocSection
@@ -224,7 +417,7 @@ export default function AerToastExample() {
 }`}
         />
         <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
-          <p className="text-sm text-blue-700 dark:text-blue-400">
+          <div className="text-sm text-blue-700 dark:text-blue-400">
             <strong>Pro Tip: Maximizing the Glass Effect</strong>
             <br />
             The Aer variant uses a <code>backdrop-blur</code> with
@@ -242,110 +435,90 @@ export default function AerToastExample() {
                 invisible.
               </li>
             </ul>
-          </p>
-        </div>
-      </DocSection>
-
-      <DocSection
-        id="framework-agnostic"
-        title="Framework Agnostic Design"
-        description="Designed with standard props for easy migration and integration."
-      >
-        <div className="prose prose-sm max-w-none text-aer-muted-foreground">
-          <p>
-            The Toast component uses primitive types (strings, numbers,
-            booleans) for its core properties involving state and positioning.
-            Complex rendering is handled via standard <code>ReactNode</code>{" "}
-            children or helper functions, ensuring the logic remains portable.
-          </p>
-          <ul className="list-disc pl-5 mt-2">
-            <li>
-              <strong>Strings for Content</strong>: Title and description accept
-              simple strings.
-            </li>
-            <li>
-              <strong>Boolean Flags</strong>: Controls for behavior like `open`
-              or `duration`.
-            </li>
-            <li>
-              <strong>Standard CSS</strong>: Styling relies on standard CSS
-              variables and utility classes, not framework-specific runtime
-              styles.
-            </li>
-          </ul>
-        </div>
-      </DocSection>
-
-      <DocSection
-        id="accessibility"
-        title="Accessibility First"
-        description="Built-in ARIA support and keyboard navigation."
-      >
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-4 border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-2">ARIA Features</h4>
-            <ul className="text-sm space-y-1 list-disc pl-5 text-aer-muted-foreground">
-              <li>
-                <strong>Role="status"</strong>: For success, info, and loading
-                toasts (polite announcement).
-              </li>
-              <li>
-                <strong>Role="alert"</strong>: For error and warning toasts
-                (assertive announcement).
-              </li>
-              <li>
-                <strong>Aria-live</strong>: Automatically managed based on
-                variant.
-              </li>
-            </ul>
-          </div>
-          <div className="p-4 border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-2">Keyboard Support</h4>
-            <ul className="text-sm space-y-1 list-disc pl-5 text-aer-muted-foreground">
-              <li>
-                <strong>Alt + T</strong>: Jump to toast viewport (if implemented
-                globally).
-              </li>
-              <li>
-                <strong>Esc</strong>: Dismisses the focused toast.
-              </li>
-              <li>
-                <strong>Tab</strong>: Focus stays trapped within the toast
-                actions until dismissed.
-              </li>
-            </ul>
           </div>
         </div>
       </DocSection>
 
       <DocSection
         id="interaction-states"
-        title="Interaction States"
-        description="Visual feedback for user interactions."
+        title="Interactions & Gestures"
+        description="Hover behaviors, focus management, and touch swipe customization."
       >
+        <div className="mb-4">
+          <p className="text-aer-muted-foreground">
+            Toasts are interactive by default. They pause on hover (or touch
+            press) to allow users to read content. On touch devices, users can
+            dismiss toasts with swipe gestures. You can configure the allowed
+            direction using the <code>swipeDirection</code> prop.
+          </p>
+        </div>
         <InteractionStatesExample />
         <CodeBlock
           ts={`// Hover pauses the timer
-// Swipe right dismisses the toast
 // Action button focus states`}
-          fullCode={`import { Button, useToast } from "aer-design";
+          fullCode={`import { Button, toast } from "aer-design";
 
 export default function InteractionDemo() {
-  const { toast } = useToast();
-
   return (
     <div className="flex gap-4">
       <Button 
         onClick={() => toast({
-           title: "Action Required",
-           description: "Hover me to pause. Click action to dismiss.",
+           title: "Undo Action",
+           description: "Hover to pause. Click Undo to test action.",
+           duration: 5000,
            action: {
              label: "Undo",
-             onClick: () => console.log("Undo clicked")
+             onClick: () => alert("Undo clicked!")
            }
         })}
       >
         Trigger Interactive Toast
+      </Button>
+    </div>
+  );
+}`}
+        />
+      </DocSection>
+
+      <DocSection
+        id="touch-interactions"
+        title="Touch Interactions"
+        description="Configure swipe direction for mobile devices."
+      >
+        <div className="mb-4">
+          <p className="text-aer-muted-foreground">
+            Customize how users dismiss toasts on touch devices using the{" "}
+            <code>swipeDirection</code> prop.
+          </p>
+        </div>
+        <SwipeInteractionDemo />
+        <CodeBlock
+          ts={`toast({
+  title: "Vertical Swipe",
+  swipeDirection: "vertical", // "horizontal" | "up" | "down" | ...
+})`}
+          fullCode={`import { Button, toast } from "aer-design";
+
+export default function SwipeDemo() {
+  return (
+    <div className="flex flex-wrap gap-4">
+      <Button 
+        onClick={() => toast({
+           title: "Horizontal Swipe",
+           swipeDirection: "horizontal", // left or right
+        })}
+      >
+        Horizontal
+      </Button>
+
+      <Button 
+        variant="outline"
+        onClick={() => toast({
+           title: "Vertical Swipe",
+           swipeDirection: "vertical", // up or down
+        })}
+      >
+         Vertical
       </Button>
     </div>
   );
@@ -513,62 +686,6 @@ export default function ProfileForm() {
 }`}
         />
       </DocSection>
-
-      <DocSection
-        id="custom"
-        title="Standalone Mode"
-        description="Using the Toast component directly without the Provider."
-      >
-        <div className="mb-6 p-4 border border-amber-200 bg-amber-50 rounded-lg text-sm text-amber-800">
-          <strong>Note:</strong> Standalone mode gives you manual control via{" "}
-          <code>open</code> prop, but you lose the automatic stacking and queue
-          features. Multiple standalone toasts at the same position will overlap
-          unless manually positioned with <code>x/y</code>.
-        </div>
-        <StandaloneExample />
-        <CodeBlock
-          ts={`const [open, setOpen] = useState(false);
-
-return (
-  <>
-    <Button onClick={() => setOpen(true)}>Show Standalone</Button>
-    
-    <Toast 
-      open={open} 
-      onOpenChange={setOpen}
-      position="bottom-right"
-      title="Standalone Toast"
-      description="I am manually controlled."
-    />
-  </>
-)`}
-          fullCode={`import { Button, Toast } from "aer-design";
-import { useState } from "react";
-
-export default function StandaloneToast() {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <div className="flex items-center gap-4">
-      <Button onClick={() => setOpen((prev) => !prev)}>
-        {open ? "Hide Toast" : "Show Standalone Toast"}
-      </Button>
-
-      <Toast 
-        open={open}
-        onOpenChange={setOpen}
-        variant="default"
-        title="Manual Control"
-        description="This toast exists outside the global context."
-        position="bottom-right"
-        // You can also use custom coordinates
-        // x={100} y={100}
-      />
-    </div>
-  );
-}`}
-        />
-      </DocSection>
     </div>
   );
 
@@ -582,16 +699,15 @@ export default function StandaloneToast() {
           data={[
             {
               prop: "variant",
-              type: '"default" | "success" | "error" | "warning" | "info" | "aer"',
+              type: '"default" | "neutral" | "success" | "error" | "warning" | "info" | "aer"',
               default: '"default"',
               description: "Visual style of the toast.",
             },
             {
               prop: "transparency",
-              type: '"light" | "medium" | "dark" | "solid" | string',
-              default: '"0.95"',
-              description:
-                "Opacity level. Can be a preset or any valid CSS opacity value (e.g. '0.5').",
+              type: "number",
+              default: "0.95",
+              description: "Opacity level (0.0 - 1.0).",
             },
             {
               prop: "position",
@@ -620,9 +736,9 @@ export default function StandaloneToast() {
             },
             {
               prop: "action",
-              type: "{ label: string; onClick: () => void }",
+              type: "{ label: string; onClick: () => void; altText?: string }",
               default: "-",
-              description: "Optional action button.",
+              description: "Optional action button configuration.",
             },
             {
               prop: "className",
@@ -648,6 +764,81 @@ export default function StandaloneToast() {
               default: "-",
               description: "State change callback (Standalone mode only).",
             },
+            {
+              prop: "swipeDirection",
+              type: '"left" | "right" | "up" | "down" | "horizontal" | "vertical"',
+              default: '"right"',
+              description: "Direction to swipe for dismissal (Touch only).",
+            },
+            {
+              prop: "dismissOnUnmount",
+              type: "boolean",
+              default: "true",
+              description:
+                "If false, toast persists after component unmounts (fire-and-forget).",
+            },
+            {
+              prop: "id",
+              type: "string",
+              default: "auto-generated",
+              description: "Unique ID. Useful for updating specific toasts.",
+            },
+          ]}
+        />
+      </div>
+
+      <div>
+        <h3 id="global-api" className="text-lg font-bold mb-4">
+          Global API
+        </h3>
+        <p className="text-aer-muted-foreground mb-4">
+          The <code>toast</code> function is the main entry point. It returns
+          the toast ID.
+        </p>
+        <ApiTable
+          data={[
+            {
+              prop: "toast(props)",
+              type: "(props: ToastProps) => string",
+              default: "-",
+              description: "Triggers a custom toast. Returns the ID.",
+            },
+            {
+              prop: "toast.success()",
+              type: "(title: string, desc?: string) => string",
+              default: "-",
+              description: "Helper for success variant.",
+            },
+            {
+              prop: "toast.error()",
+              type: "(title: string, desc?: string) => string",
+              default: "-",
+              description: "Helper for error variant.",
+            },
+            {
+              prop: "toast.warning()",
+              type: "(title: string, desc?: string) => string",
+              default: "-",
+              description: "Helper for warning variant.",
+            },
+            {
+              prop: "toast.info()",
+              type: "(title: string, desc?: string) => string",
+              default: "-",
+              description: "Helper for info variant.",
+            },
+            {
+              prop: "toast.neutral()",
+              type: "(title: string, desc?: string) => string",
+              default: "-",
+              description: "Helper for neutral variant.",
+            },
+            {
+              prop: "toast.dismiss()",
+              type: "(id: string) => void",
+              default: "-",
+              description: "Dismisses a specific toast by ID.",
+            },
           ]}
         />
       </div>
@@ -656,32 +847,49 @@ export default function StandaloneToast() {
           Variant Usage Guide
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="p-4 border rounded-lg bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800">
-            <strong className="text-green-800 dark:text-green-300">
-              Success
-            </strong>
-            <p className="text-sm mt-1 text-green-700 dark:text-green-400">
+          <div className="p-4 rounded-lg bg-blue-100 dark:bg-blue-100 text-blue-700 dark:text-blue-700 border border-blue-300 dark:border-blue-400 shadow-sm">
+            <div className="flex items-center gap-2 mb-2">
+              <Info className="w-5 h-5" />
+              <strong className="font-semibold">Info (Default)</strong>
+            </div>
+            <p className="text-sm opacity-90">
+              General updates, system status, or neutral notifications.
+            </p>
+          </div>
+          <div className="p-4 rounded-lg bg-green-100 dark:bg-green-100 text-green-700 dark:text-green-700 border border-green-300 dark:border-green-400 shadow-sm">
+            <div className="flex items-center gap-2 mb-2">
+              <CheckCircle className="w-5 h-5" />
+              <strong className="font-semibold">Success</strong>
+            </div>
+            <p className="text-sm opacity-90">
               Completion of a task, saved state, or positive feedback.
             </p>
           </div>
-          <div className="p-4 border rounded-lg bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800">
-            <strong className="text-red-800 dark:text-red-300">Error</strong>
-            <p className="text-sm mt-1 text-red-700 dark:text-red-400">
-              Critical failures, network errors, or validation issues.
-            </p>
-          </div>
-          <div className="p-4 border rounded-lg bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800">
-            <strong className="text-amber-800 dark:text-amber-300">
-              Warning
-            </strong>
-            <p className="text-sm mt-1 text-amber-700 dark:text-amber-400">
+          <div className="p-4 rounded-lg bg-amber-100 dark:bg-amber-100 text-amber-600 dark:text-amber-600 border border-amber-400 dark:border-amber-500 shadow-sm">
+            <div className="flex items-center gap-2 mb-2">
+              <AlertTriangle className="w-5 h-5" />
+              <strong className="font-semibold">Warning</strong>
+            </div>
+            <p className="text-sm opacity-90">
               Non-blocking issues, expiration notices, or precautions.
             </p>
           </div>
-          <div className="p-4 border rounded-lg bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800">
-            <strong className="text-blue-800 dark:text-blue-300">Info</strong>
-            <p className="text-sm mt-1 text-blue-700 dark:text-blue-400">
-              General updates, system status, or neutral notifications.
+          <div className="p-4 rounded-lg bg-red-100 dark:bg-red-100 text-red-700 dark:text-red-700 border border-red-300 dark:border-red-400 shadow-sm">
+            <div className="flex items-center gap-2 mb-2">
+              <X className="w-5 h-5" />
+              <strong className="font-semibold">Error</strong>
+            </div>
+            <p className="text-sm opacity-90">
+              Critical failures, network errors, or validation issues.
+            </p>
+          </div>
+          <div className="p-4 rounded-lg bg-gray-100 dark:bg-gray-100 text-gray-700 dark:text-gray-700 border border-gray-300 dark:border-gray-400 shadow-sm">
+            <div className="flex items-center gap-2 mb-2">
+              <Hash className="w-5 h-5" />
+              <strong className="font-semibold">Neutral</strong>
+            </div>
+            <p className="text-sm opacity-90">
+              Generic messages or undo actions.
             </p>
           </div>
         </div>
@@ -729,7 +937,7 @@ export default function StandaloneToast() {
   );
 
   return (
-    <ToastProvider>
+    <>
       <DocTabs
         tabs={[
           {
@@ -740,16 +948,15 @@ export default function StandaloneToast() {
               { id: "introduction", title: "Introduction" },
               { id: "when-to-use", title: "When to Use" },
               { id: "basic", title: "Basic Usage" },
+              { id: "standalone", title: "Standalone Mode" },
               { id: "variants", title: "Visual Variants" },
               { id: "aer-variant", title: "The Aer Variant" },
-              { id: "framework-agnostic", title: "Framework Agnostic" },
-              { id: "accessibility", title: "Accessibility" },
-              { id: "interaction-states", title: "Interaction States" },
+              { id: "interaction-states", title: "Interactions & Gestures" },
+              { id: "touch-interactions", title: "Touch Interactions" },
               { id: "transparency", title: "Transparency Control" },
               { id: "positioning", title: "Positioning" },
               { id: "granular-styling", title: "Granular Styling" },
               { id: "real-world", title: "Real World Example" },
-              { id: "custom", title: "Standalone Mode" },
             ],
           },
           {
@@ -758,6 +965,7 @@ export default function StandaloneToast() {
             content: api,
             toc: [
               { id: "toast-props", title: "ToastProps" },
+              { id: "global-api", title: "Global API" },
               { id: "variant-usage", title: "Variant Usage Guide" },
             ],
           },
@@ -772,45 +980,13 @@ export default function StandaloneToast() {
           },
         ]}
       />
-    </ToastProvider>
+    </>
   );
 }
 
 // --- Internal Examples ---
 
-function InteractiveToastExample() {
-  const { toast } = useToast();
-
-  return (
-    <div className="flex flex-col items-center justify-center p-8 text-center space-y-6">
-      <div className="bg-aer-primary/10 p-4 rounded-full">
-        <Bell className="w-8 h-8 text-aer-primary" />
-      </div>
-      <div>
-        <h3 className="text-lg font-semibold">Try the Toast</h3>
-        <p className="text-aer-muted-foreground max-w-xs mx-auto mt-2">
-          Click the button below to trigger a notification. It will stack
-          automatically.
-        </p>
-      </div>
-      <Button
-        size="lg"
-        onClick={() =>
-          toast({
-            title: "Notification Sent",
-            description: "This is a default toast notification.",
-            position: "top-right",
-          })
-        }
-      >
-        Trigger Notification
-      </Button>
-    </div>
-  );
-}
-
 function InteractionStatesExample() {
-  const { toast } = useToast();
   return (
     <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5 flex gap-4">
       <Button
@@ -820,7 +996,7 @@ function InteractionStatesExample() {
             description: "Hover me to pause. Click action to dismiss.",
             action: {
               label: "Undo",
-              onClick: () => console.log("Undo clicked"),
+              onClick: () => alert("Undo clicked"),
             },
           })
         }
@@ -831,8 +1007,59 @@ function InteractionStatesExample() {
   );
 }
 
+function SwipeInteractionDemo() {
+  return (
+    <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5 flex flex-wrap gap-4">
+      <Button
+        variant="outline"
+        onClick={() =>
+          toast({
+            title: "Horizontal Swipe",
+            description: "Swipe left or right to dismiss.",
+            swipeDirection: "horizontal",
+            duration: 3000,
+          })
+        }
+      >
+        <div className="flex items-center gap-2">
+          <span>↔️</span> Horizontal
+        </div>
+      </Button>
+
+      <Button
+        variant="outline"
+        onClick={() =>
+          toast({
+            title: "Vertical Swipe",
+            description: "Swipe up or down to dismiss.",
+            swipeDirection: "vertical",
+            duration: 3000,
+          })
+        }
+      >
+        <div className="flex items-center gap-2">
+          <span>↕️</span> Vertical
+        </div>
+      </Button>
+
+      <Button
+        variant="outline"
+        onClick={() =>
+          toast({
+            title: "Swipe Down Only",
+            description: "You must swipe down to dismiss this.",
+            swipeDirection: "down",
+            duration: 3000,
+          })
+        }
+      >
+        Swipe Down
+      </Button>
+    </div>
+  );
+}
+
 function TransparencyExample() {
-  const { toast } = useToast();
   const [opacity, setOpacity] = React.useState(1);
 
   return (
@@ -867,8 +1094,34 @@ function TransparencyExample() {
   );
 }
 
+function StandaloneExample() {
+  const [seed, setSeed] = React.useState(0);
+
+  return (
+    <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5 flex flex-col gap-4">
+      <div className="flex gap-4 items-center">
+        <Button onClick={() => setSeed((s) => s + 1)}>
+          Show Stacked Toast
+        </Button>
+        {seed > 0 && (
+          <div className="text-sm text-muted-foreground">Seed: {seed}</div>
+        )}
+      </div>
+
+      {seed > 0 && (
+        <Toast
+          key={seed}
+          dismissOnUnmount={false}
+          title="Declarative Toast"
+          description={`Instance ID: ${seed}`}
+          variant="success"
+        />
+      )}
+    </div>
+  );
+}
+
 function BasicUsageExample() {
-  const { toast } = useToast();
   return (
     <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5 flex gap-4">
       <Button
@@ -883,8 +1136,6 @@ function BasicUsageExample() {
 }
 
 function VariantsExample() {
-  const { toast } = useToast();
-
   return (
     <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5 flex flex-wrap gap-4">
       <Button
@@ -956,7 +1207,6 @@ function VariantsExample() {
 }
 
 function AerVariantExample() {
-  const { toast } = useToast();
   return (
     <div className="aer-vibrant-container dark h-48 flex items-center justify-center">
       <div className="aer-vibrant-bg" />
@@ -981,8 +1231,6 @@ function AerVariantExample() {
 }
 
 function PositioningExample() {
-  const { toast } = useToast();
-
   const trigger = (pos: ToastPosition, label: string) => {
     toast({
       position: pos,
@@ -1066,8 +1314,6 @@ function PositioningExample() {
 }
 
 function GranularStylingExample() {
-  const { toast } = useToast();
-
   return (
     <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5 flex gap-4">
       <Button
@@ -1087,7 +1333,6 @@ function GranularStylingExample() {
 }
 
 function RealWorldExample() {
-  const { toast } = useToast();
   const [loading, setLoading] = React.useState(false);
 
   const handleSave = () => {
@@ -1130,26 +1375,6 @@ function RealWorldExample() {
           </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-function StandaloneExample() {
-  const [open, setOpen] = React.useState(false);
-
-  return (
-    <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5">
-      <Button onClick={() => setOpen(!open)}>
-        {open ? "Hide Standalone" : "Show Standalone"}
-      </Button>
-
-      <Toast
-        open={open}
-        onOpenChange={setOpen}
-        position="bottom-right"
-        title="Standalone"
-        description="I am manually controlled!"
-      />
     </div>
   );
 }

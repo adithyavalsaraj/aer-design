@@ -10,6 +10,15 @@ All notable changes to the Aer Design project will be documented in this file.
 - **Production-Ready Examples**: All code examples now feature a `fullCode` prop, providing standalone, copy-pasteable React components with all required imports.
 - **Improved DX**: Simplified the developer experience by ensuring every documentation section has a functional, self-contained code snippet.
 
+### New Features
+
+- **Toast**: Released the Toast notification system (v0.12.0).
+  - **Swipe to Dismiss**: Touch-optimized swipe gestures (horizontal/vertical) with configurable threshold.
+  - **Positioning**: 9 auto-stacking positions with smart collision detection.
+  - **Variants**: Includes standard (Success, Error, etc.) and premium Glassmorphism "Aer" variant.
+  - **Modes**: Supports both Zero-Config global usage and Standalone declarative mode.
+  - **Accessibility**: Full keyboard support (Esc to dismiss) and ARIA compliance.
+
 ### Component Enhancements
 
 - **Cascader**: Added `onBlur` prop support to enable standard validation patterns.

@@ -43,7 +43,7 @@ export const ToastContainer: React.FC<ToastContainerProps> = ({
   }, {} as Record<string, ToastProps[]>);
 
   return createPortal(
-    <div className="fixed inset-0 z-100 pointer-events-none overflow-hidden flex flex-col justify-between">
+    <div className="fixed inset-0 z-[9999] pointer-events-none overflow-hidden flex flex-col justify-between">
       {/* Render 9 Layout Areas */}
       {POSITIONS.map((pos) => {
         const items = groupedToasts[pos] || [];
@@ -71,6 +71,7 @@ export const ToastContainer: React.FC<ToastContainerProps> = ({
               <div key={toast.id} className="py-2">
                 <Toast
                   {...toast}
+                  isRenderedByContainer={true}
                   // We override position here to ensure animation matches,
                   // but we DON'T want the fixed positioning logic from the component itself
                   // since the wrapper handles layout.
@@ -111,7 +112,10 @@ export const ToastContainer: React.FC<ToastContainerProps> = ({
                   // It WILL apply `fixed`.
                   // I should patch Toast.tsx to avoid this conflict.
 
-                  onOpenChange={(open) => !open && onDismiss(toast.id!)}
+                  onOpenChange={(open) => {
+                    if (!open) onDismiss(toast.id!);
+                    toast.onOpenChange?.(open);
+                  }}
                   className="pointer-events-auto relative transform-none"
                   // ^ 'relative' here should override 'fixed' in class string if tailwind-merge handles it (cn).
                   // 'cn' uses tailwind-merge. 'relative' conflicts with 'fixed'. It should win if last.
@@ -127,7 +131,11 @@ export const ToastContainer: React.FC<ToastContainerProps> = ({
         <Toast
           key={toast.id}
           {...toast}
-          onOpenChange={(open) => !open && onDismiss(toast.id!)}
+          onOpenChange={(open) => {
+            if (!open) onDismiss(toast.id!);
+            toast.onOpenChange?.(open);
+          }}
+          isRenderedByContainer={true}
         />
       ))}
     </div>,
