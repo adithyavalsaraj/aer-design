@@ -229,6 +229,15 @@ export const staticTOC: Record<string, { id: string; title: string }[]> = {
     { id: "granular-styling", title: "Granular Styling" },
     { id: "real-world", title: "Real World Example" },
   ],
+  toast: [
+    { id: "introduction", title: "Introduction" },
+    { id: "when-to-use", title: "When to Use" },
+    { id: "basic", title: "Basic Usage" },
+    { id: "variants", title: "Visual Variants" },
+    { id: "aer-variant", title: "The Aer Variant" },
+    { id: "positioning", title: "Positioning" },
+    { id: "custom", title: "Standalone Mode" },
+  ],
   utilities: [
     { id: "introduction", title: "Introduction" },
     { id: "when-to-use", title: "When to Use" },

@@ -22,6 +22,7 @@ import { SidebarDoc } from "../pages/SidebarDoc";
 import { SkeletonDoc } from "../pages/SkeletonDoc";
 import { TabsDoc } from "../pages/TabsDoc";
 import { TextareaDoc } from "../pages/TextareaDoc";
+import { ToastDoc } from "../pages/ToastDoc";
 import { TooltipDoc } from "../pages/TooltipDoc";
 import { UtilitiesDoc } from "../pages/UtilitiesDoc";
 
@@ -71,6 +72,8 @@ export function PageRenderer({ activePage }: PageRendererProps) {
       return <SkeletonDoc />;
     case "tooltip":
       return <TooltipDoc />;
+    case "toast":
+      return <ToastDoc />;
     case "tabs":
       return <TabsDoc />;
     case "utilities":

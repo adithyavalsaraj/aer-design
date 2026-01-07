@@ -8,6 +8,7 @@ import {
   SidebarSection,
 } from "@/components/Sidebar";
 import {
+  Bell,
   Boxes,
   CheckSquare,
   CircleDot,
@@ -99,6 +100,12 @@ export const NAV_ITEMS = [
     id: "skeleton",
     label: "Skeleton",
     icon: Square,
+    category: "Feedback",
+  },
+  {
+    id: "toast",
+    label: "Toast",
+    icon: Bell,
     category: "Feedback",
   },
   {
