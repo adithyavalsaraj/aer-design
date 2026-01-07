@@ -9,7 +9,7 @@
 ## 📋 Table of Contents
 
 - [Project Vision](#project-vision)
-- **Overall Progress**: 23/36 components completed (64%)
+- **Overall Progress**: 23/48 components completed (48%)
 - **Layout**: 2/2 completed (Divider, Skeleton)
 - **Data Display**: 4/6 completed (Badge, Card, Tabs, Avatar)
 - [Completed Components](#completed-components)
@@ -140,6 +140,18 @@
   - Queue management
   - Stacking and animation
 
+#### 4. **Autocomplete**
+
+- **Status:** Not implemented
+- **Priority:** High
+- **Description:** Searchable input with suggestion list
+- **Required Features:**
+  - Remote data fetching
+  - Custom filtering
+  - Grouping
+  - Multiple selection
+  - Custom renderers for options
+
 ### Medium Priority
 
 #### 4. **Breadcrumb**
@@ -176,6 +188,40 @@
   - Determinate and indeterminate modes
   - Color variants
   - Label support
+
+#### 7. **Chips**
+
+- **Status:** Not implemented
+- **Priority:** Medium
+- **Description:** Compact elements for input, attribute, or action
+- **Required Features:**
+  - Input chips (dismissible)
+  - Choice chips (single select)
+  - Filter chips (multi select)
+  - Action chips
+  - Avatar support
+
+#### 8. **FAB (Floating Action Button)**
+
+- **Status:** Not implemented
+- **Priority:** Medium
+- **Description:** Primary action button for screen
+- **Required Features:**
+  - Extended variant (icon + label)
+  - Scroll behavior (hide/shrink)
+  - Animation transitions
+  - Anchoring
+
+#### 9. **Speed Dial**
+
+- **Status:** Not implemented
+- **Priority:** Medium
+- **Description:** Floating button that expands into multiple actions
+- **Required Features:**
+  - Custom directions (up, down, left, right)
+  - Icon rotation
+  - Tooltip labels
+  - Delay control
 
 ### Low Priority
 
@@ -263,6 +309,61 @@
   - Search/filter
   - Custom icons
   - Lazy loading
+
+#### 16. **Timeline**
+
+- **Status:** Not implemented
+- **Priority:** Low
+- **Description:** Vertical or horizontal event display
+- **Required Features:**
+  - Alternating or one-sided layout
+  - Custom dot/icon
+  - Connected lines styling
+  - Pending/last item states
+
+#### 17. **List**
+
+- **Status:** Not implemented
+- **Priority:** Low
+- **Description:** Styled list containers
+- **Required Features:**
+  - Item variants (simple, with avatar, with meta)
+  - Selection support
+  - Virtualization integration
+  - Drag and drop (reorder)
+
+#### 18. **Steps**
+
+- **Status:** Not implemented
+- **Priority:** Low
+- **Description:** Navigation stepper
+- **Required Features:**
+  - Horizontal and vertical
+  - Clickable steps
+  - Status/Error states
+  - Description support
+
+#### 19. **Rating**
+
+- **Status:** Not implemented
+- **Priority:** Low
+- **Description:** Star/Icon rating input
+- **Required Features:**
+  - Half stars
+  - Custom icons (heart, smile)
+  - Read-only mode
+  - Tooltip support
+
+#### 20. **Carousel**
+
+- **Status:** Not implemented
+- **Priority:** Low
+- **Description:** Content slider
+- **Required Features:**
+  - Auto-play
+  - Touch swipe
+  - Infinite loop
+  - Custom controls/dots
 
 ---
 
@@ -392,10 +493,10 @@
 
 ```
 
-Completed Components: 23/36 (64%)
-High Priority Missing: 3/36 (8%)
-Medium Priority Missing: 3/36 (8%)
-Low Priority Missing: 7/36 (20%)
+Completed Components: 23/48 (48%)
+High Priority Missing: 4/48 (8%)
+Medium Priority Missing: 6/48 (12%)
+Low Priority Missing: 15/48 (31%)
 
 ```
 
@@ -403,10 +504,10 @@ Low Priority Missing: 7/36 (20%)
 
 | Category          | Completed | Missing | Total |
 | ----------------- | --------- | ------- | ----- |
-| **Form Controls** | 8         | 4       | 12    |
-| **Navigation**    | 3         | 3       | 6     |
+| **Form Controls** | 8         | 6       | 14    |
+| **Navigation**    | 3         | 4       | 7     |
 | **Feedback**      | 3         | 4       | 7     |
-| **Data Display**  | 4         | 2       | 6     |
+| **Data Display**  | 4         | 5       | 9     |
 | **Layout**        | 2         | 0       | 2     |
 | **Providers**     | 2         | 0       | 2     |
 | **Utilities**     | 1         | 0       | 1     |

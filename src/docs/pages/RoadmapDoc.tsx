@@ -94,26 +94,71 @@ export function RoadmapDoc() {
         "Stacking and animation",
       ],
     },
+    Autocomplete: {
+      description: "Searchable input with suggestion list",
+      features: [
+        "Remote data fetching",
+        "Custom filtering",
+        "Grouping",
+        "Multiple selection",
+        "Custom renderers for options",
+      ],
+    },
+    Chips: {
+      description: "Compact elements for input, attribute, or action",
+      features: [
+        "Input chips (dismissible)",
+        "Choice chips (single select)",
+        "Filter chips (multi select)",
+        "Action chips",
+        "Avatar support",
+      ],
+    },
+    FAB: {
+      description: "Primary action button for screen",
+      features: [
+        "Extended variant (icon + label)",
+        "Scroll behavior (hide/shrink)",
+        "Animation transitions",
+        "Anchoring",
+      ],
+    },
+    SpeedDial: {
+      description: "Floating button that expands into multiple actions",
+      features: [
+        "Custom directions (up, down, left, right)",
+        "Icon rotation",
+        "Tooltip labels",
+        "Delay control",
+      ],
+    },
   };
 
   const highPriority = [
     { name: "Accordion", description: "Collapsible content panels" },
     { name: "Popover", description: "Rich popover with interactive content" },
     { name: "Toast", description: "Toast notification system" },
+    {
+      name: "Autocomplete",
+      description: "Searchable input with suggestion list",
+    },
   ];
 
   const mediumPriority = [
     { name: "Breadcrumb", description: "Navigation breadcrumb trail" },
     { name: "Pagination", description: "Page navigation component" },
     { name: "Progress", description: "Progress indicators" },
+    { name: "Chips", description: "Compact elements for input/action" },
+    { name: "FAB", description: "Floating Action Button" },
+    { name: "SpeedDial", description: "Floating button with actions" },
   ];
 
   const stats = {
-    total: 36,
+    total: 48,
     completed: 23,
-    highPriority: 3,
-    mediumPriority: 3,
-    lowPriority: 7,
+    highPriority: 4,
+    mediumPriority: 6,
+    lowPriority: 15,
   };
 
   const completionPercentage = Math.round(
@@ -121,10 +166,10 @@ export function RoadmapDoc() {
   );
 
   const categoryStats = [
-    { name: "Form Controls", completed: 8, total: 12 },
-    { name: "Navigation", completed: 3, total: 6 },
+    { name: "Form Controls", completed: 8, total: 14 },
+    { name: "Navigation", completed: 3, total: 7 },
     { name: "Feedback", completed: 3, total: 7 },
-    { name: "Data Display", completed: 4, total: 6 },
+    { name: "Data Display", completed: 4, total: 9 },
     { name: "Layout", completed: 2, total: 2 },
     { name: "Providers", completed: 2, total: 2 },
     { name: "Utilities", completed: 1, total: 1 },
@@ -396,6 +441,11 @@ export function RoadmapDoc() {
             { name: "TimePicker", desc: "Time selection" },
             { name: "Table", desc: "Data table component" },
             { name: "Tree", desc: "Hierarchical tree view" },
+            { name: "Timeline", desc: "Event display" },
+            { name: "List", desc: "Styled list containers" },
+            { name: "Steps", desc: "Navigation stepper" },
+            { name: "Rating", desc: "Star rating input" },
+            { name: "Carousel", desc: "Content slider" },
           ].map((component) => (
             <Card key={component.name} variant="outline" className="p-3">
               <h3 className="font-semibold text-sm mb-1">{component.name}</h3>
