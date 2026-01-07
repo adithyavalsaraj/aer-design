@@ -324,7 +324,7 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
         {action && (
           <button
             type="button"
-            onClick={(e) => {
+            onClick={() => {
               action.onClick();
               handleDismiss();
             }}
