@@ -31,27 +31,29 @@ export function GetStartedDoc() {
       <div className="grid gap-12">
         <StepSection
           number={1}
+          id="installation"
           title="Installation"
           icon={<Download className="size-5" />}
-          description="Install the core package and its essential peer dependencies."
+          description="Install the core package. No additional peer dependencies required for basic usage."
         >
           <div className="space-y-4">
             <p className="text-aer-muted-foreground">
-              Aer Design relies on Lucide React for icons and standard Tailwind
-              utilities for styling.
+              Aer Design is a self-contained library. Simply install the main
+              package:
             </p>
             <CodeBlock
-              ts={`npm install aer-design lucide-react clsx tailwind-merge`}
-              fullCode={`# Recommended dev stack\nnpm install aer-design lucide-react clsx tailwind-merge\n\n# Or using pnpm\npnpm add aer-design lucide-react clsx tailwind-merge`}
+              ts={`npm install aer-design`}
+              fullCode={`# Standard installation\nnpm install aer-design\n\n# Using pnpm\npnpm add aer-design\n\n# Using yarn\nyarn add aer-design`}
             />
           </div>
         </StepSection>
 
         <StepSection
           number={2}
+          id="tailwind-setup"
           title="Framework Integration"
           icon={<Layers className="size-5" />}
-          description="Configure Tailwind CSS to recognize Aer Design tokens and components."
+          description="Configure Tailwind CSS 4 to recognize Aer Design tokens and components."
         >
           <div className="space-y-6">
             <div className="p-4 rounded-aer-lg bg-blue-500/5 border border-blue-500/10 text-sm text-blue-400">
@@ -62,26 +64,26 @@ export function GetStartedDoc() {
             <div className="space-y-4">
               <h4 className="font-bold text-aer-foreground flex items-center gap-2">
                 <div className="size-1.5 rounded-full bg-aer-primary" />
-                Option A: Tailwind Plugin (Recommended)
+                Tailwind CSS 4 Configuration
               </h4>
               <p className="text-sm text-aer-muted-foreground">
-                Add the plugin to your configuration to enable custom Aer Design
-                design tokens and variants.
+                Import the Aer Design theme into your main CSS file. Tailwind 4
+                will automatically discover the components and tokens.
               </p>
               <CodeBlock
-                ts={`import { aerDesignPlugin } from "aer-design";\n\nexport default {\n  plugins: [aerDesignPlugin],\n};`}
-                fullCode={`import type { Config } from 'tailwindcss'\nimport { aerDesignPlugin } from "aer-design";\n\nexport default {\n  content: ["./src/**/*.{ts,tsx}"],\n  theme: {\n    extend: {},\n  },\n  plugins: [aerDesignPlugin],\n} satisfies Config`}
+                ts={`@import "tailwindcss";\n@import "aer-design/theme";`}
+                fullCode={`/* index.css */\n@import "tailwindcss";\n@import "aer-design/theme";\n\n/* Your custom styles */\n:root {\n  --brand-primary: #38bdf8;\n}`}
               />
             </div>
 
             <div className="space-y-4 pt-4">
               <h4 className="font-bold text-aer-foreground flex items-center gap-2">
                 <div className="size-1.5 rounded-full bg-aer-primary" />
-                Option B: Static CSS Import
+                Static CSS Fallback
               </h4>
               <p className="text-sm text-aer-muted-foreground">
-                Import the pre-built CSS file in your main entry point (e.g.,
-                `main.tsx` or `App.tsx`).
+                If you choose not to use the Tailwind plugin, you can import the
+                pre-built CSS file directly.
               </p>
               <CodeBlock
                 ts={`import "aer-design/dist/style.css";`}
@@ -93,6 +95,27 @@ export function GetStartedDoc() {
 
         <StepSection
           number={3}
+          id="app-providers"
+          title="App Providers"
+          icon={<Layers className="size-5" />}
+          description="Wrap your application with the necessary providers for theming and configuration."
+        >
+          <div className="space-y-4">
+            <p className="text-aer-muted-foreground">
+              Wrap your root component with the <code>ThemeProvider</code> and{" "}
+              <code>AerConfigProvider</code> to enable global theming, RTL
+              support, and sizing controls.
+            </p>
+            <CodeBlock
+              ts={`import { ThemeProvider, AerConfigProvider } from "aer-design";\n\nfunction App() {\n  return (\n    <ThemeProvider defaultTheme="system">\n      <AerConfigProvider>\n        <YourContent />\n      </AerConfigProvider>\n    </ThemeProvider>\n  );\n}`}
+              fullCode={`import React from 'react';\nimport { ThemeProvider, AerConfigProvider } from "aer-design";\nimport { MainLayout } from "./components/Layout";\n\nexport default function Root() {\n  return (\n    <ThemeProvider \n      defaultTheme="dark" \n      defaultThemeColor="blue"\n    >\n      <AerConfigProvider \n        defaultSize="default" \n        defaultDirection="ltr"\n      >\n        <MainLayout />\n      </AerConfigProvider>\n    </ThemeProvider>\n  );\n}`}
+            />
+          </div>
+        </StepSection>
+
+        <StepSection
+          number={4}
+          id="basic-usage"
           title="First Components"
           icon={<Terminal className="size-5" />}
           description="Start building your interface with our premium component set."
@@ -141,6 +164,7 @@ function StepSection({
   icon,
   children,
   className,
+  id,
 }: {
   number: number;
   title: string;
@@ -148,9 +172,16 @@ function StepSection({
   icon: React.ReactNode;
   children: React.ReactNode;
   className?: string;
+  id?: string;
 }) {
   return (
-    <div className={cn("relative pl-12 md:pl-16 space-y-6", className)}>
+    <div
+      id={id}
+      className={cn(
+        "relative pl-12 md:pl-16 space-y-6 scroll-mt-24",
+        className
+      )}
+    >
       {/* Step Marker */}
       <div className="absolute left-0 top-0 flex flex-col items-center">
         <div className="size-8 md:size-10 rounded-full bg-aer-background border-2 border-aer-primary/30 flex items-center justify-center text-aer-primary font-black text-sm z-10 shadow-lg shadow-aer-primary/10">

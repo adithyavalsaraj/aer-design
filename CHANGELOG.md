@@ -38,6 +38,11 @@ All notable changes to the Aer Design project will be documented in this file.
   - Fixed TOC structure to properly separate Overview, API, and Theming tabs.
 - **Standards**: Updated `COMPONENT_STANDARDS.md` and `standards.ts` with TOC structure guidelines for tab-based documentation.
   - Added `TAB_STRUCTURE` constant explaining how to properly structure tabs with separate TOC arrays.
+- **Getting Started**: Refreshed the "Getting Started" guide for a better onboarding experience.
+  - Simplified installation command to a single `npm install aer-design`.
+  - Added "App Providers" section detailing `ThemeProvider` and `AerConfigProvider` setup.
+  - Modernized Tailwind 4 integration instructions using the `@import "aer-design/theme"` pattern.
+  - Improved page navigation with ID-based TOC links and proper scroll margins.
   - Updated generation script to auto-generate standards documentation from TypeScript source.
 
 ## [v0.13.1] - 2026-01-08

@@ -2,6 +2,7 @@ export const staticTOC: Record<string, { id: string; title: string }[]> = {
   "getting-started": [
     { id: "installation", title: "Installation" },
     { id: "tailwind-setup", title: "Setup" },
+    { id: "app-providers", title: "App Providers" },
     { id: "basic-usage", title: "Basic Usage" },
   ],
   accordion: [
