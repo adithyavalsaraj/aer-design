@@ -10,6 +10,7 @@ import { DialogDoc } from "../pages/DialogDoc";
 import { DividerDoc } from "../pages/DividerDoc";
 import { DropdownDoc } from "../pages/DropdownDoc";
 import { GetStartedDoc } from "../pages/GetStarted";
+import { Home } from "../pages/Home";
 import { InputDoc } from "../pages/InputDoc";
 import { MenuDoc } from "../pages/MenuDoc";
 import { NavbarDoc } from "../pages/NavbarDoc";
@@ -29,10 +30,13 @@ import { UtilitiesDoc } from "../pages/UtilitiesDoc";
 
 interface PageRendererProps {
   activePage: string;
+  onGetStarted?: () => void;
 }
 
-export function PageRenderer({ activePage }: PageRendererProps) {
+export function PageRenderer({ activePage, onGetStarted }: PageRendererProps) {
   switch (activePage) {
+    case "home":
+      return <Home onGetStarted={onGetStarted || (() => {})} />;
     case "getting-started":
       return <GetStartedDoc />;
     case "accordion":

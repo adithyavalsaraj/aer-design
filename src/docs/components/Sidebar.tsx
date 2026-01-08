@@ -259,7 +259,7 @@ export function Sidebar({
     >
       <SidebarHeader className="h-16 flex justify-between items-center border-b-0 px-6 mt-2 md:hidden">
         {/* Only show branding on mobile sidebar, since Desktop has Topbar branding */}
-        <Branding showBadge />
+        <Branding showBadge onClick={() => handlePageChange("home")} />
         <button
           onClick={onClose}
           className="p-2 -mr-2 text-aer-muted-foreground hover:text-aer-foreground"

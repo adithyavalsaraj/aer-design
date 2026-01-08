@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export function useHashRouter(defaultPage: string = "getting-started") {
+export function useHashRouter(defaultPage: string = "home") {
   // Initialize state from URL hash
   const getInitialPage = () => {
     // Check if window is defined (SSR safety, though mostly for client-side)

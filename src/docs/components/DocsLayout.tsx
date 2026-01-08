@@ -26,7 +26,10 @@ export function DocsLayout({
 
   return (
     <div className="flex flex-col min-h-screen bg-aer-background font-sans text-aer-foreground selection:bg-aer-primary/10 selection:text-aer-primary">
-      <Topbar onMenuClick={() => setIsSidebarOpen(true)} />
+      <Topbar
+        onMenuClick={() => setIsSidebarOpen(true)}
+        onBrandingClick={() => onPageChange("home")}
+      />
 
       <div className="flex flex-1 relative">
         {/* Main Sidebar */}

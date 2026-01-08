@@ -16,15 +16,22 @@ function InnerApp() {
     <AerConfigProvider>
       <ThemeProvider defaultTheme="dark" storageKey="aer-theme">
         <ShortcutProvider>
-          <DocsLayout
-            activePage={activePage}
-            onPageChange={setActivePage}
-            isSidebarOpen={isSidebarOpen}
-            setIsSidebarOpen={setIsSidebarOpen}
-            tocItems={tocItems}
-          >
-            <PageRenderer activePage={activePage} />
-          </DocsLayout>
+          {activePage === "home" ? (
+            <PageRenderer
+              activePage={activePage}
+              onGetStarted={() => setActivePage("getting-started")}
+            />
+          ) : (
+            <DocsLayout
+              activePage={activePage}
+              onPageChange={setActivePage}
+              isSidebarOpen={isSidebarOpen}
+              setIsSidebarOpen={setIsSidebarOpen}
+              tocItems={tocItems}
+            >
+              <PageRenderer activePage={activePage} />
+            </DocsLayout>
+          )}
         </ShortcutProvider>
       </ThemeProvider>
     </AerConfigProvider>

@@ -1,5 +1,7 @@
+import { cn } from "@/lib/utils";
+import { Download, Layers, Rocket, Terminal } from "lucide-react";
 import { useEffect } from "react";
-import { CodeBlock, DocSection } from "../components/shared";
+import { CodeBlock } from "../components/shared";
 import { useTOC } from "../context/TOCContext";
 
 export function GetStartedDoc() {
@@ -10,59 +12,168 @@ export function GetStartedDoc() {
   }, [setTocItems]);
 
   return (
-    <div className="space-y-12">
-      <header className="space-y-4">
-        <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">
-          Getting Started
-        </h1>
-        <p className="text-xl text-aer-muted-foreground">
-          Aer Design is a weightless React component library focused on speed,
-          aesthetics, and developer experience.
-        </p>
+    <div className="max-w-4xl mx-auto space-y-16 py-8 animate-in fade-in duration-700">
+      <header className="space-y-6 text-center">
+        <div className="inline-flex items-center justify-center size-16 rounded-aer-2xl bg-aer-primary/10 text-aer-primary mb-2 ring-4 ring-aer-primary/5">
+          <Rocket className="size-8" />
+        </div>
+        <div className="space-y-2">
+          <h1 className="text-4xl md:text-5xl font-black tracking-tight text-aer-foreground">
+            Getting Started
+          </h1>
+          <p className="text-xl text-aer-muted-foreground max-w-2xl mx-auto">
+            Welcome to Aer Design. Follow these steps to integrate weightless,
+            premium components into your React application.
+          </p>
+        </div>
       </header>
 
-      <DocSection title="Installation" id="installation">
-        <div className="space-y-4">
-          <p>
-            Install the package and its peer dependencies via your preferred
-            package manager:
-          </p>
-          <CodeBlock
-            ts={`npm install aer-design lucide-react clsx tailwind-merge`}
-            fullCode={`# Recommended dev stack\nnpm install aer-design lucide-react clsx tailwind-merge\n\n# Or using yarn\nyarn add aer-design lucide-react clsx tailwind-merge\n\n# Or using pnpm\npnpm add aer-design lucide-react clsx tailwind-merge`}
-          />
-        </div>
-      </DocSection>
+      <div className="grid gap-12">
+        <StepSection
+          number={1}
+          title="Installation"
+          icon={<Download className="size-5" />}
+          description="Install the core package and its essential peer dependencies."
+        >
+          <div className="space-y-4">
+            <p className="text-aer-muted-foreground">
+              Aer Design relies on Lucide React for icons and standard Tailwind
+              utilities for styling.
+            </p>
+            <CodeBlock
+              ts={`npm install aer-design lucide-react clsx tailwind-merge`}
+              fullCode={`# Recommended dev stack\nnpm install aer-design lucide-react clsx tailwind-merge\n\n# Or using pnpm\npnpm add aer-design lucide-react clsx tailwind-merge`}
+            />
+          </div>
+        </StepSection>
 
-      <DocSection title="Setup Tailwind CSS" id="tailwind-setup">
-        <div className="space-y-4">
-          <p>
-            Aer Design uses Tailwind CSS 4+ features. Add the Aer Design plugin
-            to your <code>tailwind.config.ts</code> or imports:
-          </p>
-          <CodeBlock
-            ts={`import { aerDesignPlugin } from "aer-design";\n\nexport default {\n  plugins: [aerDesignPlugin],\n};`}
-            fullCode={`import type { Config } from 'tailwindcss'\nimport { aerDesignPlugin } from "aer-design";\n\nexport default {\n  content: ["./src/**/*.{ts,tsx}"],\n  theme: {\n    extend: {},\n  },\n  plugins: [aerDesignPlugin],\n} satisfies Config`}
-          />
-          <p>
-            Alternatively, import the pre-built CSS in your main entry file:
-          </p>
-          <CodeBlock
-            ts={`import "aer-design/dist/style.css";`}
-            fullCode={`import React from 'react';\nimport ReactDOM from 'react-dom/client';\nimport App from './App';\n\n// Import Aer Design styles\nimport "aer-design/dist/style.css";\nimport "./index.css";\n\nReactDOM.createRoot(document.getElementById('root')!).render(\n  <React.StrictMode>\n    <App />\n  </React.StrictMode>\n);`}
-          />
-        </div>
-      </DocSection>
+        <StepSection
+          number={2}
+          title="Framework Integration"
+          icon={<Layers className="size-5" />}
+          description="Configure Tailwind CSS to recognize Aer Design tokens and components."
+        >
+          <div className="space-y-6">
+            <div className="p-4 rounded-aer-lg bg-blue-500/5 border border-blue-500/10 text-sm text-blue-400">
+              <strong>Note:</strong> Aer Design is optimized for Tailwind CSS 4.
+              Ensure your environment supports modern CSS features.
+            </div>
 
-      <DocSection title="Basic Usage" id="basic-usage">
-        <div className="space-y-4">
-          <p>Import components directly from the package:</p>
-          <CodeBlock
-            ts={`import { Button } from "aer-design";\n\nfunction App() {\n  return (\n    <Button variant="aer">\n      Hello World\n    </Button>\n  );\n}`}
-            fullCode={`import { Button, Input } from "aer-design";\nimport { Send } from "lucide-react";\n\nexport default function BasicApp() {\n  return (\n    <div className="p-12 space-y-4">\n      <Input placeholder="Message..." />\n      <Button variant="aer">\n        <Send className="mr-2 h-4 w-4" />\n        Launch Project\n      </Button>\n    </div>\n  );\n}`}
-          />
+            <div className="space-y-4">
+              <h4 className="font-bold text-aer-foreground flex items-center gap-2">
+                <div className="size-1.5 rounded-full bg-aer-primary" />
+                Option A: Tailwind Plugin (Recommended)
+              </h4>
+              <p className="text-sm text-aer-muted-foreground">
+                Add the plugin to your configuration to enable custom Aer Design
+                design tokens and variants.
+              </p>
+              <CodeBlock
+                ts={`import { aerDesignPlugin } from "aer-design";\n\nexport default {\n  plugins: [aerDesignPlugin],\n};`}
+                fullCode={`import type { Config } from 'tailwindcss'\nimport { aerDesignPlugin } from "aer-design";\n\nexport default {\n  content: ["./src/**/*.{ts,tsx}"],\n  theme: {\n    extend: {},\n  },\n  plugins: [aerDesignPlugin],\n} satisfies Config`}
+              />
+            </div>
+
+            <div className="space-y-4 pt-4">
+              <h4 className="font-bold text-aer-foreground flex items-center gap-2">
+                <div className="size-1.5 rounded-full bg-aer-primary" />
+                Option B: Static CSS Import
+              </h4>
+              <p className="text-sm text-aer-muted-foreground">
+                Import the pre-built CSS file in your main entry point (e.g.,
+                `main.tsx` or `App.tsx`).
+              </p>
+              <CodeBlock
+                ts={`import "aer-design/dist/style.css";`}
+                fullCode={`import React from 'react';\nimport ReactDOM from 'react-dom/client';\nimport App from './App';\n\n// Import Aer Design styles\nimport "aer-design/dist/style.css";\nimport "./index.css";\n\nReactDOM.createRoot(document.getElementById('root')!).render(\n  <React.StrictMode>\n    <App />\n  </React.StrictMode>\n);`}
+              />
+            </div>
+          </div>
+        </StepSection>
+
+        <StepSection
+          number={3}
+          title="First Components"
+          icon={<Terminal className="size-5" />}
+          description="Start building your interface with our premium component set."
+        >
+          <div className="space-y-4">
+            <p className="text-aer-muted-foreground">
+              Try adding a button with the unique `aer` variant to see the
+              glassmorphism effect in action.
+            </p>
+            <CodeBlock
+              ts={`import { Button } from "aer-design";\n\nfunction App() {\n  return (\n    <Button variant="aer">\n      Launch Project\n    </Button>\n  );\n}`}
+              fullCode={`import { Button, Input } from "aer-design";\nimport { Send } from "lucide-react";\n\nexport default function BasicApp() {\n  return (\n    <div className="p-12 space-y-4">\n      <Input placeholder="Message..." />\n      <Button variant="aer">\n        <Send className="mr-2 h-4 w-4" />\n        Launch Project\n      </Button>\n    </div>\n  );\n}`}
+            />
+          </div>
+        </StepSection>
+      </div>
+
+      <footer className="pt-12 text-center border-t border-aer-border/5">
+        <p className="text-aer-muted-foreground mb-6">
+          Found any issues? We'd love your feedback.
+        </p>
+        <div className="flex items-center justify-center gap-4">
+          <a
+            href="#/contributing"
+            className="text-sm font-bold text-aer-primary hover:underline underline-offset-4"
+          >
+            Contributing Guide
+          </a>
+          <span className="text-aer-border/20">•</span>
+          <a
+            href="#/roadmap"
+            className="text-sm font-bold text-aer-primary hover:underline underline-offset-4"
+          >
+            Project Roadmap
+          </a>
         </div>
-      </DocSection>
+      </footer>
+    </div>
+  );
+}
+
+function StepSection({
+  number,
+  title,
+  description,
+  icon,
+  children,
+  className,
+}: {
+  number: number;
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={cn("relative pl-12 md:pl-16 space-y-6", className)}>
+      {/* Step Marker */}
+      <div className="absolute left-0 top-0 flex flex-col items-center">
+        <div className="size-8 md:size-10 rounded-full bg-aer-background border-2 border-aer-primary/30 flex items-center justify-center text-aer-primary font-black text-sm z-10 shadow-lg shadow-aer-primary/10">
+          {number}
+        </div>
+        <div className="w-0.5 h-full bg-linear-to-b from-aer-primary/30 to-transparent mt-2 opacity-50 absolute top-8 md:top-10" />
+      </div>
+
+      <div className="space-y-2">
+        <div className="flex items-center gap-3 text-aer-primary">
+          {icon}
+          <h2 className="text-2xl font-black tracking-tight text-aer-foreground uppercase">
+            {title}
+          </h2>
+        </div>
+        <p className="text-lg text-aer-muted-foreground leading-relaxed">
+          {description}
+        </p>
+      </div>
+
+      <div className="p-6 md:p-8 rounded-aer-2xl border border-aer-border/10 bg-aer-muted/5 backdrop-blur-sm">
+        {children}
+      </div>
     </div>
   );
 }

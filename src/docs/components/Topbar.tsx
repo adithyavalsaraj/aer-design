@@ -5,9 +5,10 @@ import { SettingsSheet } from "./SettingsSheet";
 
 interface TopbarProps {
   onMenuClick?: () => void;
+  onBrandingClick?: () => void;
 }
 
-export function Topbar({ onMenuClick }: TopbarProps) {
+export function Topbar({ onMenuClick, onBrandingClick }: TopbarProps) {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   return (
@@ -25,6 +26,7 @@ export function Topbar({ onMenuClick }: TopbarProps) {
             <Branding
               iconClassName="size-8 rounded-lg ring-0 shadow-none"
               textClassName="text-lg"
+              onClick={onBrandingClick}
             />
           </div>
 
