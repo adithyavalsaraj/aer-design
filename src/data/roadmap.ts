@@ -209,22 +209,27 @@ export const ROADMAP_DATA: ComponentSpec[] = [
     status: "Completed",
     description: "Keyboard shortcut system",
   },
-
-  // --- High Priority ---
   {
     name: "Popover",
-    category: "Data Display",
-    status: "Planned",
-    priority: "High",
-    description: "Rich popover with interactive content and auto-positioning",
+    version: "v0.14.0",
+    category: "Feedback",
+    status: "Completed",
+    description:
+      "Headless-first popover primitive for rich interactive overlays",
     features: [
-      "Auto-positioning (reuse existing utilities)",
-      "Click and hover triggers",
-      "Close on outside click",
-      "Arrow indicator",
-      "Rich content support (forms, buttons, etc.)",
+      "Headless usePopover hook",
+      "Flexible triggers (click, hover, focus, manual, composite)",
+      "Compound components (Trigger, Content, Arrow, Close)",
+      "Nested popover support",
+      "Zero positioning logic (delegates to useAutoPosition)",
+      "Full accessibility (ARIA + keyboard)",
+      "Lifecycle hooks",
+      "SSR-safe",
+      "Foundation for Tooltip/Dropdown/Menu",
     ],
   },
+
+  // --- High Priority ---
   {
     name: "Toast",
     version: "v0.12.0",

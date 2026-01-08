@@ -10,9 +10,58 @@ This document defines the quality standards and structure for all component docu
 
 Every component documentation must have **three tabs**:
 
-1. **Overview** - Examples, feature deep-dives, and real-world usage.
-2. **API** - Complete props documentation and variant guides.
-3. **Theming** - CSS variables and granular styling.
+1.  **Overview** - Examples, feature deep-dives, and real-world usage.
+2.  **API** - Complete props documentation and variant guides.
+3.  **Theming** - CSS variables and granular styling.
+
+### TOC (Table of Contents) Structure
+
+**IMPORTANT:** Each tab must have its own separate TOC array:
+
+- **Overview Tab**: TOC items are defined in `staticTOC.ts` under the component key (e.g., `popover`)
+- **API Tab**: TOC items are defined inline in the component doc file
+- **Theming Tab**: TOC items are defined inline in the component doc file
+
+**Example Implementation:**
+
+```tsx
+// In ComponentDoc.tsx
+<DocTabs
+  tabs={[
+    {
+      id: "overview",
+      label: "Overview",
+      content: overview,
+      toc: [
+        /* Overview sections from staticTOC.ts */
+      ],
+    },
+    {
+      id: "api",
+      label: "API",
+      content: api,
+      toc: [
+        { id: "component-props", title: "Component Props" },
+        { id: "hook-api", title: "Hook API" },
+        // ... other API sections
+      ],
+    },
+    {
+      id: "theming",
+      label: "Theming",
+      content: theming,
+      toc: [{ id: "css-variables", title: "CSS Variables" }],
+    },
+  ]}
+/>
+```
+
+**Critical Rules:**
+
+- ✅ **DO** staticTOC.ts should ONLY contain Overview tab sections
+- ✅ **DO** API and Theming TOC items are defined inline in the component doc
+- ✅ **DO** Each tab's TOC updates when switching tabs
+- ❌ **DO NOT** mix Overview/API/Theming items in staticTOC.ts
 
 ---
 
@@ -24,6 +73,7 @@ Every section (unless specified as text-only) MUST contain:
 
 1.  **A live working example** (rendered component).
 2.  **A `CodeBlock`** showing the implementation.
+
 #### 1. Introduction
 
 Explain what the component does and its key features.
@@ -54,6 +104,7 @@ How to extend the component, pass custom children, or utilize render props.
 
 **Purpose:** Highlight the premium "Aer" aesthetic. It must be given its own high-visibility section.
 **Requirements:**
+
 - ✅ Must include a live example with vibrant background (`aer-vibrant-container`)
 - ✅ Must include both `ts` snippet and `fullCode` in CodeBlock
 - ✅ **Must include a Pro Tip** explaining:

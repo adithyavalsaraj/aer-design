@@ -127,6 +127,12 @@ export const NAV_ITEMS = [
     category: "Overlay",
   },
   {
+    id: "popover",
+    label: "Popover",
+    icon: Layout,
+    category: "Overlay",
+  },
+  {
     id: "tooltip",
     label: "Tooltip",
     icon: MousePointer2,

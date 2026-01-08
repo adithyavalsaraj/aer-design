@@ -16,6 +16,7 @@ import { MenuDoc } from "../pages/MenuDoc";
 import { NavbarDoc } from "../pages/NavbarDoc";
 import { OtpDoc } from "../pages/OtpDoc";
 import { OverlayDoc } from "../pages/OverlayDoc";
+import { PopoverDoc } from "../pages/PopoverDoc";
 import { PositioningDoc } from "../pages/PositioningDoc";
 import { RadioDoc } from "../pages/RadioDoc";
 import { RoadmapDoc } from "../pages/RoadmapDoc";
@@ -75,6 +76,8 @@ export function PageRenderer({ activePage, onGetStarted }: PageRendererProps) {
       return <MenuDoc />;
     case "overlay":
       return <OverlayDoc />;
+    case "popover":
+      return <PopoverDoc />;
     case "skeleton":
       return <SkeletonDoc />;
     case "tooltip":

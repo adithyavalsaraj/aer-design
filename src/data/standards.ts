@@ -178,3 +178,64 @@ export const BEST_PRACTICES = [
     highlight: true,
   },
 ];
+
+export const TAB_STRUCTURE = {
+  description:
+    "Every component documentation must use the 3-tab structure with separate TOC for each tab",
+  tabs: [
+    {
+      id: "overview",
+      label: "Overview",
+      tocSource: "staticTOC.ts - component key (e.g., 'popover')",
+      tocContent: "All Overview sections (Introduction → Real World Example)",
+    },
+    {
+      id: "api",
+      label: "API",
+      tocSource: "Inline in component doc file",
+      tocContent:
+        "Component Props, Hook APIs, Compound Components, Variant Guides",
+    },
+    {
+      id: "theming",
+      label: "Theming",
+      tocSource: "Inline in component doc file",
+      tocContent: "CSS Variables, Granular Styling",
+    },
+  ],
+  implementation: `// In ComponentDoc.tsx
+<DocTabs
+  tabs={[
+    { 
+      id: "overview", 
+      label: "Overview", 
+      content: overview,
+      toc: [ /* Overview sections from staticTOC.ts */ ]
+    },
+    { 
+      id: "api", 
+      label: "API", 
+      content: api,
+      toc: [
+        { id: "component-props", title: "Component Props" },
+        { id: "hook-api", title: "Hook API" },
+        // ... other API sections
+      ]
+    },
+    { 
+      id: "theming", 
+      label: "Theming", 
+      content: theming,
+      toc: [
+        { id: "css-variables", title: "CSS Variables" },
+      ]
+    },
+  ]}
+/>`,
+  notes: [
+    "staticTOC.ts should ONLY contain Overview tab sections",
+    "API and Theming TOC items are defined inline in the component doc",
+    "Each tab's TOC updates when switching tabs",
+    "Do NOT mix Overview/API/Theming items in staticTOC.ts",
+  ],
+};

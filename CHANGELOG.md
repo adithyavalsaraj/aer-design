@@ -2,6 +2,44 @@
 
 All notable changes to the Aer Design project will be documented in this file.
 
+## [v0.14.0] - 2026-01-08
+
+### New Features
+
+- **Popover**: Released a headless-first popover primitive component (v0.14.0).
+  - **Headless Architecture**: Exposes `usePopover` hook for complete behavioral control without enforcing DOM structure.
+  - **Flexible Triggers**: Supports click, hover, focus, manual, and composite trigger modes (e.g., `['hover', 'focus']`).
+  - **Rich Content Support**: Designed for interactive content including forms, buttons, and complex UI elements.
+  - **Compound Components**: Provides `PopoverTrigger`, `PopoverContent`, `PopoverArrow`, and `PopoverClose` for flexible composition.
+  - **Nested Popovers**: Full support for nested popovers with proper z-index stacking and outside-click handling.
+  - **Positioning Integration**: Delegates 100% of positioning to existing `useAutoPosition` hook—zero positioning math in component.
+  - **Accessibility**: Complete ARIA attributes (`aria-expanded`, `aria-haspopup`, `aria-controls`) and keyboard support (Escape, Enter, Space).
+  - **Lifecycle Hooks**: `onOpen` and `onClose` callbacks for integration with analytics and state management.
+  - **Advanced Features**: Lazy mounting (`unmountOnClose`), modal mode, portal support, and configurable close behaviors.
+  - **Visual Variants**: Includes default, dark, light, and premium glassmorphism "aer" variant.
+  - **SSR-Safe**: No browser API access during initial render, conditional portal rendering.
+  - **Foundation Component**: Designed to be the behavioral primitive for Tooltip, Dropdown, Menu, and future overlay components.
+
+### Bug Fixes
+
+- **Popover**: Fixed critical issues with interactive content, positioning, and nested popovers.
+  - **Rich Interactive Content**: Fixed crash when using `asChild` with `PopoverClose` by ensuring Slot receives exactly one child element.
+  - **Left Positioning**: Fixed issue where popovers positioned to the left only appeared after scrolling by adding mount-based position recalculation.
+  - **Nested Popovers**: Fixed z-index stacking and click handling for unlimited nesting depth with automatic z-index incrementation.
+  - **Outside Click Detection**: Improved click detection to properly handle nested popovers and interactive content without closing parent popovers.
+  - **Default Variant Colors**: Updated default variant to use theme-aware colors (`bg-aer-background`) instead of dark gray for better appearance.
+
+### Documentation
+
+- **Popover**: Completed comprehensive API and Theming documentation with proper TOC structure.
+  - Added API documentation for `PopoverTrigger`, `PopoverContent`, and `PopoverClose` compound components.
+  - Added triple-nested popover example demonstrating unlimited nesting depth.
+  - Added best practices section for nested popovers with UX recommendations.
+  - Fixed TOC structure to properly separate Overview, API, and Theming tabs.
+- **Standards**: Updated `COMPONENT_STANDARDS.md` and `standards.ts` with TOC structure guidelines for tab-based documentation.
+  - Added `TAB_STRUCTURE` constant explaining how to properly structure tabs with separate TOC arrays.
+  - Updated generation script to auto-generate standards documentation from TypeScript source.
+
 ## [v0.13.1] - 2026-01-08
 
 ### Enhancements

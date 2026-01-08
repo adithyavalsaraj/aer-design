@@ -1,11 +1,31 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import { CODE_PUSH_GUIDELINES, DOC_STRUCTURE } from "../src/data/standards";
+import {
+  CODE_PUSH_GUIDELINES,
+  DOC_STRUCTURE,
+  TAB_STRUCTURE,
+} from "../src/data/standards";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const TARGET_FILE = path.join(__dirname, "../COMPONENT_STANDARDS.md");
+
+// Generate TOC rules from TAB_STRUCTURE
+const tocRules = TAB_STRUCTURE.notes
+  .map((note: string) => {
+    if (
+      note.startsWith("staticTOC") ||
+      note.startsWith("API") ||
+      note.startsWith("Each")
+    ) {
+      return `- ✅ **DO** ${note}`;
+    } else if (note.startsWith("Do NOT")) {
+      return `- ❌ **DO NOT** ${note.replace("Do NOT ", "")}`;
+    }
+    return `- ${note}`;
+  })
+  .join("\n");
 
 const HEADER = `# Aer Design Documentation Standards (Updated)
 
@@ -19,9 +39,25 @@ This document defines the quality standards and structure for all component docu
 
 Every component documentation must have **three tabs**:
 
-1. **Overview** - Examples, feature deep-dives, and real-world usage.
-2. **API** - Complete props documentation and variant guides.
-3. **Theming** - CSS variables and granular styling.
+1.  **Overview** - Examples, feature deep-dives, and real-world usage.
+2.  **API** - Complete props documentation and variant guides.
+3.  **Theming** - CSS variables and granular styling.
+
+### TOC (Table of Contents) Structure
+
+**IMPORTANT:** Each tab must have its own separate TOC array:
+
+-   **Overview Tab**: TOC items are defined in \`staticTOC.ts\` under the component key (e.g., \`popover\`)
+-   **API Tab**: TOC items are defined inline in the component doc file
+-   **Theming Tab**: TOC items are defined inline in the component doc file
+
+**Example Implementation:**
+\`\`\`tsx
+${TAB_STRUCTURE.implementation}
+\`\`\`
+
+**Critical Rules:**
+${tocRules}
 
 ---
 

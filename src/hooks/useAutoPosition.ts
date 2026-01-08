@@ -234,6 +234,14 @@ export function useAutoPosition(
     setTick((t) => t + 1);
   }, []);
 
+  // Trigger recalculation when floating element mounts
+  React.useEffect(() => {
+    if (isOpen && floatingElement) {
+      // Force a recalculation after mount
+      updatePosition();
+    }
+  }, [floatingElement, isOpen, updatePosition]);
+
   // Auto-positioning logic
   React.useLayoutEffect(() => {
     if (!isOpen || !referenceElement || !floatingElement || !avoidCollisions) {

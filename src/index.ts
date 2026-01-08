@@ -16,6 +16,7 @@ export * from "./components/Menu";
 export * from "./components/Navbar";
 export * from "./components/OtpInput";
 export * from "./components/Overlay";
+export * from "./components/Popover";
 export * from "./components/Radio";
 export * from "./components/Shortcut";
 export * from "./components/Sidebar";
