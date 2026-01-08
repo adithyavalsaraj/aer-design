@@ -286,6 +286,8 @@ export const Dialog = ({
       dialogStackingManager.addMinimized(instanceIdStr);
     } else {
       dialogStackingManager.removeMinimized(instanceIdStr);
+      // Ensure dialog is brought to the front when restored from minimized state
+      dialogStackingManager.bringToFront(instanceIdStr);
     }
   }, [dialogState.isMinimized, instanceIdStr]);
 
