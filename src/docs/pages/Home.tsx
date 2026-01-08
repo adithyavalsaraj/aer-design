@@ -1,4 +1,5 @@
 import { Button } from "@/components/Button";
+import { GithubIcon } from "@/docs/components/Icons";
 import { ArrowRight, Cpu, Palette, Sparkles, Zap } from "lucide-react";
 import { Branding } from "../components/Branding";
 
@@ -49,7 +50,7 @@ export function Home({ onGetStarted }: HomeProps) {
 
           <h1 className="text-5xl md:text-8xl font-black tracking-tight text-aer-foreground blur-in [animation-delay:0.2s] uppercase leading-none md:leading-tight">
             Design at the <br />
-            <span className="text-transparent bg-clip-text bg-linear-to-r from-sky-400 via-white to-cyan-400 bg-size-[200%] animate-gradient-shift filter drop-shadow-[0_0_20px_rgba(56,189,248,0.5)] dark:drop-shadow-[0_0_20px_rgba(56,189,248,0.3)]">
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-sky-600 via-sky-400 to-cyan-600 dark:from-sky-400 dark:via-white dark:to-cyan-400 bg-size-[200%] animate-gradient-shift filter drop-shadow-[0_0_25px_rgba(56,189,248,0.4)] dark:drop-shadow-[0_0_20px_rgba(56,189,248,0.3)]">
               Speed of Air..!
             </span>
           </h1>
@@ -61,9 +62,9 @@ export function Home({ onGetStarted }: HomeProps) {
 
           <div className="flex flex-col sm:flex-row items-center gap-4 pt-4 blur-in [animation-delay:0.5s]">
             <Button
-              variant="aer"
+              variant="default"
               size="lg"
-              className="h-14 px-8 text-lg font-bold group shadow-2xl shadow-aer-primary/20 animate-shine"
+              className="h-14 px-10 text-lg font-bold group shadow-2xl shadow-aer-primary/30 animate-shine"
               onClick={onGetStarted}
             >
               Get Started
@@ -72,7 +73,7 @@ export function Home({ onGetStarted }: HomeProps) {
             <Button
               variant="outline"
               size="lg"
-              className="h-14 px-8 text-lg font-bold border-aer-border/20"
+              className="h-14 px-8 text-lg font-bold transition-all duration-300 hover:bg-aer-primary/5 hover:text-aer-primary"
               onClick={() =>
                 window.open(
                   "https://github.com/adithyavalsaraj/aer-design",
@@ -80,6 +81,7 @@ export function Home({ onGetStarted }: HomeProps) {
                 )
               }
             >
+              <GithubIcon className="mr-2 size-5" />
               View GitHub
             </Button>
           </div>

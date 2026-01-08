@@ -40,7 +40,7 @@ export function Branding({
           </span>
           {showBadge && (
             <span className="text-[10px] text-aer-muted-foreground font-medium uppercase tracking-[0.2em] text-left">
-              Alpha v0.1
+              v{__APP_VERSION__}
             </span>
           )}
         </div>

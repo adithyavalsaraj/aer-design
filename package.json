@@ -1,7 +1,7 @@
 {
   "name": "aer-design",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.12.0",
   "type": "module",
   "main": "./dist/aer-design.es.js",
   "module": "./dist/aer-design.es.js",

@@ -14,7 +14,6 @@ import {
   CircleDot,
   CreditCard,
   GitBranch,
-  Github,
   Layout,
   Minus,
   MousePointer2,
@@ -28,6 +27,7 @@ import {
 } from "lucide-react";
 import React from "react";
 import { Branding } from "./Branding";
+import { GithubIcon } from "./Icons";
 
 export const NAV_ITEMS = [
   {
@@ -358,7 +358,7 @@ export function Sidebar({
           </>
         )}
         <SidebarItem
-          icon={<Github className="size-4" />}
+          icon={<GithubIcon className="size-4" />}
           className="bg-aer-muted/30 text-aer-muted-foreground hover:text-aer-foreground"
           onClick={() =>
             window.open(
