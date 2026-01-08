@@ -11,6 +11,7 @@ import {
   SidebarSection,
   useSidebar,
 } from "@/components/Sidebar";
+import Tooltip from "@/components/Tooltip";
 import {
   Bell,
   Home,
@@ -40,6 +41,71 @@ function PlaygroundBrand() {
   );
 }
 
+// Extracted component to avoid re-creation on render. Must be outside of SidebarPlayground.
+const DemoContent = ({
+  isMobile,
+  config,
+  setIsOpen,
+  isOpen,
+  isDocumentLayout,
+}: {
+  isMobile: boolean;
+  config: any;
+  setIsOpen: (v: boolean) => void;
+  isOpen: boolean;
+  isDocumentLayout: boolean;
+}) => (
+  <div className="max-w-2xl mx-auto space-y-6">
+    {isMobile && config.autoOverlay && (
+      <div className="flex items-center gap-4 mb-6">
+        <button
+          onClick={() => setIsOpen(true)}
+          className="p-2 -ml-2 rounded-md hover:bg-aer-muted/20"
+        >
+          <Menu className="size-6 text-aer-foreground" />
+        </button>
+        <span className="font-bold text-lg">Aer App</span>
+      </div>
+    )}
+
+    <div className="h-32 rounded-xl bg-linear-to-br from-aer-muted to-transparent border border-aer-border/50 p-6 flex items-center justify-center text-aer-muted-foreground">
+      {isDocumentLayout ? "Document Content" : "App Shell Content"}
+    </div>
+    <div className="space-y-4">
+      <p className="text-sm text-aer-muted-foreground">
+        {isDocumentLayout
+          ? "Scroll down to see behavior. Sticky sticks to viewport; Absolute scrolls away."
+          : isMobile && config.autoOverlay
+          ? "Mobile overlay mode maximized space."
+          : "Fixed sidebar stays in place while content scrolls."}
+      </p>
+      <div className="h-4 w-3/4 bg-aer-muted/20 rounded" />
+      <div className="h-4 w-1/2 bg-aer-muted/20 rounded" />
+      <div className="h-4 w-5/6 bg-aer-muted/20 rounded" />
+      <div className="space-y-4 pt-12 opacity-50">
+        <p className="text-xs uppercase font-bold text-aer-muted-foreground">
+          Long Content
+        </p>
+        {Array.from({ length: 15 }).map((_, i) => (
+          <div key={i} className="h-8 w-full bg-aer-muted/10 rounded" />
+        ))}
+      </div>
+    </div>
+    {(config.overlay || (isMobile && config.autoOverlay)) &&
+      !isOpen &&
+      !isMobile && (
+        <div className="flex justify-center py-12">
+          <button
+            onClick={() => setIsOpen(true)}
+            className="flex items-center gap-2 text-aer-foreground font-bold hover:underline"
+          >
+            <Menu className="size-4" /> Open Menu
+          </button>
+        </div>
+      )}
+  </div>
+);
+
 function SidebarPlayground() {
   const [config, setConfig] = React.useState({
     position: "left" as SidebarProps["position"],
@@ -57,11 +123,38 @@ function SidebarPlayground() {
   const set = (key: keyof typeof config, value: any) => {
     setConfig((prev) => {
       const next = { ...prev, [key]: value };
-      // If user changed collapsed manually, update autoOverlay preference default
-      if (key === "collapsed") {
-        // If collapsed (icon only), don't auto-overlay. If expanded, do.
-        next.autoOverlay = !value;
+
+      // Validation / Enforcement Logic
+      if (key === "mode") {
+        if (value === "icon") {
+          next.collapsed = true;
+          next.hoverable = false; // Optional: disable hoverable default? Or allow it?
+          // If icon mode, hoverable (rail) is allowed only if collapsed is true (inherent).
+          next.autoOverlay = false;
+        } else if (value === "overlay") {
+          next.collapsed = false;
+          next.hoverable = false;
+          next.autoOverlay = true; // Auto-enable overlay prop
+        } else {
+          // Switching to standard mode
+          next.overlay = false;
+        }
       }
+
+      if (key === "collapsed") {
+        if (!value) {
+          // If expanding, disable hoverable (rail only works when collapsed)
+          next.hoverable = false;
+        }
+        // If user changed collapsed manually, update autoOverlay preference
+        if (value) {
+          // Collapsed (icon only), likely don't want auto-overlay default
+          next.autoOverlay = false;
+        } else {
+          next.autoOverlay = true;
+        }
+      }
+
       return next;
     });
   };
@@ -79,7 +172,8 @@ function SidebarPlayground() {
 
   // Compute effective configuration based on mobile state
   // Only auto-switch to overlay if enabled
-  const activeMode = isMobile && config.autoOverlay ? "overlay" : config.mode;
+  const activeMode: any =
+    isMobile && config.autoOverlay ? "overlay" : config.mode;
   const activeBackdrop =
     isMobile && config.autoOverlay ? true : config.backdrop;
 
@@ -158,77 +252,29 @@ function SidebarPlayground() {
     isDocumentLayout,
   ]);
 
-  const DemoContent = () => (
-    <div className="max-w-2xl mx-auto space-y-6">
-      {isMobile && config.autoOverlay && (
-        <div className="flex items-center gap-4 mb-6">
-          <button
-            onClick={() => setIsOpen(true)}
-            className="p-2 -ml-2 rounded-md hover:bg-aer-muted/20"
-          >
-            <Menu className="size-6 text-aer-foreground" />
-          </button>
-          <span className="font-bold text-lg">Aer App</span>
-        </div>
-      )}
-
-      <div className="h-32 rounded-xl bg-linear-to-br from-aer-muted to-transparent border border-aer-border/50 p-6 flex items-center justify-center text-aer-muted-foreground">
-        {isDocumentLayout ? "Document Content" : "App Shell Content"}
-      </div>
-      <div className="space-y-4">
-        <p className="text-sm text-aer-muted-foreground">
-          {isDocumentLayout
-            ? "Scroll down to see behavior. Sticky sticks to viewport; Absolute scrolls away."
-            : isMobile && config.autoOverlay
-            ? "Mobile overlay mode maximized space."
-            : "Fixed sidebar stays in place while content scrolls."}
-        </p>
-        <div className="h-4 w-3/4 bg-aer-muted/20 rounded" />
-        <div className="h-4 w-1/2 bg-aer-muted/20 rounded" />
-        <div className="h-4 w-5/6 bg-aer-muted/20 rounded" />
-        <div className="space-y-4 pt-12 opacity-50">
-          <p className="text-xs uppercase font-bold text-aer-muted-foreground">
-            Long Content
-          </p>
-          {Array.from({ length: 15 }).map((_, i) => (
-            <div key={i} className="h-8 w-full bg-aer-muted/10 rounded" />
-          ))}
-        </div>
-      </div>
-      {(config.overlay || (isMobile && config.autoOverlay)) &&
-        !isOpen &&
-        !isMobile && (
-          <div className="flex justify-center py-12">
-            <button
-              onClick={() => setIsOpen(true)}
-              className="flex items-center gap-2 text-aer-foreground font-bold hover:underline"
-            >
-              <Menu className="size-4" /> Open Menu
-            </button>
-          </div>
-        )}
-    </div>
-  );
+  // Track hover state for visual expansion logic
+  const [isHovered, setIsHovered] = React.useState(false);
 
   const renderSidebar = () => (
     <Sidebar
       position={config.position}
       mode={activeMode}
-      collapsed={config.collapsed}
+      collapsed={config.collapsed as any}
       hoverable={config.hoverable}
       overlay={activeMode === "overlay"}
       backdrop={activeBackdrop}
-      isOpen={activeMode === "overlay" ? isOpen : true}
+      isOpen={isOpen}
       onOpenChange={setIsOpen}
       onBackdropClick={() => setIsOpen(false)}
       showNestedBorder={config.showNestedBorder}
+      disableScrollIntoView={true}
       className="border-aer-border"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <SidebarHeader>
         <PlaygroundBrand />
-        {(activeMode === "overlay" ||
-          activeMode === "absolute" ||
-          config.autoOverlay) && (
+        {(!config.collapsed || (config.hoverable && isHovered)) && (
           <SidebarClose className="ms-auto shrink-0 z-50" />
         )}
       </SidebarHeader>
@@ -403,22 +449,49 @@ function SidebarPlayground() {
           <label className="text-sm font-semibold">Features</label>
           <div className="space-y-2">
             {/* Aliases for Icon Only */}
-            <Checkbox
-              label="Collapsed (Prop)"
-              checked={config.collapsed}
-              onChange={(e) => set("collapsed", e.target.checked)}
-              disabled={config.mode === "icon"} // Redundant if mode is icon
-              description="Manually collapse sidebar"
-            />
-            <Checkbox
-              label="Hoverable (Rail)"
-              checked={config.hoverable}
-              onChange={(e) => set("hoverable", e.target.checked)}
-              disabled={!isEffectiveCollapsed}
-              labelClassName={
-                !isEffectiveCollapsed ? "text-aer-muted-foreground" : ""
-              }
-            />
+            <Tooltip
+              content="Icon mode forces collapsed state"
+              disabled={config.mode !== "icon"}
+              side="bottom"
+              trigger="hover"
+              variant="dark"
+              align="start"
+            >
+              <div>
+                <Checkbox
+                  label="Collapsed (Prop)"
+                  checked={config.collapsed}
+                  onChange={(e) => set("collapsed", e.target.checked)}
+                  disabled={config.mode === "icon" || config.mode === "overlay"}
+                  description="Manually collapse sidebar"
+                  labelClassName={
+                    config.mode === "icon" || config.mode === "overlay"
+                      ? "text-aer-muted-foreground"
+                      : ""
+                  }
+                />
+              </div>
+            </Tooltip>
+            <Tooltip
+              content="Must be collapsed to enable rail behavior"
+              disabled={isEffectiveCollapsed}
+              side="bottom"
+              trigger="hover"
+              variant="dark"
+              align="start"
+            >
+              <div>
+                <Checkbox
+                  label="Hoverable (Rail)"
+                  checked={config.hoverable}
+                  onChange={(e) => set("hoverable", e.target.checked)}
+                  disabled={!isEffectiveCollapsed}
+                  labelClassName={
+                    !isEffectiveCollapsed ? "text-aer-muted-foreground" : ""
+                  }
+                />
+              </div>
+            </Tooltip>
             <Checkbox
               label="Auto-Overlay (Mobile)"
               checked={config.autoOverlay}
@@ -439,18 +512,30 @@ function SidebarPlayground() {
         <div className="space-y-3">
           <label className="text-sm font-semibold">Overlay Options</label>
           <div className="space-y-2">
-            <Checkbox
-              label="Backdrop"
-              checked={activeBackdrop}
-              onChange={(e) => set("backdrop", e.target.checked)}
-              disabled={
-                (!config.overlay && !isMobile) ||
-                (isMobile && config.autoOverlay)
-              } // Disable if auto-managed
-              labelClassName={
-                !config.overlay && !isMobile ? "text-aer-muted-foreground" : ""
-              }
-            />
+            <Tooltip
+              content="Only available in Overlay Mode"
+              disabled={config.overlay || isMobile}
+              side="bottom"
+              variant="dark"
+              align="start"
+            >
+              <div>
+                <Checkbox
+                  label="Backdrop"
+                  checked={activeBackdrop}
+                  onChange={(e) => set("backdrop", e.target.checked)}
+                  disabled={
+                    (!config.overlay && !isMobile) ||
+                    (isMobile && config.autoOverlay)
+                  }
+                  labelClassName={
+                    !config.overlay && !isMobile
+                      ? "text-aer-muted-foreground"
+                      : ""
+                  }
+                />
+              </div>
+            </Tooltip>
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="w-full mt-2 px-3 py-1.5 bg-aer-primary text-aer-primary-foreground text-xs font-bold rounded-md"
@@ -501,7 +586,13 @@ function SidebarPlayground() {
 
                 {/* Content */}
                 <div className="flex-1 p-8" style={contentStyle}>
-                  <DemoContent />
+                  <DemoContent
+                    isMobile={isMobile}
+                    config={config}
+                    setIsOpen={setIsOpen}
+                    isOpen={isOpen}
+                    isDocumentLayout={isDocumentLayout}
+                  />
                 </div>
               </div>
             </div>
@@ -513,7 +604,13 @@ function SidebarPlayground() {
                 style={isMobile && config.autoOverlay ? {} : contentStyle}
               >
                 <div className="p-8 h-[200%]">
-                  <DemoContent />
+                  <DemoContent
+                    isMobile={isMobile}
+                    config={config}
+                    setIsOpen={setIsOpen}
+                    isOpen={isOpen}
+                    isDocumentLayout={isDocumentLayout}
+                  />
                 </div>
               </div>
               {renderSidebar()}
@@ -601,7 +698,6 @@ export function SidebarDoc() {
           </ul>
         </div>
       </DocSection>
-
       <DocSection
         title="When to Use"
         id="when-to-use"
@@ -683,6 +779,7 @@ export function SidebarDoc() {
             <Sidebar
               mode="absolute"
               position="left"
+              disableScrollIntoView={true}
               className="h-[400px] relative"
             >
               <SidebarHeader>
@@ -798,6 +895,7 @@ export default function NestedSidebarExample() {
               position="left"
               className="h-full bg-transparent border-r border-white/10"
               variant="aer"
+              disableScrollIntoView={true}
             >
               <SidebarHeader className="border-white/10">
                 <div className="flex items-center gap-3">
@@ -863,6 +961,7 @@ export default function NestedSidebarExample() {
           <Sidebar
             mode="floating"
             position="left"
+            disableScrollIntoView={true}
             className="relative h-[350px] !fixed-0 shadow-2xl"
           >
             <SidebarHeader className="border-none pb-0">
@@ -910,6 +1009,7 @@ export default function NestedSidebarExample() {
           <Sidebar
             mode="absolute"
             position="left"
+            disableScrollIntoView={true}
             className="h-[300px] relative border-none bg-sky-500/5 rounded-xl overflow-hidden"
           >
             <SidebarHeader className="bg-sky-500/10 border-sky-500/10">
@@ -1041,6 +1141,13 @@ export default function NestedSidebarExample() {
               description: "Additional CSS classes for styling.",
             },
             {
+              prop: "disableScrollIntoView",
+              type: "boolean",
+              default: "false",
+              description:
+                "Prevents the sidebar item from automatically scrolling into view when active. Useful for documentation pages or manual control.",
+            },
+            {
               prop: "showNestedBorder",
               type: "boolean",
               default: "true",
@@ -1049,6 +1156,15 @@ export default function NestedSidebarExample() {
             },
           ]}
         />
+        <div className="mt-4 p-4 bg-amber-500/10 border border-amber-500/20 rounded-lg">
+          <p className="text-sm text-amber-700 dark:text-amber-400">
+            <strong>Validation:</strong> The Sidebar enforces valid prop
+            combinations via TypeScript. For example, <code>hoverable</code> can
+            only be true if <code>collapsed</code> is true. <code>icon</code>{" "}
+            mode is inherently collapsed. Check your console or IDE for type
+            errors if you encounter issues.
+          </p>
+        </div>
       </div>
 
       <div>

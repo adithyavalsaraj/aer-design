@@ -33,7 +33,7 @@ export interface TabsProps
   lazy?: boolean;
 }
 
-export interface TabListProps extends HTMLAttributes<HTMLDivElement> {}
+export type TabListProps = HTMLAttributes<HTMLDivElement>;
 
 export interface TabTriggerProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -42,10 +42,10 @@ export interface TabTriggerProps
   icon?: ReactNode;
 }
 
-export interface TabContentProps extends HTMLAttributes<HTMLDivElement> {
+export type TabContentProps = HTMLAttributes<HTMLDivElement> & {
   value: string;
   /** If true, content stays mounted when inactive (display: none) instead of unmounting */
   forceMount?: boolean;
   /** If true, content is only rendered when it becomes active for the first time */
   lazy?: boolean;
-}
+};

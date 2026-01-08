@@ -321,7 +321,7 @@ function generateMissingList(priority: Priority) {
   const items = ROADMAP_DATA.filter(
     (i) => i.status !== "Completed" && i.priority === priority
   );
-  let counter = priority === "High" ? 1 : priority === "Medium" ? 4 : 7; // Just a loose continuation for numbering if needed, but we can just use loop index + offset
+  const counter = priority === "High" ? 1 : priority === "Medium" ? 4 : 7; // Just a loose continuation for numbering if needed, but we can just use loop index + offset
   // Actually the logic for numbering in the original file was continuous.
   // High: 1-3. Medium: 4-6. Low: 7-...
   // I entered 12 components in the new data.
@@ -388,7 +388,7 @@ const providerCount = ROADMAP_DATA.filter(
   (i) => i.status === "Completed" && i.category === "Configuration"
 ).length;
 
-let content = HEADER.replace(
+const content = HEADER.replace(
   "{{PROGRESS_SUMMARY}}",
   `${stats.completed}/${stats.total} components completed (${Math.round(
     (stats.completed / stats.total) * 100

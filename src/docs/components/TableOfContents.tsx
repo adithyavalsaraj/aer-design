@@ -10,10 +10,13 @@ export function RightTableOfContents({ items }: { items: TOCItem[] }) {
   const [activeId, setActiveId] = useState<string>(items[0]?.id || "");
   const isManualScrolling = useRef(false);
 
-  useEffect(() => {
+  const [prevItems, setPrevItems] = useState(items);
+  if (items !== prevItems) {
+    setPrevItems(items);
     setActiveId(items[0]?.id || "");
+    // eslint-disable-next-line react-hooks/refs
     isManualScrolling.current = false;
-  }, [items]);
+  }
 
   useEffect(() => {
     const handleScroll = () => {

@@ -2,6 +2,24 @@
 
 All notable changes to the Aer Design project will be documented in this file.
 
+## [v0.13.1] - 2026-01-08
+
+### Enhancements
+
+- **Sidebar Validation**: Implemented strict TypeScript discriminated unions for `SidebarProps` to enforce valid prop combinations (e.g., preventing `hoverable` without `collapsed`).
+- **Sidebar UX**:
+  - The "Close" button now correctly reappears when a collapsed sidebar is expanded via hover (Rail pattern).
+  - Documentation Playground now intelligently disables invalid options and provides tooltips explaining constraints.
+
+### Bug Fixes & Stability
+
+- **Sidebar Scroll**: Fixed an issue where the Sidebar documentation page would scroll unexpectedly on load by introducing `disableScrollIntoView` prop.
+- **Sidebar Close Icon**: Fixed logic to ensure the Close icon only appears when the sidebar is in an overlay state or visually expanded on mobile/hover.
+- **Toast**: Resolved critical React purity issues (removed `Math.random` in render, fixed side-effects) and removed duplicate event handlers.
+- **Overlay**: Fixed unsafe ref access during render by migrating positioning logic to `useLayoutEffect`.
+- **Hooks**: Optimized `useContrastColor` to fix memoization dependency issues.
+- **Code Quality**: Resolved 90+ linting errors/warnings across the codebase, including strict type fixes in `Tabs` and `TableOfContents`.
+
 ## [v0.13.0] - 2026-01-08
 
 ### New Features

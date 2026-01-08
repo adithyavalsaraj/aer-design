@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { type VariantProps, cva } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 import {
   ChevronDown,
   ChevronLeft,
@@ -87,21 +87,58 @@ const sidebarVariants = cva(
 
 // --- Types ---
 
-export interface SidebarProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "onToggle">,
-    VariantProps<typeof sidebarVariants> {
-  isOpen?: boolean; // Controls visibility (rendering)
-  hoverable?: boolean; // Enables "Rail" behavior: expand on hover
-  overlay?: boolean; // Enables overlay mode with backdrop
-  collapsed?: boolean;
-  backdrop?: boolean; // Shows backdrop (if overlay is true)
+// --- Types ---
+
+interface CommonSidebarProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "onToggle"> {
+  position?: "left" | "right" | "top" | "bottom" | null;
+  variant?: "default" | "aer";
+  isOpen?: boolean;
+  overlay?: boolean;
+  backdrop?: boolean;
   onBackdropClick?: () => void;
   onOpenChange?: (isOpen: boolean) => void;
   onCollapse?: (collapsed: boolean) => void;
   closeOnBackdropClick?: boolean;
   closeOnEscape?: boolean;
-  showNestedBorder?: boolean; // Toggles left border for nested items
+  showNestedBorder?: boolean;
+  disableScrollIntoView?: boolean;
 }
+
+// 1. Icon Mode: Must be collapsed (or implicit).
+interface SidebarIconProps extends CommonSidebarProps {
+  mode: "icon";
+  collapsed?: true; // Constraint: Cannot be false
+  hoverable?: boolean;
+}
+
+// 2. Overlay Mode: Cannot be collapsed.
+interface SidebarOverlayProps extends CommonSidebarProps {
+  mode: "overlay";
+  collapsed?: false; // Constraint: Cannot be true
+  hoverable?: false; // Constraint: Cannot be true
+}
+
+// 3. Standard Modes (Fixed, Sticky, Absolute, Floating)
+// Case A: Collapsed (allows hoverable)
+interface SidebarStandardCollapsedProps extends CommonSidebarProps {
+  mode?: "fixed" | "sticky" | "absolute" | "floating";
+  collapsed: true;
+  hoverable?: boolean;
+}
+
+// Case B: Expanded (disallows hoverable)
+interface SidebarStandardExpandedProps extends CommonSidebarProps {
+  mode?: "fixed" | "sticky" | "absolute" | "floating";
+  collapsed?: false;
+  hoverable?: false;
+}
+
+export type SidebarProps =
+  | SidebarIconProps
+  | SidebarOverlayProps
+  | SidebarStandardCollapsedProps
+  | SidebarStandardExpandedProps;
 
 // --- Context for Items ---
 interface SidebarContextValue {
@@ -110,12 +147,14 @@ interface SidebarContextValue {
   variant?: "default" | "aer";
   onOpenChange?: (isOpen: boolean) => void;
   showNestedBorder?: boolean;
+  disableScrollIntoView?: boolean;
 }
 const SidebarContext = React.createContext<SidebarContextValue>({
   collapsed: false,
   position: "left",
   variant: "default",
   showNestedBorder: true,
+  disableScrollIntoView: false,
 });
 
 export const useSidebar = () => React.useContext(SidebarContext);
@@ -143,6 +182,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
       closeOnBackdropClick = true,
       closeOnEscape = true,
       showNestedBorder = true,
+      disableScrollIntoView = false,
       ...props
     },
     ref
@@ -214,6 +254,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
           variant: variant || "default",
           onOpenChange,
           showNestedBorder,
+          disableScrollIntoView,
         }}
       >
         {/* Backdrop for Overlay Mode */}
@@ -397,7 +438,8 @@ interface SidebarItemProps
 // ... (SidebarItem component start)
 const SidebarItem = React.forwardRef<HTMLButtonElement, SidebarItemProps>(
   ({ className, icon, active, children, ...props }, ref) => {
-    const { collapsed, position, variant } = React.useContext(SidebarContext);
+    const { collapsed, position, variant, disableScrollIntoView } =
+      React.useContext(SidebarContext);
     const isHorizontal = position === "top" || position === "bottom";
 
     // Tooltip Logic (Portal)
@@ -422,7 +464,7 @@ const SidebarItem = React.forwardRef<HTMLButtonElement, SidebarItemProps>(
         // Actually, if sidebar is on 'right' position, tooltip should be on left.
         // Let's use the 'position' context!
 
-        let top = rect.top + rect.height / 2; // vertically centered
+        const top = rect.top + rect.height / 2; // vertically centered
         let left = 0;
         let transform = "translateY(-50%)";
 
@@ -451,13 +493,19 @@ const SidebarItem = React.forwardRef<HTMLButtonElement, SidebarItemProps>(
     };
 
     React.useEffect(() => {
-      if (active && !collapsed && !isHorizontal && buttonRef.current) {
+      if (
+        active &&
+        !collapsed &&
+        !isHorizontal &&
+        buttonRef.current &&
+        !disableScrollIntoView
+      ) {
         buttonRef.current.scrollIntoView({
           block: "nearest",
           behavior: "instant",
         });
       }
-    }, [active, collapsed, isHorizontal]);
+    }, [active, collapsed, isHorizontal, disableScrollIntoView]);
 
     return (
       <>
@@ -603,7 +651,7 @@ const SidebarNestedItem = ({
   React.useEffect(() => {
     if (isPanelOpen && buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
-      let styles: React.CSSProperties = {
+      const styles: React.CSSProperties = {
         position: "fixed",
         zIndex: 100,
       };

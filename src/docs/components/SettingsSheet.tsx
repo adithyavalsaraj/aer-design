@@ -24,7 +24,7 @@ export function SettingsSheet({ isOpen, onClose }: SettingsSheetProps) {
   // Handle animation states
   useEffect(() => {
     if (isOpen) {
-      setIsVisible(true);
+      requestAnimationFrame(() => setIsVisible(true));
     } else {
       const timer = setTimeout(() => setIsVisible(false), 300); // Match transition duration
       return () => clearTimeout(timer);

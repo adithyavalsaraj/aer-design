@@ -16,9 +16,9 @@ export interface DialogContextValue {
 
 export const DialogContext = createContext<DialogContextValue | null>(null);
 
-export function useDialogContext() {
+export function useDialogContext(optional?: boolean) {
   const context = useContext(DialogContext);
-  if (!context) {
+  if (!context && !optional) {
     throw new Error("Dialog components must be used within a Dialog");
   }
   return context;

@@ -7,12 +7,8 @@ import type { DialogFooterProps } from "./types";
 export const DialogFooter = React.forwardRef<HTMLDivElement, DialogFooterProps>(
   ({ children, className, align = "right", defaultActions }, ref) => {
     // Try to get context for onClose
-    let context;
-    try {
-      context = useDialogContext();
-    } catch {
-      context = null;
-    }
+    // Safe context access
+    const context = useDialogContext(true);
 
     const alignClasses = {
       left: "justify-start",

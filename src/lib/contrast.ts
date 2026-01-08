@@ -56,7 +56,7 @@ export function parseRgba(
 
   // Matches rgb(r, g, b), rgba(r, g, b, a), rgb(r g b), rgba(r g b / a)
   const match = cleanColor.match(
-    /rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)(?:[,\s\/]+([\d.]+))?\s*\)/
+    /rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)(?:[,\s/]+([\d.]+))?\s*\)/
   );
 
   if (!match) return null;

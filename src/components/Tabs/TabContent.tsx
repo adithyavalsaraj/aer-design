@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { cn } from "../../lib/utils";
 import { useTabs } from "./TabsContext";
 import type { TabContentProps } from "./types";
@@ -15,11 +15,9 @@ export const TabContent = ({
   const isActive = activeValue === value;
   const [hasBeenActive, setHasBeenActive] = useState(false);
 
-  useEffect(() => {
-    if (isActive && !hasBeenActive) {
-      setHasBeenActive(true);
-    }
-  }, [isActive, hasBeenActive]);
+  if (isActive && !hasBeenActive) {
+    setHasBeenActive(true);
+  }
 
   const shouldRender = forceMount || isActive || (lazy && hasBeenActive);
 

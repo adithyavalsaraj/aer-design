@@ -135,6 +135,7 @@ export const Tooltip = ({
   }, [isOpen, trigger]);
 
   // Clone child and attach trigger ref and handlers
+  // eslint-disable-next-line react-hooks/refs
   const triggerElement = React.cloneElement(children, {
     ref: triggerRef,
     ...(trigger === "hover"

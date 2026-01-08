@@ -21,67 +21,61 @@ export function useContrastColor(
   options?: ContrastOptions,
   ref?: React.RefObject<HTMLElement | null>
 ): string | undefined {
-  const [detectedColor, setDetectedColor] = useState<string | undefined>(
-    backgroundColor
+  const [computedColor, setComputedColor] = useState<string | undefined>(
+    undefined
   );
 
-  // Sync detected color with backgroundColor prop
+  // If we have a ref but no explicit background color, we need to detect it
   useEffect(() => {
-    if (backgroundColor) {
-      setDetectedColor(backgroundColor);
+    // If explicit background is provided, we don't need to compute (unless we want to support fallback?)
+    // Actually, usually if backgroundColor is provided, we use it.
+    if (backgroundColor || !ref?.current) {
+      return;
     }
-  }, [backgroundColor]);
 
-  // Effect to detect color from ref if backgroundColor is not provided
-  useEffect(() => {
-    if (!backgroundColor && ref?.current) {
-      const detect = () => {
-        const color = getComputedBackgroundColor(ref.current!);
-        if (color) {
-          setDetectedColor(color);
-        } else {
-          setDetectedColor(undefined);
-        }
-      };
+    const detect = () => {
+      const color = getComputedBackgroundColor(ref.current!);
+      if (color) {
+        setComputedColor(color);
+      }
+    };
 
-      // Initial detection
-      detect();
+    // Initial detection
+    // Use requestAnimationFrame to avoid "setState during render" warning if this effect runs synchronously often?
+    // Actually, effect runs after render, so it's fine.
+    detect();
 
-      // Observe the element itself for status variations or direct style changes
-      const elementObserver = new MutationObserver(detect);
-      elementObserver.observe(ref.current, { attributes: true });
+    const elementObserver = new MutationObserver(detect);
+    elementObserver.observe(ref.current, { attributes: true });
 
-      // Observe the root element for theme changes (class="dark", data-theme="...")
-      const rootObserver = new MutationObserver(detect);
-      rootObserver.observe(document.documentElement, {
-        attributes: true,
-        attributeFilter: ["class", "data-theme"],
-      });
+    const rootObserver = new MutationObserver(detect);
+    rootObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class", "data-theme"],
+    });
 
-      return () => {
-        elementObserver.disconnect();
-        rootObserver.disconnect();
-      };
-    }
+    return () => {
+      elementObserver.disconnect();
+      rootObserver.disconnect();
+    };
   }, [backgroundColor, ref]);
 
+  const effectiveColor = backgroundColor ?? computedColor;
+
+  const { lightColor, darkColor, wcagLevel, isLargeText } = options || {};
+  const memoizedOptions = useMemo(
+    () => ({ lightColor, darkColor, wcagLevel, isLargeText }),
+    [lightColor, darkColor, wcagLevel, isLargeText]
+  );
+
   return useMemo(() => {
-    // If no color detected, return undefined to avoid forcing an incorrect color
-    if (!detectedColor) {
-      return undefined;
-    }
+    if (!effectiveColor) return undefined;
 
     try {
-      return getAccessibleTextColor(detectedColor, options);
+      return getAccessibleTextColor(effectiveColor, memoizedOptions);
     } catch (error) {
-      console.error("Error calculating contrast color:", error);
+      console.warn("Error calculating contrast color:", error);
       return undefined;
     }
-  }, [
-    detectedColor,
-    options?.lightColor,
-    options?.darkColor,
-    options?.wcagLevel,
-    options?.isLargeText,
-  ]);
+  }, [effectiveColor, memoizedOptions]);
 }

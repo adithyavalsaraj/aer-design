@@ -210,7 +210,7 @@ export function CodeBlock({ ts, js, fullCode }: CodeBlockProps) {
         .replace(/:\s*(string|number|boolean|any|void|never|unknown)/g, "")
         // Remove capitalized type annotations (likely custom types/interfaces)
         // This regex attempts to match : Type<Generic>[] but stop before assignments
-        .replace(/:\s*[A-Z][a-zA-Z0-9_<>\[\]|.]*/g, "")
+        .replace(/:\s*[A-Z][a-zA-Z0-9_<>[\]|.]*/g, "")
         .trim()
     );
   };

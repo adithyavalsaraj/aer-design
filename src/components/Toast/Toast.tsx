@@ -98,9 +98,16 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
 
     // Handle Declarative Standalone Mode
     const activeToastId = React.useRef<string | null>(null);
-    const internalId = React.useRef(
-      id || `toast-${Math.random().toString(36).substr(2, 9)}`
-    ).current;
+    const generatedId = React.useId();
+    const internalId = id || generatedId;
+
+    const handleDismiss = () => {
+      if (onOpenChange) {
+        onOpenChange(false);
+      } else {
+        setIsVisible(false);
+      }
+    };
 
     React.useEffect(() => {
       // If NOT rendered by container, we delegate to the global manager
@@ -160,7 +167,7 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
       };
     }, [open, isRenderedByContainer, dismissOnUnmount]);
 
-    if (!isRenderedByContainer) return null;
+    // Moved early return to end of render to satisfy rules-of-hooks
 
     React.useEffect(() => {
       if (open !== undefined) {
@@ -227,15 +234,7 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
       setIsPaused(false);
     };
 
-    const handleDismiss = () => {
-      if (onOpenChange) {
-        onOpenChange(false);
-      } else {
-        setIsVisible(false);
-      }
-    };
-
-    if (!isVisible) return null;
+    if (!isRenderedByContainer || !isVisible) return null;
 
     const isVerticalSwipe =
       swipeDirection === "up" ||
@@ -263,7 +262,7 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
       (x !== undefined || y !== undefined)
         ? { position: "fixed", zIndex: 100 }
         : {}),
-      // @ts-ignore
+      // @ts-expect-error -- CSS variable
       "--toast-opacity": getOpacity(props.transparency),
       // Apply opacity to background for non-aer variants
       ...(variant !== "aer" && props.transparency

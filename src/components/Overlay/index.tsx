@@ -43,9 +43,8 @@ export const Overlay = ({
     [isControlled, onOpenChange]
   );
 
-  const [effectiveSide, setEffectiveSide] = React.useState<typeof side>(side);
-  const [effectiveAlign, setEffectiveAlign] =
-    React.useState<typeof align>(align);
+  const [positionStyles, setPositionStyles] =
+    React.useState<React.CSSProperties>({}); // New state for calculated styles
 
   const triggerRef = React.useRef<HTMLElement>(null);
   const overlayRef = React.useRef<HTMLDivElement>(null);
@@ -64,8 +63,54 @@ export const Overlay = ({
         sideOffset,
       });
 
-      setEffectiveSide(result.side as typeof side);
-      setEffectiveAlign(result.align);
+      // --- MOVED STYLING LOGIC START ---
+      const styles: React.CSSProperties = { position: strategy };
+      const currentSide = result.side as typeof side;
+      const currentAlign = result.align;
+
+      // Vertical positioning
+      if (currentSide === "top") {
+        styles.bottom = `${
+          window.innerHeight - triggerRect.top + sideOffset
+        }px`;
+      } else if (currentSide === "bottom") {
+        styles.top = `${triggerRect.bottom + sideOffset}px`;
+      } else {
+        // For left/right, center vertically
+        if (currentAlign === "start") {
+          styles.top = `${triggerRect.top}px`;
+        } else if (currentAlign === "end") {
+          styles.bottom = `${window.innerHeight - triggerRect.bottom}px`;
+        } else {
+          styles.top = `${triggerRect.top + triggerRect.height / 2}px`;
+          styles.transform = "translateY(-50%)";
+        }
+      }
+
+      // Horizontal positioning
+      if (currentSide === "left") {
+        styles.right = `${window.innerWidth - triggerRect.left + sideOffset}px`;
+      } else if (currentSide === "right") {
+        styles.left = `${triggerRect.right + sideOffset}px`;
+      } else {
+        // For top/bottom, align horizontally
+        if (currentAlign === "start") {
+          styles.left = `${triggerRect.left + alignOffset}px`;
+        } else if (currentAlign === "end") {
+          styles.right = `${
+            window.innerWidth - triggerRect.right + alignOffset
+          }px`;
+        } else {
+          styles.left = `${
+            triggerRect.left + triggerRect.width / 2 + alignOffset
+          }px`;
+          styles.transform = styles.transform
+            ? `${styles.transform} translateX(-50%)`
+            : "translateX(-50%)";
+        }
+      }
+      setPositionStyles(styles);
+      // --- MOVED STYLING LOGIC END ---
     }
   }, [isOpen, side, align, sideOffset]);
 
@@ -169,7 +214,8 @@ export const Overlay = ({
 
   // Clone child and attach trigger ref and handlers
   const triggerElement = children
-    ? React.cloneElement(children, {
+    ? // eslint-disable-next-line react-hooks/refs
+      React.cloneElement(children, {
         ref: triggerRef,
         onClick: (e: React.MouseEvent) => {
           (children.props as any).onClick?.(e);
@@ -180,56 +226,6 @@ export const Overlay = ({
       } as any)
     : null;
 
-  // Calculate position styles
-  const getPositionStyles = (): React.CSSProperties => {
-    if (!triggerRef.current) return {};
-
-    const triggerRect = triggerRef.current.getBoundingClientRect();
-    const styles: React.CSSProperties = { position: strategy };
-
-    // Vertical positioning
-    if (effectiveSide === "top") {
-      styles.bottom = `${window.innerHeight - triggerRect.top + sideOffset}px`;
-    } else if (effectiveSide === "bottom") {
-      styles.top = `${triggerRect.bottom + sideOffset}px`;
-    } else {
-      // For left/right, center vertically
-      if (effectiveAlign === "start") {
-        styles.top = `${triggerRect.top}px`;
-      } else if (effectiveAlign === "end") {
-        styles.bottom = `${window.innerHeight - triggerRect.bottom}px`;
-      } else {
-        styles.top = `${triggerRect.top + triggerRect.height / 2}px`;
-        styles.transform = "translateY(-50%)";
-      }
-    }
-
-    // Horizontal positioning
-    if (effectiveSide === "left") {
-      styles.right = `${window.innerWidth - triggerRect.left + sideOffset}px`;
-    } else if (effectiveSide === "right") {
-      styles.left = `${triggerRect.right + sideOffset}px`;
-    } else {
-      // For top/bottom, align horizontally
-      if (effectiveAlign === "start") {
-        styles.left = `${triggerRect.left + alignOffset}px`;
-      } else if (effectiveAlign === "end") {
-        styles.right = `${
-          window.innerWidth - triggerRect.right + alignOffset
-        }px`;
-      } else {
-        styles.left = `${
-          triggerRect.left + triggerRect.width / 2 + alignOffset
-        }px`;
-        styles.transform = styles.transform
-          ? `${styles.transform} translateX(-50%)`
-          : "translateX(-50%)";
-      }
-    }
-
-    return styles;
-  };
-
   // Render overlay content
   const { autoContrast } = useAerConfig();
   const contrastColor = useContrastColor(
@@ -238,7 +234,7 @@ export const Overlay = ({
 
   const mergedStyles: React.CSSProperties = {
     ...props.style,
-    ...getPositionStyles(),
+    ...positionStyles,
   };
 
   if (autoContrast && props.style?.backgroundColor) {

@@ -5,15 +5,13 @@ import { ToastContainer } from "./ToastContainer.tsx";
 import type { ToastProps } from "./types.ts";
 
 export const GlobalToastContainer: React.FC = () => {
-  const [toasts, setToasts] = useState<ToastProps[]>([]);
+  const [toasts, setToasts] = useState<ToastProps[]>(() =>
+    globalToastManager.getToasts()
+  );
 
   useEffect(() => {
     // Subscribe to global toast manager
     const unsubscribe = globalToastManager.subscribe(setToasts);
-
-    // Initialize with current toasts
-    setToasts(globalToastManager.getToasts());
-
     return () => unsubscribe();
   }, []);
 

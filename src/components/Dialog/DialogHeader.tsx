@@ -27,12 +27,8 @@ export const DialogHeader = React.forwardRef<HTMLDivElement, DialogHeaderProps>(
     ref
   ) => {
     // Try to get context, fall back to props if not in Dialog
-    let context;
-    try {
-      context = useDialogContext();
-    } catch {
-      context = null;
-    }
+    // Safe context access
+    const context = useDialogContext(true);
 
     // Use context values if available, otherwise use props
     const showCloseButton =
