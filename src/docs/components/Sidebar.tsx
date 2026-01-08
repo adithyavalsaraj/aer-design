@@ -145,6 +145,12 @@ export const NAV_ITEMS = [
     category: "Layout",
   },
   {
+    id: "accordion",
+    label: "Accordion",
+    icon: Layout,
+    category: "Layout",
+  },
+  {
     id: "tabs",
     label: "Tabs",
     icon: Layout,

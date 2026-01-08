@@ -86,6 +86,7 @@ export function LoginForm() {
 | **Toast**     | Non-blocking notifications with swipe gestures, stacking, and 9 positioning zones.                  |
 | **Divider**   | A visual separator to group content or define sections.                                             |
 | **Skeleton**  | Placeholder loading states for content, improving perceived performance.                            |
+| **Accordion** | Collapsible content panels for progressive disclosure with full accessibility.                      |
 
 ## Utilities
 

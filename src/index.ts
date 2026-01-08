@@ -1,5 +1,6 @@
 import "./index.css";
 
+export * from "./components/Accordion";
 export * from "./components/AerConfigProvider";
 export * from "./components/Avatar";
 export * from "./components/Badge";
@@ -23,7 +24,6 @@ export * from "./components/Tabs";
 export * from "./components/Textarea";
 export * from "./components/ThemeProvider";
 export * from "./components/Tooltip";
-
 export * from "./hooks";
 export * from "./lib/utils";
 export * from "./theme/plugin";

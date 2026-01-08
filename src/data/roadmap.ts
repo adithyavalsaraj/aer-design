@@ -175,6 +175,20 @@ export const ROADMAP_DATA: ComponentSpec[] = [
     description: "Loading placeholder",
   },
   {
+    name: "Accordion",
+    version: "v0.12.0",
+    category: "Data Display",
+    status: "Completed",
+    description: "Collapsible content panels for progressive disclosure",
+    features: [
+      "Single and multiple expansion modes",
+      "Smooth animations",
+      "Keyboard navigation",
+      "Custom icons",
+      "Nested accordions support",
+    ],
+  },
+  {
     name: "ThemeProvider",
     version: "v0.1.0",
     category: "Configuration",
@@ -197,20 +211,6 @@ export const ROADMAP_DATA: ComponentSpec[] = [
   },
 
   // --- High Priority ---
-  {
-    name: "Accordion",
-    category: "Data Display",
-    status: "Planned",
-    priority: "High",
-    description: "Collapsible content panels for progressive disclosure",
-    features: [
-      "Single and multiple expansion modes",
-      "Smooth animations",
-      "Keyboard navigation",
-      "Custom icons",
-      "Nested accordions support",
-    ],
-  },
   {
     name: "Popover",
     category: "Data Display",

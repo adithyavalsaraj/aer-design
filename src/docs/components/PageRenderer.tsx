@@ -1,3 +1,4 @@
+import { AccordionDoc } from "../pages/AccordionDoc";
 import { AvatarDoc } from "../pages/AvatarDoc";
 import { BadgeDoc } from "../pages/BadgeDoc";
 import { ButtonDoc } from "../pages/ButtonDoc";
@@ -34,6 +35,8 @@ export function PageRenderer({ activePage }: PageRendererProps) {
   switch (activePage) {
     case "getting-started":
       return <GetStartedDoc />;
+    case "accordion":
+      return <AccordionDoc />;
     case "button":
       return <ButtonDoc />;
     case "badge":

@@ -11,6 +11,14 @@ All notable changes to the Aer Design project will be documented in this file.
   - **Global Z-Order**: Interacting with any window (click, drag, maximize) automatically brings it to the front of the visual stack.
   - **Viewport Safety**: Intelligent cascading and auto-clamping ("rescue logic") ensures windows stay visible on all screen sizes and during resize.
   - **Non-Blocking Overlays**: Transparent backdrops allow seamless interaction with background elements in multi-tasking environments.
+- **Accordion**: Launched a comprehensive collapsible content system (v0.13.0).
+  - **Expansion Modes**: Supports both single and multiple tab expansion.
+  - **State Management**: Seamlessly switch between controlled and uncontrolled modes.
+  - **Interaction**: Full WAI-ARIA compliance with advanced keyboard navigation (Arrow keys, Home, End).
+  - **Lazy Rendering**: Optional lazy loading to optimize performance for large content blocks.
+  - **Headless Mode**: Complete control over markup with header and content templates.
+  - **Size Variants**: `sm`, `md`, and `lg` options for versatile layout integration.
+  - **Theming**: Premium "aer" glassmorphism variant and full CSS variable override support.
 - **Improved Metadata Registry**: Dialogs now support `title` and `icon` props for automatic taskbar identification.
 - **Granular Styling**: Dedicated CSS classes for every layer, from headers to backdrop overlays.
 - **State Persistence**: Remembers precise position and size across maximization, minimization, and restore cycles.
