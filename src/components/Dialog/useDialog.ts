@@ -94,7 +94,6 @@ export const useDialog = ({
   const minimize = useCallback(() => {
     setDialogState((prev) => ({
       ...prev,
-      isMaximized: false,
       isMinimized: true,
     }));
     onMinimize?.();
@@ -103,7 +102,6 @@ export const useDialog = ({
   const restore = useCallback(() => {
     setDialogState((prev) => ({
       ...prev,
-      isMaximized: false,
       isMinimized: false,
     }));
     onRestore?.();
@@ -111,11 +109,15 @@ export const useDialog = ({
 
   const toggleMaximize = useCallback(() => {
     if (dialogState.isMaximized) {
-      restore();
+      setDialogState((prev) => ({
+        ...prev,
+        isMaximized: false,
+      }));
+      onRestore?.();
     } else {
       maximize();
     }
-  }, [dialogState.isMaximized, maximize, restore]);
+  }, [dialogState.isMaximized, maximize, onRestore]);
 
   const toggleMinimize = useCallback(() => {
     if (dialogState.isMinimized) {

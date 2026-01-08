@@ -628,15 +628,15 @@ export default function DialogSizes() {
               within viewport bounds on resize.
             </li>
             <li>
-              <strong>Global Z-Order:</strong> The{" "}
+              <strong>Intelligent Stacking:</strong> The{" "}
               <code>DialogStackingManager</code> tracks interactions. Clicking,
-              dragging, or maximizing any dialog automatically brings it to the
-              front of the visual stack.
+              dragging, maximizing, or <strong>restoring</strong> any dialog
+              automatically promotes it to the top of the visual stack.
             </li>
             <li>
-              <strong>State Memory:</strong> Dialogs remember their size and
-              position before minimization, ensuring a seamless restore
-              animation.
+              <strong>State Memory:</strong> Dialogs remember their size,
+              position, and <strong>maximization state</strong> across minimize
+              cycles, ensuring a seamless user experience.
             </li>
           </ul>
         </div>

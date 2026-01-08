@@ -129,7 +129,7 @@ export const Dialog = ({
       !dialogState.isMinimized &&
       !dialogState.isMaximized
     ) {
-      // Restoring from minimized or maximized - restore saved position
+      // Restoring from minimized or maximized to NORMAL state - restore saved position
       if (savedPositionBeforeMinMax.current) {
         setPosition(savedPositionBeforeMinMax.current);
         savedPositionBeforeMinMax.current = null;
@@ -385,17 +385,7 @@ export const Dialog = ({
   const getDialogStyles = (): React.CSSProperties => {
     const styles: React.CSSProperties = {};
 
-    // Maximized state
-    if (dialogState.isMaximized) {
-      return {
-        width: "100vw",
-        height: "100vh",
-        maxWidth: "none",
-        transform: "none",
-      };
-    }
-
-    // Minimized state
+    // Minimized state ALWAYS takes precedence for visual rendering
     if (dialogState.isMinimized) {
       if (stackingMode === "scroll") {
         return { display: "none" };
@@ -405,8 +395,6 @@ export const Dialog = ({
       const gap = 20;
       const width = 240;
       const totalWidth = width + gap;
-      // How many fit in one row? (Available width - margin) / item width
-      // We assume left margin 20px.
       const maxPerRow = Math.max(
         1,
         Math.floor((windowWidth - 40) / totalWidth)
@@ -415,7 +403,6 @@ export const Dialog = ({
       const row = Math.floor(minimizedIndex / maxPerRow);
       const col = minimizedIndex % maxPerRow;
 
-      // Stack upwards from bottom: 20px (base) + row * (60px height + 10px gap)
       const bottomOffset = 20 + row * 70;
       const leftOffset = 20 + col * totalWidth;
 
@@ -423,7 +410,7 @@ export const Dialog = ({
         height: "auto",
         maxHeight: "60px",
         overflow: "hidden",
-        width: `${width}px`, // Fixed width for minimized tabs
+        width: `${width}px`,
         left: minimizedIndex >= 0 ? `${leftOffset}px` : "20px",
         bottom: `${bottomOffset}px`,
         position: "fixed",
@@ -431,7 +418,21 @@ export const Dialog = ({
       };
     }
 
-    // Custom size
+    // Maximized state (only if not minimized)
+    if (dialogState.isMaximized) {
+      return {
+        width: "100vw",
+        height: "100vh",
+        maxWidth: "none",
+        transform: "none",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        margin: 0,
+      };
+    }
+
+    // Custom size (from resizing)
     if (resizeSize) {
       styles.width = resizeSize.width;
       styles.height = resizeSize.height;
@@ -448,7 +449,6 @@ export const Dialog = ({
       styles.transform = "none";
       styles.margin = 0;
     } else if (x !== undefined && y !== undefined && position === "center") {
-      // Fallback for first render before effect kicks in
       styles.position = "fixed";
       styles.left = x;
       styles.top = y;

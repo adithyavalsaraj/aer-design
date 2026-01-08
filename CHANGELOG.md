@@ -20,8 +20,11 @@ All notable changes to the Aer Design project will be documented in this file.
   - **Size Variants**: `sm`, `md`, and `lg` options for versatile layout integration.
   - **Theming**: Premium "aer" glassmorphism variant and full CSS variable override support.
 - **Improved Metadata Registry**: Dialogs now support `title` and `icon` props for automatic taskbar identification.
+- **Advanced Dialog Window Management**:
+  - **Intelligent Stacking**: Restoring a minimized dialog now automatically brings it to the front of the Z-stack.
+  - **State Persistence**: Precise position, custom size, and maximization state are now preserved across all interaction cycles (minimize, maximize, restore).
+  - **Visual Priority**: Minimized "Taskbar" view now correctly takes precedence over maximized states for visual rendering.
 - **Granular Styling**: Dedicated CSS classes for every layer, from headers to backdrop overlays.
-- **State Persistence**: Remembers precise position and size across maximization, minimization, and restore cycles.
 
 ## [v0.12.0] - 2026-01-07
 

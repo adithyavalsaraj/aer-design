@@ -108,7 +108,7 @@ export const DialogHeader = React.forwardRef<HTMLDivElement, DialogHeaderProps>(
           {showMaximizeButton && (
             <button
               type="button"
-              onClick={isMaximized ? onRestore : onMaximize}
+              onClick={onMaximize}
               className={cn(
                 "p-1.5 rounded-md hover:bg-aer-accent transition-colors",
                 "text-aer-muted-foreground hover:text-aer-foreground",

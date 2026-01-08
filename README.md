@@ -168,12 +168,11 @@ function Tooltip({ content, children }) {
 
 Aer Design's Dialog component isn't just a modal—it's a full-**Desktop-Class Window System**.
 
-- **Customizable Stacking**: Choose between the classic **Wrap Grid** (bottom-left stacking) or the premium **Scroll Taskbar** (centered dock with horizontal overflow).
-- **Global Z-Order**: Interacting with any window (click, drag, maximize) automatically brings it to the front of the visual stack.
+- **Intelligent Stacking**: Restoring or interacting with any window automatically promotes it to the top of the visual stack, ensuring no "buried" windows.
+- **State Persistence**: Remembers precise position, custom size, and maximization state across minimize/restore cycles.
 - **Viewport Safety**: Intelligent cascading and auto-clamping ("rescue logic") ensures windows stay visible on all screen sizes and during resize.
 - **Non-Blocking Overlays**: Transparent backdrops allow seamless interaction with background elements in multi-tasking environments.
 - **Granular Styling**: Dedicated CSS classes for every layer, from headers to backdrop overlays.
-- **State Persistence**: Remembers precise position and size across maximization, minimization, and restore cycles.
 
 ### Auto-Positioning
 
