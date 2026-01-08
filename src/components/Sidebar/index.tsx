@@ -450,6 +450,15 @@ const SidebarItem = React.forwardRef<HTMLButtonElement, SidebarItemProps>(
       setTooltipStyles(null);
     };
 
+    React.useEffect(() => {
+      if (active && !collapsed && !isHorizontal && buttonRef.current) {
+        buttonRef.current.scrollIntoView({
+          block: "nearest",
+          behavior: "instant",
+        });
+      }
+    }, [active, collapsed, isHorizontal]);
+
     return (
       <>
         <button
@@ -582,6 +591,13 @@ const SidebarNestedItem = ({
     };
     return checkActive(children);
   }, [children]);
+
+  // Auto-expand if a child is active
+  React.useEffect(() => {
+    if (hasActiveChild && !collapsed && !isHorizontal) {
+      setIsExpanded(true);
+    }
+  }, [hasActiveChild, collapsed, isHorizontal]);
 
   // Calculate panel position when opened
   React.useEffect(() => {
