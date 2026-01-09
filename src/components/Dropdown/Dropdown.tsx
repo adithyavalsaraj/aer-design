@@ -2,6 +2,7 @@ import { useAerConfig } from "@/components/AerConfigProvider";
 import { useAutoPosition } from "@/hooks/useAutoPosition";
 import { useScrollToActive } from "@/hooks/useScrollToActive";
 import { useVirtualization } from "@/hooks/useVirtualization";
+import { fuzzyScore } from "@/lib/fuzzy";
 import { cn } from "@/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Check, ChevronDown, Loader2, Search, X } from "lucide-react";
@@ -282,7 +283,7 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
           const matchingItems = opt.items.filter((item) => {
             const labelText =
               typeof item.label === "string" ? item.label : String(item.value);
-            return labelText.toLowerCase().includes(searchQuery.toLowerCase());
+            return fuzzyScore(labelText, searchQuery) > 0;
           });
           if (matchingItems.length > 0) {
             filtered.push({
@@ -298,7 +299,7 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
           // Regular item
           const labelText =
             typeof opt.label === "string" ? opt.label : String(opt.value);
-          if (labelText.toLowerCase().includes(searchQuery.toLowerCase())) {
+          if (fuzzyScore(labelText, searchQuery) > 0) {
             filtered.push(opt);
           }
         }

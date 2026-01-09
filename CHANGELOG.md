@@ -7,11 +7,22 @@ All notable changes to the Aer Design project will be documented in this file.
 ### Command Palette Documentation
 
 - **Documentation**: Comprehensive documentation released for the `CommandPalette` component (`/command-palette`).
+
   - **Tabs Structure**: Fully standardized 3-tab layout (Overview, API, Theming) as per `COMPONENT_STANDARDS.md`.
   - **Deep Dives**: Added detailed sections for "Customizing Shortcuts" (using `useShortcut`), "Filtering & Groups" (fuzzy search logic), and "Custom Rendering".
   - **Aer Variant**: Dedicated section showcasing the premium glassmorphism variant suitable for complex backgrounds.
   - **API Reference**: Complete coverage of all props, including `renderItem` for custom UI and `CommandItem` interface types.
   - **Search Integration**: Automatically registered in the documentation site's Global Search.
+
+  ### Search Intelligence
+
+  - **Fuzzy Engine**: Implemented a robust fuzzy search algorithm (`fuzzyScore`) supporting:
+    - **Acronyms**: "rjs" matches "React JS".
+    - **Typo Tolerance**: Handles minor typos and contiguous textual matches.
+    - **Smart Boundaries**: Boosts score for word-start matches.
+  - **Component Upgrades**: `Autocomplete` and `Dropdown` now use the new fuzzy engine by default for local filtering.
+  - **Public Utility**: Exported `fuzzyScore` from the library root for use in custom applications.
+  - **Documentation**: Added dedicated "Fuzzy Search" sections to `Autocomplete` and `Dropdown` docs, plus a new "Helpers" tab in `Utilities`.
 
 ### Bug Fixes & Improvements
 

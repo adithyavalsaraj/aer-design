@@ -9,6 +9,7 @@ import {
   getStats,
   type Category,
 } from "@/data/roadmap";
+import { fuzzyScore } from "@/lib/fuzzy";
 import { cn } from "@/lib/utils";
 import {
   Check,
@@ -50,10 +51,11 @@ export function RoadmapDoc() {
   // Filter components based on search, category, and status
   const filteredComponents = useMemo(() => {
     const filtered = ROADMAP_DATA.filter((component) => {
+      // Fuzzy search logic
       const matchesSearch =
         searchQuery === "" ||
-        component.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        component.description.toLowerCase().includes(searchQuery.toLowerCase());
+        fuzzyScore(component.name, searchQuery) > 0 ||
+        fuzzyScore(component.description, searchQuery) > 0;
 
       const matchesCategory =
         selectedCategory === "All" || component.category === selectedCategory;
@@ -65,6 +67,21 @@ export function RoadmapDoc() {
 
       return matchesSearch && matchesCategory && matchesStatus;
     });
+
+    // Score-based sorting if searching
+    if (searchQuery) {
+      return filtered.sort((a, b) => {
+        const scoreA = Math.max(
+          fuzzyScore(a.name, searchQuery) * 2, // Title weight
+          fuzzyScore(a.description, searchQuery)
+        );
+        const scoreB = Math.max(
+          fuzzyScore(b.name, searchQuery) * 2,
+          fuzzyScore(b.description, searchQuery)
+        );
+        return scoreB - scoreA;
+      });
+    }
 
     // Custom sorting: Completed > High Priority > Medium > Low
     return filtered.sort((a, b) => {

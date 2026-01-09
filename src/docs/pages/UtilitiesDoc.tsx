@@ -471,6 +471,55 @@ export default function SettingsPanel() {
     </div>
   );
 
+  const helpers = (
+    <div className="space-y-12">
+      <DocSection
+        title="Fuzzy Search"
+        id="fuzzy-search"
+        description="Powerful fuzzy matching algorithm for filtering lists and search."
+      >
+        <div className="space-y-4">
+          <p className="text-sm text-aer-muted-foreground">
+            The <code>fuzzyScore</code> utility provides a robust scoring
+            algorithm that handles typos, acronyms, and contiguous matches. It
+            returns a score greater than 0 for matches, with higher scores
+            indicating better relevance.
+          </p>
+          <CodeBlock
+            ts={`import { fuzzyScore } from "aer-design";
+  
+  const score = fuzzyScore("User Account Settings", "uas"); 
+  // Score > 0 (Matches acronym "U"ser "A"ccount "S"ettings)
+  
+  const score2 = fuzzyScore("Authentication", "auth");
+  // High score (Starts with match)`}
+          />
+          <div className="p-4 border rounded-lg bg-aer-muted/5">
+            <h4 className="font-semibold mb-2">Features</h4>
+            <ul className="list-disc pl-5 text-sm space-y-1 text-aer-muted-foreground">
+              <li>
+                <strong>Acronym Support:</strong> Matches initials (e.g., "ua"
+                matches "User Account")
+              </li>
+              <li>
+                <strong>Word Boundaries:</strong> Boosts scores for matches at
+                start of words
+              </li>
+              <li>
+                <strong>Contiguous Matches:</strong> Favors sequential
+                characters
+              </li>
+              <li>
+                <strong>Compactness:</strong> Penalizes matches that are spread
+                out widely
+              </li>
+            </ul>
+          </div>
+        </div>
+      </DocSection>
+    </div>
+  );
+
   const theming = (
     <DocSection
       title="CSS Variables"
@@ -538,6 +587,12 @@ html[dir="rtl"] {
               { id: "provider-props", title: "AerConfigProviderProps" },
               { id: "hook-return", title: "useAerConfig Return" },
             ],
+          },
+          {
+            id: "helpers",
+            label: "Helpers",
+            content: helpers,
+            toc: [{ id: "fuzzy-search", title: "Fuzzy Search" }],
           },
           {
             id: "theming",

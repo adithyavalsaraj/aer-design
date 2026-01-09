@@ -519,19 +519,21 @@ export default function AerDropdownExample() {
             <Dropdown
               searchable
               options={[
-                { label: "React", value: "react" },
-                { label: "Vue", value: "vue" },
+                { label: "React Native", value: "react-native" },
+                { label: "React JS", value: "react-js" },
+                { label: "Vue JS", value: "vue" },
                 { label: "Angular", value: "angular" },
-                { label: "Svelte", value: "svelte" },
-                { label: "Solid", value: "solid" },
               ]}
-              placeholder="Search framework..."
+              placeholder="Search (Try 'rn' for React Native)..."
             />
           </div>
         </div>
         <CodeBlock
-          ts={`<Dropdown searchable options={frameworks} placeholder="Search framework..." />`}
-          fullCode={`import { Dropdown } from "aer-design";\n\nconst frameworks = [\n  { label: "React", value: "react" },\n  { label: "Vue", value: "vue" },\n  { label: "Angular", value: "angular" },\n];\n\nexport default function SearchDemo() {\n  return (\n    <Dropdown searchable options={frameworks} placeholder="Search framework..." />\n  );\n}`}
+          ts={`<Dropdown 
+    searchable 
+    options={[{ label: "React Native", ... }]} 
+    // "rn" will match "React Native" via fuzzy acronym matching
+  />`}
         />
       </DocSection>
 

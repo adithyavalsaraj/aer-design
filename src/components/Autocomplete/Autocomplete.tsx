@@ -3,6 +3,7 @@ import { useAutoPosition } from "@/hooks/useAutoPosition";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useScrollToActive } from "@/hooks/useScrollToActive";
 import { useVirtualization } from "@/hooks/useVirtualization";
+import { fuzzyScore } from "@/lib/fuzzy";
 import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
 import { Check, ChevronDown, Loader2, X } from "lucide-react";
@@ -78,7 +79,7 @@ const defaultFilterOption = (
   if (!query) return true;
   const labelText =
     typeof option.label === "string" ? option.label : String(option.value);
-  return labelText.toLowerCase().includes(query.toLowerCase());
+  return fuzzyScore(labelText, query) > 0;
 };
 
 // Highlight matching text in label

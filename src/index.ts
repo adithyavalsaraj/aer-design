@@ -28,5 +28,6 @@ export * from "./components/Textarea";
 export * from "./components/ThemeProvider";
 export * from "./components/Tooltip";
 export * from "./hooks";
+export * from "./lib/fuzzy";
 export * from "./lib/utils";
 export * from "./theme/plugin";

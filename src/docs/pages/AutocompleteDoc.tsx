@@ -558,6 +558,25 @@ export default function GroupedExample() {
       </DocSection>
 
       <DocSection
+        title="Fuzzy Search"
+        id="fuzzy-search"
+        description="Smart pattern matching is enabled by default."
+      >
+        <p className="text-sm text-aer-muted-foreground mb-4">
+          Autocomplete uses the powerful <code>fuzzyScore</code> algorithm by
+          default for local filtering. This supports acronyms (e.g. typing "rjs"
+          finds "React JS") and handles minor typos.
+        </p>
+        <div className="p-4 border rounded-lg bg-green-500/5 border-green-500/20">
+          <p className="text-sm text-green-700 dark:text-green-400">
+            <strong>Try it:</strong> In the examples above, try typing "ang" to
+            find "Angular", or even non-sequential parts if they match
+            boundaries.
+          </p>
+        </div>
+      </DocSection>
+
+      <DocSection
         title="Virtualization"
         id="virtualization"
         description="Efficiently render large datasets with virtual scrolling."
