@@ -49,7 +49,7 @@ export function RoadmapDoc() {
 
   // Filter components based on search, category, and status
   const filteredComponents = useMemo(() => {
-    return ROADMAP_DATA.filter((component) => {
+    const filtered = ROADMAP_DATA.filter((component) => {
       const matchesSearch =
         searchQuery === "" ||
         component.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -64,6 +64,39 @@ export function RoadmapDoc() {
         (selectedStatus === "Planned" && component.status !== "Completed");
 
       return matchesSearch && matchesCategory && matchesStatus;
+    });
+
+    // Custom sorting: Completed > High Priority > Medium > Low
+    return filtered.sort((a, b) => {
+      const statusOrder = {
+        Completed: 0,
+        "In Progress": 1,
+        Planned: 2,
+        "not-implemented": 3,
+      };
+      const priorityOrder = { High: 0, Medium: 1, Low: 2 };
+
+      if (statusOrder[a.status] !== statusOrder[b.status]) {
+        return (
+          (statusOrder[a.status as keyof typeof statusOrder] ?? 99) -
+          (statusOrder[b.status as keyof typeof statusOrder] ?? 99)
+        );
+      }
+
+      // If status is same, sort by priority
+      const aPrio = a.priority
+        ? priorityOrder[a.priority as keyof typeof priorityOrder]
+        : 99;
+      const bPrio = b.priority
+        ? priorityOrder[b.priority as keyof typeof priorityOrder]
+        : 99;
+
+      if (aPrio !== bPrio) {
+        return aPrio - bPrio;
+      }
+
+      // Final fallback: alphabetical
+      return a.name.localeCompare(b.name);
     });
   }, [searchQuery, selectedCategory, selectedStatus]);
 
