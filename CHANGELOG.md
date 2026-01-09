@@ -10,6 +10,16 @@ All notable changes to the Aer Design project will be documented in this file.
 - **Virtualization**: Implemented `reset()` functionality in `useVirtualization` to fix scroll position persistence issues when re-opening lists.
 - **Custom Item Templating**: Added `renderOption` prop to `Autocomplete`, `Dropdown`, and `Cascader` to allow full customization of option rendering.
 
+### New Features
+
+- **Autocomplete**: Launched a powerful Autocomplete component.
+  - **Smart Filtering**: Supports local, remote, and mixed data sources with debounced search.
+  - **Virtualization**: Built-in virtualization for handling 10,000+ items efficiently (`virtualized` prop).
+  - **Selection Modes**: Supports single, multiple, and tags (creatable) modes.
+  - **Lazy Loading**: Integrated infinite scrolling support with `onLoadMore`.
+  - **Custom Rendering**: Full control over option rendering via `renderOption`.
+  - **Accessibility**: Complete ARIA Combobox implementation with keyboard navigation.
+
 ### Documentation
 
 - **Dropdown**: Fixed critical documentation bug where section order did not match TOC, causing navigation jumps. Removed duplicate example code.
