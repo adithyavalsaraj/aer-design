@@ -277,6 +277,19 @@ export const ROADMAP_DATA: ComponentSpec[] = [
       "Glassmorphism Aer Variant",
     ],
   },
+  {
+    name: "CommandPalette",
+    version: "v0.14.3",
+    category: "Navigation",
+    status: "Completed",
+    description: "Mac-style global search and command menu (Ctrl+K)",
+    features: [
+      "Fuzzy search",
+      "Keyboard first navigation",
+      "Dynamic action binding",
+      "Grouped results",
+    ],
+  },
 
   // --- High Priority ---
   {
@@ -382,19 +395,6 @@ export const ROADMAP_DATA: ComponentSpec[] = [
       "Icon rotation",
       "Tooltip labels",
       "Delay control",
-    ],
-  },
-  {
-    name: "CommandPalette",
-    category: "Navigation",
-    status: "Planned",
-    priority: "Medium",
-    description: "Mac-style global search and command menu (Ctrl+K)",
-    features: [
-      "Fuzzy search",
-      "Keyboard first navigation",
-      "Dynamic action binding",
-      "Grouped results",
     ],
   },
   {

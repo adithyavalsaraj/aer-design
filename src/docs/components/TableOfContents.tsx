@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "../context/RouterContext";
 
 interface TOCItem {
   id: string;
@@ -7,6 +8,7 @@ interface TOCItem {
 }
 
 export function RightTableOfContents({ items }: { items: TOCItem[] }) {
+  const { activePage, setActivePage } = useRouter();
   const [activeId, setActiveId] = useState<string>(items[0]?.id || "");
   const isManualScrolling = useRef(false);
 
@@ -18,6 +20,7 @@ export function RightTableOfContents({ items }: { items: TOCItem[] }) {
     isManualScrolling.current = false;
   }
 
+  // Effect to sync current section with scroll position (Scroll Spy for UI)
   useEffect(() => {
     const handleScroll = () => {
       if (isManualScrolling.current) return;
@@ -31,16 +34,11 @@ export function RightTableOfContents({ items }: { items: TOCItem[] }) {
 
       if (headings.length === 0) return;
 
-      // Logic: Find the heading that is closest to the top of the viewport
-      // but not too far down (e.g., has crossed a threshold).
       const scrollPosition = window.scrollY;
-      const headerOffset = 100; // Trigger point 100px from top
+      const headerOffset = 100;
 
-      // Find the last heading that is above the threshold
-      // Or if we are at the bottom of the page, highlight the last one
       let currentActiveId = items[0]?.id;
 
-      // check if we are at the bottom of the page
       if (
         window.innerHeight + window.scrollY >=
         document.documentElement.scrollHeight - 50
@@ -52,20 +50,18 @@ export function RightTableOfContents({ items }: { items: TOCItem[] }) {
           const top =
             heading.element.getBoundingClientRect().top + window.scrollY;
 
-          // If the heading is above the threshold (current scroll position + offset)
           if (top - headerOffset <= scrollPosition) {
             currentActiveId = heading.id;
           }
         }
       }
 
-      setActiveId((prev) =>
+      setActiveId((prev: string) =>
         prev !== currentActiveId ? currentActiveId : prev
       );
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    // Trigger once on mount to set initial state correctly
     handleScroll();
 
     return () => window.removeEventListener("scroll", handleScroll);
@@ -75,22 +71,13 @@ export function RightTableOfContents({ items }: { items: TOCItem[] }) {
     setActiveId(id);
     isManualScrolling.current = true;
 
-    const element = document.getElementById(id);
-    if (element) {
-      const offset = 80; // Topbar height + padding
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.scrollY - offset;
+    // Update the URL and trigger global navigation scroll
+    setActivePage(`${activePage}/${id}`);
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      });
-
-      // Re-enable observer after smooth scroll completes (approx 800ms)
-      setTimeout(() => {
-        isManualScrolling.current = false;
-      }, 800);
-    }
+    // Re-enable observer after smooth scroll completes (handled by the router)
+    setTimeout(() => {
+      isManualScrolling.current = false;
+    }, 1000);
   };
 
   return (

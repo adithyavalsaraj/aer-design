@@ -9,6 +9,7 @@ export * from "./components/Button";
 export * from "./components/Card";
 export * from "./components/Cascader";
 export * from "./components/Checkbox";
+export * from "./components/CommandPalette";
 export * from "./components/Dialog";
 export * from "./components/Divider";
 export * from "./components/Dropdown";

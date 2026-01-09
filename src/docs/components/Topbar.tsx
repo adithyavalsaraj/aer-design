@@ -1,4 +1,4 @@
-import { Menu, Settings2 } from "lucide-react";
+import { Menu, Search, Settings2 } from "lucide-react";
 import { useState } from "react";
 import { Branding } from "./Branding";
 import { SettingsSheet } from "./SettingsSheet";
@@ -10,6 +10,10 @@ interface TopbarProps {
 
 export function Topbar({ onMenuClick, onBrandingClick }: TopbarProps) {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
+  const handleOpenSearch = () => {
+    window.dispatchEvent(new CustomEvent("aer-search-open"));
+  };
 
   return (
     <>
@@ -31,6 +35,23 @@ export function Topbar({ onMenuClick, onBrandingClick }: TopbarProps) {
           </div>
 
           <div className="flex items-center gap-2">
+            <button
+              onClick={handleOpenSearch}
+              className="flex items-center gap-2 px-3 py-1.5 bg-aer-muted/30 border border-aer-border rounded-aer-lg text-aer-muted-foreground hover:bg-aer-muted hover:text-aer-foreground transition-all duration-200 group"
+            >
+              <Search className="size-4" />
+              <span className="text-sm hidden sm:inline">Search...</span>
+              <kbd className="hidden lg:inline-flex h-5 select-none items-center gap-1 rounded border border-aer-border bg-aer-background px-1.5 font-mono text-[10px] font-medium opacity-100">
+                <span className="text-xs">
+                  {typeof window !== "undefined" &&
+                  /Mac|iPod|iPhone|iPad/.test(window.navigator.platform)
+                    ? "⌘"
+                    : "Ctrl"}
+                </span>
+                K
+              </kbd>
+            </button>
+
             <button
               onClick={() => setIsSettingsOpen(true)}
               className="p-2 hover:bg-aer-muted rounded-aer-md text-aer-muted-foreground hover:text-aer-foreground transition-colors"

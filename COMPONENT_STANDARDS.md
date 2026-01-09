@@ -213,7 +213,7 @@ Whenever a new feature is added or removed, or a component is updated, the follo
 Before pushing any code to the repository, you MUST follow these steps to ensure documentation integrity:
 
 1.  **Sync Project Files**: Synchronize the following files with your changes:
-    - Update [CHANGELOG.md](./CHANGELOG.md) (v0.x.x)
+    - Update [CHANGELOG.md](./CHANGELOG.md) (v0.x.x) - MUST include details for all fixes, patches, and feature updates
     - Update [README.md](./README.md) features/tables
     - Update [ROADMAP.md](./ROADMAP.md) & RoadmapDoc.tsx
     - Update ContributingDoc.tsx if standards changed

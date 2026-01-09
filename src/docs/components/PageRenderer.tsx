@@ -6,6 +6,7 @@ import { ButtonDoc } from "../pages/ButtonDoc";
 import { CardDoc } from "../pages/CardDoc";
 import { CascaderDoc } from "../pages/CascaderDoc";
 import { CheckboxDoc } from "../pages/CheckboxDoc";
+import { CommandPaletteDoc } from "../pages/CommandPaletteDoc";
 import { ContributingDoc } from "../pages/ContributingDoc";
 import { DialogDoc } from "../pages/DialogDoc";
 import { DividerDoc } from "../pages/DividerDoc";
@@ -55,6 +56,8 @@ export function PageRenderer({ activePage, onGetStarted }: PageRendererProps) {
       return <CascaderDoc />;
     case "autocomplete":
       return <AutocompleteDoc />;
+    case "command-palette":
+      return <CommandPaletteDoc />;
     case "input":
       return <InputDoc />;
     case "dialog":

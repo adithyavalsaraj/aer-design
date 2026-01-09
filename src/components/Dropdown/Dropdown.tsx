@@ -1,5 +1,6 @@
 import { useAerConfig } from "@/components/AerConfigProvider";
 import { useAutoPosition } from "@/hooks/useAutoPosition";
+import { useScrollToActive } from "@/hooks/useScrollToActive";
 import { useVirtualization } from "@/hooks/useVirtualization";
 import { cn } from "@/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
@@ -240,6 +241,13 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
     const menuRef = React.useRef<HTMLDivElement>(null); // Ref for the floating menu
 
     const hasAddon = addonBefore || addonAfter;
+
+    // Auto-scroll active item logic
+    useScrollToActive({
+      containerRef: listRef as React.RefObject<HTMLElement>,
+      activeIndex: focusedIndex,
+      enabled: isOpen && !virtualized,
+    });
 
     // Auto-positioning hook
     const { referenceRef, floatingRef, floatingStyles } = useAutoPosition({
@@ -778,6 +786,7 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
                                   return (
                                     <div
                                       key={option.value}
+                                      data-active-index={selectableIndex}
                                       onClick={() =>
                                         !option.disabled &&
                                         handleSelect(option.value)

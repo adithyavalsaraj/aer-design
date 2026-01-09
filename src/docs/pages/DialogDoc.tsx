@@ -968,7 +968,7 @@ export default function UserProfileDialog() {
     const [isOpen, setIsOpen] = React.useState(false);
 
     return (
-      <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5">
+      <>
         <Button onClick={() => setIsOpen(true)}>Open Dialog</Button>
 
         <Dialog isOpen={isOpen} onClose={() => setIsOpen(false)}>
@@ -989,7 +989,7 @@ export default function UserProfileDialog() {
             }}
           />
         </Dialog>
-      </div>
+      </>
     );
   }
 

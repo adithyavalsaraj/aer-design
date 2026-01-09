@@ -247,11 +247,27 @@ export const COLOR_PALETTE = {
   },
 };
 
+export const SCRIPTS = {
+  description: "Automation scripts to maintain data consistency",
+  entries: [
+    {
+      command: "npm run gen:roadmap",
+      description:
+        "Regenerates ROADMAP.md from src/data/roadmap.ts. updates stats, progress, and component status tables.",
+    },
+    {
+      command: "npm run gen:standards",
+      description:
+        "Regenerates COMPONENT_STANDARDS.md from src/data/standards.ts. ensures strict adherence to documentation guidelines.",
+    },
+  ],
+};
+
 export const CODE_PUSH_GUIDELINES = {
   step1: {
     title: "Sync Project Files",
     items: [
-      "Update CHANGELOG.md (v0.x.x)",
+      "Update CHANGELOG.md (v0.x.x) - MUST include details for all fixes, patches, and feature updates",
       "Update README.md features/tables",
       "Update ROADMAP.md & RoadmapDoc.tsx",
       "Update ContributingDoc.tsx if standards changed",

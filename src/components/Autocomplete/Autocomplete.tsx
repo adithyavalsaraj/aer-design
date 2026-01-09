@@ -1,6 +1,7 @@
 import { useAerConfig } from "@/components/AerConfigProvider";
 import { useAutoPosition } from "@/hooks/useAutoPosition";
 import { useDebounce } from "@/hooks/useDebounce";
+import { useScrollToActive } from "@/hooks/useScrollToActive";
 import { useVirtualization } from "@/hooks/useVirtualization";
 import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
@@ -234,11 +235,19 @@ export const Autocomplete = React.forwardRef<HTMLDivElement, AutocompleteProps>(
     const containerRef = React.useRef<HTMLDivElement>(null);
     const inputRef = React.useRef<HTMLInputElement>(null);
     const menuRef = React.useRef<HTMLDivElement>(null);
+    const listRef = React.useRef<HTMLDivElement>(null);
 
     const hasAddon = addonBefore || addonAfter;
 
     // Debounced search query
     const debouncedQuery = useDebounce(currentInputValue, debounceMs);
+
+    // Auto-scroll active item logic
+    useScrollToActive({
+      containerRef: listRef as React.RefObject<HTMLElement>,
+      activeIndex: focusedIndex,
+      enabled: isOpen && !virtualized,
+    });
 
     // --- Auto-positioning ---
     const { referenceRef, floatingRef, floatingStyles } = useAutoPosition({
@@ -635,6 +644,7 @@ export const Autocomplete = React.forwardRef<HTMLDivElement, AutocompleteProps>(
       return (
         <div
           key={option.value}
+          data-active-index={index}
           onMouseDown={(e) => e.preventDefault()}
           onClick={() => !option.disabled && handleSelect(option.value)}
           className={cn(
@@ -976,6 +986,7 @@ export const Autocomplete = React.forwardRef<HTMLDivElement, AutocompleteProps>(
             >
               {/* Options List */}
               <div
+                ref={listRef}
                 className="overflow-y-auto max-h-[250px]"
                 style={{
                   height: virtualized ? containerHeight : "auto",

@@ -2,6 +2,28 @@
 
 All notable changes to the Aer Design project will be documented in this file.
 
+## [v0.14.3] - 2026-01-10
+
+### Command Palette Documentation
+
+- **Documentation**: Comprehensive documentation released for the `CommandPalette` component (`/command-palette`).
+  - **Tabs Structure**: Fully standardized 3-tab layout (Overview, API, Theming) as per `COMPONENT_STANDARDS.md`.
+  - **Deep Dives**: Added detailed sections for "Customizing Shortcuts" (using `useShortcut`), "Filtering & Groups" (fuzzy search logic), and "Custom Rendering".
+  - **Aer Variant**: Dedicated section showcasing the premium glassmorphism variant suitable for complex backgrounds.
+  - **API Reference**: Complete coverage of all props, including `renderItem` for custom UI and `CommandItem` interface types.
+  - **Search Integration**: Automatically registered in the documentation site's Global Search.
+
+### Bug Fixes & Improvements
+
+- **Navigation UX**: Implemented `useScrollToActive` hook across `Autocomplete`, `Dropdown`, and `CommandPalette` to ensure the active keyboard selection is always visible in the viewport.
+- **Dialog Documentation**: Fixed visual rendering issues in `DialogDoc.tsx` examples to ensure correct component usage.
+- **Shared Components**: Updated `UsageGuidelines` in documentation shared components for better semantic structure.
+- **Prop Logic**: Resolved `label` vs `title` property mismatches in `CommandItem` types to ensure consistency across the library.
+
+### Type Safety
+
+- **Documentation**: Fixed TypeScript inconsistencies in documentation helper components, ensuring safer and more predictable doc generation.
+
 ## [v0.14.2] - 2026-01-10
 
 ### Bug Fixes

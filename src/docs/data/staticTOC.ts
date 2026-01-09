@@ -350,4 +350,14 @@ export const staticTOC: Record<string, { id: string; title: string }[]> = {
     { id: "components", title: "All Components" },
     { id: "contribute", title: "Contribute" },
   ],
+  "command-palette": [
+    { id: "introduction", title: "Introduction" },
+    { id: "when-to-use", title: "When to Use" },
+    { id: "basic-usage", title: "Basic Usage" },
+    { id: "aer-variant", title: "The Aer Variant" },
+    { id: "shortcuts", title: "Customizing Shortcuts" },
+    { id: "filtering", title: "Filtering & Groups" },
+    { id: "custom-rendering", title: "Custom Rendering" },
+    { id: "accessibility", title: "Accessibility First" },
+  ],
 };
