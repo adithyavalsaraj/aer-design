@@ -89,6 +89,8 @@ export function Cascader({
   itemHeight = 32,
   scrollBehavior = "reposition",
   onBlur,
+  matchTriggerWidth = true,
+  renderOption,
 }: CascaderProps) {
   const { size: globalSize } = useAerConfig();
   const size = sizeProp || globalSize || "default";
@@ -108,6 +110,7 @@ export function Cascader({
         setIsOpen(false);
         onBlur?.();
       },
+      matchWidth: matchTriggerWidth,
     });
 
   // Handle outside interactions and scroll
@@ -388,11 +391,15 @@ export function Cascader({
               onSelect={handleSelect}
               selectedValue={value}
               loadData={loadData}
+              depth={0}
+              menuClassName={menuClassName}
               itemClassName={cn(
                 itemClassName,
                 variant === "aer" &&
                   "hover:bg-white/10 hover:text-white focus:bg-white/10"
               )}
+              renderOption={renderOption}
+              variant={variant}
               className={cn(
                 variant === "aer" &&
                   "bg-white/10 backdrop-blur-2xl border-white/10 shadow-2xl"

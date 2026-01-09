@@ -2,6 +2,7 @@ import { Button } from "@/components/Button";
 import { Checkbox } from "@/components/Checkbox";
 import { Dropdown, type DropdownOption } from "@/components/Dropdown";
 import { RadioGroup, RadioItem } from "@/components/Radio";
+import { cn } from "@/lib/utils";
 import { Globe, User } from "lucide-react";
 import * as React from "react";
 import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
@@ -10,11 +11,97 @@ const basicOptions: DropdownOption[] = [
   { label: "Option 1", value: "1" },
   { label: "Option 2", value: "2" },
   { label: "Option 3", value: "3" },
+  {
+    label:
+      "This is a very long option text that should wrap to the next line by default in the dropdown menu",
+    value: "long",
+  },
   { label: "Disabled Option", value: "4", disabled: true },
   { label: "Option 5", value: "5" },
 ];
 
 export function DropdownDoc() {
+  function VirtualizedExample() {
+    const [options, setOptions] = React.useState<DropdownOption[]>([]);
+
+    React.useEffect(() => {
+      fetch("https://jsonplaceholder.typicode.com/users")
+        .then((res) => res.json())
+        .then((users) => {
+          // Generate 1000 items based on users
+          const items = Array.from({ length: 1000 }, (_, i) => {
+            const user = users[i % users.length];
+            return {
+              label: `${user.name} - Item ${i + 1}`,
+              value: `user-${user.id}-item-${i + 1}`,
+            };
+          });
+          setOptions(items);
+        });
+    }, []);
+
+    return (
+      <Dropdown
+        virtualized
+        searchable
+        options={options}
+        placeholder="Select from 1000 items (Virtualized)"
+      />
+    );
+  }
+
+  function LazyLoadExample() {
+    const [items, setItems] = React.useState<DropdownOption[]>([]);
+    const [loading, setLoading] = React.useState(false);
+    const [page, setPage] = React.useState(1);
+    const [hasMore, setHasMore] = React.useState(true);
+
+    const loadMore = React.useCallback(async () => {
+      if (loading || !hasMore) return;
+      setLoading(true);
+      try {
+        const res = await fetch(
+          `https://jsonplaceholder.typicode.com/comments?_page=${page}&_limit=20`
+        );
+        const posts = await res.json();
+
+        if (posts.length === 0) {
+          setHasMore(false);
+          setLoading(false);
+          return;
+        }
+
+        const newItems = posts.map((post: any) => ({
+          label: post.name,
+          value: String(post.id),
+        }));
+
+        setItems((prev) => [...prev, ...newItems]);
+        setPage((p) => p + 1);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    }, [page, hasMore]); // Only depend on page state, not loading to potential infinite loops if using functional state updates naively
+
+    // Initial load
+    React.useEffect(() => {
+      loadMore();
+    }, []);
+
+    return (
+      <Dropdown
+        options={items}
+        virtualized
+        loading={loading}
+        onLoadMore={loadMore}
+        hasMore={hasMore}
+        placeholder="Scroll to load more posts..."
+      />
+    );
+  }
+
   function DropdownLabelExample() {
     const [labelPosition, setLabelPosition] = React.useState<"top" | "left">(
       "top"
@@ -169,6 +256,73 @@ export default function ScrollBehaviorExample() {
     </div>
   );
 }`}
+        />
+      </div>
+    );
+  }
+
+  function CustomTemplateExample() {
+    return (
+      <div className="space-y-6 w-full">
+        <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5">
+          <Dropdown
+            options={basicOptions}
+            placeholder="Custom Item Template"
+            renderOption={({ option, onClick, selected, active }) => (
+              <div
+                onClick={onClick}
+                className={cn(
+                  "flex items-center gap-3 px-3 py-2 cursor-pointer transition-colors",
+                  active
+                    ? "bg-aer-accent text-aer-accent-foreground"
+                    : "hover:bg-aer-accent/50",
+                  selected ? "font-bold text-aer-primary" : ""
+                )}
+              >
+                <div
+                  className={cn(
+                    "w-2 h-2 rounded-full",
+                    selected ? "bg-aer-primary" : "bg-gray-300"
+                  )}
+                />
+                <div className="flex flex-col">
+                  <span>{option.label}</span>
+                  <span className="text-xs text-muted-foreground opacity-70">
+                    Value: {option.value}
+                  </span>
+                </div>
+              </div>
+            )}
+          />
+        </div>
+        <CodeBlock
+          ts={`<Dropdown
+  options={options}
+  placeholder="Custom Item Template"
+  renderOption={({ option, onClick, selected, active }) => (
+    <div
+      onClick={onClick}
+      className={cn(
+        "flex items-center gap-3 px-3 py-2 cursor-pointer transition-colors",
+        active ? "bg-aer-accent text-aer-accent-foreground" : "hover:bg-aer-accent/50",
+        selected ? "font-bold text-aer-primary" : ""
+      )}
+    >
+      <div
+        className={cn(
+          "w-2 h-2 rounded-full",
+          selected ? "bg-aer-primary" : "bg-gray-300"
+        )}
+      />
+      <div className="flex flex-col">
+        <span>{option.label}</span>
+        <span className="text-xs text-muted-foreground opacity-70">
+          Value: {option.value}
+        </span>
+      </div>
+    </div>
+  )}
+/>`}
         />
       </div>
     );
@@ -441,115 +595,51 @@ export default function AerDropdownExample() {
         />
       </DocSection>
 
-      <DocSection title="Addons & Icons" id="addons-icons">
-        <div className="max-w-sm space-y-6">
-          <div className="space-y-4">
-            <h4 className="text-sm font-medium text-aer-muted-foreground">
-              Icons
-            </h4>
-            <Dropdown
-              startIcon={<User className="w-4 h-4" />}
-              options={basicOptions}
-              placeholder="Start Icon"
-            />
-            <Dropdown
-              endIcon={<Globe className="w-4 h-4" />}
-              options={basicOptions}
-              placeholder="End Icon"
-            />
-          </div>
-
-          <div className="space-y-4">
-            <h4 className="text-sm font-medium text-aer-muted-foreground">
-              Prefix & Suffix
-            </h4>
-            <Dropdown prefix="US" options={basicOptions} placeholder="Prefix" />
-            <Dropdown
-              suffix="USD"
-              options={basicOptions}
-              placeholder="Suffix"
-            />
-          </div>
-
-          <div className="space-y-4">
-            <h4 className="text-sm font-medium text-aer-muted-foreground">
-              Addons
-            </h4>
-            <Dropdown
-              addonBefore="https://"
-              options={basicOptions}
-              placeholder="Addon Before"
-            />
-            <Dropdown
-              addonAfter=".com"
-              options={basicOptions}
-              placeholder="Addon After"
-            />
-          </div>
+      <DocSection title="Search & Filter" id="search">
+        <div className="max-w-sm space-y-4">
+          <Dropdown
+            searchable
+            options={[
+              { label: "React", value: "react" },
+              { label: "Vue", value: "vue" },
+              { label: "Angular", value: "angular" },
+              { label: "Svelte", value: "svelte" },
+              { label: "Solid", value: "solid" },
+            ]}
+            placeholder="Search framework..."
+          />
         </div>
         <CodeBlock
-          ts={`// Icons
-<Dropdown startIcon={<User />} placeholder="Start Icon" />
-<Dropdown endIcon={<Globe />} placeholder="End Icon" />
-
-// Prefix & Suffix
-<Dropdown prefix="US" placeholder="Prefix" />
-<Dropdown suffix="USD" placeholder="Suffix" />
-
-// Addons
-<Dropdown addonBefore="https://" placeholder="Addon Before" />
-<Dropdown addonAfter=".com" placeholder="Addon After" />`}
-          fullCode={`import { Dropdown } from "aer-design";
-import { User, Globe } from "lucide-react";
-
-export default function AddonsDemo() {
-  const options = [
-    { label: "Option 1", value: "1" }, 
-    { label: "Option 2", value: "2" }
-  ];
-
-  return (
-    <div className="space-y-6 max-w-sm">
-      {/* Icons */}
-      <div className="space-y-2">
-        <Dropdown startIcon={<User className="w-4 h-4" />} options={options} placeholder="Start Icon" />
-        <Dropdown endIcon={<Globe className="w-4 h-4" />} options={options} placeholder="End Icon" />
-      </div>
-
-      {/* Prefix & Suffix */}
-      <div className="space-y-2">
-        <Dropdown prefix="US" options={options} placeholder="Prefix" />
-        <Dropdown suffix="USD" options={options} placeholder="Suffix" />
-      </div>
-
-      {/* Addons */}
-      <div className="space-y-2">
-        <Dropdown addonBefore="https://" options={options} placeholder="Addon Before" />
-        <Dropdown addonAfter=".com" options={options} placeholder="Addon After" />
-      </div>
-    </div>
-  );
-}`}
+          ts={`<Dropdown searchable options={frameworks} placeholder="Search framework..." />`}
+          fullCode={`import { Dropdown } from "aer-design";\n\nconst frameworks = [\n  { label: "React", value: "react" },\n  { label: "Vue", value: "vue" },\n  { label: "Angular", value: "angular" },\n];\n\nexport default function SearchDemo() {\n  return (\n    <Dropdown searchable options={frameworks} placeholder="Search framework..." />\n  );\n}`}
         />
       </DocSection>
 
-      <DocSection title="Clearable" id="clearable">
+      <DocSection
+        title="Virtualization"
+        id="virtualization"
+        description="Efficiently render large lists of options."
+      >
         <div className="max-w-sm space-y-4">
-          <Dropdown
-            clearable
-            options={basicOptions}
-            placeholder="Clearable (Single)"
-          />
-          <Dropdown
-            multiple
-            clearable
-            options={basicOptions}
-            placeholder="Clearable (Multi)"
-          />
+          <VirtualizedExample />
         </div>
         <CodeBlock
-          ts={`<Dropdown clearable options={options} placeholder="Clearable (Single)" />\n<Dropdown multiple clearable options={options} placeholder="Clearable (Multi)" />`}
-          fullCode={`import { Dropdown } from "aer-design";\n\nexport default function ClearableDemo() {\n  return (\n    <div className="space-y-4">\n       <Dropdown clearable options={options} placeholder="Clearable (Single)" />\n       <Dropdown multiple clearable options={options} placeholder="Clearable (Multi)" />\n    </div>\n  );\n}`}
+          ts={`// 10,000 items\n<Dropdown \n  virtualized \n  searchable \n  options={largeOptions} \n  placeholder="Select from 10k items" \n/>`}
+          fullCode={`import { Dropdown } from "aer-design";\n\n// Generate 10,000 items\nconst largeOptions = Array.from({ length: 10000 }, (_, i) => ({\n  label: "Item " + (i + 1),\n  value: String(i + 1),\n}));\n\nexport default function VirtualizedDemo() {\n  return (\n    <Dropdown \n      virtualized \n      searchable \n      options={largeOptions} \n      placeholder="Select from 10k items" \n    />\n  );\n}`}
+        />
+      </DocSection>
+
+      <DocSection
+        title="Lazy Loading"
+        id="lazy-loading"
+        description="Load more items as the user scrolls."
+      >
+        <div className="max-w-sm space-y-4">
+          <LazyLoadExample />
+        </div>
+        <CodeBlock
+          ts={`<Dropdown \n  options={items} \n  loading={isLoading} \n  onLoadMore={loadMore} \n  hasMore={hasMore}\n  virtualized\n  placeholder="Scroll to load more"\n/>`}
+          fullCode={`import { Dropdown } from "aer-design";\n\nexport default function LazyLoadDemo() {\n  // Initial items\n  const [items, setItems] = React.useState(() => Array.from({ length: 20 }, (_, i) => ({ label: "Item " + (i + 1), value: String(i + 1) })));\n  const [loading, setLoading] = React.useState(false);\n  \n  const loadMore = () => {\n    setLoading(true);\n    setTimeout(() => {\n       setItems(prev => [...prev, ...Array.from({ length: 10 }, (_, i) => ({ label: "Item " + (prev.length + i + 1), value: String(prev.length + i + 1) }))]);\n       setLoading(false);\n    }, 1000);\n  };\n\n  return (\n    <Dropdown \n      options={items} \n      loading={loading} \n      onLoadMore={loadMore} \n      hasMore={true}\n      placeholder="Scroll to load more"\n    />\n  );\n}`}
         />
       </DocSection>
 
@@ -674,56 +764,120 @@ export default function GroupedDropdown() {
         />
       </DocSection>
 
-      <DocSection title="Search & Filter" id="search">
+      <DocSection title="Clearable" id="clearable">
         <div className="max-w-sm space-y-4">
           <Dropdown
-            searchable
-            options={[
-              { label: "React", value: "react" },
-              { label: "Vue", value: "vue" },
-              { label: "Angular", value: "angular" },
-              { label: "Svelte", value: "svelte" },
-              { label: "Solid", value: "solid" },
-            ]}
-            placeholder="Search framework..."
+            clearable
+            options={basicOptions}
+            placeholder="Clearable (Single)"
+          />
+          <Dropdown
+            multiple
+            clearable
+            options={basicOptions}
+            placeholder="Clearable (Multi)"
           />
         </div>
         <CodeBlock
-          ts={`<Dropdown searchable options={frameworks} placeholder="Search framework..." />`}
-          fullCode={`import { Dropdown } from "aer-design";\n\nconst frameworks = [\n  { label: "React", value: "react" },\n  { label: "Vue", value: "vue" },\n  { label: "Angular", value: "angular" },\n];\n\nexport default function SearchDemo() {\n  return (\n    <Dropdown searchable options={frameworks} placeholder="Search framework..." />\n  );\n}`}
-        />
-      </DocSection>
-
-      <DocSection
-        title="Virtualization"
-        id="virtualization"
-        description="Efficiently render large lists of options."
-      >
-        <div className="max-w-sm space-y-4">
-          <VirtualizedExample />
-        </div>
-        <CodeBlock
-          ts={`// 10,000 items\n<Dropdown \n  virtualized \n  searchable \n  options={largeOptions} \n  placeholder="Select from 10k items" \n/>`}
-          fullCode={`import { Dropdown } from "aer-design";\n\n// Generate 10,000 items\nconst largeOptions = Array.from({ length: 10000 }, (_, i) => ({\n  label: "Item " + (i + 1),\n  value: String(i + 1),\n}));\n\nexport default function VirtualizedDemo() {\n  return (\n    <Dropdown \n      virtualized \n      searchable \n      options={largeOptions} \n      placeholder="Select from 10k items" \n    />\n  );\n}`}
-        />
-      </DocSection>
-
-      <DocSection
-        title="Lazy Loading"
-        id="lazy-loading"
-        description="Load more items as the user scrolls."
-      >
-        <div className="max-w-sm space-y-4">
-          <LazyLoadExample />
-        </div>
-        <CodeBlock
-          ts={`<Dropdown \n  options={items} \n  loading={isLoading} \n  onLoadMore={loadMore} \n  hasMore={hasMore}\n  virtualized\n  placeholder="Scroll to load more"\n/>`}
-          fullCode={`import { Dropdown } from "aer-design";\n\nexport default function LazyLoadDemo() {\n  // Initial items\n  const [items, setItems] = React.useState(() => Array.from({ length: 20 }, (_, i) => ({ label: "Item " + (i + 1), value: String(i + 1) })));\n  const [loading, setLoading] = React.useState(false);\n  \n  const loadMore = () => {\n    setLoading(true);\n    setTimeout(() => {\n       setItems(prev => [...prev, ...Array.from({ length: 10 }, (_, i) => ({ label: "Item " + (prev.length + i + 1), value: String(prev.length + i + 1) }))]);\n       setLoading(false);\n    }, 1000);\n  };\n\n  return (\n    <Dropdown \n      options={items} \n      loading={loading} \n      onLoadMore={loadMore} \n      hasMore={true}\n      placeholder="Scroll to load more"\n    />\n  );\n}`}
+          ts={`<Dropdown clearable options={options} placeholder="Clearable (Single)" />\n<Dropdown multiple clearable options={options} placeholder="Clearable (Multi)" />`}
+          fullCode={`import { Dropdown } from "aer-design";\n\nexport default function ClearableDemo() {\n  return (\n    <div className="space-y-4">\n       <Dropdown clearable options={options} placeholder="Clearable (Single)" />\n       <Dropdown multiple clearable options={options} placeholder="Clearable (Multi)" />\n    </div>\n  );\n}`}
         />
       </DocSection>
 
       <DocSection title="Label" id="label">
         <DropdownLabelExample />
+      </DocSection>
+
+      <DocSection title="Addons & Icons" id="addons-icons">
+        <div className="max-w-sm space-y-6">
+          <div className="space-y-4">
+            <h4 className="text-sm font-medium text-aer-muted-foreground">
+              Icons
+            </h4>
+            <Dropdown
+              startIcon={<User className="w-4 h-4" />}
+              options={basicOptions}
+              placeholder="Start Icon"
+            />
+            <Dropdown
+              endIcon={<Globe className="w-4 h-4" />}
+              options={basicOptions}
+              placeholder="End Icon"
+            />
+          </div>
+
+          <div className="space-y-4">
+            <h4 className="text-sm font-medium text-aer-muted-foreground">
+              Prefix & Suffix
+            </h4>
+            <Dropdown prefix="US" options={basicOptions} placeholder="Prefix" />
+            <Dropdown
+              suffix="USD"
+              options={basicOptions}
+              placeholder="Suffix"
+            />
+          </div>
+
+          <div className="space-y-4">
+            <h4 className="text-sm font-medium text-aer-muted-foreground">
+              Addons
+            </h4>
+            <Dropdown
+              addonBefore="https://"
+              options={basicOptions}
+              placeholder="Addon Before"
+            />
+            <Dropdown
+              addonAfter=".com"
+              options={basicOptions}
+              placeholder="Addon After"
+            />
+          </div>
+        </div>
+        <CodeBlock
+          ts={`// Icons
+<Dropdown startIcon={<User />} placeholder="Start Icon" />
+<Dropdown endIcon={<Globe />} placeholder="End Icon" />
+
+// Prefix & Suffix
+<Dropdown prefix="US" placeholder="Prefix" />
+<Dropdown suffix="USD" placeholder="Suffix" />
+
+// Addons
+<Dropdown addonBefore="https://" placeholder="Addon Before" />
+<Dropdown addonAfter=".com" placeholder="Addon After" />`}
+          fullCode={`import { Dropdown } from "aer-design";
+import { User, Globe } from "lucide-react";
+
+export default function AddonsDemo() {
+  const options = [
+    { label: "Option 1", value: "1" }, 
+    { label: "Option 2", value: "2" }
+  ];
+
+  return (
+    <div className="space-y-6 max-w-sm">
+      {/* Icons */}
+      <div className="space-y-2">
+        <Dropdown startIcon={<User className="w-4 h-4" />} options={options} placeholder="Start Icon" />
+        <Dropdown endIcon={<Globe className="w-4 h-4" />} options={options} placeholder="End Icon" />
+      </div>
+
+      {/* Prefix & Suffix */}
+      <div className="space-y-2">
+        <Dropdown prefix="US" options={options} placeholder="Prefix" />
+        <Dropdown suffix="USD" options={options} placeholder="Suffix" />
+      </div>
+
+      {/* Addons */}
+      <div className="space-y-2">
+        <Dropdown addonBefore="https://" options={options} placeholder="Addon Before" />
+        <Dropdown addonAfter=".com" options={options} placeholder="Addon After" />
+      </div>
+    </div>
+  );
+}`}
+        />
       </DocSection>
 
       <DocSection
@@ -759,7 +913,7 @@ export default function GroupedDropdown() {
         <CodeBlock
           ts={`<Dropdown \n  className="p-4 border rounded-2xl bg-aer-primary/5" \n  triggerClassName="bg-white rounded-full border-2 border-aer-primary" \n  options={options} \n/>\n\n<Dropdown \n  itemClassName="hover:bg-sky-500 hover:text-white rounded-none" \n  iconClassName="text-sky-500" \n  options={options} \n/>`}
           fullCode={`import { Dropdown } from "aer-design";
-import { User } from "lucide-react";
+import { User, Globe } from "lucide-react";
 
 const options = [
   { label: "Option 1", value: "1" },
@@ -835,6 +989,14 @@ export default function ValidationExample() {
   );
 }`}
         />
+      </DocSection>
+
+      <DocSection
+        title="Custom Item Rendering"
+        id="custom-item-rendering"
+        description="Customize the appearance and behavior of dropdown items."
+      >
+        <CustomTemplateExample />
       </DocSection>
 
       <DocSection
@@ -983,64 +1145,6 @@ export default function UserSettings() {
     );
   }
 
-  function VirtualizedExample() {
-    // Generate static large list once
-    const largeOptions = React.useMemo(
-      () =>
-        Array.from({ length: 1000 }, (_, i) => ({
-          label: `Virtual Item ${i + 1}`,
-          value: String(i + 1),
-        })),
-      []
-    );
-    return (
-      <Dropdown
-        virtualized
-        searchable
-        options={largeOptions}
-        placeholder="Select from 1000 items (Virtualized)"
-      />
-    );
-  }
-
-  function LazyLoadExample() {
-    const [items, setItems] = React.useState(() =>
-      Array.from({ length: 20 }, (_, i) => ({
-        label: `Item ${i + 1}`,
-        value: String(i + 1),
-      }))
-    );
-    const [loading, setLoading] = React.useState(false);
-    const [hasMore, setHasMore] = React.useState(true);
-
-    const loadMore = () => {
-      if (loading) return;
-      setLoading(true);
-      // Simulate API delay
-      setTimeout(() => {
-        const currentLength = items.length;
-        const newItems = Array.from({ length: 10 }, (_, i) => ({
-          label: `Item ${currentLength + i + 1}`,
-          value: String(currentLength + i + 1),
-        }));
-        setItems((prev) => [...prev, ...newItems]);
-        setLoading(false);
-        if (currentLength + 10 >= 100) setHasMore(false); // Stop after 100
-      }, 1000);
-    };
-
-    return (
-      <Dropdown
-        virtualized
-        options={items}
-        loading={loading}
-        onLoadMore={loadMore}
-        hasMore={hasMore}
-        placeholder="Scroll to load (Infinite Scroll)"
-      />
-    );
-  }
-
   const api = (
     <div className="space-y-8">
       <div>
@@ -1121,6 +1225,19 @@ export default function UserSettings() {
               default: "false",
               description:
                 "Shows a loading spinner. Useful for async data fetching.",
+            },
+            {
+              prop: "onLoadMore",
+              type: "() => void",
+              default: "-",
+              description:
+                "Callback fired when the user scrolls to the bottom of the list.",
+            },
+            {
+              prop: "hasMore",
+              type: "boolean",
+              default: "false",
+              description: "Whether there are more items to load.",
             },
             {
               prop: "scrollBehavior",
@@ -1213,6 +1330,13 @@ export default function UserSettings() {
               default: "-",
               description:
                 "Maximum number of selected items to show before condensing (e.g., '+3 more').",
+            },
+            {
+              prop: "renderOption",
+              type: "(props: RenderOptionProps) => ReactNode",
+              default: "-",
+              description:
+                "Function to customize the rendering of options. Receives option, selected, active, disabled, and onClick.",
             },
             {
               prop: "onSearch",
@@ -1489,6 +1613,7 @@ export default function UserSettings() {
               { id: "addons-icons", title: "Addons & Icons" },
               { id: "granular-styling", title: "Granular Styling" },
               { id: "validation", title: "Validation" },
+              { id: "custom-item-rendering", title: "Custom Rendering" },
               { id: "scroll-behavior", title: "Scroll Behavior" },
               { id: "real-world", title: "Real World Example" },
             ],

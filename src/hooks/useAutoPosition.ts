@@ -170,6 +170,8 @@ export interface UseAutoPositionOptions {
   scrollBehavior?: "close" | "reposition";
   /** Callback when scrolling is detected. Useful for closing. */
   onScroll?: () => void;
+  /** Whether to match the width of the floating element to the reference element */
+  matchWidth?: boolean;
 }
 
 export interface UseAutoPositionReturn {
@@ -210,6 +212,7 @@ export function useAutoPosition(
     strategy = "absolute",
     scrollBehavior = "reposition",
     onScroll,
+    matchWidth = false,
   } = options;
 
   const [referenceElement, setReferenceElement] =
@@ -275,6 +278,7 @@ export function useAutoPosition(
     effectiveAlign,
     avoidCollisions,
     tick,
+    matchWidth,
   ]);
 
   // Calculate styles based on effective placement
@@ -288,6 +292,11 @@ export function useAutoPosition(
       position: strategy,
       zIndex: 1000, // Higher z-index for portals
     };
+
+    if (matchWidth) {
+      const width = referenceElement.getBoundingClientRect().width;
+      styles.width = `${width}px`;
+    }
 
     const referenceRect = referenceElement.getBoundingClientRect();
     const floatingRect = floatingElement.getBoundingClientRect();

@@ -2,6 +2,22 @@
 
 All notable changes to the Aer Design project will be documented in this file.
 
+## [v0.14.1] - 2026-01-09
+
+### Enhancements
+
+- **Autocomplete**: Added `onLoadMore` and `hasMore` props to support lazy loading scenarios (infinite scroll).
+- **Virtualization**: Implemented `reset()` functionality in `useVirtualization` to fix scroll position persistence issues when re-opening lists.
+- **Custom Item Templating**: Added `renderOption` prop to `Autocomplete`, `Dropdown`, and `Cascader` to allow full customization of option rendering.
+
+### Documentation
+
+- **Dropdown**: Fixed critical documentation bug where section order did not match TOC, causing navigation jumps. Removed duplicate example code.
+- **API Reference**: Comprehensive API documentation added for Virtualization (`virtualized`, `itemHeight`) and Lazy Loading (`onLoadMore`, `hasMore`, `loading`) across Dropdown and Autocomplete components.
+- **Cascader**: Added "Custom Item Rendering" section and updated API table.
+- **Autocomplete**: Added "Custom Item Rendering" section and updated API table.
+- **Code Quality**: Resolved unused variable lints in `Dropdown` and `Autocomplete` components.
+
 ## [v0.14.0] - 2026-01-08
 
 ### New Features

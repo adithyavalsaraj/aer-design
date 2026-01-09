@@ -27,6 +27,21 @@ export interface CascaderOption {
   isLeaf?: boolean;
 }
 
+export interface RenderCascaderOptionProps {
+  /** The option being rendered */
+  option: CascaderOption;
+  /** Whether the option is in the selected path */
+  selected: boolean;
+  /** Whether the option is currently expanded/active */
+  active: boolean;
+  /** Whether the option is disabled */
+  disabled: boolean;
+  /** Whether the option is a leaf node */
+  isLeaf: boolean;
+  /** Click handler for selection/expansion */
+  onClick: (e: React.MouseEvent) => void;
+}
+
 export interface CascaderProps {
   /**
    * Hierarchical data options.
@@ -44,6 +59,10 @@ export interface CascaderProps {
    * Placeholder text when no value is selected.
    */
   placeholder?: string;
+  /**
+   * Custom option renderer
+   */
+  renderOption?: (props: RenderCascaderOptionProps) => React.ReactNode;
   /**
    * Custom function to render the display text in the trigger.
    * Receives the path labels (e.g. ['North America', 'USA']).
@@ -173,6 +192,11 @@ export interface CascaderProps {
    * @default "reposition"
    */
   scrollBehavior?: "close" | "reposition";
+  /**
+   * Whether to match the width of the dropdown to the input trigger width.
+   * @default true
+   */
+  matchTriggerWidth?: boolean;
   /**
    * Callback when the component loses focus.
    */

@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { Check, ChevronRight, Loader2 } from "lucide-react";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import type { CascaderOption } from "./types";
+import type { CascaderOption, RenderCascaderOptionProps } from "./types";
 
 interface CascaderMenuProps {
   options: CascaderOption[];
@@ -18,6 +18,8 @@ interface CascaderMenuProps {
   className?: string; // Appears as 'className' on the root element
   menuClassName?: string; // Propagated class for submenus
   scrollBehavior?: "close" | "reposition";
+  renderOption?: (props: RenderCascaderOptionProps) => React.ReactNode;
+  variant?: "outline" | "filled" | "underlined" | "aer";
 }
 
 export function CascaderMenu({
@@ -33,13 +35,10 @@ export function CascaderMenu({
   className,
   menuClassName,
   scrollBehavior = "reposition",
+  renderOption,
 }: CascaderMenuProps) {
   const [hoveredOption, setHoveredOption] =
     React.useState<CascaderOption | null>(null);
-
-  React.useEffect(() => {
-    setHoveredOption(null);
-  }, [options]);
 
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [scrollTop, setScrollTop] = React.useState(0);
@@ -114,6 +113,7 @@ export function CascaderMenu({
               itemHeight={itemHeight}
               menuClassName={effectiveMenuClass}
               scrollBehavior={scrollBehavior}
+              renderOption={renderOption}
             />
           ))}
         </div>
@@ -136,6 +136,7 @@ interface CascaderMenuItemProps {
   itemHeight?: number;
   menuClassName?: string;
   scrollBehavior?: "close" | "reposition";
+  renderOption?: (props: RenderCascaderOptionProps) => React.ReactNode;
 }
 
 function CascaderMenuItem({
@@ -152,6 +153,7 @@ function CascaderMenuItem({
   itemHeight,
   menuClassName,
   scrollBehavior,
+  renderOption,
 }: CascaderMenuItemProps) {
   const triggerRef = React.useRef<HTMLDivElement>(null);
   const isLeaf =
@@ -213,19 +215,48 @@ function CascaderMenuItem({
           onSelect(option, isLeaf);
         }}
       >
-        <div className="flex items-center gap-2">
-          {option.icon && <span className="w-4 h-4">{option.icon}</span>}
-          <span>{option.label}</span>
-        </div>
+        {renderOption ? (
+          <React.Fragment>
+            {renderOption({
+              option,
+              selected: isSelected,
+              active: isActive,
+              disabled: option.disabled || false,
+              isLeaf,
+              onClick: (e: React.MouseEvent) => {
+                if (option.disabled) return;
+                e.stopPropagation();
+                onSelect(option, isLeaf);
+              },
+            })}
+          </React.Fragment>
+        ) : (
+          <>
+            <div className="flex-1 min-w-0 flex items-center gap-2">
+              {option.icon && (
+                <span className="w-4 h-4 shrink-0">{option.icon}</span>
+              )}
+              <span
+                className={cn(
+                  virtualized ? "truncate" : "wrap-break-word whitespace-normal"
+                )}
+              >
+                {option.label}
+              </span>
+            </div>
 
-        {isSelected && isLeaf && <Check className="w-4 h-4 text-aer-primary" />}
+            {isSelected && isLeaf && (
+              <Check className="w-4 h-4 text-aer-primary" />
+            )}
 
-        {!isLeaf &&
-          (isLoading ? (
-            <Loader2 className="w-4 h-4 text-aer-muted-foreground animate-spin ml-2" />
-          ) : (
-            <ChevronRight className="w-4 h-4 opacity-50 ml-2" />
-          ))}
+            {!isLeaf &&
+              (isLoading ? (
+                <Loader2 className="w-4 h-4 text-aer-muted-foreground animate-spin ml-2" />
+              ) : (
+                <ChevronRight className="w-4 h-4 opacity-50 ml-2" />
+              ))}
+          </>
+        )}
       </div>
 
       {showSubmenu && option.children && option.children.length > 0 && (
@@ -241,6 +272,7 @@ function CascaderMenuItem({
           itemHeight={itemHeight}
           menuClassName={menuClassName}
           scrollBehavior={scrollBehavior}
+          renderOption={renderOption}
         />
       )}
     </div>
@@ -259,6 +291,7 @@ function CascaderSubMenu({
   itemHeight,
   menuClassName,
   scrollBehavior,
+  renderOption,
 }: {
   triggerRef: React.RefObject<HTMLDivElement | null>;
   option: CascaderOption;
@@ -271,6 +304,7 @@ function CascaderSubMenu({
   itemHeight?: number;
   menuClassName?: string;
   scrollBehavior?: "close" | "reposition";
+  renderOption?: (props: RenderCascaderOptionProps) => React.ReactNode;
 }) {
   return ReactDOM.createPortal(
     <CascaderSubMenuContent
@@ -285,6 +319,7 @@ function CascaderSubMenu({
       itemHeight={itemHeight}
       menuClassName={menuClassName}
       scrollBehavior={scrollBehavior}
+      renderOption={renderOption}
     />,
     document.body
   );
@@ -302,6 +337,7 @@ function CascaderSubMenuContent({
   itemHeight,
   menuClassName,
   scrollBehavior,
+  renderOption,
 }: {
   triggerRef: React.RefObject<HTMLDivElement | null>;
   option: CascaderOption;
@@ -314,6 +350,7 @@ function CascaderSubMenuContent({
   itemHeight?: number;
   menuClassName?: string;
   scrollBehavior?: "close" | "reposition";
+  renderOption?: (props: RenderCascaderOptionProps) => React.ReactNode;
 }) {
   const { referenceRef, floatingRef, floatingStyles } = useAutoPosition({
     isOpen: true,
@@ -360,6 +397,7 @@ function CascaderSubMenuContent({
         className={menuClassName}
         menuClassName={menuClassName}
         scrollBehavior={scrollBehavior}
+        renderOption={renderOption}
       />
     </div>
   );

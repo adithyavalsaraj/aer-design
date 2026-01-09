@@ -79,6 +79,12 @@ export const NAV_ITEMS = [
     category: "Inputs",
   },
   {
+    id: "autocomplete",
+    label: "Autocomplete",
+    icon: Type,
+    category: "Inputs",
+  },
+  {
     id: "dropdown",
     label: "Dropdown",
     icon: Boxes,

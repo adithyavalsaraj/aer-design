@@ -8,4 +8,11 @@ export type {
   UseAutoPositionReturn,
 } from "./useAutoPosition";
 
+export { usePopover } from "../components/Popover/usePopover";
 export { useContrastColor } from "./useContrastColor";
+export { useDebounce } from "./useDebounce";
+export { useVirtualization } from "./useVirtualization";
+export type {
+  UseVirtualizationOptions,
+  UseVirtualizationReturn,
+} from "./useVirtualization";

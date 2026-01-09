@@ -63,10 +63,17 @@ export const ROADMAP_DATA: ComponentSpec[] = [
   },
   {
     name: "Dropdown",
-    version: "v0.12.0",
+    version: "v0.14.1",
     category: "Data Entry",
     status: "Completed",
     description: "Advanced select menu",
+    features: [
+      "Virtualization & Lazy Loading",
+      "Multi-select & Searching",
+      "Grouped Options",
+      "Keyboard Navigation",
+      "Form Validation",
+    ],
   },
   {
     name: "Cascader",
@@ -91,7 +98,7 @@ export const ROADMAP_DATA: ComponentSpec[] = [
   },
   {
     name: "Sidebar",
-    version: "v0.12.0",
+    version: "v0.13.1",
     category: "Navigation",
     status: "Completed",
     description: "Navigation sidebar",
@@ -176,7 +183,7 @@ export const ROADMAP_DATA: ComponentSpec[] = [
   },
   {
     name: "Accordion",
-    version: "v0.12.0",
+    version: "v0.13.0",
     category: "Data Display",
     status: "Completed",
     description: "Collapsible content panels for progressive disclosure",
@@ -228,8 +235,6 @@ export const ROADMAP_DATA: ComponentSpec[] = [
       "Foundation for Tooltip/Dropdown/Menu",
     ],
   },
-
-  // --- High Priority ---
   {
     name: "Toast",
     version: "v0.12.0",
@@ -247,18 +252,20 @@ export const ROADMAP_DATA: ComponentSpec[] = [
   },
   {
     name: "Autocomplete",
+    version: "v0.14.1",
     category: "Data Entry",
-    status: "Planned",
-    priority: "High",
+    status: "Completed",
     description: "Searchable input with suggestion list",
     features: [
       "Remote data fetching",
-      "Custom filtering",
-      "Grouping",
+      "Virtualization & Lazy Loading",
+      "Custom renderers & Grouping",
       "Multiple selection",
-      "Custom renderers for options",
+      "Keyboard navigation",
     ],
   },
+
+  // --- High Priority ---
   {
     name: "Calendar",
     category: "Data Entry",

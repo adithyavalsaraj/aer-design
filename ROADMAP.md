@@ -1,7 +1,7 @@
 # Aer Design Roadmap
 
 - **Version**: `v0.12.0`
-- **Last Updated**: 2026-01-08
+- **Last Updated**: 2026-01-09
 - **Status**: Stable
 
 ---
@@ -9,7 +9,7 @@
 ## 📋 Table of Contents
 
 - [Project Vision](#project-vision)
-- **Overall Progress**: 26/62 components completed (42%)
+- **Overall Progress**: 27/62 components completed (44%)
 - [Completed Components](#completed-components)
 - [Completed Utilities & Hooks](#completed-utilities--hooks)
 - [Missing Components](#missing-components)
@@ -32,7 +32,7 @@
 
 ## ✅ Completed Components
 
-### Core Components (23)
+### Core Components (24)
 
 | Component | Version | Description | Key Features |
 | --------- | ------- | ----------- | ------------ |
@@ -41,11 +41,11 @@
 | **Textarea** | v0.12.0 | Auto-resizing text area | Standard component |
 | **Checkbox** | v0.12.0 | Tri-state checkbox | Standard component |
 | **Radio** | v0.12.0 | Radio button groups | Standard component |
-| **Dropdown** | v0.12.0 | Advanced select menu | Standard component |
+| **Dropdown** | v0.14.1 | Advanced select menu | Virtualization & Lazy Loading, Multi-select & Searching, Grouped Options, Keyboard Navigation, Form Validation |
 | **Cascader** | v0.12.0 | Cascading selection | Standard component |
 | **OtpInput** | v0.12.0 | One-time password input | Standard component |
 | **Menu** | v0.12.0 | Context menu system | Standard component |
-| **Sidebar** | v0.12.0 | Navigation sidebar | Standard component |
+| **Sidebar** | v0.13.1 | Navigation sidebar | Standard component |
 | **Navbar** | v0.12.0 | Top navigation bar | Standard component |
 | **Tooltip** | v0.12.0 | Contextual tooltips | Standard component |
 | **Overlay** | v0.12.0 | Modal overlay system | Standard component |
@@ -56,9 +56,10 @@
 | **Avatar** | v0.12.0 | User avatar component | Standard component |
 | **Divider** | v0.11.0 | Standalone divider component | Layout component |
 | **Skeleton** | v0.11.0 | Loading placeholder | Layout component |
-| **Accordion** | v0.12.0 | Collapsible content panels for progressive disclosure | Single and multiple expansion modes, Smooth animations, Keyboard navigation, Custom icons, Nested accordions support |
+| **Accordion** | v0.13.0 | Collapsible content panels for progressive disclosure | Single and multiple expansion modes, Smooth animations, Keyboard navigation, Custom icons, Nested accordions support |
 | **Popover** | v0.14.0 | Headless-first popover primitive for rich interactive overlays | Headless usePopover hook, Flexible triggers (click, hover, focus, manual, composite), Compound components (Trigger, Content, Arrow, Close), Nested popover support, Zero positioning logic (delegates to useAutoPosition), Full accessibility (ARIA + keyboard), Lifecycle hooks, SSR-safe, Foundation for Tooltip/Dropdown/Menu |
 | **Toast** | v0.12.0 | Toast notification system for user feedback | 9 Positions with Auto-Stacking, Swipe to Dismiss (Touch Optimized), Standalone & Global Modes, Action buttons & Keyboard Accessible, Variants (success, error, warning, info, neutral, aer), Glassmorphism Aer Variant |
+| **Autocomplete** | v0.14.1 | Searchable input with suggestion list | Remote data fetching, Virtualization & Lazy Loading, Custom renderers & Grouping, Multiple selection, Keyboard navigation |
 
 ### Provider Components (2)
 
@@ -103,19 +104,7 @@
 
 ### High Priority
 
-#### 1. **Autocomplete**
-
-- **Status:** Not implemented
-- **Priority:** High
-- **Description:** Searchable input with suggestion list
-- **Required Features:**
-  - Remote data fetching
-  - Custom filtering
-  - Grouping
-  - Multiple selection
-  - Custom renderers for options
-
-#### 2. **Calendar**
+#### 1. **Calendar**
 
 - **Status:** Not implemented
 - **Priority:** High
@@ -137,7 +126,7 @@
 
 ### Medium Priority
 
-#### 3. **Breadcrumb**
+#### 2. **Breadcrumb**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -149,7 +138,7 @@
   - Item max-width truncation
   - Headless hook support
 
-#### 4. **Pagination**
+#### 3. **Pagination**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -161,7 +150,7 @@
   - Simple vs Complex modes
   - Mini version
 
-#### 5. **Progress**
+#### 4. **Progress**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -173,7 +162,7 @@
   - Custom steps/milestone mode
   - Gradient support
 
-#### 6. **Chips**
+#### 5. **Chips**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -185,7 +174,7 @@
   - Action chips
   - Avatar support
 
-#### 7. **FAB**
+#### 6. **FAB**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -196,7 +185,7 @@
   - Animation transitions
   - Anchoring
 
-#### 8. **SpeedDial**
+#### 7. **SpeedDial**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -207,7 +196,7 @@
   - Tooltip labels
   - Delay control
 
-#### 9. **CommandPalette**
+#### 8. **CommandPalette**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -218,7 +207,7 @@
   - Dynamic action binding
   - Grouped results
 
-#### 10. **Dock**
+#### 9. **Dock**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -229,7 +218,7 @@
   - Glassmorphism styling
   - Responsive collapsing
 
-#### 11. **Kanban**
+#### 10. **Kanban**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -241,7 +230,7 @@
   - Custom card rendering
   - Swimlanes
 
-#### 12. **Charts**
+#### 11. **Charts**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -254,7 +243,7 @@
   - Customizable axes and grids
   - Dark mode support
 
-#### 13. **RichTextEditor**
+#### 12. **RichTextEditor**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -267,7 +256,7 @@
   - Slash commands support
   - Floating menu for text selection
 
-#### 14. **Drawer**
+#### 13. **Drawer**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -278,7 +267,7 @@
   - Size configuration
   - Backdrop customization
 
-#### 15. **FileUpload**
+#### 14. **FileUpload**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -290,7 +279,7 @@
   - Progress bar integration
   - Validation (size, type)
 
-#### 16. **TreeSelect**
+#### 15. **TreeSelect**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -304,7 +293,7 @@
 
 ### Low Priority
 
-#### 17. **Alert**
+#### 16. **Alert**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -316,7 +305,7 @@
   - Title and Description layout
   - Banner mode (full width)
 
-#### 18. **Slider**
+#### 17. **Slider**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -328,7 +317,7 @@
   - Tooltip formatting
   - Input field sync
 
-#### 19. **Switch**
+#### 18. **Switch**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -339,7 +328,7 @@
   - Size variants (sm, md, lg)
   - Custom background colors
 
-#### 20. **Table**
+#### 19. **Table**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -351,7 +340,7 @@
   - Expandable Rows
   - Custom Column Rendering
 
-#### 21. **Tree**
+#### 20. **Tree**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -363,7 +352,7 @@
   - Virtual scrolling
   - Search/Filter nodes
 
-#### 22. **Timeline**
+#### 21. **Timeline**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -374,7 +363,7 @@
   - Pending state
   - Label support
 
-#### 23. **List**
+#### 22. **List**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -386,7 +375,7 @@
   - Virtual list support
   - Load more wrapper
 
-#### 24. **Steps**
+#### 23. **Steps**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -397,7 +386,7 @@
   - Status (wait, process, finish, error)
   - Custom icons and dot style
 
-#### 25. **Rating**
+#### 24. **Rating**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -409,7 +398,7 @@
   - Tooltip headers
   - Clearable
 
-#### 26. **Carousel**
+#### 25. **Carousel**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -421,7 +410,7 @@
   - Fade transition
   - Multiple items per slide
 
-#### 27. **Transfer**
+#### 26. **Transfer**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -432,7 +421,7 @@
   - Pagination support
   - Custom renderers
 
-#### 28. **Splitter**
+#### 27. **Splitter**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -443,7 +432,7 @@
   - Nested splitters
   - Collapse to edge
 
-#### 29. **ScrollArea**
+#### 28. **ScrollArea**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -454,7 +443,7 @@
   - Themed styling
   - Corner smoothing
 
-#### 30. **Tour**
+#### 29. **Tour**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -465,7 +454,7 @@
   - Custom placement
   - Scroll into view
 
-#### 31. **Empty**
+#### 30. **Empty**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -475,7 +464,7 @@
   - Custom description/actions
   - Simple mode
 
-#### 32. **Result**
+#### 31. **Result**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -485,7 +474,7 @@
   - Custom icon/image
   - Action buttons area
 
-#### 33. **Watermark**
+#### 32. **Watermark**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -496,7 +485,7 @@
   - Font styling
   - Multi-line support
 
-#### 34. **ColorPicker**
+#### 33. **ColorPicker**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -507,7 +496,7 @@
   - Preset palettes
   - Eye dropper API
 
-#### 35. **Mentions**
+#### 34. **Mentions**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -518,7 +507,7 @@
   - Option grouping
   - Placement control
 
-#### 36. **SignaturePad**
+#### 35. **SignaturePad**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -659,8 +648,8 @@
 
 ```
 
-Completed Components: 26/62 (42%)
-High Priority Missing: 2/{{TOTAL_STAT}} (3%)
+Completed Components: 27/62 (44%)
+High Priority Missing: 1/{{TOTAL_STAT}} (2%)
 Medium Priority Missing: 14/{{TOTAL_STAT}} (23%)
 Low Priority Missing: 20/{{TOTAL_STAT}} (32%)
 
@@ -670,7 +659,7 @@ Low Priority Missing: 20/{{TOTAL_STAT}} (32%)
 
 | Category | Completed | Missing | Total |
 | -------- | --------- | ------- | ----- |
-| **Data Entry** | 7 | 15 | 22 |
+| **Data Entry** | 8 | 14 | 22 |
 | **Data Display** | 5 | 10 | 15 |
 | **Feedback** | 5 | 4 | 9 |
 | **Navigation** | 3 | 5 | 8 |
@@ -705,7 +694,7 @@ For detailed contribution guidelines, see `CONTRIBUTING.md` (to be created).
 
 ---
 
-**Last Updated:** January 8, 2026
+**Last Updated:** January 9, 2026
 **Maintained by:** Aer Design Team
 **License:** MIT
 

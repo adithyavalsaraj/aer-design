@@ -8,6 +8,7 @@ import {
   DocSection,
   DocTabs,
 } from "@/docs/components/shared";
+import { cn } from "@/lib/utils";
 import * as React from "react";
 
 export function CascaderDoc() {
@@ -146,7 +147,11 @@ export default function ScrollBehaviorExample() {
           value: "can",
           children: [
             { label: "Toronto", value: "tor" },
-            { label: "Vancouver", value: "van" },
+            {
+              label:
+                "Vancouver - A very long city name to test text wrapping behavior in the nested cascader menu",
+              value: "van",
+            },
           ],
         },
       ],
@@ -778,6 +783,33 @@ export default function ValidationExample() {
       </DocSection>
 
       <DocSection
+        id="custom-rendering"
+        title="Custom Item Rendering"
+        description="Customize the appearance of cascader items."
+      >
+        <div className="flex flex-col gap-4 p-6 border rounded-lg bg-aer-muted/5 items-center">
+          <CustomRenderExample options={geoOptions} />
+        </div>
+        <CodeBlock
+          ts={`<Cascader
+  renderOption={({ option, active, isLeaf, onClick }) => (
+    <div
+      onClick={onClick}
+      className={cn(
+        "flex flex-col p-2 cursor-pointer border-l-2 border-transparent",
+        active && "bg-blue-50 border-blue-500",
+        option.disabled && "opacity-50"
+      )}
+    >
+      <span>{option.label}</span>
+      <span className="text-xs opacity-50">{option.value}</span>
+    </div>
+  )}
+/>`}
+        />
+      </DocSection>
+
+      <DocSection
         title="Granular Styling"
         id="granular-styling"
         description="Style specific parts of the cascader using utility classes."
@@ -1011,6 +1043,13 @@ export default function ProductForm() {
               default: "false",
               description: "Error state or error message to display.",
             },
+            {
+              prop: "renderOption",
+              type: "(props: RenderCascaderOptionProps) => ReactNode",
+              default: "-",
+              description:
+                "Function to customize option rendering. Receives option, selected, active, disabled, isLeaf, and onClick.",
+            },
           ]}
         />
       </div>
@@ -1115,6 +1154,7 @@ export default function ProductForm() {
               { id: "error-state", title: "Error State" },
               { id: "show-last-item", title: "Show Last Item" },
               { id: "validation", title: "Validation" },
+              { id: "custom-rendering", title: "Custom Item Rendering" },
               { id: "granular-styling", title: "Granular Styling" },
               { id: "scroll-behavior", title: "Scroll Behavior" },
               { id: "real-world", title: "Real World Example" },
@@ -1623,6 +1663,39 @@ export default function ProductForm() {
         onChange={setVal}
         placeholder="Select Region"
         variant="aer"
+      />
+    );
+  }
+
+  function CustomRenderExample({ options }: { options: any[] }) {
+    const [val, setVal] = React.useState<string | number>();
+    return (
+      <Cascader
+        options={options}
+        value={val}
+        onChange={setVal}
+        placeholder="Custom rendering"
+        renderOption={({ option, active, selected, isLeaf, onClick }) => (
+          <div
+            onClick={onClick}
+            className={cn(
+              "flex items-center justify-between px-3 py-2 cursor-pointer transition-colors border-l-2 border-transparent",
+              active &&
+                "bg-aer-accent text-aer-accent-foreground border-aer-primary",
+              selected && "font-bold bg-aer-primary/10",
+              option.disabled && "opacity-50 cursor-not-allowed"
+            )}
+          >
+            <div className="flex flex-col">
+              <span className="text-sm">{option.label}</span>
+              <span className="text-xs text-muted-foreground opacity-70">
+                Code: {option.value}
+              </span>
+            </div>
+            {!isLeaf && <span className="text-xs ml-2">›</span>}
+            {selected && isLeaf && <span className="text-xs ml-2">✓</span>}
+          </div>
+        )}
       />
     );
   }

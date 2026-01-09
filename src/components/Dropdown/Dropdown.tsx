@@ -1,5 +1,6 @@
 import { useAerConfig } from "@/components/AerConfigProvider";
 import { useAutoPosition } from "@/hooks/useAutoPosition";
+import { useVirtualization } from "@/hooks/useVirtualization";
 import { cn } from "@/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Check, ChevronDown, Loader2, Search, X } from "lucide-react";
@@ -54,6 +55,19 @@ export type DropdownOption =
   | { type: "group"; label: string; items: DropdownOptionItem[] }
   | { type: "separator" };
 
+export interface RenderDropdownOptionProps {
+  /** The option being rendered */
+  option: DropdownOptionItem;
+  /** Whether this option is currently selected */
+  selected: boolean;
+  /** Whether this option is the active/focused option */
+  active: boolean;
+  /** Whether this option is disabled */
+  disabled: boolean;
+  /** Click handler for selection */
+  onClick: (e: React.MouseEvent) => void;
+}
+
 export interface DropdownProps
   extends Omit<
       React.ButtonHTMLAttributes<HTMLDivElement>,
@@ -96,6 +110,9 @@ export interface DropdownProps
   addonBefore?: React.ReactNode;
   addonAfter?: React.ReactNode;
   maxDisplayCount?: number;
+  matchTriggerWidth?: boolean;
+  /** Custom option renderer */
+  renderOption?: (props: RenderDropdownOptionProps) => React.ReactNode;
   /** CSS classes for the root container element */
   className?: string;
   /** DEPRECATED: Use className instead. */
@@ -192,6 +209,8 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
       addonAfter,
       maxDisplayCount, // Optional prop to fallback to "{n} selected"
       size: sizeProp,
+      matchTriggerWidth = true,
+      renderOption,
       ...props
     },
     ref
@@ -225,6 +244,7 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
       strategy: "fixed",
       scrollBehavior,
       onScroll: () => setIsOpen(false),
+      matchWidth: matchTriggerWidth,
     });
 
     // Flatten all selectable options from groups
@@ -374,14 +394,42 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
         document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
-    // Virtualization Logic (disabled for now with groups - will implement later)
+    // Virtualization using shared hook
+    const virtualizationParams = useVirtualization({
+      enabled: virtualized || false,
+      itemCount: selectableItems.length,
+      itemHeight,
+      maxHeight: 250,
+      overscan: 3,
+    });
 
-    const listHeight = Math.min(selectableItems.length * itemHeight, 250);
+    const {
+      visibleStart,
+      visibleEnd,
+      offsetY,
+      bottomSpacerHeight,
+      containerHeight,
+      reset,
+    } = virtualizationParams;
 
+    // Reset virtualization when opened
+    React.useEffect(() => {
+      if (isOpen && virtualized) {
+        reset();
+      }
+    }, [isOpen, virtualized]);
+
+    // Get visible items
+    const visibleItems = virtualized
+      ? selectableItems.slice(visibleStart, visibleEnd)
+      : selectableItems;
+
+    // Enhanced scroll handler with lazy loading
     const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-      const target = e.currentTarget;
+      virtualizationParams.handleScroll(e);
 
       // Lazy load trigger
+      const target = e.currentTarget;
       if (onLoadMore && hasMore && !loading) {
         if (
           target.scrollHeight - target.scrollTop <=
@@ -672,7 +720,7 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
                 className="overflow-y-auto max-h-[250px]"
                 style={{
                   position: "relative",
-                  height: virtualized ? listHeight : "auto",
+                  height: virtualized ? containerHeight : "auto",
                 }}
                 onScroll={handleScroll}
               >
@@ -686,158 +734,198 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
                     No options found.
                   </div>
                 ) : (
-                  <div className="p-1">
-                    {renderableItems.map((item, itemIndex) => {
-                      if (isGroup(item)) {
-                        // Render group label + its items
-                        return (
-                          <div key={`group-${itemIndex}`}>
-                            <div className="px-2 py-1.5 text-xs font-semibold text-aer-muted-foreground uppercase tracking-wide">
-                              {item.label}
-                            </div>
-                            {item.items.map((option) => {
-                              // Find this option's index in selectableItems for keyboard navigation
-                              const selectableIndex = selectableItems.findIndex(
-                                (si) => si.value === option.value
-                              );
-                              const isOptSelected = isSelected(option.value);
+                  <>
+                    {/* Virtual scrolling spacer for top */}
+                    {virtualized && <div style={{ height: offsetY }} />}
 
+                    <div className="p-1">
+                      {(virtualized ? visibleItems : renderableItems).map(
+                        (item, itemIndex) => {
+                          // Adjust itemIndex for virtualized items
+                          if (isGroup(item)) {
+                            // Render group label + its items
+                            return (
+                              <div key={`group-${itemIndex}`}>
+                                <div className="px-2 py-1.5 text-xs font-semibold text-aer-muted-foreground uppercase tracking-wide">
+                                  {item.label}
+                                </div>
+                                {item.items.map((option) => {
+                                  // Find this option's index in selectableItems for keyboard navigation
+                                  const selectableIndex =
+                                    selectableItems.findIndex(
+                                      (si) => si.value === option.value
+                                    );
+                                  const isOptSelected = isSelected(
+                                    option.value
+                                  );
+
+                                  return (
+                                    <div
+                                      key={option.value}
+                                      onClick={() =>
+                                        !option.disabled &&
+                                        handleSelect(option.value)
+                                      }
+                                      className={cn(
+                                        "flex items-center gap-2 px-3 py-2 text-sm cursor-pointer transition-colors select-none rounded-sm",
+                                        isOptSelected &&
+                                          !multiple &&
+                                          (variant === "aer"
+                                            ? "bg-white/20 font-medium"
+                                            : "bg-aer-primary/10 text-aer-primary font-medium"),
+                                        isOptSelected &&
+                                          multiple &&
+                                          "bg-transparent",
+                                        !isOptSelected &&
+                                          selectableIndex === focusedIndex &&
+                                          (variant === "aer"
+                                            ? "bg-white/10"
+                                            : "bg-aer-accent"),
+                                        !isOptSelected &&
+                                          selectableIndex !== focusedIndex &&
+                                          (variant === "aer"
+                                            ? "hover:bg-white/10"
+                                            : "hover:bg-aer-muted/50"),
+                                        option.disabled &&
+                                          "opacity-50 cursor-not-allowed pointer-events-none",
+                                        itemClassName
+                                      )}
+                                    >
+                                      {multiple && (
+                                        <Checkbox
+                                          checked={isOptSelected}
+                                          className="pointer-events-none w-auto"
+                                          readOnly
+                                        />
+                                      )}
+                                      <span
+                                        className={cn(
+                                          "flex-1 min-w-0",
+                                          virtualized
+                                            ? "truncate"
+                                            : "wrap-break-word whitespace-normal",
+                                          variant === "aer"
+                                            ? "text-white! [text-shadow:0_1px_2px_rgba(0,0,0,0.8)]"
+                                            : "text-aer-foreground"
+                                        )}
+                                      >
+                                        {option.label}
+                                      </span>
+                                      {!multiple && isOptSelected && (
+                                        <Check
+                                          className={cn(
+                                            "w-4 h-4 text-aer-primary ml-auto",
+                                            iconClassName
+                                          )}
+                                        />
+                                      )}
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            );
+                          } else if (isSeparator(item)) {
+                            // Render separator
+                            return (
+                              <div
+                                key={`separator-${itemIndex}`}
+                                className="my-1 h-px bg-aer-border"
+                              />
+                            );
+                          } else {
+                            // Render regular option
+                            const selectableIndex = selectableItems.findIndex(
+                              (si) => si.value === item.value
+                            );
+                            const isOptSelected = isSelected(item.value);
+                            const isActive = selectableIndex === focusedIndex;
+
+                            // Custom renderer
+                            if (renderOption) {
                               return (
-                                <div
-                                  key={option.value}
-                                  onClick={() =>
-                                    !option.disabled &&
-                                    handleSelect(option.value)
-                                  }
+                                <React.Fragment key={item.value}>
+                                  {renderOption({
+                                    option: item,
+                                    selected: isOptSelected,
+                                    active: isActive,
+                                    disabled: item.disabled || false,
+                                    onClick: () =>
+                                      !item.disabled &&
+                                      handleSelect(item.value),
+                                  })}
+                                </React.Fragment>
+                              );
+                            }
+
+                            return (
+                              <div
+                                key={item.value}
+                                onClick={() =>
+                                  !item.disabled && handleSelect(item.value)
+                                }
+                                className={cn(
+                                  "flex items-center gap-2 px-3 py-2 text-sm cursor-pointer transition-colors select-none rounded-sm",
+                                  isOptSelected &&
+                                    !multiple &&
+                                    (variant === "aer"
+                                      ? "bg-white/20 text-white font-medium"
+                                      : "bg-aer-primary/10 text-aer-primary font-medium"),
+                                  isOptSelected && multiple && "bg-transparent",
+                                  !isOptSelected &&
+                                    selectableIndex === focusedIndex &&
+                                    (variant === "aer"
+                                      ? "bg-white/10"
+                                      : "bg-aer-accent"),
+                                  !isOptSelected &&
+                                    selectableIndex !== focusedIndex &&
+                                    (variant === "aer"
+                                      ? "hover:bg-white/10"
+                                      : "hover:bg-aer-muted/50"),
+                                  item.disabled &&
+                                    "opacity-50 cursor-not-allowed pointer-events-none",
+                                  itemClassName
+                                )}
+                              >
+                                {multiple && (
+                                  <Checkbox
+                                    checked={isOptSelected}
+                                    className="pointer-events-none w-auto"
+                                    readOnly
+                                  />
+                                )}
+                                <span
                                   className={cn(
-                                    "flex items-center gap-2 px-3 py-2 text-sm cursor-pointer transition-colors select-none rounded-sm",
-                                    isOptSelected &&
-                                      !multiple &&
-                                      (variant === "aer"
-                                        ? "bg-white/20 font-medium"
-                                        : "bg-aer-primary/10 text-aer-primary font-medium"),
-                                    isOptSelected &&
-                                      multiple &&
-                                      "bg-transparent",
-                                    !isOptSelected &&
-                                      selectableIndex === focusedIndex &&
-                                      (variant === "aer"
-                                        ? "bg-white/10"
-                                        : "bg-aer-accent"),
-                                    !isOptSelected &&
-                                      selectableIndex !== focusedIndex &&
-                                      (variant === "aer"
-                                        ? "hover:bg-white/10"
-                                        : "hover:bg-aer-muted/50"),
-                                    option.disabled &&
-                                      "opacity-50 cursor-not-allowed pointer-events-none",
-                                    itemClassName
+                                    "flex-1 min-w-0",
+                                    virtualized
+                                      ? "truncate"
+                                      : "wrap-break-word whitespace-normal",
+                                    variant === "aer"
+                                      ? "text-white! [text-shadow:0_1px_2px_rgba(0,0,0,0.8)]"
+                                      : "text-aer-foreground"
                                   )}
                                 >
-                                  {multiple && (
-                                    <Checkbox
-                                      checked={isOptSelected}
-                                      className="pointer-events-none w-auto"
-                                      readOnly
-                                    />
-                                  )}
-                                  <span
+                                  {item.label}
+                                </span>
+                                {!multiple && isOptSelected && (
+                                  <Check
                                     className={cn(
-                                      "truncate flex-1",
-                                      variant === "aer"
-                                        ? "text-white! [text-shadow:0_1px_2px_rgba(0,0,0,0.8)]"
-                                        : "text-aer-foreground"
+                                      "w-4 h-4 text-aer-primary ml-auto",
+                                      iconClassName
                                     )}
-                                  >
-                                    {option.label}
-                                  </span>
-                                  {!multiple && isOptSelected && (
-                                    <Check
-                                      className={cn(
-                                        "w-4 h-4 text-aer-primary ml-auto",
-                                        iconClassName
-                                      )}
-                                    />
-                                  )}
-                                </div>
-                              );
-                            })}
-                          </div>
-                        );
-                      } else if (isSeparator(item)) {
-                        // Render separator
-                        return (
-                          <div
-                            key={`separator-${itemIndex}`}
-                            className="my-1 h-px bg-aer-border"
-                          />
-                        );
-                      } else {
-                        // Render regular option
-                        const selectableIndex = selectableItems.findIndex(
-                          (si) => si.value === item.value
-                        );
-                        const isOptSelected = isSelected(item.value);
-
-                        return (
-                          <div
-                            key={item.value}
-                            onClick={() =>
-                              !item.disabled && handleSelect(item.value)
-                            }
-                            className={cn(
-                              "flex items-center gap-2 px-3 py-2 text-sm cursor-pointer transition-colors select-none rounded-sm",
-                              isOptSelected &&
-                                !multiple &&
-                                (variant === "aer"
-                                  ? "bg-white/20 text-white font-medium"
-                                  : "bg-aer-primary/10 text-aer-primary font-medium"),
-                              isOptSelected && multiple && "bg-transparent",
-                              !isOptSelected &&
-                                selectableIndex === focusedIndex &&
-                                (variant === "aer"
-                                  ? "bg-white/10"
-                                  : "bg-aer-accent"),
-                              !isOptSelected &&
-                                selectableIndex !== focusedIndex &&
-                                (variant === "aer"
-                                  ? "hover:bg-white/10"
-                                  : "hover:bg-aer-muted/50"),
-                              item.disabled &&
-                                "opacity-50 cursor-not-allowed pointer-events-none",
-                              itemClassName
-                            )}
-                          >
-                            {multiple && (
-                              <Checkbox
-                                checked={isOptSelected}
-                                className="pointer-events-none w-auto"
-                                readOnly
-                              />
-                            )}
-                            <span
-                              className={cn(
-                                "truncate flex-1",
-                                variant === "aer"
-                                  ? "text-white! [text-shadow:0_1px_2px_rgba(0,0,0,0.8)]"
-                                  : "text-aer-foreground"
-                              )}
-                            >
-                              {item.label}
-                            </span>
-                            {!multiple && isOptSelected && (
-                              <Check
-                                className={cn(
-                                  "w-4 h-4 text-aer-primary ml-auto",
-                                  iconClassName
+                                  />
                                 )}
-                              />
-                            )}
-                          </div>
-                        );
-                      }
-                    })}
-                  </div>
+                              </div>
+                            );
+                          }
+                        }
+                      )}
+                    </div>
+
+                    {/* Virtual scrolling spacer for bottom */}
+                    {virtualized && (
+                      <div style={{ height: bottomSpacerHeight }} />
+                    )}
+                  </>
                 )}
                 {loading && options.length > 0 && (
                   <div className="py-2 text-center">

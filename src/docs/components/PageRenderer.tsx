@@ -1,4 +1,5 @@
 import { AccordionDoc } from "../pages/AccordionDoc";
+import { AutocompleteDoc } from "../pages/AutocompleteDoc";
 import { AvatarDoc } from "../pages/AvatarDoc";
 import { BadgeDoc } from "../pages/BadgeDoc";
 import { ButtonDoc } from "../pages/ButtonDoc";
@@ -52,6 +53,8 @@ export function PageRenderer({ activePage, onGetStarted }: PageRendererProps) {
       return <CardDoc />;
     case "cascader":
       return <CascaderDoc />;
+    case "autocomplete":
+      return <AutocompleteDoc />;
     case "input":
       return <InputDoc />;
     case "dialog":

@@ -522,7 +522,7 @@ export default function PopoverVariants() {
 export default function AerPopoverExample() {
   return (
     <div className="relative flex items-center justify-center p-24 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 via-transparent to-blue-600/20" />
+      <div className="absolute inset-0 bg-linear-to-br from-purple-600/20 via-transparent to-blue-600/20" />
       
       <div className="relative z-10">
         <Popover
