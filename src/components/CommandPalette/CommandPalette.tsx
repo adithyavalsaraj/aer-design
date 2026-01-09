@@ -1,4 +1,5 @@
 import { useScrollToActive } from "@/hooks/useScrollToActive";
+import { fuzzyScore } from "@/lib/fuzzy";
 import { cn } from "@/lib/utils";
 import { Command, Search, X } from "lucide-react";
 import * as React from "react";
@@ -23,32 +24,35 @@ export function CommandPalette({
   const filteredItems = React.useMemo(() => {
     if (!query) return items;
 
-    const lowerQuery = query.toLowerCase();
-    return items
-      .filter((item) => {
-        const inTitle = item.title.toLowerCase().includes(lowerQuery);
-        const inDesc = item.description?.toLowerCase().includes(lowerQuery);
-        const inKeywords = item.keywords?.some((k) =>
-          k.toLowerCase().includes(lowerQuery)
-        );
-        return inTitle || inDesc || inKeywords;
-      })
-      .sort((a, b) => {
-        // Basic relevance scoring
-        const aTitle = a.title.toLowerCase();
-        const bTitle = b.title.toLowerCase();
-        const aExact = aTitle === lowerQuery;
-        const bExact = bTitle === lowerQuery;
-        if (aExact && !bExact) return -1;
-        if (!aExact && bExact) return 1;
+    // Calculate scores for all items
+    const scored = items.map((item) => {
+      // Score title (highest weight)
+      const titleScore = fuzzyScore(item.title, query) * 2;
 
-        const aStarts = aTitle.startsWith(lowerQuery);
-        const bStarts = bTitle.startsWith(lowerQuery);
-        if (aStarts && !bStarts) return -1;
-        if (!aStarts && bStarts) return 1;
+      // Score category (medium weight)
+      // const catScore = item.category ? fuzzyScore(item.category, query) : 0;
 
-        return 0;
-      });
+      // Score keywords (medium weight)
+      const keywordScore = item.keywords
+        ? Math.max(...item.keywords.map((k) => fuzzyScore(k, query)))
+        : 0;
+
+      // Score description (lower weight)
+      const descScore = item.description
+        ? fuzzyScore(item.description, query) * 0.5
+        : 0;
+
+      // Max score determines relevance
+      const maxScore = Math.max(titleScore, keywordScore, descScore);
+
+      return { item, score: maxScore };
+    });
+
+    // Filter and sort
+    return scored
+      .filter((entry) => entry.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .map((entry) => entry.item);
   }, [items, query]);
 
   // Reset active index when query changes

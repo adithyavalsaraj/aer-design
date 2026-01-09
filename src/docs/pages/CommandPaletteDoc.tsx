@@ -296,8 +296,9 @@ useShortcut("Ctrl+K", () => setIsOpen(true));
       </p>
       <ul className="list-disc pl-5 space-y-2 text-aer-muted-foreground">
         <li>
-          <strong>Fuzzy Filtering</strong>: Matches items even with typos (e.g.,
-          "sttings" finds "Settings").
+          <strong>Smart Fuzzy Search</strong>: Advanced scoring algorithm
+          matches items by title, description, and keywords. Handles typos
+          (e.g., "sttings" finds "Settings") and prioritizes exact matches.
         </li>
         <li>
           <strong>Categorization</strong>: Automatically groups items by their
@@ -399,6 +400,8 @@ const api = (
 interface CommandItem {
   id: string | number;
   title: string;
+  description?: string;
+  keywords?: string[];
   category?: string;
   icon?: LucideIcon | React.ReactNode;
   matches?: string[]; // Internal search matches
