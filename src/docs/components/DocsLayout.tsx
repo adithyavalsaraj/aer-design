@@ -46,10 +46,16 @@ export function DocsLayout({
         {/* Main Layout */}
         <div className="flex-1 flex flex-col min-w-0 transition-all duration-300 md:ms-64">
           <main className="flex-1 flex gap-8 px-4 py-8 md:px-12 md:py-16">
-            <div className="flex-1 max-w-5xl mx-auto w-full">{children}</div>
+            <div
+              className={`flex-1 w-full mx-auto ${
+                displayTOC.length > 0 ? "xl:max-w-5xl" : "max-w-full"
+              }`}
+            >
+              {children}
+            </div>
 
             {displayTOC.length > 0 && (
-              <div className="hidden lg:block w-64 shrink-0">
+              <div className="hidden xl:block w-64 shrink-0">
                 <div className="sticky top-20">
                   <RightTableOfContents items={displayTOC} />
                 </div>

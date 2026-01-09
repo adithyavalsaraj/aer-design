@@ -7,7 +7,7 @@ import * as React from "react";
 // --- Variants ---
 
 const checkboxContainerVariants = cva(
-  "group flex w-full cursor-pointer relative transition-all duration-200 gap-3",
+  "group flex w-full cursor-pointer relative transition-all duration-200 gap-3 has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-75",
   {
     variants: {
       labelPosition: {

@@ -10,7 +10,13 @@ import {
 import { RadioGroup, RadioItem } from "@/components/Radio";
 import { HelpCircle, Settings, User } from "lucide-react";
 import * as React from "react";
-import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
+import {
+  ApiTable,
+  CodeBlock,
+  DocSection,
+  DocTabs,
+  UsageGuidelines,
+} from "../components/shared";
 
 export function PopoverDoc() {
   // Headless Hook Example
@@ -62,44 +68,47 @@ export function PopoverDoc() {
 
     return (
       <div className="space-y-6">
-        <div className="p-4 bg-aer-muted/20 rounded-lg border border-aer-border">
-          <label className="text-sm font-medium text-aer-foreground mb-3 block">
-            Trigger Mode
-          </label>
-          <RadioGroup
-            value={Array.isArray(trigger) ? "composite" : trigger}
-            onChange={(val) => {
-              if (val === "composite") {
-                setTrigger(["hover", "focus"]);
-              } else {
-                setTrigger(val as "click" | "hover" | "focus");
-              }
-            }}
-            className="flex flex-wrap gap-4"
-          >
-            <RadioItem value="click" label="Click" />
-            <RadioItem value="hover" label="Hover" />
-            <RadioItem value="focus" label="Focus" />
-            <RadioItem value="composite" label="Hover + Focus" />
-          </RadioGroup>
-        </div>
+        <div className="p-4 bg-aer-muted/20 rounded-lg border border-aer-border flex flex-col items-center gap-4">
+          <div>
+            <label className="text-sm font-medium text-aer-foreground mb-3 block">
+              Trigger Mode
+            </label>
+            <RadioGroup
+              value={Array.isArray(trigger) ? "composite" : trigger}
+              onChange={(val) => {
+                if (val === "composite") {
+                  setTrigger(["hover", "focus"]);
+                } else {
+                  setTrigger(val as "click" | "hover" | "focus");
+                }
+              }}
+              className="flex flex-wrap gap-4"
+              orientation="horizontal"
+            >
+              <RadioItem value="click" label="Click" />
+              <RadioItem value="hover" label="Hover" />
+              <RadioItem value="focus" label="Focus" />
+              <RadioItem value="composite" label="Hover + Focus" />
+            </RadioGroup>
+          </div>
 
-        <div className="flex justify-center p-8 border border-aer-border rounded-lg bg-aer-muted/5">
-          <Popover
-            trigger={trigger}
-            content={
-              <div className="p-4">
-                <p className="text-sm">
-                  Triggered by:{" "}
-                  <strong>
-                    {Array.isArray(trigger) ? trigger.join(" + ") : trigger}
-                  </strong>
-                </p>
-              </div>
-            }
-          >
-            <Button variant="outline">Test Trigger</Button>
-          </Popover>
+          <div>
+            <Popover
+              trigger={trigger}
+              content={
+                <div className="p-4">
+                  <p className="text-sm">
+                    Triggered by:{" "}
+                    <strong>
+                      {Array.isArray(trigger) ? trigger.join(" + ") : trigger}
+                    </strong>
+                  </p>
+                </div>
+              }
+            >
+              <Button variant="outline">Test Trigger</Button>
+            </Popover>
+          </div>
         </div>
       </div>
     );
@@ -239,32 +248,19 @@ export function PopoverDoc() {
         id="when-to-use"
         description="Choose the right overlay component for your use case."
       >
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Use Popover when:
-            </h4>
-            <ul className="text-sm text-aer-muted-foreground space-y-2 list-disc pl-5">
-              <li>Displaying rich, interactive content</li>
-              <li>Building custom dropdowns or menus</li>
-              <li>Creating form popovers with inputs</li>
-              <li>Showing complex information with actions</li>
-              <li>Building a foundation for other components</li>
-            </ul>
-          </div>
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Use Tooltip instead when:
-            </h4>
-            <ul className="text-sm text-aer-muted-foreground space-y-2 list-disc pl-5">
-              <li>Showing simple, non-interactive text</li>
-              <li>Providing brief contextual hints</li>
-              <li>Explaining icon-only buttons</li>
-              <li>Content is read-only information</li>
-              <li>Hover trigger is primary interaction</li>
-            </ul>
-          </div>
-        </div>
+        <UsageGuidelines
+          do={[
+            "Displaying rich, interactive content (Forms, Buttons, Lists)",
+            "Building custom dropdowns or multi-step menus",
+            "Showing complex contextual information with actions",
+            "Creating floating settings or account panels",
+          ]}
+          dont={[
+            "Small, static text-only hints (Use Tooltip instead)",
+            "Primary page navigation or structural content",
+            "Situations requiring user attention to block the whole page (Use Dialog)",
+          ]}
+        />
       </DocSection>
 
       <DocSection
@@ -481,10 +477,10 @@ export default function PopoverVariants() {
         title="The Aer Variant"
         description="Our signature glassmorphism effect for premium interfaces."
       >
-        <div className="aer-vibrant-container p-24">
+        <div className="aer-vibrant-container p-24 flex items-center justify-center">
           <div className="aer-vibrant-bg-wrapper">
             <div className="aer-vibrant-bg" />
-            <div className="aer-vibrant-blob top-1/2 left-1/3 w-32 h-32 bg-purple-500/30" />
+            <div className="aer-vibrant-blob top-1/2 left-1/3 w-32 h-32 bg-cyan-500/30" />
           </div>
 
           <div className="relative z-10">
@@ -522,7 +518,7 @@ export default function PopoverVariants() {
 export default function AerPopoverExample() {
   return (
     <div className="relative flex items-center justify-center p-24 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">
-      <div className="absolute inset-0 bg-linear-to-br from-purple-600/20 via-transparent to-blue-600/20" />
+      <div className="absolute inset-0 bg-linear-to-br from-cyan-600/20 via-transparent to-blue-600/20" />
       
       <div className="relative z-10">
         <Popover

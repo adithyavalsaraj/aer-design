@@ -1,9 +1,16 @@
 import type { AutocompleteOption } from "@/components/Autocomplete";
 import { Autocomplete } from "@/components/Autocomplete";
+import { Checkbox } from "@/components/Checkbox";
 import { cn } from "@/lib/utils";
 import { Search as SearchIcon } from "lucide-react";
 import * as React from "react";
-import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
+import {
+  ApiTable,
+  CodeBlock,
+  DocSection,
+  DocTabs,
+  UsageGuidelines,
+} from "../components/shared";
 
 const basicOptions: AutocompleteOption[] = [
   { label: "React", value: "react" },
@@ -23,18 +30,20 @@ export function AutocompleteDoc() {
     const [value, setValue] = React.useState<string | number>();
 
     return (
-      <div className="space-y-6 w-full">
-        <div className="max-w-sm p-6 border border-aer-border rounded-lg bg-aer-muted/5">
-          <Autocomplete
-            options={basicOptions}
-            value={value}
-            onChange={(val) => setValue(val as string | number)}
-            placeholder="Type to search..."
-          />
+      <div className="space-y-8">
+        <div className="flex justify-center p-6 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-sm w-full">
+            <Autocomplete
+              options={basicOptions}
+              value={value}
+              onChange={(val) => setValue(val as string | number)}
+              placeholder="Type to search..."
+            />
+          </div>
         </div>
         <CodeBlock
-          ts={`<Autocomplete\n  options={options}\n  value={value}\n  onChange={setValue}\n  placeholder="Type to search..."\n/>`}
-          fullCode={`import { Autocomplete } from "aer-design";\nimport { useState } from "react";\n\nconst options = [\n  { label: "React", value: "react" },\n  { label: "Vue", value: "vue" },\n  { label: "Angular", value: "angular" },\n];\n\nexport default function Example() {\n  const [value, setValue] = useState();\n  \n  return (\n    <Autocomplete\n      options={options}\n      value={value}\n      onChange={setValue}\n      placeholder="Type to search..."\n    />\n  );\n}`}
+          ts={`<div className="max-w-sm w-full">\n  <Autocomplete\n    options={options}\n    value={value}\n    onChange={setValue}\n    placeholder="Type to search..."\n  />\n</div>`}
+          fullCode={`import { Autocomplete } from "aer-design";\nimport { useState } from "react";\n\nconst options = [\n  { label: "React", value: "react" },\n  { label: "Vue", value: "vue" },\n  { label: "Angular", value: "angular" },\n];\n\nexport default function Example() {\n  const [value, setValue] = useState();\n  \n  return (\n    <div className="w-full flex justify-center">\n      <div className="max-w-sm w-full">\n        <Autocomplete\n          options={options}\n          value={value}\n          onChange={setValue}\n          placeholder="Type to search..."\n        />\n      </div>\n    </div>\n  );\n}`}
         />
       </div>
     );
@@ -45,19 +54,68 @@ export function AutocompleteDoc() {
     const [values, setValues] = React.useState<(string | number)[]>([]);
 
     return (
-      <div className="space-y-6 w-full">
-        <div className="max-w-sm p-6 border border-aer-border rounded-lg bg-aer-muted/5">
-          <Autocomplete
-            mode="multiple"
-            options={basicOptions}
-            value={values}
-            onChange={(val) => setValues(val as (string | number)[])}
-            placeholder="Select multiple..."
-          />
+      <div className="space-y-8">
+        <div className="flex justify-center p-6 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-sm w-full">
+            <Autocomplete
+              mode="multiple"
+              options={basicOptions}
+              value={values}
+              onChange={(val) => setValues(val as (string | number)[])}
+              placeholder="Select multiple..."
+            />
+          </div>
         </div>
         <CodeBlock
-          ts={`<Autocomplete\n  mode="multiple"\n  options={options}\n  value={values}\n  onChange={setValues}\n  placeholder="Select multiple..."\n/>`}
-          fullCode={`import { Autocomplete } from "aer-design";\nimport { useState } from "react";\n\nexport default function Example() {\n  const [values, setValues] = useState([]);\n  \n  return (\n    <Autocomplete\n      mode="multiple"\n      options={options}\n      value={values}\n      onChange={setValues}\n      placeholder="Select multiple..."\n    />\n  );\n}`}
+          ts={`<div className="max-w-sm w-full">\n  <Autocomplete\n    mode="multiple"\n    options={options}\n    value={values}\n    onChange={setValues}\n    placeholder="Select multiple..."\n  />\n</div>`}
+          fullCode={`import { Autocomplete } from "aer-design";\nimport { useState } from "react";\n\nexport default function Example() {\n  const [values, setValues] = useState([]);\n  \n  return (\n    <div className="w-full flex justify-center">\n      <div className="max-w-sm w-full">\n        <Autocomplete\n          mode="multiple"\n          options={options}\n          value={values}\n          onChange={setValues}\n          placeholder="Select multiple..."\n        />\n      </div>\n    </div>\n  );\n}`}
+        />
+      </div>
+    );
+  }
+
+  // Wrap selection example
+  function WrapSelectionExample() {
+    const [wrap, setWrap] = React.useState(false);
+    const [values, setValues] = React.useState<(string | number)[]>([
+      "react",
+      "vue",
+      "svelte",
+      "angular",
+    ]);
+
+    return (
+      <div className="space-y-6">
+        <div className="flex flex-col border rounded-aer-xl bg-aer-muted/5 divide-y divide-aer-border overflow-hidden">
+          {/* Controls */}
+          <div className="flex p-6 bg-aer-muted/50">
+            <div className="flex items-center gap-2">
+              <Checkbox
+                id="wrap-toggle"
+                checked={wrap}
+                onCheckedChange={(checked) => setWrap(checked === true)}
+                label={`Enable Text Wrapping: (${wrap ? "true" : "false"})`}
+              />
+            </div>
+          </div>
+
+          {/* Live Preview */}
+          <div className="flex justify-center p-12 bg-aer-background">
+            <div className="max-w-xs w-full">
+              <Autocomplete
+                mode="multiple"
+                wrapSelection={wrap}
+                options={basicOptions}
+                value={values}
+                onChange={(val) => setValues(val as (string | number)[])}
+                placeholder="Select tags..."
+              />
+            </div>
+          </div>
+        </div>
+        <CodeBlock
+          ts={`<Autocomplete\n  mode="multiple"\n  wrapSelection={${wrap}}\n  options={options}\n  value={values}\n  onChange={setValues}\n/>`}
+          fullCode={`import { Autocomplete, Checkbox } from "aer-design";\nimport { useState } from "react";\n\nexport default function WrappingExample() {\n  const [wrap, setWrap] = useState(false);\n  const [values, setValues] = useState(["react", "vue", "svelte", "angular"]);\n  \n  return (\n    <div className="space-y-4">\n      <div className="flex items-center gap-2">\n        <Checkbox \n          id="wrap-mode"\n          checked={wrap} \n          onCheckedChange={(checked) => setWrap(checked === true)} \n        />\n        <label htmlFor="wrap-mode" className="text-sm font-medium">\n          Wrap Selection\n        </label>\n      </div>\n      \n      <div className="max-w-xs">\n        <Autocomplete\n          mode="multiple"\n          wrapSelection={wrap}\n          options={options}\n          value={values}\n          onChange={setValues}\n        />\n      </div>\n    </div>\n  );\n}`}
         />
       </div>
     );
@@ -91,23 +149,25 @@ export function AutocompleteDoc() {
     };
 
     return (
-      <div className="space-y-6 w-full">
-        <div className="max-w-sm p-6 border border-aer-border rounded-lg bg-aer-muted/5">
-          <Autocomplete
-            dataSource="remote"
-            options={options}
-            value={value}
-            onChange={(val) => setValue(val as string | number)}
-            onSearch={handleSearch}
-            loading={loading}
-            minChars={2}
-            placeholder="Type 2+ chars to search..."
-            startIcon={<SearchIcon className="w-4 h-4" />}
-          />
+      <div className="space-y-8">
+        <div className="flex justify-center p-6 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-sm w-full">
+            <Autocomplete
+              dataSource="remote"
+              options={options}
+              value={value}
+              onChange={(val) => setValue(val as string | number)}
+              onSearch={handleSearch}
+              loading={loading}
+              minChars={2}
+              placeholder="Type 2+ chars to search..."
+              startIcon={<SearchIcon className="w-4 h-4" />}
+            />
+          </div>
         </div>
         <CodeBlock
-          ts={`<Autocomplete\n  dataSource="remote"\n  onSearch={handleSearch}\n  loading={loading}\n  minChars={2}\n  placeholder="Type 2+ chars to search..."\n/>`}
-          fullCode={`import { Autocomplete } from "aer-design";\nimport { useState } from "react";\n\nexport default function Example() {\n  const [loading, setLoading] = useState(false);\n  const [options, setOptions] = useState([]);\n  \n  const handleSearch = (query) => {\n    setLoading(true);\n    fetch(\`/api/search?q=\${query}\`)\n      .then(res => res.json())\n      .then(data => setOptions(data))\n      .finally(() => setLoading(false));\n  };\n  \n  return (\n    <Autocomplete\n      dataSource="remote"\n      options={options}\n      onSearch={handleSearch}\n      loading={loading}\n      minChars={2}\n      placeholder="Type 2+ chars to search..."\n    />\n  );\n}`}
+          ts={`<div className="max-w-sm w-full">\n  <Autocomplete\n    dataSource="remote"\n    onSearch={handleSearch}\n    loading={loading}\n    minChars={2}\n    placeholder="Type 2+ chars to search..."\n  />\n</div>`}
+          fullCode={`import { Autocomplete } from "aer-design";\nimport { useState } from "react";\n\nexport default function Example() {\n  const [loading, setLoading] = useState(false);\n  const [options, setOptions] = useState([]);\n  \n  const handleSearch = (query) => {\n    setLoading(true);\n    fetch(\`/api/search?q=\${query}\`)\n      .then(res => res.json())\n      .then(data => setOptions(data))\n      .finally(() => setLoading(false));\n  };\n  \n  return (\n    <div className="w-full flex justify-center">\n      <div className="max-w-sm w-full">\n        <Autocomplete\n          dataSource="remote"\n          options={options}\n          onSearch={handleSearch}\n          loading={loading}\n          minChars={2}\n          placeholder="Type 2+ chars to search..."\n        />\n      </div>\n    </div>\n  );\n}`}
         />
       </div>
     );
@@ -131,17 +191,19 @@ export function AutocompleteDoc() {
     }, []);
 
     return (
-      <div className="space-y-6 w-full">
-        <div className="max-w-sm p-6 border border-aer-border rounded-lg bg-aer-muted/5">
-          <Autocomplete
-            virtualized
-            options={options}
-            placeholder="Select from 1000 items..."
-          />
+      <div className="space-y-8">
+        <div className="flex justify-center p-6 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-sm w-full">
+            <Autocomplete
+              virtualized
+              options={options}
+              placeholder="Select from 1000 items..."
+            />
+          </div>
         </div>
         <CodeBlock
-          ts={`<Autocomplete\n  virtualized\n  options={largeOptions}\n  placeholder="Select from 1000 items..."\n/>`}
-          fullCode={`import { Autocomplete } from "aer-design";\nimport { useEffect, useState } from "react";\n\nexport default function VirtualizedExample() {\n  const [options, setOptions] = useState([]);\n\n  useEffect(() => {\n    // Generate 1000 items\n    const items = Array.from({ length: 1000 }, (_, i) => ({\n      label: \`Virtual Item \${i + 1}\`,\n      value: \`virtual-\${i + 1}\`,\n    }));\n    setOptions(items);\n  }, []);\n\n  return (\n    <Autocomplete\n      virtualized\n      options={options}\n      placeholder="Select from 1000 items..."\n    />\n  );\n}`}
+          ts={`<div className="max-w-sm w-full">\n  <Autocomplete\n    virtualized\n    options={largeOptions}\n    placeholder="Select from 1000 items..."\n  />\n</div>`}
+          fullCode={`import { Autocomplete } from "aer-design";\nimport { useEffect, useState } from "react";\n\nexport default function VirtualizedExample() {\n  const [options, setOptions] = useState([]);\n\n  useEffect(() => {\n    // Generate 1000 items\n    const items = Array.from({ length: 1000 }, (_, i) => ({\n      label: \`Virtual Item \${i + 1}\`,\n      value: \`virtual-\${i + 1}\`,\n    }));\n    setOptions(items);\n  }, []);\n\n  return (\n    <div className="w-full flex justify-center">\n      <div className="max-w-sm w-full">\n        <Autocomplete\n          virtualized\n          options={options}\n          placeholder="Select from 1000 items..."\n        />\n      </div>\n    </div>\n  );\n}`}
         />
       </div>
     );
@@ -188,20 +250,22 @@ export function AutocompleteDoc() {
     }, []);
 
     return (
-      <div className="space-y-6 w-full">
-        <div className="max-w-sm p-6 border border-aer-border rounded-lg bg-aer-muted/5">
-          <Autocomplete
-            virtualized
-            options={items}
-            loading={loading}
-            onLoadMore={loadMore}
-            hasMore={hasMore}
-            placeholder="Scroll to load more..."
-          />
+      <div className="space-y-8">
+        <div className="flex justify-center p-6 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-sm w-full">
+            <Autocomplete
+              virtualized
+              options={items}
+              loading={loading}
+              onLoadMore={loadMore}
+              hasMore={hasMore}
+              placeholder="Scroll to load more..."
+            />
+          </div>
         </div>
         <CodeBlock
-          ts={`<Autocomplete\n  virtualized\n  options={items}\n  loading={loading}\n  onLoadMore={loadMore}\n  hasMore={hasMore}\n  placeholder="Scroll to load more..."\n/>`}
-          fullCode={`import { Autocomplete } from "aer-design";\nimport { useState, useEffect } from "react";\n\nexport default function LazyLoadExample() {\n  const [items, setItems] = useState([]);\n  const [loading, setLoading] = useState(false);\n  const [hasMore, setHasMore] = useState(true);\n\n  const loadMore = () => {\n    if (loading) return;\n    setLoading(true);\n    setTimeout(() => {\n      const newItems = Array.from({ length: 10 }, (_, i) => ({\n        label: \`Item \${items.length + i + 1}\`,\n        value: String(items.length + i + 1),\n      }));\n      setItems(prev => [...prev, ...newItems]);\n      setLoading(false);\n      if (items.length >= 40) setHasMore(false);\n    }, 1000);\n  };\n\n  useEffect(() => { loadMore(); }, []);\n\n  return (\n    <Autocomplete\n      virtualized\n      options={items}\n      loading={loading}\n      onLoadMore={loadMore}\n      hasMore={hasMore}\n      placeholder="Scroll to load more..."\n    />\n  );\n}`}
+          ts={`<div className="max-w-sm w-full">\n  <Autocomplete\n    virtualized\n    options={items}\n    loading={loading}\n    onLoadMore={loadMore}\n    hasMore={hasMore}\n    placeholder="Scroll to load more..."\n  />\n</div>`}
+          fullCode={`import { Autocomplete } from "aer-design";\nimport { useState, useEffect } from "react";\n\nexport default function LazyLoadExample() {\n  const [items, setItems] = useState([]);\n  const [loading, setLoading] = useState(false);\n  const [hasMore, setHasMore] = useState(true);\n\n  const loadMore = () => {\n    if (loading) return;\n    setLoading(true);\n    setTimeout(() => {\n      const newItems = Array.from({ length: 10 }, (_, i) => ({\n        label: \`Item \${items.length + i + 1}\`,\n        value: String(items.length + i + 1),\n      }));\n      setItems(prev => [...prev, ...newItems]);\n      setLoading(false);\n      if (items.length >= 40) setHasMore(false);\n    }, 1000);\n  };\n\n  useEffect(() => { loadMore(); }, []);\n\n  return (\n    <div className="w-full flex justify-center">\n      <div className="max-w-sm w-full">\n        <Autocomplete\n          virtualized\n          options={items}\n          loading={loading}\n          onLoadMore={loadMore}\n          hasMore={hasMore}\n          placeholder="Scroll to load more..."\n        />\n      </div>\n    </div>\n  );\n}`}
         />
       </div>
     );
@@ -209,30 +273,32 @@ export function AutocompleteDoc() {
 
   function CustomRenderExample() {
     return (
-      <div className="space-y-6 w-full">
-        <div className="max-w-sm p-6 border border-aer-border rounded-lg bg-aer-muted/5">
-          <Autocomplete
-            options={basicOptions}
-            placeholder="Custom item rendering"
-            renderOption={({ option, active, selected, onClick }) => (
-              <div
-                onClick={onClick}
-                className={cn(
-                  "flex flex-col px-3 py-2 cursor-pointer transition-colors",
-                  active && "bg-aer-accent text-aer-accent-foreground",
-                  selected && "font-bold text-aer-primary"
-                )}
-              >
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">{option.label}</span>
-                  {selected && <span className="text-xs">✓</span>}
+      <div className="space-y-8">
+        <div className="flex justify-center p-6 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-sm w-full">
+            <Autocomplete
+              options={basicOptions}
+              placeholder="Custom item rendering"
+              renderOption={({ option, active, selected, onClick }) => (
+                <div
+                  onClick={onClick}
+                  className={cn(
+                    "flex flex-col px-3 py-2 cursor-pointer transition-colors",
+                    active && "bg-aer-accent text-aer-accent-foreground",
+                    selected && "font-bold text-aer-primary"
+                  )}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium">{option.label}</span>
+                    {selected && <span className="text-xs">✓</span>}
+                  </div>
+                  <span className="text-xs text-muted-foreground opacity-70">
+                    Value: {option.value}
+                  </span>
                 </div>
-                <span className="text-xs text-muted-foreground opacity-70">
-                  Value: {option.value}
-                </span>
-              </div>
-            )}
-          />
+              )}
+            />
+          </div>
         </div>
         <CodeBlock
           ts={`<Autocomplete
@@ -298,69 +364,21 @@ export function AutocompleteDoc() {
       <DocSection
         id="when-to-use"
         title="When to Use"
-        description="Choose the right component for your search and selection needs."
+        description="Guidance on choosing Autocomplete for selection and search."
       >
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Autocomplete
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use Autocomplete for:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>Search-as-you-type functionality</li>
-              <li>Large datasets requiring filtering</li>
-              <li>Remote API data fetching</li>
-              <li>User needs text input for precision</li>
-            </ul>
-          </div>
-
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">Dropdown</h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use Dropdown for:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>Fixed list of known options</li>
-              <li>User browses rather than searches</li>
-              <li>Status or category selection</li>
-              <li>No text input needed</li>
-            </ul>
-          </div>
-
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Tags Mode
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                mode="tags"
-              </code>{" "}
-              for:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>Free-text entry allowed</li>
-              <li>Create custom values</li>
-              <li>Tag or keyword input</li>
-              <li>Flexible user-defined options</li>
-            </ul>
-          </div>
-
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">Cascader</h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use Cascader for:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>Hierarchical drill-down</li>
-              <li>Category → Subcategory selection</li>
-              <li>Geographic region selection</li>
-              <li>Nested organizational structures</li>
-            </ul>
-          </div>
-        </div>
+        <UsageGuidelines
+          do={[
+            "Selecting from large datasets where the user knows what they want",
+            "Providing a searchable interface for complex object selection",
+            "Loading remote data as the user types to save bandwidth",
+            "Multi-selection tags for categories or labels",
+          ]}
+          dont={[
+            "Small fixed lists (< 5-7 items, use Radio or Checkbox instead)",
+            "Purely hierarchical drill-downs (use Cascader instead)",
+            "Simple yes/no toggles",
+          ]}
+        />
       </DocSection>
 
       <DocSection title="Basic Usage" id="basic">
@@ -368,22 +386,24 @@ export function AutocompleteDoc() {
       </DocSection>
 
       <DocSection title="Visual Variants" id="variants">
-        <div className="max-w-sm space-y-6">
-          <Autocomplete
-            variant="outline"
-            options={basicOptions}
-            placeholder="Outline"
-          />
-          <Autocomplete
-            variant="filled"
-            options={basicOptions}
-            placeholder="Filled"
-          />
-          <Autocomplete
-            variant="underlined"
-            options={basicOptions}
-            placeholder="Underlined"
-          />
+        <div className="flex justify-center p-6 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-sm w-full space-y-6">
+            <Autocomplete
+              variant="outline"
+              options={basicOptions}
+              placeholder="Outline"
+            />
+            <Autocomplete
+              variant="filled"
+              options={basicOptions}
+              placeholder="Filled"
+            />
+            <Autocomplete
+              variant="underlined"
+              options={basicOptions}
+              placeholder="Underlined"
+            />
+          </div>
         </div>
         <CodeBlock
           ts={`<Autocomplete variant="outline" placeholder="Outline" />\n<Autocomplete variant="filled" placeholder="Filled" />\n<Autocomplete variant="underlined" placeholder="Underlined" />`}
@@ -396,14 +416,14 @@ export function AutocompleteDoc() {
         id="aer-variant"
         description="Premium glassmorphism effect for modern search interfaces."
       >
-        <div className="aer-vibrant-container">
+        <div className="aer-vibrant-container flex flex-col items-center justify-center">
           <div className="aer-vibrant-bg-wrapper">
             <div className="aer-vibrant-bg" />
-            <div className="aer-vibrant-blob w-40 h-40 bg-purple-500/30 top-1/4 right-1/3" />
+            <div className="aer-vibrant-blob w-40 h-40 bg-cyan-500/30 top-1/4 right-1/3" />
             <div className="aer-vibrant-blob w-40 h-40 bg-pink-500/30 bottom-1/4 left-1/3" />
           </div>
 
-          <div className="relative z-10 max-w-sm mx-auto">
+          <div className="relative z-10 max-w-sm w-full mx-auto">
             <Autocomplete
               variant="aer"
               options={basicOptions}
@@ -430,8 +450,8 @@ export function AutocompleteDoc() {
         id="grouped"
         description="Organize options into logical groups with headers and separators."
       >
-        <div className="space-y-6 w-full">
-          <div className="max-w-sm p-6 border border-aer-border rounded-lg bg-aer-muted/5">
+        <div className="flex justify-center p-6 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-sm w-full">
             <Autocomplete
               options={[
                 {
@@ -457,68 +477,80 @@ export function AutocompleteDoc() {
               placeholder="Select technology..."
             />
           </div>
-          <CodeBlock
-            ts={`<Autocomplete
-  options={[
-    { 
-      type: "group", 
-      label: "Frameworks", 
-      items: [
-        { label: "React", value: "react" },
-        { label: "Vue", value: "vue" },
-      ]
-    },
-    { type: "separator" },
-    { 
-      type: "group", 
-      label: "Build Tools", 
-      items: [
-        { label: "Vite", value: "vite" },
-      ]
-    },
-  ]}
-/>`}
-            fullCode={`import { Autocomplete } from "aer-design";
+        </div>
+        <CodeBlock
+          ts={`<div className="max-w-sm w-full">\n  <Autocomplete
+    options={[
+      { 
+        type: "group", 
+        label: "Frameworks", 
+        items: [
+          { label: "React", value: "react" },
+          { label: "Vue", value: "vue" },
+        ]
+      },
+      { type: "separator" },
+      { 
+        type: "group", 
+        label: "Build Tools", 
+        items: [
+          { label: "Vite", value: "vite" },
+        ]
+      },
+    ]}
+  />\n</div>`}
+          fullCode={`import { Autocomplete } from "aer-design";
 import { useState } from "react";
 
 export default function GroupedExample() {
   const [value, setValue] = useState();
   
   return (
-    <Autocomplete
-      options={[
-        { 
-          type: "group", 
-          label: "Frameworks", 
-          items: [
-            { label: "React", value: "react" },
-            { label: "Vue", value: "vue" },
-            { label: "Angular", value: "angular" },
-          ]
-        },
-        { type: "separator" },
-        { 
-          type: "group", 
-          label: "Build Tools", 
-          items: [
-            { label: "Vite", value: "vite" },
-            { label: "Webpack", value: "webpack" },
-            { label: "Turbopack", value: "turbopack" },
-          ]
-        },
-      ]}
-      value={value}
-      onChange={setValue}
-      placeholder="Select technology..."
-    />
+    <div className="w-full flex justify-center">
+      <div className="max-w-sm w-full">
+        <Autocomplete
+          options={[
+            { 
+              type: "group", 
+              label: "Frameworks", 
+              items: [
+                { label: "React", value: "react" },
+                { label: "Vue", value: "vue" },
+                { label: "Angular", value: "angular" },
+              ]
+            },
+            { type: "separator" },
+            { 
+              type: "group", 
+              label: "Build Tools", 
+              items: [
+                { label: "Vite", value: "vite" },
+                { label: "Webpack", value: "webpack" },
+                { label: "Turbopack", value: "turbopack" },
+              ]
+            },
+          ]}
+          value={value}
+          onChange={setValue}
+          placeholder="Select technology..."
+        />
+      </div>
+    </div>
   );
 }`}
-          />
-        </div>
+        />
       </DocSection>
 
       <DocSection title="Multiple Selection" id="multiple">
         <MultipleSelectionExample />
+      </DocSection>
+
+      <DocSection
+        title="Selection Wrapping"
+        id="wrapping-selection"
+        description="Control how selected items are displayed when they exceed the container width."
+      >
+        <WrapSelectionExample />
       </DocSection>
 
       <DocSection title="Remote Search" id="remote">
@@ -619,13 +651,15 @@ export default function GroupedExample() {
         id="granular-styling"
         description="Precise control with element-specific className props."
       >
-        <div className="space-y-6 max-w-sm">
-          <Autocomplete
-            className="p-4 border rounded-2xl bg-aer-primary/5"
-            inputClassName="font-mono"
-            options={basicOptions}
-            placeholder="Custom styled"
-          />
+        <div className="flex justify-center p-6 border rounded-lg bg-aer-muted/5">
+          <div className="space-y-6 max-w-sm w-full">
+            <Autocomplete
+              className="p-4 border rounded-2xl bg-aer-primary/5"
+              inputClassName="font-mono"
+              options={basicOptions}
+              placeholder="Custom styled"
+            />
+          </div>
         </div>
         <CodeBlock
           ts={`<Autocomplete\n  className="p-4 border rounded-2xl bg-aer-primary/5"\n  inputClassName="font-mono"\n  itemClassName="hover:bg-sky-500"\n  menuClassName="shadow-2xl"\n  options={options}\n/>`}
@@ -740,6 +774,13 @@ export default function GroupedExample() {
               default: "false",
               description:
                 "Make component read-only (shows value, no editing).",
+            },
+            {
+              prop: "wrapSelection",
+              type: "boolean",
+              default: "true",
+              description:
+                "Whether to wrap selected items to multiple lines. Set to false to keep single line.",
             },
             {
               prop: "maxSelections",
@@ -927,6 +968,7 @@ export default function GroupedExample() {
               { id: "aer-variant", title: "The Aer Variant" },
               { id: "grouped", title: "Grouped Options" },
               { id: "multiple", title: "Multiple Selection" },
+              { id: "wrapping-selection", title: "Selection Wrapping" },
               { id: "remote", title: "Remote Search" },
               { id: "virtualization", title: "Virtualization" },
               { id: "lazy-loading", title: "Lazy Loading" },

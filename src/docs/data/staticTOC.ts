@@ -344,13 +344,10 @@ export const staticTOC: Record<string, { id: string; title: string }[]> = {
     { id: "real-world", title: "Real World Example" },
   ],
   roadmap: [
-    { id: "hero", title: "Overview" },
-    { id: "progress", title: "Overall Progress" },
-    { id: "categories", title: "Category Breakdown" },
-    { id: "completed", title: "Completed Components" },
-    { id: "high-priority", title: "High Priority" },
-    { id: "medium-priority", title: "Medium Priority" },
-    { id: "low-priority", title: "Low Priority" },
+    { id: "vision", title: "Vision & Mission" },
+    { id: "progress", title: "Development Progress" },
+    { id: "filters", title: "Component Filters" },
+    { id: "components", title: "All Components" },
     { id: "contribute", title: "Contribute" },
   ],
 };

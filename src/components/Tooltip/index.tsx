@@ -174,7 +174,10 @@ export const Tooltip = ({
         !disabled &&
         createPortal(
           <div
-            ref={floatingRef}
+            ref={(node) => {
+              floatingRef(node);
+              (tooltipRef as any).current = node;
+            }}
             role="tooltip"
             id="tooltip"
             className={cn(tooltipVariants({ variant }), className)}

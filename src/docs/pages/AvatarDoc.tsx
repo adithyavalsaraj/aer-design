@@ -4,6 +4,7 @@ import {
   CodeBlock,
   DocSection,
   DocTabs,
+  UsageGuidelines,
 } from "@/docs/components/shared";
 import { Check, Shield } from "lucide-react";
 
@@ -52,26 +53,19 @@ export function AvatarDoc() {
         title="When to Use"
         description="Choosing the right avatar representation for your UI."
       >
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-2 text-aer-foreground">
-              User Profiles
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use for profile pictures in headers, comments sections, or user
-              management lists.
-            </p>
-          </div>
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-2 text-aer-foreground">
-              Collaborative Lists
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use AvatarGroups to show contributors on a project or active
-              members in a chat room.
-            </p>
-          </div>
-        </div>
+        <UsageGuidelines
+          do={[
+            "Representing individual users or team members",
+            "Visualizing collaborators on a project or task",
+            "Displaying entity identifiers (Teams, Orgs, Assets)",
+            "Providing a visual anchor for user profile links",
+          ]}
+          dont={[
+            "Using avatars for purely decorative icons not representing an entity",
+            "Sizing avatars so small that initials become illegible",
+            "Cluttering the UI with too many large avatars in rows",
+          ]}
+        />
       </DocSection>
 
       <DocSection
@@ -220,7 +214,7 @@ export function AvatarDoc() {
             <div className="aer-vibrant-blob bottom-1/4 right-1/4 w-48 h-48 bg-blue-500/40" />
           </div>
 
-          <div className="relative z-10 flex gap-8 items-center">
+          <div className="relative z-10 flex gap-8 items-center justify-center">
             <Avatar
               size="xl"
               variant="aer"
@@ -302,7 +296,7 @@ export function AvatarDoc() {
         <div className="flex gap-8 p-6 border rounded-lg bg-aer-muted/5 items-center justify-center">
           <Avatar
             initials="S"
-            className="bg-linear-to-tr from-purple-500 to-pink-500 text-white border-transparent shadow-lg"
+            className="bg-linear-to-tr from-cyan-500 to-emerald-500 text-white border-transparent shadow-lg"
           />
           <Avatar
             src="https://i.pravatar.cc/128?u=9"
@@ -328,8 +322,8 @@ export function AvatarDoc() {
           </ul>
         </div>
         <CodeBlock
-          ts={`<Avatar \n  initials="S" \n  className="bg-linear-to-tr from-purple-500 to-pink-500 text-white border-transparent" \n/>`}
-          fullCode={`import { Avatar } from "aer-design";\n\nexport default function GranularStyling() {\n  return (\n    <div className="flex gap-8 p-6 bg-aer-muted/5 items-center justify-center">\n      <Avatar \n        initials="S" \n        className="bg-linear-to-tr from-purple-500 to-pink-500 text-white border-transparent shadow-lg" \n      />\n      <Avatar \n        src="https://i.pravatar.cc/128?u=9" \n        className="ring-4 ring-emerald-500/30 ring-offset-2" \n      />\n    </div>\n  );\n}`}
+          ts={`<Avatar \n  initials="S" \n  className="bg-linear-to-tr from-cyan-500 to-emerald-500 text-white border-transparent" \n/>`}
+          fullCode={`import { Avatar } from "aer-design";\n\nexport default function GranularStyling() {\n  return (\n    <div className="flex gap-8 p-6 bg-aer-muted/5 items-center justify-center">\n      <Avatar \n        initials="S" \n        className="bg-linear-to-tr from-cyan-500 to-emerald-500 text-white border-transparent shadow-lg" \n      />\n      <Avatar \n        src="https://i.pravatar.cc/128?u=9" \n        className="ring-4 ring-emerald-500/30 ring-offset-2" \n      />\n    </div>\n  );\n}`}
         />
       </DocSection>
 

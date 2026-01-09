@@ -5,6 +5,7 @@ import {
   CodeBlock,
   DocSection,
   DocTabs,
+  UsageGuidelines,
 } from "@/docs/components/shared";
 import { AlertTriangle, Info, Save } from "lucide-react";
 import * as React from "react";
@@ -49,26 +50,19 @@ export function ShortcutDoc() {
         title="When to Use"
         description="Scenarios where a global shortcut system is essential."
       >
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-2 text-aer-foreground">
-              Power User Workflows
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use for professional applications where keyboard speed is critical
-              (IDE, Design tools, Dashboards).
-            </p>
-          </div>
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-2 text-aer-foreground">
-              Accessibility
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Improve accessibility by allowing users to remap difficult key
-              combinations to something more comfortable.
-            </p>
-          </div>
-        </div>
+        <UsageGuidelines
+          do={[
+            "Power user workflows where keyboard speed is critical (IDEs, SaaS dashboards).",
+            "Improving accessibility for users with motor impairments via key remapping.",
+            "Creating cohesive navigation shortcuts across a large platform.",
+            "Standardizing conflict resolution for Meta vs Control across OSs.",
+          ]}
+          dont={[
+            "Overriding essential browser shortcuts (Cmd+T, Cmd+W).",
+            "Complex interaction logic that is better handled by component-specific listeners.",
+            "Simple single-key triggers that don't need global registration.",
+          ]}
+        />
       </DocSection>
 
       <DocSection
@@ -108,7 +102,7 @@ export default function App() {
         title="Basic Usage"
         description="Register and listen for shortcuts using the useShortcut hook."
       >
-        <div className="flex flex-col gap-4 p-6 border rounded-lg bg-aer-muted/5 items-center">
+        <div className="flex flex-col gap-4 p-8 border rounded-lg bg-aer-muted/5 items-center">
           <SaveShortcutExample />
         </div>
         <CodeBlock
@@ -170,7 +164,7 @@ export function SaveButton() {
         title="Scoped Shortcuts"
         description="Restrict shortcuts to a specific container (e.g., a modal or form)."
       >
-        <div className="flex gap-6 p-6 border rounded-lg bg-aer-muted/5 items-start">
+        <div className="flex gap-6 p-8 border rounded-lg bg-aer-muted/5 items-start">
           <ScopedShortcutExample />
         </div>
         <div className="mt-4">
@@ -245,7 +239,7 @@ export function ScopedForm() {
         title="User Customization"
         description="Allow users to rebind keys using the ShortcutRecorder component."
       >
-        <div className="flex flex-col gap-6 p-6 border rounded-lg bg-aer-muted/5">
+        <div className="flex flex-col gap-6 p-8 border rounded-lg bg-aer-muted/5">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium">Save Document</span>
             <ShortcutRecorder actionId="save-document" />
@@ -301,7 +295,7 @@ export default function SettingsPage() {
         title="Granular Styling"
         description="The shortcut recorder can be styled with standard utility classes."
       >
-        <div className="flex flex-col gap-6 p-6 border rounded-lg bg-aer-muted/5 items-center">
+        <div className="flex flex-col gap-6 p-8 border rounded-lg bg-aer-muted/5 items-center">
           <ShortcutRecorder
             actionId="styling-demo"
             className="w-64 h-12 rounded-full border-sky-200 bg-sky-50 text-sky-700 focus:ring-sky-500"
@@ -495,6 +489,18 @@ export default function SettingsPage() {
               type: "string",
               default: "'Click to record shortcut'",
               description: "Placeholder text when no shortcut is set.",
+            },
+            {
+              prop: "className",
+              type: "string",
+              default: "-",
+              description: "Styles the interactive button element.",
+            },
+            {
+              prop: "rootClassName",
+              type: "string",
+              default: "-",
+              description: "Styles the outer wrapper div.",
             },
           ]}
         />

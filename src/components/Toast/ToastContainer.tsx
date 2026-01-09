@@ -116,7 +116,10 @@ export const ToastContainer: React.FC<ToastContainerProps> = ({
                     if (!open) onDismiss(toast.id!);
                     toast.onOpenChange?.(open);
                   }}
-                  className="pointer-events-auto relative transform-none"
+                  className={cn(
+                    "pointer-events-auto relative transform-none",
+                    toast.className
+                  )}
                   // ^ 'relative' here should override 'fixed' in class string if tailwind-merge handles it (cn).
                   // 'cn' uses tailwind-merge. 'relative' conflicts with 'fixed'. It should win if last.
                 />

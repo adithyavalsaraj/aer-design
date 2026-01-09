@@ -430,3 +430,69 @@ export function DocTabs({ tabs }: { tabs: TabItem[] }) {
     </div>
   );
 }
+
+interface UsageGuidelinesProps {
+  do?: string[] | React.ReactNode;
+  dont?: string[] | React.ReactNode;
+}
+
+export function UsageGuidelines({
+  do: useCases,
+  dont: dontCases,
+}: UsageGuidelinesProps) {
+  const renderList = (cases: string[] | React.ReactNode) => {
+    if (Array.isArray(cases)) {
+      return (
+        <ul className="space-y-2">
+          {cases.map((item, i) => (
+            <li
+              key={i}
+              className="flex items-start gap-2 text-sm leading-relaxed"
+            >
+              <span className="mt-1 shrink-0">•</span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      );
+    }
+    return cases;
+  };
+
+  return (
+    <div className="grid md:grid-cols-2 gap-6 mt-4">
+      {/* Use Cases (Success) */}
+      <div className="flex flex-col border border-green-500/20 rounded-aer-xl bg-green-500/5 overflow-hidden">
+        <div className="flex items-center gap-2 px-4 py-3 bg-green-500/10 border-b border-green-500/10">
+          <div className="flex items-center justify-center size-5 rounded-full bg-green-500 text-white">
+            <Check className="size-3.5 stroke-3" />
+          </div>
+          <span className="font-bold text-sm text-green-700 dark:text-green-400">
+            Use it when:
+          </span>
+        </div>
+        <div className="p-5 text-green-800/80 dark:text-green-300/80">
+          {renderList(useCases)}
+        </div>
+      </div>
+
+      {/* Don't Use Cases (Error) */}
+      <div className="flex flex-col border border-red-500/20 rounded-aer-xl bg-red-500/5 overflow-hidden">
+        <div className="flex items-center gap-2 px-4 py-3 bg-red-500/10 border-b border-red-500/10">
+          <div className="flex items-center justify-center size-5 rounded-full bg-red-500 text-white">
+            <X className="size-3.5 stroke-3" />
+          </div>
+          <span className="font-bold text-sm text-red-700 dark:text-red-400">
+            Don't use it:
+          </span>
+        </div>
+        <div className="p-5 text-red-800/80 dark:text-red-300/80">
+          {renderList(dontCases)}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+import { X as LucideX } from "lucide-react";
+const X = LucideX;

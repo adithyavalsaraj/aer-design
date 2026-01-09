@@ -1,7 +1,13 @@
 import { Navbar, NavbarItem, NavbarSpacer } from "@/components/Navbar";
+import {
+  ApiTable,
+  CodeBlock,
+  DocSection,
+  DocTabs,
+  UsageGuidelines,
+} from "@/docs/components/shared";
 import { Bell, Home, Search, User } from "lucide-react";
 import * as React from "react";
-import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
 
 export function NavbarDoc() {
   const [activeTopTab, setActiveTopTab] = React.useState("dashboard");
@@ -50,34 +56,19 @@ export function NavbarDoc() {
         id="when-to-use"
         description="Determine the best navigation pattern for your context."
       >
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Desktop Headers
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                position="top"
-              </code>{" "}
-              for the main site header containing logo, links, and profile
-              actions.
-            </p>
-          </div>
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Mobile Tab Bars
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                position="bottom"
-              </code>{" "}
-              on small screens to create an app-like navigation experience with
-              icons.
-            </p>
-          </div>
-        </div>
+        <UsageGuidelines
+          do={[
+            "Global application headers with logo and primary links",
+            "Mobile-first bottom navigation for app-like experiences",
+            "Secondary navigation bars within specific dashboard sections",
+            "Floating toolbars that need a premium glassmorphism look",
+          ]}
+          dont={[
+            "Small lists of 2-3 items (use simple links instead)",
+            "Complex hierarchies that require multiple levels of nesting (use Sidebar or Mega Menu)",
+            "Inline navigation within long text content",
+          ]}
+        />
       </DocSection>
 
       <DocSection
@@ -229,7 +220,7 @@ export function NavbarDoc() {
         id="granular-styling"
         description="Override default styles with custom className properties for each Navbar component."
       >
-        <div className="p-6 border rounded-lg bg-aer-muted/5 flex justify-center">
+        <div className="p-8 border rounded-lg bg-aer-muted/5 flex justify-center">
           <Navbar
             mode="static"
             className="bg-sky-500/10 border-sky-500/20 rounded-lg max-w-md"
@@ -252,7 +243,7 @@ export function NavbarDoc() {
         id="real-world"
         description="Combine Top and Bottom Navigation for a complete mobile-first application."
       >
-        <div className="p-6 border rounded-lg bg-aer-muted/5">
+        <div className="p-8 border rounded-lg bg-aer-muted/5">
           <p className="text-sm text-aer-muted-foreground text-center italic mb-4">
             Our documentation site itself uses the Navbar to guide users through
             components. Below is a complete app header snippet.

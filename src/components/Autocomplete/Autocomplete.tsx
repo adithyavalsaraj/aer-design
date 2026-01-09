@@ -31,9 +31,9 @@ const autocompleteTriggerVariants = cva(
         false: "",
       },
       size: {
-        default: "h-10 text-sm",
-        sm: "h-9 text-xs",
-        lg: "h-11 text-base",
+        default: "min-h-10 h-auto text-sm",
+        sm: "min-h-9 h-auto text-xs",
+        lg: "min-h-11 h-auto text-base",
       },
     },
     defaultVariants: {
@@ -174,6 +174,7 @@ export const Autocomplete = React.forwardRef<HTMLDivElement, AutocompleteProps>(
       hasMore,
       scrollBehavior = "reposition",
       matchTriggerWidth = true,
+      wrapSelection = true,
       allowCustomValues = false,
 
       // Class Names
@@ -296,19 +297,19 @@ export const Autocomplete = React.forwardRef<HTMLDivElement, AutocompleteProps>(
     );
 
     // --- Remote Search Effect ---
+    // Use ref for onSearch to avoid dependency loop if parent doesn't memoize it
+    const onSearchRef = React.useRef(onSearch);
+    React.useEffect(() => {
+      onSearchRef.current = onSearch;
+    }, [onSearch]);
+
     React.useEffect(() => {
       if (dataSource === "remote" || dataSource === "mixed") {
         if (currentInputValue.length >= minChars) {
-          onSearch?.(debouncedQuery);
+          onSearchRef.current?.(debouncedQuery);
         }
       }
-    }, [
-      debouncedQuery,
-      dataSource,
-      minChars,
-      onSearch,
-      currentInputValue.length,
-    ]);
+    }, [debouncedQuery, dataSource, minChars, currentInputValue.length]);
 
     // --- Selection Helpers ---
 
@@ -337,8 +338,8 @@ export const Autocomplete = React.forwardRef<HTMLDivElement, AutocompleteProps>(
 
     // Get display value for trigger
     const getDisplayValue = (): React.ReactNode => {
-      // If input has focus or is open, show input value
-      if (isOpen || document.activeElement === inputRef.current) {
+      // If input has text (user typing) or is open, don't show the display value overlay
+      if (isOpen || (currentInputValue && currentInputValue.length > 0)) {
         return null; // Input will show currentInputValue
       }
 
@@ -401,6 +402,11 @@ export const Autocomplete = React.forwardRef<HTMLDivElement, AutocompleteProps>(
         } else {
           newValue = [...currentArray, optionValue];
         }
+
+        // Keep focus on input for continued typing/selection
+        requestAnimationFrame(() => {
+          inputRef.current?.focus();
+        });
       } else {
         newValue = optionValue;
 
@@ -447,7 +453,11 @@ export const Autocomplete = React.forwardRef<HTMLDivElement, AutocompleteProps>(
     const handleInputBlur = () => {
       // Small delay to allow clicking on options
       setTimeout(() => {
-        if (!menuRef.current?.contains(document.activeElement)) {
+        // Don't close if focus is on the menu OR the input itself (e.g. quickly refocused)
+        if (
+          !menuRef.current?.contains(document.activeElement) &&
+          document.activeElement !== inputRef.current
+        ) {
           setIsOpen(false);
         }
       }, 200);
@@ -625,6 +635,7 @@ export const Autocomplete = React.forwardRef<HTMLDivElement, AutocompleteProps>(
       return (
         <div
           key={option.value}
+          onMouseDown={(e) => e.preventDefault()}
           onClick={() => !option.disabled && handleSelect(option.value)}
           className={cn(
             "flex items-center gap-2 px-3 py-2 text-sm cursor-pointer transition-colors select-none rounded-sm",
@@ -641,11 +652,11 @@ export const Autocomplete = React.forwardRef<HTMLDivElement, AutocompleteProps>(
               (variant === "aer" ? "bg-white/10" : "bg-aer-accent"),
             !selected &&
               !active &&
+              !option.disabled &&
               (variant === "aer"
                 ? "hover:bg-white/10"
                 : "hover:bg-aer-muted/50"),
-            option.disabled &&
-              "opacity-50 cursor-not-allowed pointer-events-none",
+            option.disabled && "opacity-50 cursor-not-allowed",
             itemClassName
           )}
         >
@@ -725,6 +736,19 @@ export const Autocomplete = React.forwardRef<HTMLDivElement, AutocompleteProps>(
       );
     };
 
+    // Stable ref handler to prevent infinite loops
+    const handleRef = React.useCallback(
+      (node: HTMLDivElement | null) => {
+        referenceRef(node as any);
+        if (typeof ref === "function") {
+          ref(node as any);
+        } else if (ref) {
+          (ref as any).current = node;
+        }
+      },
+      [ref, referenceRef]
+    );
+
     // Main content
     const autocompleteContent = (
       <div
@@ -747,11 +771,7 @@ export const Autocomplete = React.forwardRef<HTMLDivElement, AutocompleteProps>(
           )}
 
           <div
-            ref={(node) => {
-              referenceRef(node as any);
-              if (typeof ref === "function") ref(node as any);
-              else if (ref) (ref as any).current = node;
-            }}
+            ref={handleRef}
             className={cn(
               autocompleteTriggerVariants({
                 variant,
@@ -768,7 +788,12 @@ export const Autocomplete = React.forwardRef<HTMLDivElement, AutocompleteProps>(
             onClick={() => !disabled && !readOnly && inputRef.current?.focus()}
           >
             {/* Start Elements */}
-            <div className="flex items-center gap-2 flex-1 min-w-0">
+            <div
+              className={cn(
+                "flex items-center gap-2 flex-1 min-w-0 py-1",
+                wrapSelection ? "flex-wrap" : "flex-nowrap overflow-hidden"
+              )}
+            >
               {startIcon && (
                 <span
                   className={cn(
@@ -792,18 +817,51 @@ export const Autocomplete = React.forwardRef<HTMLDivElement, AutocompleteProps>(
                 </span>
               )}
 
-              {/* Input Field */}
-              <div className="relative flex-1 h-full flex items-center">
-                {!isOpen && displayValue && (
+              {/* Selected Tags for Multiple Mode */}
+              {(mode === "multiple" || mode === "tags") &&
+                getSelectedOptions().map((opt) => (
                   <span
-                    className="absolute inset-0 flex items-center truncate pointer-events-none"
-                    onClick={() =>
-                      !disabled && !readOnly && inputRef.current?.focus()
+                    key={opt.value}
+                    className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-aer-muted text-xs font-medium text-aer-foreground animate-in fade-in-0 zoom-in-95 max-w-full"
+                    title={
+                      typeof opt.label === "string" ? opt.label : undefined
                     }
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                    }}
                   >
-                    {displayValue}
+                    <span className="truncate">{opt.label}</span>
+                    {!readOnly && !disabled && (
+                      <span
+                        role="button"
+                        className="hover:text-red-500 cursor-pointer ml-1 shrink-0"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleSelect(opt.value);
+                        }}
+                      >
+                        <X className="w-3 h-3" />
+                      </span>
+                    )}
                   </span>
-                )}
+                ))}
+
+              {/* Input Field */}
+              <div className="relative flex-1 min-w-[60px] flex items-center">
+                {!isOpen &&
+                  displayValue &&
+                  mode !== "multiple" &&
+                  mode !== "tags" && (
+                    <span
+                      className="absolute inset-0 flex items-center truncate pointer-events-none"
+                      onClick={() =>
+                        !disabled && !readOnly && inputRef.current?.focus()
+                      }
+                    >
+                      {displayValue}
+                    </span>
+                  )}
                 <input
                   ref={inputRef}
                   type="text"
@@ -812,7 +870,12 @@ export const Autocomplete = React.forwardRef<HTMLDivElement, AutocompleteProps>(
                   onFocus={handleInputFocus}
                   onBlur={handleInputBlur}
                   onKeyDown={handleKeyDown}
-                  placeholder={!displayValue ? placeholder : ""}
+                  placeholder={
+                    (!displayValue || mode === "multiple" || mode === "tags") &&
+                    getSelectedOptions().length === 0
+                      ? placeholder
+                      : ""
+                  }
                   disabled={disabled}
                   readOnly={readOnly}
                   aria-autocomplete="list"
@@ -825,8 +888,12 @@ export const Autocomplete = React.forwardRef<HTMLDivElement, AutocompleteProps>(
                   }
                   role="combobox"
                   className={cn(
-                    "w-full bg-transparent outline-none",
-                    !isOpen && displayValue && "opacity-0",
+                    "w-full bg-transparent outline-none min-w-8",
+                    !isOpen &&
+                      displayValue &&
+                      mode !== "multiple" &&
+                      mode !== "tags" &&
+                      "opacity-0",
                     inputClassName
                   )}
                   {...inputProps}

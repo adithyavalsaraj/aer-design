@@ -7,6 +7,7 @@ import {
   CodeBlock,
   DocSection,
   DocTabs,
+  UsageGuidelines,
 } from "@/docs/components/shared";
 import { cn } from "@/lib/utils";
 import * as React from "react";
@@ -166,6 +167,51 @@ export default function ScrollBehaviorExample() {
     },
   ];
 
+  function WrapSelectionExample() {
+    const [wrap, setWrap] = React.useState(false);
+    const [value, setValue] = React.useState<string | number | undefined>(
+      "van"
+    );
+
+    return (
+      <div className="space-y-6">
+        <div className="flex flex-col border rounded-aer-xl bg-aer-muted/5 divide-y divide-aer-border overflow-hidden">
+          {/* Controls */}
+          <div className="flex p-6 bg-aer-muted/50">
+            <div className="flex items-center gap-2">
+              <Checkbox
+                checked={wrap}
+                onChange={(e) => setWrap(e.target.checked)}
+                label={`Enable Text Wrapping: (${wrap ? "true" : "false"})`}
+                className="w-fit"
+              />
+              <div className="text-xs text-aer-muted-foreground">
+                (Note: Height adjusts dynamically to fit content)
+              </div>
+            </div>
+          </div>
+
+          {/* Live Preview */}
+          <div className="flex justify-center p-12 bg-aer-background">
+            <div className="max-w-xs w-full">
+              <Cascader
+                wrapSelection={wrap}
+                options={geoOptions}
+                value={value}
+                onChange={setValue}
+                placeholder="Select city..."
+              />
+            </div>
+          </div>
+        </div>
+        <CodeBlock
+          ts={`<Cascader\n  wrapSelection={${wrap}}\n  options={options}\n  value={value}\n  onChange={setValue}\n/>`}
+          fullCode={`import { Cascader, Checkbox } from "aer-design";\nimport { useState } from "react";\n\nexport default function WrappingExample() {\n  const [wrap, setWrap] = useState(false);\n  const [value, setValue] = useState("van");\n\n  return (\n    <div className="space-y-4">\n      <div className="flex items-center gap-2">\n        <Checkbox \n          checked={wrap} \n          onChange={(e) => setWrap(e.target.checked)} \n          label="Wrap Selection"\n        />\n      </div>\n      \n      <div className="max-w-xs">\n        <Cascader\n          wrapSelection={wrap}\n          options={options}\n          value={value}\n          onChange={setValue}\n        />\n      </div>\n    </div>\n  );\n}`}
+        />
+      </div>
+    );
+  }
+
   const overview = (
     <div className="space-y-12">
       <DocSection
@@ -188,33 +234,19 @@ export default function ScrollBehaviorExample() {
         title="When to Use"
         description="Choose the right selection component for your data."
       >
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Hierarchical Data
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use Cascader when the options are logically grouped and have
-              parent-child relationships, such as:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>Geographic Locations (Country/State/City)</li>
-              <li>Product Categories (Electronics/Phones/Accessories)</li>
-              <li>Organizational Charts</li>
-            </ul>
-          </div>
-
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Alternative to Select
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Cascader allows you to select from a large dataset without
-              overwhelming the user, unlike a standard Select dropdown which
-              lists all options flatly.
-            </p>
-          </div>
-        </div>
+        <UsageGuidelines
+          do={[
+            "Selecting a value from hierarchical relationships (e.g., regions, categories)",
+            "Navigating through deep data structures without list fatigue",
+            "When users need to see the context of their selection (path)",
+            "Organizing large datasets into logical parent-child levels",
+          ]}
+          dont={[
+            "For flat datasets with no hierarchical relationship (Use Dropdown/Select)",
+            "When there are only a few total options (Use RadioGroup/Tabs)",
+            "Situations requiring multiple selections from different branches (unless complex logic is used)",
+          ]}
+        />
       </DocSection>
 
       <DocSection
@@ -291,6 +323,10 @@ export default function BasicCascader() {
   );
 }`}
         />
+      </DocSection>
+
+      <DocSection title="Text Wrapping" id="text-wrapping">
+        <WrapSelectionExample />
       </DocSection>
 
       <DocSection
@@ -404,7 +440,7 @@ export default function VariantsExample() {
         title="The Aer Variant"
         description="Our signature glassmorphism effect for premium interfaces."
       >
-        <div className="aer-vibrant-container">
+        <div className="aer-vibrant-container flex flex-col items-center justify-center">
           <div className="aer-vibrant-bg-wrapper">
             <div className="aer-vibrant-bg" />
             <div className="aer-vibrant-blob top-1/3 left-1/4 w-40 h-40 bg-sky-500/40" />
@@ -532,7 +568,7 @@ export default function SizesExample() {
         title="Label"
         description="Add labels to cascaders with flexible positioning and helper text options."
       >
-        <div className="flex flex-col gap-4 p-6 border rounded-lg bg-aer-muted/5">
+        <div className="flex flex-col gap-4 p-6 border rounded-lg bg-aer-muted/5 items-center">
           <CascaderLabelExample options={geoOptions} />
         </div>
         <CodeBlock
@@ -971,6 +1007,13 @@ export default function ProductForm() {
               description: "Text displayed when no value is selected.",
             },
             {
+              prop: "wrapSelection",
+              type: "boolean",
+              default: "false",
+              description:
+                "Whether to wrap selected text instead of truncating it.",
+            },
+            {
               prop: "scrollBehavior",
               type: "'reposition' | 'close'",
               default: "'reposition'",
@@ -1143,6 +1186,7 @@ export default function ProductForm() {
               { id: "introduction", title: "Introduction" },
               { id: "when-to-use", title: "When to Use" },
               { id: "basic-usage", title: "Basic Usage" },
+              { id: "text-wrapping", title: "Text Wrapping" },
               { id: "custom-display", title: "Custom Display" },
               { id: "variants", title: "Variants" },
               { id: "aer-variant", title: "The Aer Variant" },

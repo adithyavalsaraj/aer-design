@@ -201,4 +201,9 @@ export interface CascaderProps {
    * Callback when the component loses focus.
    */
   onBlur?: () => void;
+  /**
+   * Whether to wrap selected text instead of truncating.
+   * @default false
+   */
+  wrapSelection?: boolean;
 }

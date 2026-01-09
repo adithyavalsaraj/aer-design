@@ -21,9 +21,9 @@ export const DOC_STRUCTURE: DocSection[] = [
   {
     title: "When to Use",
     id: "when-to-use",
-    shortDesc: "Use cases and best practices (2-4 grid)",
+    shortDesc: "Use cases and best practices (UsageGuidelines)",
     fullDesc:
-      "Guide users on choosing the right variant. Use the 2-4 category grid layout defined in original standards.",
+      "Guide users on choosing the right variant. Use the standardized `<UsageGuidelines />` component from `shared.tsx`. Include both 'Use it when:' and 'Don't use it:' points.",
   },
   {
     title: "Basic Usage",
@@ -133,6 +133,119 @@ export const DESIGN_PRINCIPLES = [
   { label: "Themable", value: "CSS variable-based theming" },
   { label: "Premium", value: "Modern glassmorphism aesthetics" },
 ];
+
+/**
+ * COLOR_PALETTE - App-Wide Decorative Color Scheme
+ *
+ * Purpose: Provides a cohesive, modern color palette for decorative elements
+ * (gradients, hero sections, badges, illustrations) that works beautifully in
+ * both light and dark modes.
+ *
+ * IMPORTANT: This palette is ONLY for decorative/accent purposes.
+ * DO NOT use these colors for:
+ * - Theme system (Sapphire, Carbon, Ruby, Emerald, Sunset, Amber, Amethyst, Ocean)
+ * - Component variants (primary, secondary, etc.)
+ * - Semantic colors (success, error, warning, info)
+ *
+ * These colors are theme-agnostic and safe to use in any theme.
+ */
+export const COLOR_PALETTE = {
+  /**
+   * Primary Palette - Main decorative colors
+   * Use for: Hero sections, primary gradients, main accents
+   */
+  primary: {
+    blue: {
+      light: "from-blue-500 to-blue-600",
+      base: "blue-500",
+      dark: "blue-600",
+      description: "Trustworthy, professional, tech-forward",
+    },
+    cyan: {
+      light: "from-cyan-400 to-cyan-500",
+      base: "cyan-500",
+      dark: "cyan-600",
+      description: "Modern, fresh, innovative",
+    },
+    emerald: {
+      light: "from-emerald-400 to-emerald-500",
+      base: "emerald-500",
+      dark: "emerald-600",
+      description: "Growth, success, vibrant energy",
+    },
+  },
+
+  /**
+   * Complementary Palette - Supporting colors
+   * Use for: Secondary accents, variety in multi-element displays
+   */
+  complementary: {
+    teal: {
+      base: "teal-500",
+      description: "Balanced, calming, sophisticated",
+    },
+    sky: {
+      base: "sky-500",
+      description: "Light, airy, open",
+    },
+    green: {
+      base: "green-500",
+      description: "Natural, positive, completion",
+    },
+  },
+
+  /**
+   * Gradient Combinations - Pre-defined gradient pairs
+   * Use for: Backgrounds, hero sections, cards
+   */
+  gradients: {
+    // Primary gradients
+    ocean: "from-blue-500 via-cyan-500 to-emerald-500",
+    sky: "from-blue-400 via-cyan-400 to-sky-400",
+    forest: "from-emerald-500 via-teal-500 to-cyan-500",
+
+    // Subtle backgrounds (with opacity)
+    oceanSubtle: "from-blue-500/10 via-cyan-500/10 to-emerald-500/10",
+    skySubtle: "from-blue-400/10 via-cyan-400/10 to-sky-400/10",
+
+    // Accent gradients
+    progress: "from-green-500 via-blue-500 to-cyan-500",
+    highlight: "from-blue-600 to-cyan-600",
+  },
+
+  /**
+   * Usage Guidelines
+   */
+  guidelines: {
+    dos: [
+      "✅ Use for hero sections and landing page elements",
+      "✅ Use for progress bars and completion indicators",
+      "✅ Use for decorative badges and labels",
+      "✅ Use for gradient backgrounds with low opacity (/10)",
+      "✅ Combine with theme-aware text colors (text-aer-foreground)",
+    ],
+    donts: [
+      "❌ Don't use for interactive component states",
+      "❌ Don't use for semantic meanings (error, success, etc.)",
+      "❌ Don't override theme system colors",
+      "❌ Don't use high opacity gradients on text backgrounds",
+      "❌ Don't mix with purple (deprecated color)",
+    ],
+  },
+
+  /**
+   * Examples
+   */
+  examples: {
+    heroBackground:
+      "bg-gradient-to-br from-blue-500/10 via-cyan-500/10 to-emerald-500/10",
+    iconBadge: "bg-gradient-to-br from-blue-500 to-cyan-500",
+    headingText:
+      "bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent",
+    progressBar: "bg-gradient-to-r from-green-500 via-blue-500 to-cyan-500",
+    accentBadge: "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400",
+  },
+};
 
 export const CODE_PUSH_GUIDELINES = {
   step1: {

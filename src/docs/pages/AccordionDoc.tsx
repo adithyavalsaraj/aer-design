@@ -8,7 +8,13 @@ import {
   User,
 } from "lucide-react";
 import { useRef, useState } from "react";
-import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
+import {
+  ApiTable,
+  CodeBlock,
+  DocSection,
+  DocTabs,
+  UsageGuidelines,
+} from "../components/shared";
 
 // Lazy Loading Example with JSONPlaceholder API
 function LazyLoadingExample() {
@@ -39,43 +45,46 @@ function LazyLoadingExample() {
   };
 
   return (
-    <div className="p-8 border border-aer-border rounded-lg bg-aer-background">
-      <h4 className="mb-4 font-semibold">Lazy Loading with API Data</h4>
-      <Accordion
-        variant="bordered"
-        onExpand={(index) => fetchPost(index + 1)}
-        lazy
-      >
-        {[1, 2, 3, 4, 5].map((id, index) => (
-          <Accordion.Tab
-            key={id}
-            header={posts[index]?.title || `Post ${id} (Click to load)`}
-          >
-            <div className="space-y-2">
-              {loading && !posts[index] ? (
-                <div className="flex items-center gap-2 text-aer-muted-foreground">
-                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-aer-primary border-t-transparent" />
-                  Loading...
-                </div>
-              ) : posts[index] ? (
-                <>
-                  <p className="text-sm font-medium">{posts[index].title}</p>
+    <div className="p-8 border border-aer-border rounded-lg bg-aer-background flex flex-col items-center">
+      <div className="w-full max-w-lg space-y-4">
+        <h4 className="font-semibold">Lazy Loading with API Data</h4>
+        <Accordion
+          variant="bordered"
+          onExpand={(index) => fetchPost(index + 1)}
+          lazy
+        >
+          {[1, 2, 3, 4, 5].map((id, index) => (
+            <Accordion.Tab
+              key={id}
+              header={posts[index]?.title || `Post ${id} (Click to load)`}
+            >
+              <div className="space-y-2">
+                {loading && !posts[index] ? (
+                  <div className="flex items-center gap-2 text-aer-muted-foreground">
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-aer-primary border-t-transparent" />
+                    Loading...
+                  </div>
+                ) : posts[index] ? (
+                  <>
+                    <p className="text-sm font-medium">{posts[index].title}</p>
+                    <p className="text-sm text-aer-muted-foreground">
+                      {posts[index].body}
+                    </p>
+                    <p className="text-xs text-aer-muted-foreground mt-2">
+                      Post ID: {posts[index].id} | User ID:{" "}
+                      {posts[index].userId}
+                    </p>
+                  </>
+                ) : (
                   <p className="text-sm text-aer-muted-foreground">
-                    {posts[index].body}
+                    Content will load when expanded
                   </p>
-                  <p className="text-xs text-aer-muted-foreground mt-2">
-                    Post ID: {posts[index].id} | User ID: {posts[index].userId}
-                  </p>
-                </>
-              ) : (
-                <p className="text-sm text-aer-muted-foreground">
-                  Content will load when expanded
-                </p>
-              )}
-            </div>
-          </Accordion.Tab>
-        ))}
-      </Accordion>
+                )}
+              </div>
+            </Accordion.Tab>
+          ))}
+        </Accordion>
+      </div>
     </div>
   );
 }
@@ -132,64 +141,66 @@ function ControlledExample() {
   const [activeIndex, setActiveIndex] = useState<number | null>(0);
 
   return (
-    <div className="space-y-4">
-      <div className="flex gap-2">
-        <button
-          onClick={() => setActiveIndex(0)}
-          className={`px-3 py-1.5 text-xs font-medium rounded-md border transition-all ${
-            activeIndex === 0
-              ? "bg-aer-primary text-aer-primary-foreground border-aer-primary"
-              : "bg-aer-background hover:bg-aer-muted"
-          }`}
-        >
-          Open First
-        </button>
-        <button
-          onClick={() => setActiveIndex(1)}
-          className={`px-3 py-1.5 text-xs font-medium rounded-md border transition-all ${
-            activeIndex === 1
-              ? "bg-aer-primary text-aer-primary-foreground border-aer-primary"
-              : "bg-aer-background hover:bg-aer-muted"
-          }`}
-        >
-          Open Second
-        </button>
-        <button
-          onClick={() => setActiveIndex(2)}
-          className={`px-3 py-1.5 text-xs font-medium rounded-md border transition-all ${
-            activeIndex === 2
-              ? "bg-aer-primary text-aer-primary-foreground border-aer-primary"
-              : "bg-aer-background hover:bg-aer-muted"
-          }`}
-        >
-          Open Third
-        </button>
-        <button
-          onClick={() => setActiveIndex(null)}
-          className={`px-3 py-1.5 text-xs font-medium rounded-md border transition-all ${
-            activeIndex === null
-              ? "bg-aer-primary text-aer-primary-foreground border-aer-primary"
-              : "bg-aer-background hover:bg-aer-muted"
-          }`}
-        >
-          Close All
-        </button>
-      </div>
+    <div className="space-y-4 flex flex-col items-center">
+      <div className="w-full max-w-lg space-y-4">
+        <div className="flex gap-2 justify-center">
+          <button
+            onClick={() => setActiveIndex(0)}
+            className={`px-3 py-1.5 text-xs font-medium rounded-md border transition-all ${
+              activeIndex === 0
+                ? "bg-aer-primary text-aer-primary-foreground border-aer-primary"
+                : "bg-aer-background hover:bg-aer-muted"
+            }`}
+          >
+            Open First
+          </button>
+          <button
+            onClick={() => setActiveIndex(1)}
+            className={`px-3 py-1.5 text-xs font-medium rounded-md border transition-all ${
+              activeIndex === 1
+                ? "bg-aer-primary text-aer-primary-foreground border-aer-primary"
+                : "bg-aer-background hover:bg-aer-muted"
+            }`}
+          >
+            Open Second
+          </button>
+          <button
+            onClick={() => setActiveIndex(2)}
+            className={`px-3 py-1.5 text-xs font-medium rounded-md border transition-all ${
+              activeIndex === 2
+                ? "bg-aer-primary text-aer-primary-foreground border-aer-primary"
+                : "bg-aer-background hover:bg-aer-muted"
+            }`}
+          >
+            Open Third
+          </button>
+          <button
+            onClick={() => setActiveIndex(null)}
+            className={`px-3 py-1.5 text-xs font-medium rounded-md border transition-all ${
+              activeIndex === null
+                ? "bg-aer-primary text-aer-primary-foreground border-aer-primary"
+                : "bg-aer-background hover:bg-aer-muted"
+            }`}
+          >
+            Close All
+          </button>
+        </div>
 
-      <Accordion
-        activeIndex={activeIndex}
-        onTabChange={(index) => setActiveIndex(index as number | null)}
-      >
-        <Accordion.Tab header="Section 1">
-          <p>Controlled content 1</p>
-        </Accordion.Tab>
-        <Accordion.Tab header="Section 2">
-          <p>Controlled content 2</p>
-        </Accordion.Tab>
-        <Accordion.Tab header="Section 3">
-          <p>Controlled content 3</p>
-        </Accordion.Tab>
-      </Accordion>
+        <Accordion
+          activeIndex={activeIndex}
+          onTabChange={(index) => setActiveIndex(index as number | null)}
+        >
+          <Accordion.Tab header="Section 1">
+            <p>Controlled content 1</p>
+          </Accordion.Tab>
+          <Accordion.Tab header="Section 2">
+            <p>Controlled content 2</p>
+          </Accordion.Tab>
+          <Accordion.Tab header="Section 3">
+            <p>Controlled content 3</p>
+          </Accordion.Tab>
+        </Accordion>
+      </div>
     </div>
   );
 }
@@ -199,33 +210,35 @@ function MultipleExample() {
   const accordionRef = useRef<any>(null);
 
   return (
-    <div className="space-y-4">
-      <div className="flex gap-2">
-        <button
-          onClick={() => accordionRef.current?.expandAll()}
-          className="px-3 py-1.5 text-xs font-medium rounded-md border transition-all bg-aer-background hover:bg-aer-muted"
-        >
-          Expand All
-        </button>
-        <button
-          onClick={() => accordionRef.current?.collapseAll()}
-          className="px-3 py-1.5 text-xs font-medium rounded-md border transition-all bg-aer-background hover:bg-aer-muted"
-        >
-          Collapse All
-        </button>
-      </div>
+    <div className="space-y-4 flex flex-col items-center">
+      <div className="w-full max-w-lg space-y-4">
+        <div className="flex gap-2 justify-center">
+          <button
+            onClick={() => accordionRef.current?.expandAll()}
+            className="px-3 py-1.5 text-xs font-medium rounded-md border transition-all bg-aer-background hover:bg-aer-muted"
+          >
+            Expand All
+          </button>
+          <button
+            onClick={() => accordionRef.current?.collapseAll()}
+            className="px-3 py-1.5 text-xs font-medium rounded-md border transition-all bg-aer-background hover:bg-aer-muted"
+          >
+            Collapse All
+          </button>
+        </div>
 
-      <Accordion ref={accordionRef} multiple defaultActiveIndex={[0, 1]}>
-        <Accordion.Tab header="Feature 1">
-          <p>Multiple tabs can be open at once</p>
-        </Accordion.Tab>
-        <Accordion.Tab header="Feature 2">
-          <p>Use expandAll() and collapseAll() methods</p>
-        </Accordion.Tab>
-        <Accordion.Tab header="Feature 3">
-          <p>Perfect for FAQ sections</p>
-        </Accordion.Tab>
-      </Accordion>
+        <Accordion ref={accordionRef} multiple defaultActiveIndex={[0, 1]}>
+          <Accordion.Tab header="Feature 1">
+            <p>Multiple tabs can be open at once</p>
+          </Accordion.Tab>
+          <Accordion.Tab header="Feature 2">
+            <p>Use expandAll() and collapseAll() methods</p>
+          </Accordion.Tab>
+          <Accordion.Tab header="Feature 3">
+            <p>Perfect for FAQ sections</p>
+          </Accordion.Tab>
+        </Accordion>
+      </div>
     </div>
   );
 }
@@ -278,35 +291,19 @@ export function AccordionDoc() {
         title="When to Use"
         description="Choose the right accordion configuration for your use case."
       >
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Single Mode (Default)
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use when only one section should be visible at a time:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>Navigation menus</li>
-              <li>Wizard steps</li>
-              <li>Mobile-first layouts</li>
-            </ul>
-          </div>
-
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Multiple Mode
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use when users need to compare or view multiple sections:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>FAQ pages</li>
-              <li>Settings panels</li>
-              <li>Documentation sections</li>
-            </ul>
-          </div>
-        </div>
+        <UsageGuidelines
+          do={[
+            "Progressive disclosure of content to reduce cognitive load",
+            "Managing multiple related sections that don't need simultaneous viewing",
+            "FAQ sections where users look for specific answers",
+            "Settings panels with categorized options",
+          ]}
+          dont={[
+            "When users need to see all content at once for comparison",
+            "As a replacement for navigation menus when items are few",
+            "For very small amounts of content that don't justify a toggle",
+          ]}
+        />
       </DocSection>
 
       <DocSection
@@ -314,26 +311,28 @@ export function AccordionDoc() {
         title="Basic Usage"
         description="Simple uncontrolled accordion with default settings."
       >
-        <div className="p-8 border border-aer-border rounded-lg bg-aer-background">
-          <Accordion defaultActiveIndex={0}>
-            <Accordion.Tab header="What is Aer Design?">
-              <p>
-                Aer Design is a weightless, high-performance React component
-                library built with React 19, Tailwind CSS 4, and Radix UI.
-              </p>
-            </Accordion.Tab>
-            <Accordion.Tab header="How do I install it?">
-              <p>
-                Install via npm: <code>npm install aer-design</code>
-              </p>
-            </Accordion.Tab>
-            <Accordion.Tab header="Is it accessible?">
-              <p>
-                Yes! All components follow WAI-ARIA guidelines and support full
-                keyboard navigation.
-              </p>
-            </Accordion.Tab>
-          </Accordion>
+        <div className="p-8 border border-aer-border rounded-lg bg-aer-background flex justify-center">
+          <div className="w-full max-w-lg">
+            <Accordion defaultActiveIndex={0}>
+              <Accordion.Tab header="What is Aer Design?">
+                <p>
+                  Aer Design is a weightless, high-performance React component
+                  library built with React 19, Tailwind CSS 4, and Radix UI.
+                </p>
+              </Accordion.Tab>
+              <Accordion.Tab header="How do I install it?">
+                <p>
+                  Install via npm: <code>npm install aer-design</code>
+                </p>
+              </Accordion.Tab>
+              <Accordion.Tab header="Is it accessible?">
+                <p>
+                  Yes! All components follow WAI-ARIA guidelines and support
+                  full keyboard navigation.
+                </p>
+              </Accordion.Tab>
+            </Accordion>
+          </div>
         </div>
         <CodeBlock
           ts={`<Accordion defaultActiveIndex={0}>
@@ -351,25 +350,27 @@ export function AccordionDoc() {
 
 export default function BasicAccordion() {
   return (
-    <Accordion defaultActiveIndex={0}>
-      <Accordion.Tab header="What is Aer Design?">
-        <p>
-          Aer Design is a weightless, high-performance React component
-          library built with React 19, Tailwind CSS 4, and Radix UI.
-        </p>
-      </Accordion.Tab>
-      <Accordion.Tab header="How do I install it?">
-        <p>
-          Install via npm: <code>npm install aer-design</code>
-        </p>
-      </Accordion.Tab>
-      <Accordion.Tab header="Is it accessible?">
-        <p>
-          Yes! All components follow WAI-ARIA guidelines and support full
-          keyboard navigation.
-        </p>
-      </Accordion.Tab>
-    </Accordion>
+    <div className="w-full max-w-lg mx-auto">
+      <Accordion defaultActiveIndex={0}>
+        <Accordion.Tab header="What is Aer Design?">
+          <p>
+            Aer Design is a weightless, high-performance React component
+            library built with React 19, Tailwind CSS 4, and Radix UI.
+          </p>
+        </Accordion.Tab>
+        <Accordion.Tab header="How do I install it?">
+          <p>
+            Install via npm: <code>npm install aer-design</code>
+          </p>
+        </Accordion.Tab>
+        <Accordion.Tab header="Is it accessible?">
+          <p>
+            Yes! All components follow WAI-ARIA guidelines and support full
+            keyboard navigation.
+          </p>
+        </Accordion.Tab>
+      </Accordion>
+    </div>
   );
 }`}
         />
@@ -1739,56 +1740,56 @@ export default function FAQSection() {
       >
         <div className="p-8 border border-aer-border rounded-lg bg-aer-background">
           <style>{`
-            .custom-accordion-purple {
-              --color-aer-border: hsl(280 80% 80%);
-              --color-aer-muted: hsl(280 80% 96%);
-              --color-aer-background: hsl(280 80% 99%);
-              --color-aer-ring: hsl(280 80% 60%);
+            .custom-accordion-teal {
+              --color-aer-border: hsl(180 80% 80%);
+              --color-aer-muted: hsl(180 80% 96%);
+              --color-aer-background: hsl(180 80% 99%);
+              --color-aer-ring: hsl(180 80% 60%);
             }
           `}</style>
-          <div className="custom-accordion-purple">
+          <div className="custom-accordion-teal">
             <Accordion variant="bordered" defaultActiveIndex={0}>
-              <Accordion.Tab header="Custom Theme (Purple)">
+              <Accordion.Tab header="Custom Theme (Teal)">
                 <p>
-                  This accordion uses scoped CSS variables for a purple theme.
+                  This accordion uses scoped CSS variables for a teal theme.
                 </p>
               </Accordion.Tab>
               <Accordion.Tab header="Accent Colors">
-                <p>Notice the purple borders, backgrounds, and focus rings.</p>
+                <p>Notice the teal borders, backgrounds, and focus rings.</p>
               </Accordion.Tab>
             </Accordion>
           </div>
         </div>
         <CodeBlock
-          ts={`.custom-accordion-purple {
-  --color-aer-border: hsl(280 80% 80%);
-  --color-aer-muted: hsl(280 80% 96%);
-  --color-aer-background: hsl(280 80% 99%);
-  --color-aer-ring: hsl(280 80% 60%);
+          ts={`.custom-accordion-teal {
+  --color-aer-border: hsl(180 80% 80%);
+  --color-aer-muted: hsl(180 80% 96%);
+  --color-aer-background: hsl(180 80% 99%);
+  --color-aer-ring: hsl(180 80% 60%);
 }
 
-<div className="custom-accordion-purple">
+<div className="custom-accordion-teal">
   <Accordion variant="bordered">...</Accordion>
 </div>`}
           fullCode={`import { Accordion } from "aer-design";
 
 export default function CustomThemeAccordion() {
   return (
-    <div className="custom-accordion-purple p-4 border rounded-lg">
+    <div className="custom-accordion-teal p-4 border rounded-lg">
       <style>{\`
-        .custom-accordion-purple {
-          --color-aer-border: hsl(280 80% 80%);
-          --color-aer-muted: hsl(280 80% 96%);
-          --color-aer-background: hsl(280 80% 99%);
-          --color-aer-ring: hsl(280 80% 60%);
+        .custom-accordion-teal {
+          --color-aer-border: hsl(180 80% 80%);
+          --color-aer-muted: hsl(180 80% 96%);
+          --color-aer-background: hsl(180 80% 99%);
+          --color-aer-ring: hsl(180 80% 60%);
         }
       \`}</style>
       <Accordion variant="bordered" defaultActiveIndex={0}>
-        <Accordion.Tab header="Custom Theme (Purple)">
-          <p>This accordion uses scoped CSS variables for a purple theme.</p>
+        <Accordion.Tab header="Custom Theme (Teal)">
+          <p>This accordion uses scoped CSS variables for a teal theme.</p>
         </Accordion.Tab>
         <Accordion.Tab header="Accent Colors">
-          <p>Notice the purple borders, backgrounds, and focus rings.</p>
+          <p>Notice the teal borders, backgrounds, and focus rings.</p>
         </Accordion.Tab>
       </Accordion>
     </div>

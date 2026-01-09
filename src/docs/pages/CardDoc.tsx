@@ -8,7 +8,13 @@ import {
   CardTitle,
 } from "@/components/Card";
 import { ArrowRight, Star } from "lucide-react";
-import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
+import {
+  ApiTable,
+  CodeBlock,
+  DocSection,
+  DocTabs,
+  UsageGuidelines,
+} from "../components/shared";
 
 function BasicUsageExample() {
   return (
@@ -56,11 +62,11 @@ function BasicUsageExample() {
 
 function AerCardExample() {
   return (
-    <div className="aer-vibrant-container dark">
+    <div className="aer-vibrant-container dark flex flex-col items-center justify-center">
       <div className="aer-vibrant-bg" />
       <div className="relative z-10 w-full max-w-[400px]">
         <Card variant="aer" hoverable className="p-0 overflow-hidden">
-          <div className="aspect-video bg-linear-to-br from-blue-600/30 to-purple-600/30 flex items-center justify-center">
+          <div className="aspect-video bg-linear-to-br from-cyan-600/30 to-emerald-600/30 flex items-center justify-center">
             <Star className="size-12 text-white/50 animate-pulse" />
           </div>
           <CardHeader className="p-6 pb-0">
@@ -132,37 +138,21 @@ export function CardDoc() {
       <DocSection
         id="when-to-use"
         title="When to Use"
-        description="Guidelines for utilizing cards in layouts."
+        description="Guidelines for organizing content with cards."
       >
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Grid Layouts
-            </h4>
-            <p className="text-sm text-aer-muted-foreground">
-              Cards shine when used in responsive grids:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground mt-2 space-y-1 list-disc pl-5">
-              <li>Dashboards and data summaries</li>
-              <li>Product catalogs or file explorers</li>
-              <li>Blog posts or news feeds</li>
-              <li>User profile previews</li>
-            </ul>
-          </div>
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Depth & Hierarchy
-            </h4>
-            <p className="text-sm text-aer-muted-foreground">
-              Use variants to establish importance:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground mt-2 space-y-1 list-disc pl-5">
-              <li>Default for standard application containers</li>
-              <li>Glass for background-integrated UI elements</li>
-              <li>Aer for high-prominence featured content</li>
-            </ul>
-          </div>
-        </div>
+        <UsageGuidelines
+          do={[
+            "Grouping related information into a single container",
+            "Creating dashboard widgets or summary components",
+            "Displaying collection items like products, posts, or users",
+            "Establishing visual hierarchy in complex layouts",
+          ]}
+          dont={[
+            "Over-nesting cards within other cards",
+            "Using cards for simple list items (use standard lists instead)",
+            "Creating overwhelming cards with too much disjointed information",
+          ]}
+        />
       </DocSection>
 
       <DocSection
@@ -173,7 +163,8 @@ export function CardDoc() {
         <BasicUsageExample />
         <CodeBlock
           ts={`<Card>\n  <CardHeader>\n    <CardTitle>Project Dashboard</CardTitle>\n  </CardHeader>\n  <CardContent>\n    {/* Your content */}\n  </CardContent>\n  <CardFooter>\n    <Button>View Details</Button>\n  </CardFooter>\n</Card>`}
-          fullCode={`import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "aer-design";\nimport { Button, Badge } from "aer-design";\nimport { ArrowRight } from "lucide-react";\n\nexport default function BasicCard() {\n  return (\n    <Card className="max-w-[350px]">\n      <CardHeader>\n        <div className="flex items-start justify-between">\n          <div>\n            <CardTitle>Project Dashboard</CardTitle>\n            <p className="text-sm text-aer-muted-foreground mt-1">\n              Track your progress\n            </p>\n          </div>\n          <Badge status="success" variant="soft">Active</Badge>\n        </div>\n      </CardHeader>\n      <CardContent>\n        <div className="space-y-3">\n          <div className="flex justify-between items-center">\n            <span className="text-sm text-aer-muted-foreground">Tasks Completed</span>\n            <span className="font-semibold">24/30</span>\n          </div>\n          <div className="w-full bg-aer-muted rounded-full h-2">\n            <div className="bg-aer-primary h-2 rounded-full" style={{ width: '80%' }} />\n          </div>\n        </div>\n      </CardContent>\n      <CardFooter>\n        <Button className="w-full">\n          View Details\n          <ArrowRight className="size-4 ml-2" />\n        </Button>\n      </CardFooter>\n    </Card>\n  );\n}`}
+          fullCode={`import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "aer-design";\nimport { Button, Badge } from "aer-design";\nimport { ArrowRight } from "lucide-react";\n\nexport default function BasicCard() {\n  return (\n    <Card className="max-w-[350px]">\n      <CardHeader>\n        <div className="flex items-start justify-between">\n          <div>\n            <CardTitle>Project Dashboard</CardTitle>\n            <p className="text-sm text-aer-muted-foreground mt-1">\n              Track your progress\n            </p>\n          </div>\n          <Badge status="success" variant="soft">Active</Badge>\n        </div>\n      </CardHeader>\n      <CardContent>\n        <div className="space-y-3">\n          <div className="flex justify-between items-center">\n            <span className="text-sm text-aer-muted-foreground">Tasks Completed</span>\n            <span className="font-semibold">24/30</span>\n          </div>\n          <div className="w-full bg-aer-muted rounded-full h-2">\n            <div className="bg-aer-primary h-2 rounded-full" style={{ width: '80%' }} />\n          </div>
+        </div>\n      </CardContent>\n      <CardFooter>\n        <Button className="w-full">\n          View Details\n          <ArrowRight className="size-4 ml-2" />\n        </Button>\n      </CardFooter>\n    </Card>\n  );\n}`}
         />
       </DocSection>
 
@@ -220,8 +211,8 @@ export function CardDoc() {
           </Card>
 
           {/* Glass variant with colorful background to show the effect */}
-          <div className="relative rounded-aer-lg overflow-hidden bg-linear-to-br from-blue-500/20 via-purple-500/20 to-pink-500/20 p-6">
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-30" />
+          <div className="relative rounded-aer-lg overflow-hidden bg-linear-to-br from-blue-500/20 via-cyan-500/20 to-emerald-500/20 p-6">
+            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIwLjUiIG9wYWNpdHk9IjAuMSIvPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc=')] opacity-30" />
             <Card variant="glass" className="p-6 relative">
               <div className="flex items-center gap-3 mb-3">
                 <div className="size-10 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm">
@@ -270,7 +261,7 @@ export function CardDoc() {
         title="Custom Usage"
         description="Extending cards with custom layouts."
       >
-        <div className="p-6 border rounded-xl bg-aer-muted/5">
+        <div className="p-6 border rounded-xl bg-aer-muted/5 flex justify-center">
           <Card className="p-0 overflow-hidden border-2 border-dashed border-aer-primary/30">
             <div className="h-20 bg-aer-primary/10 flex items-center justify-center">
               <p className="text-sm text-aer-primary font-medium">
@@ -281,7 +272,8 @@ export function CardDoc() {
         </div>
         <CodeBlock
           ts={`<Card className="border-2 border-dashed border-aer-primary/30 p-0">\n  <div className="bg-aer-primary/10 h-20">...</div>\n</Card>`}
-          fullCode={`import { Card } from "aer-design";\n\nexport default function CustomCard() {\n  return (\n    <Card className="p-0 overflow-hidden border-2 border-dashed border-aer-primary/30">\n      <div className="h-20 bg-aer-primary/10 flex items-center justify-center">\n        <p className="text-sm text-aer-primary font-medium">\n          Direct DOM Injection\n        </p>\n      </div>\n    </Card>\n  );\n}`}
+          fullCode={`import { Card } from "aer-design";\n\nexport default function CustomCard() {\n  return (\n    <Card className="p-0 overflow-hidden border-2 border-dashed border-aer-primary/30">\n      <div className="h-20 bg-aer-primary/10 flex items-center justify-center">\n        <p className="text-sm text-aer-primary font-medium">\n          Direct DOM Injection\n        </p>\n      </div>
+    </Card>\n  );\n}`}
         />
       </DocSection>
 
@@ -375,7 +367,7 @@ export function CardDoc() {
         title="Specialized Contexts"
         description="Context-aware card implementations."
       >
-        <div className="p-6 border rounded-xl bg-aer-muted/5">
+        <div className="p-6 border rounded-xl bg-aer-muted/5 flex justify-center">
           <Card className="border-aer-primary ring-2 ring-aer-primary/20">
             <CardHeader>
               <CardTitle className="text-sm">Active Editor State</CardTitle>
@@ -426,7 +418,7 @@ export function CardDoc() {
         title="Granular Styling"
         description="Precise control over card sub-components."
       >
-        <div className="p-6 border rounded-xl bg-aer-muted/5">
+        <div className="p-6 border rounded-xl bg-aer-muted/5 flex justify-center">
           <Card className="p-0 border-none shadow-none bg-zinc-900 rounded-none overflow-hidden">
             <CardHeader className="p-4 bg-zinc-800 border-none mb-0">
               <CardTitle className="text-white text-sm">

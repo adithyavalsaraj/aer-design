@@ -18,16 +18,16 @@ const toastVariants = cva(
     variants: {
       variant: {
         default:
-          "border-blue-300 dark:border-blue-400 !bg-blue-100 dark:!bg-blue-100 !text-blue-700 dark:!text-blue-700",
+          "border-blue-300 dark:border-blue-400 bg-blue-100 dark:bg-blue-100 text-blue-700 dark:text-blue-700",
         neutral:
-          "border-gray-300 dark:border-gray-400 !bg-gray-100 dark:!bg-gray-100 !text-gray-700 dark:!text-gray-700",
+          "border-gray-300 dark:border-gray-400 bg-gray-100 dark:bg-gray-100 text-gray-700 dark:text-gray-700",
         success:
-          "border-green-300 dark:border-green-400 !bg-green-100 dark:!bg-green-100 !text-green-700 dark:!text-green-700",
+          "border-green-300 dark:border-green-400 bg-green-100 dark:bg-green-100 text-green-700 dark:text-green-700",
         error:
-          "border-red-300 dark:border-red-400 !bg-red-100 dark:!bg-red-100 !text-red-700 dark:!text-red-700",
+          "border-red-300 dark:border-red-400 bg-red-100 dark:bg-red-100 text-red-700 dark:text-red-700",
         warning:
-          "border-amber-400 dark:border-amber-500 !bg-amber-100 dark:!bg-amber-100 !text-amber-600 dark:!text-amber-600",
-        info: "border-blue-300 dark:border-blue-400 !bg-blue-100 dark:!bg-blue-100 !text-blue-700 dark:!text-blue-700",
+          "border-amber-400 dark:border-amber-500 bg-amber-100 dark:bg-amber-100 text-amber-600 dark:text-amber-600",
+        info: "border-blue-300 dark:border-blue-400 bg-blue-100 dark:bg-blue-100 text-blue-700 dark:text-blue-700",
         aer: "aer-glass border-white/20 dark:border-white/10 text-aer-foreground shadow-xl backdrop-blur-xl bg-white/[var(--toast-opacity)] dark:bg-black/[var(--toast-opacity)]",
       },
       position: {

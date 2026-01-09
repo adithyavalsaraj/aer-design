@@ -28,9 +28,9 @@ const dropdownTriggerVariants = cva(
         false: "",
       },
       size: {
-        default: "h-10 text-sm",
-        sm: "h-9 text-xs",
-        lg: "h-11 text-base",
+        default: "min-h-10 text-sm",
+        sm: "min-h-9 text-xs",
+        lg: "min-h-11 text-base",
       },
     },
     defaultVariants: {
@@ -134,6 +134,11 @@ export interface DropdownProps
   size?: "sm" | "default" | "lg";
   /** Behavior when the page or parent container scrolls. @default "reposition" */
   scrollBehavior?: "close" | "reposition";
+  /**
+   * Whether to wrap selected text instead of truncating.
+   * @default false
+   */
+  wrapSelection?: boolean;
 }
 
 // --- Helper Functions ---
@@ -211,6 +216,7 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
       size: sizeProp,
       matchTriggerWidth = true,
       renderOption,
+      wrapSelection = false,
       ...props
     },
     ref
@@ -476,7 +482,7 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
             {helperText && (
               <p
                 className={cn(
-                  "text-xs text-aer-muted-foreground mt-1.5",
+                  "text-xs wrap-break-word text-aer-muted-foreground mt-1.5",
                   helperTextClassName
                 )}
               >
@@ -615,12 +621,22 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
 
               <div
                 className={cn(
-                  "relative flex-1 text-left h-full flex flex-col justify-center"
+                  "relative flex-1 text-left h-full flex flex-col justify-center",
+                  wrapSelection
+                    ? "whitespace-normal wrap-break-word"
+                    : "min-w-0"
                 )}
               >
                 {/* Display Value */}
                 {displayValue ? (
-                  <span className="block truncate">{displayValue}</span>
+                  <span
+                    className={cn(
+                      "block",
+                      wrapSelection ? "wrap-break-word" : "truncate"
+                    )}
+                  >
+                    {displayValue}
+                  </span>
                 ) : (
                   <span className="text-aer-muted-foreground">
                     {placeholder}
@@ -783,11 +799,12 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
                                             : "bg-aer-accent"),
                                         !isOptSelected &&
                                           selectableIndex !== focusedIndex &&
+                                          !option.disabled &&
                                           (variant === "aer"
                                             ? "hover:bg-white/10"
                                             : "hover:bg-aer-muted/50"),
                                         option.disabled &&
-                                          "opacity-50 cursor-not-allowed pointer-events-none",
+                                          "opacity-50 cursor-not-allowed",
                                         itemClassName
                                       )}
                                     >
@@ -878,11 +895,12 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
                                       : "bg-aer-accent"),
                                   !isOptSelected &&
                                     selectableIndex !== focusedIndex &&
+                                    !item.disabled &&
                                     (variant === "aer"
                                       ? "hover:bg-white/10"
                                       : "hover:bg-aer-muted/50"),
                                   item.disabled &&
-                                    "opacity-50 cursor-not-allowed pointer-events-none",
+                                    "opacity-50 cursor-not-allowed",
                                   itemClassName
                                 )}
                               >

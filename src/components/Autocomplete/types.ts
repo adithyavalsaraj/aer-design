@@ -179,6 +179,8 @@ export interface AutocompleteProps
   scrollBehavior?: "close" | "reposition";
   /** Whether to match the width of the dropdown to the input trigger width */
   matchTriggerWidth?: boolean;
+  /** Whether to wrap selected items to multiple lines (default: true) */
+  wrapSelection?: boolean;
   /** Allow creating custom values in tags mode */
   allowCustomValues?: boolean;
 

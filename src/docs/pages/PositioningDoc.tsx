@@ -5,9 +5,16 @@ import {
   type Align,
   type Side,
 } from "@/hooks";
+import { cn } from "@/lib/utils";
 import { Info, X } from "lucide-react";
 import * as React from "react";
-import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
+import {
+  ApiTable,
+  CodeBlock,
+  DocSection,
+  DocTabs,
+  UsageGuidelines,
+} from "../components/shared";
 
 export function PositioningDoc() {
   const overview = (
@@ -50,36 +57,19 @@ export function PositioningDoc() {
         title="When to Use"
         description="Choose the right utility for your use case."
       >
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-2 text-aer-foreground">
-              calculateOptimalPosition
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use when you need manual control over positioning logic:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>Custom positioning requirements</li>
-              <li>Non-React environments</li>
-              <li>Performance-critical scenarios</li>
-              <li>Integration with existing positioning code</li>
-            </ul>
-          </div>
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-2 text-aer-foreground">
-              useAutoPosition
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use for automatic React-based positioning:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>React components (tooltips, popovers)</li>
-              <li>Automatic updates on resize/scroll</li>
-              <li>Declarative positioning</li>
-              <li>Minimal boilerplate code</li>
-            </ul>
-          </div>
-        </div>
+        <UsageGuidelines
+          do={[
+            "Positioning floating elements (Tooltips, Popovers, Menus)",
+            "React-based components needing automatic collision detection",
+            "Scenarios requiring manual layout control (calculateOptimalPosition)",
+            "Building robust, viewport-aware overlay systems",
+          ]}
+          dont={[
+            "Simple CSS transitions or fixed layouts",
+            "Components that don't float or overlap content",
+            "Positioning static elements that follow normal document flow",
+          ]}
+        />
       </DocSection>
 
       <DocSection
@@ -517,61 +507,198 @@ export default function NotificationSystem() {
       side: Side;
       align: Align;
     } | null>(null);
+    const [triggerPos, setTriggerPos] = React.useState<
+      "center" | "top-left" | "top-right" | "bottom-left" | "bottom-right"
+    >("center");
+
+    const containerRef = React.useRef<HTMLDivElement>(null);
+    const triggerRef = React.useRef<HTMLDivElement>(null);
+    const contentRef = React.useRef<HTMLDivElement>(null);
 
     const handleCalculate = () => {
-      const trigger = document.getElementById("manual-trigger");
-      const content = document.getElementById("manual-content");
+      const container = containerRef.current;
+      const trigger = triggerRef.current;
+      const content = contentRef.current;
 
-      if (trigger && content) {
+      if (container && trigger && content) {
+        const containerRect = container.getBoundingClientRect();
+        const triggerRect = trigger.getBoundingClientRect();
+        const contentRect = content.getBoundingClientRect();
+
+        // Calculate rects relative to the container (mock viewport)
+        const relativeTriggerRect = {
+          top: triggerRect.top - containerRect.top,
+          bottom: triggerRect.bottom - containerRect.top,
+          left: triggerRect.left - containerRect.left,
+          right: triggerRect.right - containerRect.left,
+          width: triggerRect.width,
+          height: triggerRect.height,
+          x: triggerRect.left - containerRect.left,
+          y: triggerRect.top - containerRect.top,
+          toJSON: () => {},
+        } as DOMRect;
+
         const result = calculateOptimalPosition({
-          referenceRect: trigger.getBoundingClientRect(),
-          floatingRect: content.getBoundingClientRect(),
+          referenceRect: relativeTriggerRect,
+          floatingRect: contentRect,
           side: "bottom",
           align: "start",
           sideOffset: 8,
+          viewportWidth: containerRect.width,
+          viewportHeight: containerRect.height,
         });
         setPosition(result);
       }
     };
 
     return (
-      <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5 space-y-4">
-        <p className="text-sm text-aer-muted-foreground">
-          This example demonstrates manual position calculation. Click the
-          button below to calculate where the "Content Element" should be
-          positioned relative to the "Trigger Element".
-        </p>
-        <div className="flex gap-4 items-center flex-wrap">
-          <div
-            id="manual-trigger"
-            className="px-4 py-2 bg-aer-primary text-white rounded-md font-medium"
-          >
-            Trigger Element
+      <div className="flex flex-col gap-4 p-6 border border-aer-border rounded-lg bg-aer-muted/5">
+        <div className="text-sm text-aer-muted-foreground space-y-2">
+          <p>
+            Move the <strong>Reference Element</strong> to different positions
+            to see how collision detection changes the optimal placement.
+            <br />
+            Preference is set to <code>side="bottom"</code>,{" "}
+            <code>align="start"</code> (bottom-start).
+          </p>
+        </div>
+
+        <div className="flex flex-wrap gap-2 pb-2">
+          {[
+            { label: "Top Left", value: "top-left" },
+            { label: "Top Right", value: "top-right" },
+            { label: "Center", value: "center" },
+            { label: "Bottom Left", value: "bottom-left" },
+            { label: "Bottom Right", value: "bottom-right" },
+          ].map((pos) => (
+            <Button
+              key={pos.value}
+              size="sm"
+              variant={triggerPos === pos.value ? "default" : "outline"}
+              onClick={() => setTriggerPos(pos.value as any)}
+            >
+              {pos.label}
+            </Button>
+          ))}
+        </div>
+
+        {/* Mock Viewport */}
+        <div
+          ref={containerRef}
+          className="relative w-full h-[300px] bg-aer-background border-2 border-dashed border-aer-border rounded-lg overflow-hidden shadow-inner"
+        >
+          <div className="absolute top-2 left-2 text-xs text-aer-muted-foreground pointer-events-none">
+            Mock Viewport
           </div>
+
+          {/* Reference Element */}
           <div
-            id="manual-content"
-            className="px-4 py-2 bg-aer-muted border border-aer-border rounded-md font-medium"
+            ref={triggerRef}
+            id="manual-trigger"
+            className={cn(
+              "absolute w-32 h-20 flex items-center justify-center text-center bg-aer-primary/10 border-2 border-aer-primary text-aer-primary rounded-md font-medium text-xs transition-all duration-300",
+              triggerPos === "center" &&
+                "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
+              triggerPos === "top-left" && "top-4 left-4",
+              triggerPos === "top-right" && "top-4 right-4",
+              triggerPos === "bottom-left" && "bottom-4 left-4",
+              triggerPos === "bottom-right" && "bottom-4 right-4"
+            )}
           >
-            Content Element
+            Reference
+          </div>
+
+          {/* Floating Element (Visual Only if positioned) */}
+          <div
+            ref={contentRef}
+            id="manual-content"
+            style={{
+              position: "absolute",
+              // Apply calculated style or fallback to centered/hidden
+              ...(position
+                ? {
+                    top:
+                      position.side === "bottom"
+                        ? "auto"
+                        : position.side === "top"
+                        ? "auto"
+                        : "50%",
+                    bottom: position.side === "top" ? "auto" : "auto",
+                    // It's hard to position purely with CCS classes based on 'side' result without full math.
+                    // Let's just use a simple transition to "dock" it visually to the trigger.
+                    // Actually, placing it visually adjacent to the trigger is the best proof.
+                  }
+                : { display: "none" }),
+            }}
+            className={cn(
+              "w-32 h-12 flex items-center justify-center bg-aer-foreground text-aer-background rounded shadow-xl text-xs font-bold transition-all duration-300 z-10",
+              position &&
+                triggerPos === "center" &&
+                position.side === "bottom" &&
+                "top-[calc(50%+48px)] left-[calc(50%-64px)]",
+              position &&
+                triggerPos === "center" &&
+                position.side === "top" &&
+                "top-[calc(50%-96px)] left-[calc(50%-64px)]",
+
+              position &&
+                triggerPos === "top-left" &&
+                position.side === "bottom" &&
+                "top-28 left-4",
+              position &&
+                triggerPos === "top-left" &&
+                position.side === "right" &&
+                "top-4 left-40",
+
+              position &&
+                triggerPos === "top-right" &&
+                position.side === "bottom" &&
+                "top-28 right-4",
+              position &&
+                triggerPos === "top-right" &&
+                position.side === "left" &&
+                "top-4 right-40",
+
+              position &&
+                triggerPos === "bottom-left" &&
+                position.side === "top" &&
+                "bottom-28 left-4",
+              position &&
+                triggerPos === "bottom-left" &&
+                position.side === "right" &&
+                "bottom-4 left-40",
+
+              position &&
+                triggerPos === "bottom-right" &&
+                position.side === "top" &&
+                "bottom-28 right-4",
+              position &&
+                triggerPos === "bottom-right" &&
+                position.side === "left" &&
+                "bottom-4 right-40"
+            )}
+          >
+            Floating
           </div>
         </div>
-        <div className="flex items-center gap-3">
-          <Button onClick={handleCalculate} variant="outline" size="sm">
-            Calculate Optimal Position
+
+        <div className="flex items-center gap-3 mt-2">
+          <Button onClick={handleCalculate} className="w-full sm:w-auto">
+            Calculate Position
           </Button>
           {position && (
-            <div className="text-sm px-3 py-1.5 bg-green-500/10 text-green-700 dark:text-green-400 rounded-md border border-green-500/20">
-              <strong>Result:</strong> side = "{position.side}", align = "
-              {position.align}"
+            <div className="flex items-center gap-2 text-sm px-3 py-1.5 bg-green-500/10 text-green-700 dark:text-green-400 rounded-md border border-green-500/20 animate-in fade-in">
+              <span className="font-semibold">Optimal Position:</span>
+              <span>
+                Side: <strong>{position.side}</strong>
+              </span>
+              <span className="text-muted-foreground/30">|</span>
+              <span>
+                Align: <strong>{position.align}</strong>
+              </span>
             </div>
           )}
         </div>
-        {!position && (
-          <p className="text-xs text-aer-muted-foreground italic">
-            Click the button to see the calculated optimal position based on
-            viewport constraints.
-          </p>
-        )}
       </div>
     );
   }
@@ -588,7 +715,7 @@ export default function NotificationSystem() {
       });
 
     return (
-      <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5">
+      <div className="flex justify-center p-8 border border-aer-border rounded-lg bg-aer-muted/5">
         <div className="relative inline-block">
           <div
             ref={referenceRef}
@@ -656,7 +783,7 @@ export default function NotificationSystem() {
     }
 
     return (
-      <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5">
+      <div className="flex justify-center p-8 border border-aer-border rounded-lg bg-aer-muted/5">
         <div className="flex flex-wrap gap-4">
           <Tooltip content="Top tooltip" side="top">
             <Button variant="outline" size="sm">
@@ -737,7 +864,7 @@ export default function NotificationSystem() {
     }
 
     return (
-      <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5">
+      <div className="flex justify-center p-8 border border-aer-border rounded-lg bg-aer-muted/5">
         <Popover
           trigger={
             <Button variant="outline">
@@ -770,7 +897,7 @@ export default function NotificationSystem() {
       });
 
     return (
-      <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5">
+      <div className="flex flex-col items-center justify-center p-8 border border-aer-border rounded-lg bg-aer-muted/5">
         <p className="text-sm text-aer-muted-foreground mb-4">
           Click the button to see a notification that automatically positions
           itself relative to the button. Try scrolling or resizing to see it

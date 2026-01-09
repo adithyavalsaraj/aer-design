@@ -23,7 +23,13 @@ import {
   Users,
 } from "lucide-react";
 import * as React from "react";
-import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
+import {
+  ApiTable,
+  CodeBlock,
+  DocSection,
+  DocTabs,
+  UsageGuidelines,
+} from "../components/shared";
 
 function PlaygroundBrand() {
   const { collapsed } = useSidebar();
@@ -377,248 +383,251 @@ function SidebarPlayground() {
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Controls */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6 border rounded-aer-xl bg-aer-muted/5">
-        <div className="space-y-3">
-          <label className="text-sm font-semibold">Position</label>
-          <div className="flex flex-wrap gap-2">
-            {(["left", "right", "top", "bottom"] as const).map((pos) => (
-              <button
-                key={pos}
-                onClick={() => set("position", pos)}
-                className={`px-3 py-1.5 text-xs font-medium rounded-md border transition-all ${
-                  config.position === pos
-                    ? "bg-aer-foreground text-aer-background border-aer-foreground"
-                    : "bg-aer-background hover:bg-aer-muted"
-                }`}
-              >
-                {pos.charAt(0).toUpperCase() + pos.slice(1)}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <label className="text-sm font-semibold">Mode</label>
-            <span className="text-[10px] text-aer-muted-foreground bg-aer-muted/10 px-1.5 py-0.5 rounded">
-              {isMobile
-                ? "Mobile (Auto Overlay)"
-                : config.mode === "sticky"
-                ? "Sticks during scroll"
-                : config.mode === "absolute"
-                ? "Within container"
-                : "CSS Position"}
-            </span>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {(
-              [
-                "fixed",
-                "sticky",
-                "absolute",
-                "floating",
-                "overlay",
-                "icon",
-              ] as const
-            ).map((mode) => (
-              <button
-                key={mode}
-                onClick={() => {
-                  set("mode", mode);
-                  // Auto-enable overlay prop if mode is overlay
-                  if (mode === "overlay") set("overlay", true);
-                  else set("overlay", false);
-                }}
-                disabled={isMobile && config.autoOverlay} // Only disable if auto-overlay is taking over
-                className={`px-3 py-1.5 text-xs font-medium rounded-md border transition-all ${
-                  config.mode === mode && (!isMobile || !config.autoOverlay)
-                    ? "bg-aer-foreground text-aer-background border-aer-foreground"
-                    : isMobile && config.autoOverlay
-                    ? "opacity-50 cursor-not-allowed bg-aer-background"
-                    : "bg-aer-background hover:bg-aer-muted"
-                }`}
-              >
-                {mode.charAt(0).toUpperCase() + mode.slice(1)}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="space-y-3">
-          <label className="text-sm font-semibold">Features</label>
-          <div className="space-y-2">
-            {/* Aliases for Icon Only */}
-            <Tooltip
-              content="Icon mode forces collapsed state"
-              disabled={config.mode !== "icon"}
-              side="bottom"
-              trigger="hover"
-              variant="dark"
-              align="start"
-            >
-              <div>
-                <Checkbox
-                  label="Collapsed (Prop)"
-                  checked={config.collapsed}
-                  onChange={(e) => set("collapsed", e.target.checked)}
-                  disabled={config.mode === "icon" || config.mode === "overlay"}
-                  description="Manually collapse sidebar"
-                  labelClassName={
-                    config.mode === "icon" || config.mode === "overlay"
-                      ? "text-aer-muted-foreground"
-                      : ""
-                  }
-                />
-              </div>
-            </Tooltip>
-            <Tooltip
-              content="Must be collapsed to enable rail behavior"
-              disabled={isEffectiveCollapsed}
-              side="bottom"
-              trigger="hover"
-              variant="dark"
-              align="start"
-            >
-              <div>
-                <Checkbox
-                  label="Hoverable (Rail)"
-                  checked={config.hoverable}
-                  onChange={(e) => set("hoverable", e.target.checked)}
-                  disabled={!isEffectiveCollapsed}
-                  labelClassName={
-                    !isEffectiveCollapsed ? "text-aer-muted-foreground" : ""
-                  }
-                />
-              </div>
-            </Tooltip>
-            <Checkbox
-              label="Auto-Overlay (Mobile)"
-              checked={config.autoOverlay}
-              onChange={(e) => set("autoOverlay", e.target.checked)}
-              // Can pre-configure? Yes. But maybe clearer if always enabled or only effective on mobile. Let's leave enabled.
-              // Actually user wants to customize it.
-              description="Switch to overlay on small screens?"
-            />
-            <Checkbox
-              label="Nested Borders"
-              checked={config.showNestedBorder}
-              onChange={(e) => set("showNestedBorder", e.target.checked)}
-              description="Show left border indicator for nested items"
-            />
-          </div>
-        </div>
-
-        <div className="space-y-3">
-          <label className="text-sm font-semibold">Overlay Options</label>
-          <div className="space-y-2">
-            <Tooltip
-              content="Only available in Overlay Mode"
-              disabled={config.overlay || isMobile}
-              side="bottom"
-              variant="dark"
-              align="start"
-            >
-              <div>
-                <Checkbox
-                  label="Backdrop"
-                  checked={activeBackdrop}
-                  onChange={(e) => set("backdrop", e.target.checked)}
-                  disabled={
-                    (!config.overlay && !isMobile) ||
-                    (isMobile && config.autoOverlay)
-                  }
-                  labelClassName={
-                    !config.overlay && !isMobile
-                      ? "text-aer-muted-foreground"
-                      : ""
-                  }
-                />
-              </div>
-            </Tooltip>
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="w-full mt-2 px-3 py-1.5 bg-aer-primary text-aer-primary-foreground text-xs font-bold rounded-md"
-            >
-              {isOpen ? "Close Sidebar" : "Open Sidebar"}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Preview Area - Uses transform to trap fixed elements */}
-      <div className="border rounded-aer-xl overflow-hidden bg-aer-background relative h-[500px] w-full transform scale-[1] isolate shadow-inner flex flex-col">
-        {/* Header to explain the current layout simulation */}
-        {isDocumentLayout && (
-          <div className="bg-aer-muted/30 text-[10px] text-center p-2 text-aer-muted-foreground border-b font-medium">
-            Page Scroll Simulation (Container scrolls)
-          </div>
-        )}
-
-        <div
-          className={`flex-1 relative w-full ${
-            isDocumentLayout ? "overflow-auto" : "overflow-hidden"
-          }`}
-        >
-          {isDocumentLayout ? (
-            // --- DOCUMENT LAYOUT (Sticky/Absolute) ---
-            <div className="min-h-[200%] flex flex-col bg-aer-muted/5 relative">
-              {/* Fake Header for Sticky Demo */}
-              <div className="h-32 bg-aer-muted/10 border-b flex items-center justify-center shrink-0">
-                <span className="text-aer-muted-foreground font-medium">
-                  Header (Scroll past to test Sticky)
-                </span>
-              </div>
-
-              <div
-                className={`flex flex-1 relative ${
-                  {
-                    left: "flex-row",
-                    right: "flex-row-reverse",
-                    top: "flex-col",
-                    bottom: "flex-col-reverse",
-                  }[config.position as "left" | "right" | "top" | "bottom"] ||
-                  "flex-row"
-                }`}
-              >
-                {/* Sidebar in flow */}
-                {renderSidebar()}
-
-                {/* Content */}
-                <div className="flex-1 p-8" style={contentStyle}>
-                  <DemoContent
-                    isMobile={isMobile}
-                    config={config}
-                    setIsOpen={setIsOpen}
-                    isOpen={isOpen}
-                    isDocumentLayout={isDocumentLayout}
-                  />
-                </div>
-              </div>
+      <div className="flex flex-col border rounded-aer-xl bg-aer-muted/5 overflow-hidden divide-y divide-aer-border">
+        {/* Controls */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
+          <div className="space-y-3">
+            <label className="text-sm font-semibold">Position</label>
+            <div className="flex flex-wrap gap-2">
+              {(["left", "right", "top", "bottom"] as const).map((pos) => (
+                <button
+                  key={pos}
+                  onClick={() => set("position", pos)}
+                  className={`px-3 py-1.5 text-xs font-medium rounded-md border transition-all ${
+                    config.position === pos
+                      ? "bg-aer-foreground text-aer-background border-aer-foreground"
+                      : "bg-aer-background hover:bg-aer-muted"
+                  }`}
+                >
+                  {pos.charAt(0).toUpperCase() + pos.slice(1)}
+                </button>
+              ))}
             </div>
-          ) : (
-            // --- APP SHELL LAYOUT (Fixed/Overlay) ---
-            <>
-              <div
-                className="absolute inset-0 overflow-auto bg-aer-muted/5 transition-[padding] duration-300 ease-in-out"
-                style={isMobile && config.autoOverlay ? {} : contentStyle}
+          </div>
+
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <label className="text-sm font-semibold">Mode</label>
+              <span className="text-[10px] text-aer-muted-foreground bg-aer-muted/10 px-1.5 py-0.5 rounded">
+                {isMobile
+                  ? "Mobile (Auto Overlay)"
+                  : config.mode === "sticky"
+                  ? "Sticks during scroll"
+                  : config.mode === "absolute"
+                  ? "Within container"
+                  : "CSS Position"}
+              </span>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {(
+                [
+                  "fixed",
+                  "sticky",
+                  "absolute",
+                  "floating",
+                  "overlay",
+                  "icon",
+                ] as const
+              ).map((mode) => (
+                <button
+                  key={mode}
+                  onClick={() => {
+                    set("mode", mode);
+                    // Auto-enable overlay prop if mode is overlay
+                    if (mode === "overlay") set("overlay", true);
+                    else set("overlay", false);
+                  }}
+                  disabled={isMobile && config.autoOverlay} // Only disable if auto-overlay is taking over
+                  className={`px-3 py-1.5 text-xs font-medium rounded-md border transition-all ${
+                    config.mode === mode && (!isMobile || !config.autoOverlay)
+                      ? "bg-aer-foreground text-aer-background border-aer-foreground"
+                      : isMobile && config.autoOverlay
+                      ? "opacity-50 cursor-not-allowed bg-aer-background"
+                      : "bg-aer-background hover:bg-aer-muted"
+                  }`}
+                >
+                  {mode.charAt(0).toUpperCase() + mode.slice(1)}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <label className="text-sm font-semibold">Features</label>
+            <div className="space-y-2">
+              {/* Aliases for Icon Only */}
+              <Tooltip
+                content="Icon mode forces collapsed state"
+                disabled={config.mode !== "icon"}
+                side="bottom"
+                trigger="hover"
+                variant="dark"
+                align="start"
               >
-                <div className="p-8 h-[200%]">
-                  <DemoContent
-                    isMobile={isMobile}
-                    config={config}
-                    setIsOpen={setIsOpen}
-                    isOpen={isOpen}
-                    isDocumentLayout={isDocumentLayout}
+                <div>
+                  <Checkbox
+                    label="Collapsed (Prop)"
+                    checked={config.collapsed}
+                    onChange={(e) => set("collapsed", e.target.checked)}
+                    disabled={
+                      config.mode === "icon" || config.mode === "overlay"
+                    }
+                    description="Manually collapse sidebar"
+                    labelClassName={
+                      config.mode === "icon" || config.mode === "overlay"
+                        ? "text-aer-muted-foreground"
+                        : ""
+                    }
                   />
                 </div>
-              </div>
-              {renderSidebar()}
-            </>
-          )}
-        </div>
-      </div>
+              </Tooltip>
+              <Tooltip
+                content="Must be collapsed to enable rail behavior"
+                disabled={isEffectiveCollapsed}
+                side="bottom"
+                trigger="hover"
+                variant="dark"
+                align="start"
+              >
+                <div>
+                  <Checkbox
+                    label="Hoverable (Rail)"
+                    checked={config.hoverable}
+                    onChange={(e) => set("hoverable", e.target.checked)}
+                    disabled={!isEffectiveCollapsed}
+                    labelClassName={
+                      !isEffectiveCollapsed ? "text-aer-muted-foreground" : ""
+                    }
+                  />
+                </div>
+              </Tooltip>
+              <Checkbox
+                label="Auto-Overlay (Mobile)"
+                checked={config.autoOverlay}
+                onChange={(e) => set("autoOverlay", e.target.checked)}
+                // Can pre-configure? Yes. But maybe clearer if always enabled or only effective on mobile. Let's leave enabled.
+                // Actually user wants to customize it.
+                description="Switch to overlay on small screens?"
+              />
+              <Checkbox
+                label="Nested Borders"
+                checked={config.showNestedBorder}
+                onChange={(e) => set("showNestedBorder", e.target.checked)}
+                description="Show left border indicator for nested items"
+              />
+            </div>
+          </div>
 
+          <div className="space-y-3">
+            <label className="text-sm font-semibold">Overlay Options</label>
+            <div className="space-y-2">
+              <Tooltip
+                content="Only available in Overlay Mode"
+                disabled={config.overlay || isMobile}
+                side="bottom"
+                variant="dark"
+                align="start"
+              >
+                <div>
+                  <Checkbox
+                    label="Backdrop"
+                    checked={activeBackdrop}
+                    onChange={(e) => set("backdrop", e.target.checked)}
+                    disabled={
+                      (!config.overlay && !isMobile) ||
+                      (isMobile && config.autoOverlay)
+                    }
+                    labelClassName={
+                      !config.overlay && !isMobile
+                        ? "text-aer-muted-foreground"
+                        : ""
+                    }
+                  />
+                </div>
+              </Tooltip>
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="w-full mt-2 px-3 py-1.5 bg-aer-primary text-aer-primary-foreground text-xs font-bold rounded-md"
+              >
+                {isOpen ? "Close Sidebar" : "Open Sidebar"}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Preview Area - Uses transform to trap fixed elements */}
+        <div className="bg-aer-background relative h-[500px] w-full transform scale-[1] isolate shadow-inner flex flex-col">
+          {/* Header to explain the current layout simulation */}
+          {isDocumentLayout && (
+            <div className="bg-aer-muted/30 text-[10px] text-center p-2 text-aer-muted-foreground border-b font-medium">
+              Page Scroll Simulation (Container scrolls)
+            </div>
+          )}
+
+          <div
+            className={`flex-1 relative w-full ${
+              isDocumentLayout ? "overflow-auto" : "overflow-hidden"
+            }`}
+          >
+            {isDocumentLayout ? (
+              // --- DOCUMENT LAYOUT (Sticky/Absolute) ---
+              <div className="min-h-[200%] flex flex-col bg-aer-muted/5 relative">
+                {/* Fake Header for Sticky Demo */}
+                <div className="h-32 bg-aer-muted/10 border-b flex items-center justify-center shrink-0">
+                  <span className="text-aer-muted-foreground font-medium">
+                    Header (Scroll past to test Sticky)
+                  </span>
+                </div>
+
+                <div
+                  className={`flex flex-1 relative ${
+                    {
+                      left: "flex-row",
+                      right: "flex-row-reverse",
+                      top: "flex-col",
+                      bottom: "flex-col-reverse",
+                    }[config.position as "left" | "right" | "top" | "bottom"] ||
+                    "flex-row"
+                  }`}
+                >
+                  {/* Sidebar in flow */}
+                  {renderSidebar()}
+
+                  {/* Content */}
+                  <div className="flex-1 p-8" style={contentStyle}>
+                    <DemoContent
+                      isMobile={isMobile}
+                      config={config}
+                      setIsOpen={setIsOpen}
+                      isOpen={isOpen}
+                      isDocumentLayout={isDocumentLayout}
+                    />
+                  </div>
+                </div>
+              </div>
+            ) : (
+              // --- APP SHELL LAYOUT (Fixed/Overlay) ---
+              <>
+                <div
+                  className="absolute inset-0 overflow-auto bg-aer-muted/5 transition-[padding] duration-300 ease-in-out"
+                  style={isMobile && config.autoOverlay ? {} : contentStyle}
+                >
+                  <div className="p-8 h-[200%]">
+                    <DemoContent
+                      isMobile={isMobile}
+                      config={config}
+                      setIsOpen={setIsOpen}
+                      isOpen={isOpen}
+                      isDocumentLayout={isDocumentLayout}
+                    />
+                  </div>
+                </div>
+                {renderSidebar()}
+              </>
+            )}
+          </div>
+        </div>
+      </div>{" "}
       {/* Generated Code */}
       <CodeBlock
         ts={`<Sidebar\n  position="${config.position}"\n  mode={${
@@ -701,59 +710,21 @@ export function SidebarDoc() {
       <DocSection
         title="When to Use"
         id="when-to-use"
-        description="Choose the right layout strategy for your app."
+        description="Choose the right layout strategy for your application shell."
       >
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Application Shells
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                mode="fixed"
-              </code>{" "}
-              for standard dashboards where navigation is always present.
-            </p>
-          </div>
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Mobile Drawers
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                mode="overlay"
-              </code>{" "}
-              for hidden menus triggered by a hamburger button.
-            </p>
-          </div>
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Documentation
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                mode="sticky"
-              </code>{" "}
-              for lists that should scroll with the page but stick to the
-              viewport.
-            </p>
-          </div>
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Modern / SaaS
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                mode="floating"
-              </code>{" "}
-              for a distinct, island-style look.
-            </p>
-          </div>
-        </div>
+        <UsageGuidelines
+          do={[
+            "Primary application navigation for tools and dashboards (Fixed/Floating).",
+            "Documentation or content-heavy sites with deep navigation (Sticky).",
+            "Mobile-first navigation requiring compact drawers (Overlay).",
+            "SaaS platforms needing a persistent 'Rail' for quick actions.",
+          ]}
+          dont={[
+            "Single-page sites with minimal navigation (use Navbar).",
+            "Triggering quick actions or tooltips (use Button or Tooltip).",
+            "Simple horizontal menu structures (use Navbar).",
+          ]}
+        />
       </DocSection>
 
       <DocSection
@@ -775,7 +746,7 @@ export function SidebarDoc() {
             navigation groups. Perfect for organizing complex navigation
             hierarchies.
           </p>
-          <div className="p-6 border rounded-lg bg-aer-muted/5 flex justify-center isolate">
+          <div className="p-8 border rounded-lg bg-aer-muted/5 flex justify-center isolate">
             <Sidebar
               mode="absolute"
               position="left"
@@ -957,7 +928,7 @@ export default function NestedSidebarExample() {
         id="floating"
         description="A specialized styling example for the 'Floating' mode."
       >
-        <div className="border rounded-aer-xl overflow-hidden bg-aer-muted/20 relative h-[400px] p-6 flex items-center justify-center transform scale-[1] isolate">
+        <div className="border rounded-aer-xl overflow-hidden bg-aer-muted/20 relative h-[400px] p-8 flex items-center justify-center transform scale-[1] isolate">
           <Sidebar
             mode="floating"
             position="left"
@@ -1005,7 +976,7 @@ export default function NestedSidebarExample() {
         id="granular-styling"
         description="Customize every slot of the sidebar with specific className props."
       >
-        <div className="p-6 border rounded-lg bg-aer-muted/5 flex justify-center isolate">
+        <div className="p-8 border rounded-lg bg-aer-muted/5 flex justify-center isolate">
           <Sidebar
             mode="absolute"
             position="left"
@@ -1039,7 +1010,7 @@ export default function NestedSidebarExample() {
         id="real-world"
         description="A complete application shell with responsive behavior."
       >
-        <div className="p-6 border rounded-lg bg-aer-muted/5">
+        <div className="p-8 border rounded-lg bg-aer-muted/5">
           <p className="text-sm text-aer-muted-foreground text-center italic mb-4">
             The main playground at the top serves as our primary real-world
             demonstration. Below is a complete app shell snippet.

@@ -1,7 +1,13 @@
 import { OtpInput } from "@/components/OtpInput";
 import { Shield } from "lucide-react";
 import * as React from "react";
-import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
+import {
+  ApiTable,
+  CodeBlock,
+  DocSection,
+  DocTabs,
+  UsageGuidelines,
+} from "../components/shared";
 
 export function OtpDoc() {
   const [otp, setOtp] = React.useState("");
@@ -45,42 +51,28 @@ export function OtpDoc() {
         title="When to Use"
         description="Best practices for using OTP inputs."
       >
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Verification Flows
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use this component whenever you need to verify:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>Email verification links</li>
-              <li>SMS 2FA codes</li>
-              <li>Device authorization pins</li>
-            </ul>
-          </div>
-
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Segmented Data
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Also useful for fixed-format data entry:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>Credit card expiry (MM / YY)</li>
-              <li>License keys</li>
-              <li>Coupon codes</li>
-            </ul>
-          </div>
-        </div>
+        <UsageGuidelines
+          do={[
+            "Email or SMS based 2FA (Two-Factor Authentication) flows",
+            "Verification code entry for login or registration",
+            "Device authorization or PIN entry",
+            "Entering fixed-format segmented data like license keys",
+          ]}
+          dont={[
+            "Standard multi-character text entry (use Input instead)",
+            "Entering unpredictable lengths of data",
+            "Complex data with lots of special characters",
+          ]}
+        />
       </DocSection>
 
       <DocSection title="Basic Usage" id="basic">
-        <div className="flex flex-col items-start gap-4">
-          <OtpInput value={otp} onChange={setOtp} />
-          <div className="text-sm font-mono p-2 bg-aer-muted rounded-md border">
-            Current Value: {otp || "------"}
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="flex flex-col items-start gap-4">
+            <OtpInput value={otp} onChange={setOtp} />
+            <div className="text-sm font-mono p-2 bg-aer-muted rounded-md border">
+              Current Value: {otp || "------"}
+            </div>
           </div>
         </div>
         <CodeBlock
@@ -94,18 +86,20 @@ export function OtpDoc() {
         title="Visual Variants"
         description="Choose from multiple visual styles to match your application's design."
       >
-        <div className="flex flex-col gap-8">
-          <div className="space-y-2">
-            <h4 className="text-sm font-medium">Outline (Default)</h4>
-            <OtpInput variant="outline" length={4} />
-          </div>
-          <div className="space-y-2">
-            <h4 className="text-sm font-medium">Filled</h4>
-            <OtpInput variant="filled" length={4} />
-          </div>
-          <div className="space-y-2">
-            <h4 className="text-sm font-medium">Underlined</h4>
-            <OtpInput variant="underlined" length={4} />
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="flex flex-col gap-8">
+            <div className="space-y-2">
+              <h4 className="text-sm font-medium">Outline (Default)</h4>
+              <OtpInput variant="outline" length={4} />
+            </div>
+            <div className="space-y-2">
+              <h4 className="text-sm font-medium">Filled</h4>
+              <OtpInput variant="filled" length={4} />
+            </div>
+            <div className="space-y-2">
+              <h4 className="text-sm font-medium">Underlined</h4>
+              <OtpInput variant="underlined" length={4} />
+            </div>
           </div>
         </div>
         <CodeBlock
@@ -115,24 +109,26 @@ export function OtpDoc() {
       </DocSection>
 
       <DocSection title="Sizes" id="sizes">
-        <div className="flex flex-col gap-6">
-          <div className="space-y-1.5">
-            <span className="text-xs font-semibold uppercase text-aer-muted-foreground tracking-wider">
-              Small
-            </span>
-            <OtpInput size="sm" length={4} />
-          </div>
-          <div className="space-y-1.5">
-            <span className="text-xs font-semibold uppercase text-aer-muted-foreground tracking-wider">
-              Default
-            </span>
-            <OtpInput size="default" length={4} />
-          </div>
-          <div className="space-y-1.5">
-            <span className="text-xs font-semibold uppercase text-aer-muted-foreground tracking-wider">
-              Large
-            </span>
-            <OtpInput size="lg" length={4} />
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="flex flex-col gap-6">
+            <div className="space-y-1.5">
+              <span className="text-xs font-semibold uppercase text-aer-muted-foreground tracking-wider">
+                Small
+              </span>
+              <OtpInput size="sm" length={4} />
+            </div>
+            <div className="space-y-1.5">
+              <span className="text-xs font-semibold uppercase text-aer-muted-foreground tracking-wider">
+                Default
+              </span>
+              <OtpInput size="default" length={4} />
+            </div>
+            <div className="space-y-1.5">
+              <span className="text-xs font-semibold uppercase text-aer-muted-foreground tracking-wider">
+                Large
+              </span>
+              <OtpInput size="lg" length={4} />
+            </div>
           </div>
         </div>
         <CodeBlock
@@ -179,9 +175,11 @@ export function OtpDoc() {
         id="length"
         description="Change the number of input fields."
       >
-        <div className="space-y-4">
-          <OtpInput length={4} />
-          <OtpInput length={8} />
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="space-y-4">
+            <OtpInput length={4} />
+            <OtpInput length={8} />
+          </div>
         </div>
         <CodeBlock
           ts={`<OtpInput length={4} />\n<OtpInput length={8} />`}
@@ -194,8 +192,10 @@ export function OtpDoc() {
         id="alphanumeric"
         description="Accept letters and numbers for alphanumeric codes."
       >
-        <div className="space-y-4">
-          <OtpInput pattern={/^[a-zA-Z0-9]$/} />
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="space-y-4">
+            <OtpInput pattern={/^[a-zA-Z0-9]$/} />
+          </div>
         </div>
         <CodeBlock
           ts={`<OtpInput pattern={/^[a-zA-Z0-9]$/} />`}
@@ -208,28 +208,32 @@ export function OtpDoc() {
         id="security"
         description="Mask the input for sensitive codes."
       >
-        <div className="space-y-8">
-          <div className="space-y-2">
-            <h4 className="text-sm font-medium">Standard Password</h4>
-            <OtpInput type="password" />
-          </div>
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="space-y-8">
+            <div className="space-y-2">
+              <h4 className="text-sm font-medium">Standard Password</h4>
+              <OtpInput type="password" />
+            </div>
 
-          <div className="space-y-2">
-            <h4 className="text-sm font-medium">Custom Mask (Dot)</h4>
-            <OtpInput
-              type="password"
-              maskChar={<div className="h-2 w-2 rounded-full bg-aer-primary" />}
-            />
-          </div>
+            <div className="space-y-2">
+              <h4 className="text-sm font-medium">Custom Mask (Dot)</h4>
+              <OtpInput
+                type="password"
+                maskChar={
+                  <div className="h-2 w-2 rounded-full bg-aer-primary" />
+                }
+              />
+            </div>
 
-          <div className="space-y-2">
-            <h4 className="text-sm font-medium">Custom Mask (Icon)</h4>
-            <OtpInput
-              type="password"
-              maskChar={
-                <Shield className="h-4 w-4 text-aer-muted-foreground" />
-              }
-            />
+            <div className="space-y-2">
+              <h4 className="text-sm font-medium">Custom Mask (Icon)</h4>
+              <OtpInput
+                type="password"
+                maskChar={
+                  <Shield className="h-4 w-4 text-aer-muted-foreground" />
+                }
+              />
+            </div>
           </div>
         </div>
         <CodeBlock
@@ -239,14 +243,16 @@ export function OtpDoc() {
       </DocSection>
 
       <DocSection title="Validation" id="validation">
-        <div className="flex flex-col gap-8">
-          <div className="space-y-2">
-            <h4 className="text-sm font-medium">Error State</h4>
-            <OtpInput error />
-          </div>
-          <div className="space-y-2">
-            <h4 className="text-sm font-medium">With Error Message</h4>
-            <OtpInput error="Invalid code. Please try again." />
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="flex flex-col gap-8">
+            <div className="space-y-2">
+              <h4 className="text-sm font-medium">Error State</h4>
+              <OtpInput error />
+            </div>
+            <div className="space-y-2">
+              <h4 className="text-sm font-medium">With Error Message</h4>
+              <OtpInput error="Invalid code. Please try again." />
+            </div>
           </div>
         </div>
         <CodeBlock
@@ -260,7 +266,7 @@ export function OtpDoc() {
         id="granular-styling"
         description="Precise control over styling with element-specific className props."
       >
-        <div className="flex flex-col gap-4 p-6 border rounded-lg bg-aer-muted/5 items-center">
+        <div className="flex flex-col gap-4 p-8 border rounded-lg bg-aer-muted/5 items-center">
           <OtpStylingExample />
         </div>
         <CodeBlock

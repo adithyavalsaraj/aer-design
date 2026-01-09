@@ -15,6 +15,7 @@ import {
   CodeBlock,
   DocSection,
   DocTabs,
+  UsageGuidelines,
 } from "@/docs/components/shared";
 import {
   CreditCard,
@@ -40,8 +41,9 @@ export function MenuDoc() {
 
     return (
       <div className="space-y-6 w-full">
-        <div className="flex flex-col items-center gap-x-4 gap-y-2 p-4 bg-aer-muted/20 rounded-lg border border-aer-border">
-          <div className="w-full">
+        <div className="flex flex-col border rounded-aer-xl bg-aer-muted/5 divide-y divide-aer-border overflow-hidden">
+          {/* Controls */}
+          <div className="p-6 bg-aer-muted/50">
             <label className="text-sm font-medium text-aer-foreground mb-3 block">
               Scroll Behavior
             </label>
@@ -54,22 +56,23 @@ export function MenuDoc() {
               <RadioItem value="close" label="Close on Scroll" />
             </RadioGroup>
           </div>
-        </div>
 
-        <div className="p-12 border border-aer-border rounded-lg bg-aer-muted/5 flex flex-col items-center">
-          <p className="text-xs text-aer-muted-foreground mb-4 italic">
-            Open the menu and scroll this section or the page
-          </p>
-          <Menu>
-            <MenuTrigger asChild>
-              <Button variant="outline">Open Menu</Button>
-            </MenuTrigger>
-            <MenuContent scrollBehavior={behavior} className="w-56">
-              <MenuItem>Item 1</MenuItem>
-              <MenuItem>Item 2</MenuItem>
-              <MenuItem>Item 3</MenuItem>
-            </MenuContent>
-          </Menu>
+          {/* Live Preview */}
+          <div className="flex flex-col items-center justify-center p-12 bg-aer-background min-h-[300px]">
+            <p className="text-xs text-aer-muted-foreground mb-4 italic">
+              Open the menu and scroll this section or the page
+            </p>
+            <Menu>
+              <MenuTrigger asChild>
+                <Button variant="outline">Open Menu</Button>
+              </MenuTrigger>
+              <MenuContent scrollBehavior={behavior} className="w-56">
+                <MenuItem>Item 1</MenuItem>
+                <MenuItem>Item 2</MenuItem>
+                <MenuItem>Item 3</MenuItem>
+              </MenuContent>
+            </Menu>
+          </div>
         </div>
 
         <CodeBlock
@@ -120,25 +123,19 @@ export function MenuDoc() {
         title="When to Use"
         description="Scenarios where a Menu is the right choice."
       >
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-2 text-aer-foreground">
-              Action Menus
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use for a list of actions related to a specific element (e.g.,
-              "Edit," "Delete," "Share").
-            </p>
-          </div>
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-2 text-aer-foreground">
-              Navigation
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use for dropdown navigation menus in headers or sidebars.
-            </p>
-          </div>
-        </div>
+        <UsageGuidelines
+          do={[
+            "Providing a list of actions for a specific element (e.g., Edit, Delete, Share)",
+            "Dropdown navigation menus in headers or toolbars",
+            "Contextual actions that don't need to be visible at all times",
+            "Selecting a single value from a small set of options (Radio/Checkbox items)",
+          ]}
+          dont={[
+            "Displaying static information that doesn't trigger an action",
+            "Navigating between primary app sections (use Sidebar or Navbar)",
+            "When the number of options is very large (> 15 items, use Autocomplete)",
+          ]}
+        />
       </DocSection>
 
       <DocSection
@@ -146,7 +143,7 @@ export function MenuDoc() {
         title="Basic Usage"
         description="A simple menu with text items."
       >
-        <div className="flex gap-4 mb-4">
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5 mb-4">
           <Menu>
             <MenuTrigger asChild>
               <Button variant="outline">Open Menu</Button>
@@ -276,7 +273,7 @@ export default function AerMenuExample() {
         title="With Icons & Shortcuts"
         description="MenuItems can contain icons and other elements."
       >
-        <div className="mb-4">
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5 mb-4">
           <Menu>
             <MenuTrigger asChild>
               <Button variant="outline">Actions</Button>
@@ -371,7 +368,7 @@ export default function IconsMenu() {
         title="Nested Submenus"
         description="Support for multi-level nested menus using SubMenu."
       >
-        <div className="mb-4">
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5 mb-4">
           <Menu>
             <MenuTrigger asChild>
               <Button variant="outline">Invite Users</Button>
@@ -502,6 +499,85 @@ export default function NestedMenu() {
     </Menu>
   );
 }`}
+        />
+      </DocSection>
+
+      <DocSection
+        title="Granular Styling"
+        id="granular-styling"
+        description="Every part of the menu can be styled with standard className props."
+      >
+        <div className="flex flex-wrap items-center justify-center gap-8 p-8 border border-aer-border rounded-lg bg-aer-muted/5">
+          <MenuStylingExample />
+        </div>
+        <CodeBlock
+          ts={`// Interactive item styling
+<MenuItem className="hover:bg-sky-100 hover:text-sky-600 focus:bg-sky-100 focus:text-sky-600">
+  Custom Hover Item
+</MenuItem>
+
+// Destructive styling
+<MenuItem className="text-red-500 hover:bg-red-50 focus:bg-red-50">
+  Delete Account
+</MenuItem>
+
+// Custom content styling
+<MenuContent className="w-64 border-sky-200 shadow-xl rounded-xl">
+  {...}
+</MenuContent>`}
+          fullCode={`import { Menu, MenuTrigger, MenuContent, MenuItem, Button } from "aer-design";
+import { User, Trash2 } from "lucide-react";
+
+export default function MenuStyling() {
+  return (
+    <div className="flex gap-4">
+      <Menu>
+        <MenuTrigger asChild>
+          <Button variant="outline">Custom Menu</Button>
+        </MenuTrigger>
+        <MenuContent className="w-56 border-sky-200 shadow-xl rounded-xl">
+          <MenuItem className="hover:bg-sky-100 hover:text-sky-600 focus:bg-sky-100 focus:text-sky-600">
+            <User className="mr-2 h-4 w-4" />
+            <span>Profile</span>
+          </MenuItem>
+          <MenuItem className="text-red-600 hover:bg-red-50 hover:text-red-700 focus:bg-red-50 focus:text-red-700 mt-2">
+            <Trash2 className="mr-2 h-4 w-4" />
+            <span>Delete</span>
+          </MenuItem>
+        </MenuContent>
+      </Menu>
+    </div>
+  );
+}`}
+        />
+      </DocSection>
+
+      <DocSection
+        title="Scroll Behavior"
+        id="scroll-behavior"
+        description="Control how the menu panel reacts when the page or parent container scrolls."
+      >
+        <ScrollBehaviorExample />
+      </DocSection>
+
+      <DocSection
+        title="When to Use"
+        id="when-to-use"
+        description="Organize content into distinct views."
+      >
+        <UsageGuidelines
+          do={[
+            "Organizing strictly related content into separate views",
+            "Allowing users to switch between frequent contexts quickly",
+            "Reducing page length by layering information",
+            "Grouping settings or profile sections logically",
+          ]}
+          dont={[
+            "Comparing data across different tabs (use a single view or side-by-side layout)",
+            "For sequential steps (use a Stepper component instead)",
+            "Nesting multiple levels of tabs within each other",
+            "Using tabs for primary navigation (use Navbar or Sidebar)",
+          ]}
         />
       </DocSection>
 
@@ -731,64 +807,6 @@ export default function PositioningMenu() {
   );
 }`}
         />
-      </DocSection>
-
-      <DocSection
-        title="Granular Styling"
-        id="granular-styling"
-        description="Every part of the menu can be styled with standard className props."
-      >
-        <div className="flex flex-wrap items-center justify-center gap-8 p-8 border border-aer-border rounded-lg bg-aer-muted/5">
-          <MenuStylingExample />
-        </div>
-        <CodeBlock
-          ts={`// Interactive item styling
-<MenuItem className="hover:bg-sky-100 hover:text-sky-600 focus:bg-sky-100 focus:text-sky-600">
-  Custom Hover Item
-</MenuItem>
-
-// Destructive styling
-<MenuItem className="text-red-500 hover:bg-red-50 focus:bg-red-50">
-  Delete Account
-</MenuItem>
-
-// Custom content styling
-<MenuContent className="w-64 border-sky-200 shadow-xl rounded-xl">
-  {...}
-</MenuContent>`}
-          fullCode={`import { Menu, MenuTrigger, MenuContent, MenuItem, Button } from "aer-design";
-import { User, Trash2 } from "lucide-react";
-
-export default function MenuStyling() {
-  return (
-    <div className="flex gap-4">
-      <Menu>
-        <MenuTrigger asChild>
-          <Button variant="outline">Custom Menu</Button>
-        </MenuTrigger>
-        <MenuContent className="w-56 border-sky-200 shadow-xl rounded-xl">
-          <MenuItem className="hover:bg-sky-100 hover:text-sky-600 focus:bg-sky-100 focus:text-sky-600">
-            <User className="mr-2 h-4 w-4" />
-            <span>Profile</span>
-          </MenuItem>
-          <MenuItem className="text-red-600 hover:bg-red-50 hover:text-red-700 focus:bg-red-50 focus:text-red-700 mt-2">
-            <Trash2 className="mr-2 h-4 w-4" />
-            <span>Delete</span>
-          </MenuItem>
-        </MenuContent>
-      </Menu>
-    </div>
-  );
-}`}
-        />
-      </DocSection>
-
-      <DocSection
-        title="Scroll Behavior"
-        id="scroll-behavior"
-        description="Control how the menu panel reacts when the page or parent container scrolls."
-      >
-        <ScrollBehaviorExample />
       </DocSection>
 
       <DocSection

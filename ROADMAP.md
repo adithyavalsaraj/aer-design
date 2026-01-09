@@ -9,7 +9,7 @@
 ## 📋 Table of Contents
 
 - [Project Vision](#project-vision)
-- **Overall Progress**: 27/62 components completed (44%)
+- **Overall Progress**: 27/68 components completed (40%)
 - [Completed Components](#completed-components)
 - [Completed Utilities & Hooks](#completed-utilities--hooks)
 - [Missing Components](#missing-components)
@@ -42,6 +42,7 @@
 | **Checkbox** | v0.12.0 | Tri-state checkbox | Standard component |
 | **Radio** | v0.12.0 | Radio button groups | Standard component |
 | **Dropdown** | v0.14.1 | Advanced select menu | Virtualization & Lazy Loading, Multi-select & Searching, Grouped Options, Keyboard Navigation, Form Validation |
+| **Autocomplete** | v0.14.1 | Smart autocomplete with search | Local & Remote Search, Virtualization Support, Multiple Selection Modes, Lazy Loading, Custom Rendering |
 | **Cascader** | v0.12.0 | Cascading selection | Standard component |
 | **OtpInput** | v0.12.0 | One-time password input | Standard component |
 | **Menu** | v0.12.0 | Context menu system | Standard component |
@@ -59,7 +60,6 @@
 | **Accordion** | v0.13.0 | Collapsible content panels for progressive disclosure | Single and multiple expansion modes, Smooth animations, Keyboard navigation, Custom icons, Nested accordions support |
 | **Popover** | v0.14.0 | Headless-first popover primitive for rich interactive overlays | Headless usePopover hook, Flexible triggers (click, hover, focus, manual, composite), Compound components (Trigger, Content, Arrow, Close), Nested popover support, Zero positioning logic (delegates to useAutoPosition), Full accessibility (ARIA + keyboard), Lifecycle hooks, SSR-safe, Foundation for Tooltip/Dropdown/Menu |
 | **Toast** | v0.12.0 | Toast notification system for user feedback | 9 Positions with Auto-Stacking, Swipe to Dismiss (Touch Optimized), Standalone & Global Modes, Action buttons & Keyboard Accessible, Variants (success, error, warning, info, neutral, aer), Glassmorphism Aer Variant |
-| **Autocomplete** | v0.14.1 | Searchable input with suggestion list | Remote data fetching, Virtualization & Lazy Loading, Custom renderers & Grouping, Multiple selection, Keyboard navigation |
 
 ### Provider Components (2)
 
@@ -123,10 +123,43 @@
   - Year/Month quick navigation
   - Keyboard accessibility (grid navigation)
 
+#### 2. **SelectButton**
+
+- **Status:** Not implemented
+- **Priority:** High
+- **Description:** Multi-option selection interface styled as buttons
+- **Required Features:**
+  - Single and Multiple selection modes
+  - Icon and Image support for options
+  - Seamless integration with Aer Variant
+  - Accessibility (ARIA Radio/Checkbox pattern)
+
+#### 3. **VibrantStage**
+
+- **Status:** Not implemented
+- **Priority:** High
+- **Description:** The engine behind Aer's signature glassmorphism
+- **Required Features:**
+  - Declarative animated background blobs
+  - Mouse-reactive parallax effects
+  - Optimized GPU-accelerated motion
+  - Highly configurable speed, scale, and colors
+
 
 ### Medium Priority
 
-#### 2. **Breadcrumb**
+#### 4. **ButtonGroup**
+
+- **Status:** Not implemented
+- **Priority:** Medium
+- **Description:** Group multiple buttons into a single cohesive unit
+- **Required Features:**
+  - Attached and detached layouts
+  - Unified variant and size control
+  - Selection modes (Single/Multiple)
+  - Icon-only group support
+
+#### 5. **Breadcrumb**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -138,7 +171,7 @@
   - Item max-width truncation
   - Headless hook support
 
-#### 3. **Pagination**
+#### 6. **Pagination**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -150,7 +183,7 @@
   - Simple vs Complex modes
   - Mini version
 
-#### 4. **Progress**
+#### 7. **Progress**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -162,7 +195,7 @@
   - Custom steps/milestone mode
   - Gradient support
 
-#### 5. **Chips**
+#### 8. **Chips**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -174,7 +207,7 @@
   - Action chips
   - Avatar support
 
-#### 6. **FAB**
+#### 9. **FAB**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -185,7 +218,7 @@
   - Animation transitions
   - Anchoring
 
-#### 7. **SpeedDial**
+#### 10. **SpeedDial**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -196,7 +229,7 @@
   - Tooltip labels
   - Delay control
 
-#### 8. **CommandPalette**
+#### 11. **CommandPalette**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -207,7 +240,7 @@
   - Dynamic action binding
   - Grouped results
 
-#### 9. **Dock**
+#### 12. **Dock**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -218,7 +251,7 @@
   - Glassmorphism styling
   - Responsive collapsing
 
-#### 10. **Kanban**
+#### 13. **Kanban**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -230,7 +263,7 @@
   - Custom card rendering
   - Swimlanes
 
-#### 11. **Charts**
+#### 14. **Charts**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -243,7 +276,7 @@
   - Customizable axes and grids
   - Dark mode support
 
-#### 12. **RichTextEditor**
+#### 15. **RichTextEditor**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -256,7 +289,7 @@
   - Slash commands support
   - Floating menu for text selection
 
-#### 13. **Drawer**
+#### 16. **Drawer**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -267,7 +300,7 @@
   - Size configuration
   - Backdrop customization
 
-#### 14. **FileUpload**
+#### 17. **FileUpload**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -279,7 +312,7 @@
   - Progress bar integration
   - Validation (size, type)
 
-#### 15. **TreeSelect**
+#### 18. **TreeSelect**
 
 - **Status:** Not implemented
 - **Priority:** Medium
@@ -290,10 +323,40 @@
   - Search/Filtering
   - Async loading
 
+#### 19. **ToggleButton**
+
+- **Status:** Not implemented
+- **Priority:** Medium
+- **Description:** Two-state selection component
+- **Required Features:**
+  - Smooth state transitions
+  - Custom icon state mapping
+  - Indeterminate state support
+
+#### 20. **HotKeyOverlay**
+
+- **Status:** Not implemented
+- **Priority:** Medium
+- **Description:** Visual hotkey discovery layer
+- **Required Features:**
+  - Context-aware shortcut display on modifier hold
+  - Seamless integration with Shortcut system
+  - Non-intrusive semi-transparent UI
+
+#### 21. **StatefulView**
+
+- **Status:** Not implemented
+- **Priority:** Medium
+- **Description:** Declarative UI state persistence system
+- **Required Features:**
+  - Auto-save UI states (sidebar, filters, scroll) to LocalStorage
+  - Encryption and validation support
+  - Zero-code persistence for wrapped components
+
 
 ### Low Priority
 
-#### 16. **Alert**
+#### 22. **Alert**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -305,7 +368,7 @@
   - Title and Description layout
   - Banner mode (full width)
 
-#### 17. **Slider**
+#### 23. **Slider**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -317,7 +380,7 @@
   - Tooltip formatting
   - Input field sync
 
-#### 18. **Switch**
+#### 24. **Switch**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -328,7 +391,7 @@
   - Size variants (sm, md, lg)
   - Custom background colors
 
-#### 19. **Table**
+#### 25. **Table**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -340,7 +403,7 @@
   - Expandable Rows
   - Custom Column Rendering
 
-#### 20. **Tree**
+#### 26. **Tree**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -352,7 +415,7 @@
   - Virtual scrolling
   - Search/Filter nodes
 
-#### 21. **Timeline**
+#### 27. **Timeline**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -363,7 +426,7 @@
   - Pending state
   - Label support
 
-#### 22. **List**
+#### 28. **List**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -375,7 +438,7 @@
   - Virtual list support
   - Load more wrapper
 
-#### 23. **Steps**
+#### 29. **Steps**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -386,7 +449,7 @@
   - Status (wait, process, finish, error)
   - Custom icons and dot style
 
-#### 24. **Rating**
+#### 30. **Rating**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -398,7 +461,7 @@
   - Tooltip headers
   - Clearable
 
-#### 25. **Carousel**
+#### 31. **Carousel**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -410,7 +473,7 @@
   - Fade transition
   - Multiple items per slide
 
-#### 26. **Transfer**
+#### 32. **Transfer**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -421,7 +484,7 @@
   - Pagination support
   - Custom renderers
 
-#### 27. **Splitter**
+#### 33. **Splitter**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -432,7 +495,7 @@
   - Nested splitters
   - Collapse to edge
 
-#### 28. **ScrollArea**
+#### 34. **ScrollArea**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -443,7 +506,7 @@
   - Themed styling
   - Corner smoothing
 
-#### 29. **Tour**
+#### 35. **Tour**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -454,7 +517,7 @@
   - Custom placement
   - Scroll into view
 
-#### 30. **Empty**
+#### 36. **Empty**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -464,7 +527,7 @@
   - Custom description/actions
   - Simple mode
 
-#### 31. **Result**
+#### 37. **Result**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -474,7 +537,7 @@
   - Custom icon/image
   - Action buttons area
 
-#### 32. **Watermark**
+#### 38. **Watermark**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -485,7 +548,7 @@
   - Font styling
   - Multi-line support
 
-#### 33. **ColorPicker**
+#### 39. **ColorPicker**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -496,7 +559,7 @@
   - Preset palettes
   - Eye dropper API
 
-#### 34. **Mentions**
+#### 40. **Mentions**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -507,7 +570,7 @@
   - Option grouping
   - Placement control
 
-#### 35. **SignaturePad**
+#### 41. **SignaturePad**
 
 - **Status:** Not implemented
 - **Priority:** Low
@@ -648,10 +711,10 @@
 
 ```
 
-Completed Components: 27/62 (44%)
-High Priority Missing: 1/{{TOTAL_STAT}} (2%)
-Medium Priority Missing: 14/{{TOTAL_STAT}} (23%)
-Low Priority Missing: 20/{{TOTAL_STAT}} (32%)
+Completed Components: 27/68 (40%)
+High Priority Missing: 3/{{TOTAL_STAT}} (4%)
+Medium Priority Missing: 18/{{TOTAL_STAT}} (26%)
+Low Priority Missing: 20/{{TOTAL_STAT}} (29%)
 
 ```
 
@@ -659,14 +722,14 @@ Low Priority Missing: 20/{{TOTAL_STAT}} (32%)
 
 | Category | Completed | Missing | Total |
 | -------- | --------- | ------- | ----- |
-| **Data Entry** | 8 | 14 | 22 |
+| **Data Entry** | 8 | 16 | 24 |
 | **Data Display** | 5 | 10 | 15 |
 | **Feedback** | 5 | 4 | 9 |
 | **Navigation** | 3 | 5 | 8 |
 | **Layout** | 2 | 2 | 4 |
-| **Configuration** | 2 | 0 | 2 |
-| **General** | 1 | 0 | 1 |
-| **Utilities** | 1 | 0 | 1 |
+| **Configuration** | 2 | 1 | 3 |
+| **Utilities** | 1 | 2 | 3 |
+| **General** | 1 | 1 | 2 |
 
 ---
 
@@ -694,7 +757,7 @@ For detailed contribution guidelines, see `CONTRIBUTING.md` (to be created).
 
 ---
 
-**Last Updated:** January 9, 2026
+**Last Updated:** January 10, 2026
 **Maintained by:** Aer Design Team
 **License:** MIT
 

@@ -17,7 +17,13 @@ import {
   XCircle,
 } from "lucide-react";
 import * as React from "react";
-import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
+import {
+  ApiTable,
+  CodeBlock,
+  DocSection,
+  DocTabs,
+  UsageGuidelines,
+} from "../components/shared";
 
 export function DialogDoc() {
   const overview = (
@@ -70,87 +76,19 @@ export function DialogDoc() {
         title="When to Use"
         description="Choose the right dialog configuration for your use case."
       >
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Standard Dialogs
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                default
-              </code>{" "}
-              variant for:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>Form submissions and data entry</li>
-              <li>Confirmation prompts</li>
-              <li>User settings and preferences</li>
-              <li>General modal content</li>
-            </ul>
-          </div>
-
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Alert Dialogs
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                alert
-              </code>{" "}
-              or{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                confirm
-              </code>{" "}
-              for:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>Warning messages</li>
-              <li>Destructive action confirmations</li>
-              <li>Critical notifications</li>
-              <li>Error messages requiring acknowledgment</li>
-            </ul>
-          </div>
-
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Draggable Dialogs
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Enable{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                draggable
-              </code>{" "}
-              for:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>Multi-window interfaces</li>
-              <li>Tool palettes and inspectors</li>
-              <li>Chat windows</li>
-              <li>Reference panels</li>
-            </ul>
-          </div>
-
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Resizable Dialogs
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Enable{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                resizable
-              </code>{" "}
-              for:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>Content viewers (images, videos)</li>
-              <li>Code editors</li>
-              <li>Data tables</li>
-              <li>Long-form content</li>
-            </ul>
-          </div>
-        </div>
+        <UsageGuidelines
+          do={[
+            "Form submissions and complex data entry",
+            "Destructive action confirmations (Delete, Reset)",
+            "Deeply focused user interactions that require a modal",
+            "Multi-window interfaces requiring drag & resize",
+          ]}
+          dont={[
+            "Displaying simple confirmation messages (Use Toast instead)",
+            "Non-essential information that doesn't need to block interaction",
+            "Complex flows with too many nested dialogs",
+          ]}
+        />
       </DocSection>
 
       <DocSection
@@ -158,7 +96,9 @@ export function DialogDoc() {
         title="Basic Usage"
         description="The simplest implementation using standard TypeScript/React patterns."
       >
-        <BasicDialogExample />
+        <div className="flex justify-center p-6 border rounded-lg bg-aer-muted/5">
+          <BasicDialogExample />
+        </div>
         <CodeBlock
           ts={`const [isOpen, setIsOpen] = useState(false);
 
@@ -208,7 +148,9 @@ export default function BasicDialog() {
         title="Visual Variants"
         description="Standard stylistic variations for different visual contexts."
       >
-        <VariantsExample />
+        <div className="flex justify-center p-6 border rounded-lg bg-aer-muted/5">
+          <VariantsExample />
+        </div>
         <CodeBlock
           ts={`// Default variant
 <Dialog variant="default">...</Dialog>
@@ -277,7 +219,9 @@ export default function DialogVariants() {
             </div>
           </div>
         </div>
-        <CustomUsageExample />
+        <div className="flex justify-center p-6 border rounded-lg bg-aer-muted/5">
+          <CustomUsageExample />
+        </div>
         <CodeBlock
           ts={`<Dialog headless isOpen={isOpen} onClose={close}>
   {/* You build 100% of the UI here */}
@@ -322,7 +266,9 @@ export default function CustomHeadlessWorkflow() {
         title="Positioning"
         description="Guidance on IDE layout behavior and container constraints."
       >
-        <PositioningExample />
+        <div className="flex justify-center p-6 border rounded-lg bg-aer-muted/5">
+          <PositioningExample />
+        </div>
         <div className="prose prose-sm max-w-none mb-6">
           <p className="text-aer-muted-foreground">
             Dialogs are designed to integrate seamlessly into complex IDE
@@ -413,7 +359,9 @@ export default function FlagshipDialog() {
         title="Draggable Dialog"
         description="Allow users to reposition dialogs by dragging."
       >
-        <DraggableExample />
+        <div className="flex justify-center p-6 border rounded-lg bg-aer-muted/5">
+          <DraggableExample />
+        </div>
         <CodeBlock
           ts={`<Dialog 
   draggable
@@ -461,7 +409,9 @@ export default function DraggableDialog() {
         title="Resizable Dialog"
         description="Enable resize handles for user-controlled sizing."
       >
-        <ResizableExample />
+        <div className="flex justify-center p-6 border rounded-lg bg-aer-muted/5">
+          <ResizableExample />
+        </div>
         <CodeBlock
           ts={`<Dialog 
   resizable
@@ -520,7 +470,9 @@ export default function ResizableDialog() {
         title="Maximize & Minimize"
         description="Window-like controls for full-screen and collapsed states."
       >
-        <MaximizeMinimizeExample />
+        <div className="flex justify-center p-6 border rounded-lg bg-aer-muted/5">
+          <MaximizeMinimizeExample />
+        </div>
         <CodeBlock
           ts={`<Dialog 
   maximizable
@@ -571,7 +523,9 @@ export default function MaximizeMinimizeDialog() {
         title="Dialog Sizes"
         description="Predefined size variants for different content amounts."
       >
-        <SizesExample />
+        <div className="flex justify-center p-6 border rounded-lg bg-aer-muted/5">
+          <SizesExample />
+        </div>
         <CodeBlock
           ts={`<Dialog size="sm">...</Dialog>
 <Dialog size="md">...</Dialog>  {/* default */}
@@ -640,7 +594,9 @@ export default function DialogSizes() {
             </li>
           </ul>
         </div>
-        <MinimizedStackingExample />
+        <div className="flex justify-center p-6 border rounded-lg bg-aer-muted/5">
+          <MinimizedStackingExample />
+        </div>
         <CodeBlock
           ts={`// 1. Mount the global Taskbar anywhere in your app (once)
 <DialogTaskbar />
@@ -740,7 +696,9 @@ export default function AdvancedWindowManager() {
         title="Close Mechanisms"
         description="Configure how users can dismiss the dialog."
       >
-        <CloseMechanismsExample />
+        <div className="flex justify-center p-6 border rounded-lg bg-aer-muted/5">
+          <CloseMechanismsExample />
+        </div>
         <CodeBlock
           ts={`// All close mechanisms enabled (default)
 <Dialog 
@@ -833,8 +791,8 @@ export default function StateDemo() {
           ts={`<Dialog \n  position="bottom-right" \n  showBackdrop={false}\n  className="w-80"\n>\n  <DialogHeader title="Console" />\n  <DialogContent className="bg-zinc-950">...</DialogContent>\n</Dialog>`}
           fullCode={`import { Dialog, DialogHeader, DialogContent, DialogFooter, Button } from "aer-design";\nimport { Info } from "lucide-react";\nimport { useState } from "react";\n\nexport default function IDEConsole() {\n  const [isOpen, setIsOpen] = useState(false);\n\n  return (\n    <div className="flex flex-col items-center gap-4">\n      <Button onClick={() => setIsOpen(true)}>Open Console</Button>\n      \n      <Dialog\n        isOpen={isOpen}\n        onClose={() => setIsOpen(false)}\n        position="bottom-right"\n        showBackdrop={false}\n        className="w-80 shadow-2xl border-aer-primary/20"\n      >\n        <DialogHeader\n          title="Debug Console"\n          icon={<Info className="w-4 h-4 text-blue-500" />}\n        />\n        <DialogContent className="bg-zinc-950 font-mono text-xs p-4 h-64 overflow-y-auto">\n          <div className="text-zinc-500 border-b border-white/5 pb-1 mb-2">System initialized...</div>\n          <div className="text-blue-400 mb-1">GET /api/v1/user 200 OK</div>\n          <div className="text-green-400 mb-1">Websocket connected.</div>\n          <div className="text-zinc-300 animate-pulse underline select-none mt-4">_</div>\n        </DialogContent>\n        <DialogFooter className="p-2 border-t border-white/5 bg-zinc-900">\n          <span className="text-[10px] text-zinc-500">Writing Mode: Active</span>\n        </DialogFooter>\n      </Dialog>\n    </div>\n  );\n}`}
         />
-        <div className="mt-4 p-4 bg-purple-500/10 border border-purple-500/20 rounded-lg">
-          <p className="text-sm text-purple-700 dark:text-purple-400">
+        <div className="mt-4 p-4 bg-teal-500/10 border border-teal-500/20 rounded-lg">
+          <p className="text-sm text-teal-700 dark:text-teal-400">
             <strong>Tip:</strong> Use <code>position="bottom-right"</code> and{" "}
             <code>showBackdrop={false}</code> for IDE-style "Writing Mode" or
             "Debug Console" overlays.
@@ -873,8 +831,8 @@ export default function ErrorDialog() {
       >
         <GranularStylingExample />
         <CodeBlock
-          ts={`<Dialog\n  className="bg-linear-to-br from-purple-50 to-white"\n  overlayClassName="backdrop-blur-sm bg-purple-900/10"\n>\n  <DialogHeader titleClassName="text-purple-900 font-serif" />\n  <DialogContent className="text-purple-800">...</DialogContent>\n</Dialog>`}
-          fullCode={`import { Dialog, DialogHeader, DialogContent, DialogFooter, Button } from "aer-design";\nimport { useState } from "react";\n\nexport default function CustomStyledDialog() {\n  const [isOpen, setIsOpen] = useState(false);\n\n  return (\n    <div className="flex flex-col items-center gap-4">\n      <Button onClick={() => setIsOpen(true)}>Open Styled Dialog</Button>\n      \n      <Dialog\n        isOpen={isOpen}\n        onClose={() => setIsOpen(false)}\n        className="bg-linear-to-br from-purple-50 to-white border-purple-200 shadow-purple-500/10"\n        overlayClassName="backdrop-blur-sm bg-purple-900/10"\n      >\n        <DialogHeader\n          title="Granular Styling"\n          className="border-purple-100 bg-white/50"\n          titleClassName="text-purple-900 font-serif italic"\n        />\n        <DialogContent className="text-purple-800">\n          <p>This dialog uses granular class names to customize every layer:</p>\n          <ul className="list-disc pl-5 mt-3 space-y-2 text-sm">\n            <li><strong>className:</strong> Custom background and border</li>\n            <li><strong>overlayClassName:</strong> Purple-tinted backdrop</li>\n            <li><strong>titleClassName:</strong> Custom font and color</li>\n          </ul>\n        </DialogContent>\n        <DialogFooter className="bg-purple-50/50 border-purple-100">\n          <Button\n            className="w-full bg-purple-600 hover:bg-purple-700 text-white border-none"\n            onClick={() => setIsOpen(false)}\n          >\n            Close Styled Dialog\n          </Button>\n        </DialogFooter>\n      </Dialog>\n    </div>\n  );\n}`}
+          ts={`<Dialog\n  className="bg-linear-to-br from-teal-50 to-white"\n  overlayClassName="backdrop-blur-sm bg-teal-900/10"\n>\n  <DialogHeader titleClassName="text-teal-900 font-serif" />\n  <DialogContent className="text-teal-800">...</DialogContent>\n</Dialog>`}
+          fullCode={`import { Dialog, DialogHeader, DialogContent, DialogFooter, Button } from "aer-design";\nimport { useState } from "react";\n\nexport default function CustomStyledDialog() {\n  const [isOpen, setIsOpen] = useState(false);\n\n  return (\n    <div className="flex flex-col items-center gap-4">\n      <Button onClick={() => setIsOpen(true)}>Open Styled Dialog</Button>\n      \n      <Dialog\n        isOpen={isOpen}\n        onClose={() => setIsOpen(false)}\n        className="bg-linear-to-br from-teal-50 to-white border-teal-200 shadow-teal-500/10"\n        overlayClassName="backdrop-blur-sm bg-teal-900/10"\n      >\n        <DialogHeader\n          title="Granular Styling"\n          className="border-teal-100 bg-white/50"\n          titleClassName="text-teal-900 font-serif italic"\n        />\n        <DialogContent className="text-teal-800">\n          <p>This dialog uses granular class names to customize every layer:</p>\n          <ul className="list-disc pl-5 mt-3 space-y-2 text-sm">\n            <li><strong>className:</strong> Custom background and border</li>\n            <li><strong>overlayClassName:</strong> Teal-tinted backdrop</li>\n            <li><strong>titleClassName:</strong> Custom font and color</li>\n          </ul>\n        </DialogContent>\n        <DialogFooter className="bg-teal-50/50 border-teal-100">\n          <Button\n            className="w-full bg-teal-600 hover:bg-teal-700 text-white border-none"\n            onClick={() => setIsOpen(false)}\n          >\n            Close Styled Dialog\n          </Button>\n        </DialogFooter>\n      </Dialog>\n    </div>\n  );\n}`}
         />
         <div className="prose prose-sm max-w-none mt-6">
           <p className="text-aer-muted-foreground">
@@ -1181,7 +1139,7 @@ export default function UserProfileDialog() {
           <DialogHeader title="Resizable & Responsive" />
           <DialogContent>
             <p>This dialog demonstrates resizable constraints:</p>
-            <ul className="list-disc pl-5 mt-3 space-y-1 text-sm">
+            <ul className="list-disc pl-5 mt-3 space-y-1">
               <li>
                 <strong>Min size:</strong> 300x200
               </li>
@@ -1484,7 +1442,7 @@ export default function UserProfileDialog() {
         <Button
           variant="outline"
           onClick={() => setIsOpen(true)}
-          className="border-purple-500/50 text-purple-600 hover:bg-purple-50"
+          className="border-teal-500/50 text-teal-600 hover:bg-teal-50"
         >
           Open Custom Styled Dialog
         </Button>
@@ -1492,15 +1450,15 @@ export default function UserProfileDialog() {
         <Dialog
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
-          className="bg-linear-to-br from-purple-50 to-white border-purple-200 shadow-purple-500/10"
-          overlayClassName="backdrop-blur-sm bg-purple-900/10"
+          className="bg-linear-to-br from-teal-50 to-white border-teal-200 shadow-teal-500/10"
+          overlayClassName="backdrop-blur-sm bg-teal-900/10"
         >
           <DialogHeader
             title="Granular Styling"
-            className="border-purple-100 bg-white/50"
-            titleClassName="text-purple-900 font-serif italic"
+            className="border-teal-100 bg-white/50"
+            titleClassName="text-teal-900 font-serif italic"
           />
-          <DialogContent className="text-purple-800">
+          <DialogContent className="text-teal-800">
             <p>
               This dialog uses granular class names to customize every layer:
             </p>
@@ -1509,16 +1467,16 @@ export default function UserProfileDialog() {
                 <strong>className:</strong> Custom background and border
               </li>
               <li>
-                <strong>overlayClassName:</strong> Purple-tinted backdrop
+                <strong>overlayClassName:</strong> Teal-tinted backdrop
               </li>
               <li>
                 <strong>titleClassName:</strong> Custom font and color
               </li>
             </ul>
           </DialogContent>
-          <DialogFooter className="bg-purple-50/50 border-purple-100">
+          <DialogFooter className="bg-teal-50/50 border-teal-100">
             <Button
-              className="w-full bg-purple-600 hover:bg-purple-700 text-white border-none"
+              className="w-full bg-teal-600 hover:bg-teal-700 text-white border-none"
               onClick={() => setIsOpen(false)}
             >
               Close Styled Dialog
@@ -2005,7 +1963,7 @@ export default function UserProfileDialog() {
               type: "boolean",
               default: "false",
               description:
-                "Show minimize button in header. When minimized: dialog moves to bottom-left, hides backdrop, and enables click-through on the overlay area while remaining interactive itself. Features multi-row wrapping for many windows.",
+                "Show minimize button in header. When false, the overlay uses 'pointer-events-none' to allow interacting with content behind the dialog (optimized for multi-window setups). Features multi-row wrapping for many windows.",
             },
             {
               prop: "defaultMaximized",
@@ -2460,14 +2418,14 @@ export default function UserProfileDialog() {
         <CodeBlock
           ts={`// Custom dialog with gradient background
 <Dialog 
-  className="bg-linear-to-br from-purple-500/10 to-pink-500/10"
+  className="bg-linear-to-br from-teal-500/10 to-pink-500/10"
   backdropClassName="bg-black/70"
 >
   <DialogHeader 
-    className="bg-linear-to-r from-purple-600 to-pink-600 text-white border-0"
+    className="bg-linear-to-r from-teal-600 to-pink-600 text-white border-0"
     titleClassName="text-white"
   />
-  <DialogContent className="text-purple-900">
+  <DialogContent className="text-teal-900">
     Custom styled content
   </DialogContent>
 </Dialog>
@@ -2489,16 +2447,16 @@ export default function CustomStyledDialog() {
     <Dialog 
       isOpen={isOpen}
       onClose={onClose}
-      className="bg-linear-to-br from-purple-500/10 to-pink-500/10 border-purple-500/20"
+      className="bg-linear-to-br from-teal-500/10 to-pink-500/10 border-teal-500/20"
       backdropClassName="bg-black/70 backdrop-blur-sm"
     >
       <DialogHeader 
         title="Custom Styled Dialog"
-        className="bg-linear-to-r from-purple-600 to-pink-600 text-white border-0"
+        className="bg-linear-to-r from-teal-600 to-pink-600 text-white border-0"
         titleClassName="text-white"
         closeButtonClassName="text-white hover:bg-white/20"
       />
-      <DialogContent className="text-purple-900">
+      <DialogContent className="text-teal-900">
         <p>This dialog has custom gradient styling.</p>
       </DialogContent>
     </Dialog>
@@ -2515,8 +2473,8 @@ export default function CustomStyledDialog() {
           container background color to ensure WCAG 2.1 accessibility
           compliance.
         </p>
-        <div className="mt-4 p-4 bg-purple-500/10 border border-purple-500/20 rounded-lg">
-          <p className="text-sm text-purple-700 dark:text-purple-400">
+        <div className="mt-4 p-4 bg-teal-500/10 border border-teal-500/20 rounded-lg">
+          <p className="text-sm text-teal-700 dark:text-teal-400">
             <strong>Tip:</strong> This feature is automatically enabled when
             using <code>AerConfigProvider</code> with{" "}
             <code>autoContrast: true</code>.

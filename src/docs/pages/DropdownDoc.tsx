@@ -5,7 +5,13 @@ import { RadioGroup, RadioItem } from "@/components/Radio";
 import { cn } from "@/lib/utils";
 import { Globe, User } from "lucide-react";
 import * as React from "react";
-import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
+import {
+  ApiTable,
+  CodeBlock,
+  DocSection,
+  DocTabs,
+  UsageGuidelines,
+} from "../components/shared";
 
 const basicOptions: DropdownOption[] = [
   { label: "Option 1", value: "1" },
@@ -119,144 +125,51 @@ export function DropdownDoc() {
 
     return (
       <div className="space-y-6 w-full">
-        {/* Controls */}
-        <div className="flex flex-col items-center gap-x-4 gap-y-2 p-4 bg-aer-muted/20 rounded-lg border border-aer-border">
-          <div className="w-full">
-            <label className="text-sm font-medium text-aer-foreground mb-3 block">
-              Label Position
-            </label>
-            <RadioGroup
-              value={labelPosition}
-              onChange={(val) => setLabelPosition(val as "top" | "left")}
-              className="flex flex-row gap-4"
-            >
-              <RadioItem value="top" label="Top" />
-              <RadioItem value="left" label="Left" />
-            </RadioGroup>
+        <div className="flex flex-col border rounded-aer-xl bg-aer-muted/5 divide-y divide-aer-border overflow-hidden">
+          {/* Controls */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 p-6 bg-aer-muted/50">
+            <div className="w-full sm:w-auto">
+              <label className="text-sm font-medium text-aer-foreground mb-3 block">
+                Label Position
+              </label>
+              <RadioGroup
+                value={labelPosition}
+                onChange={(val) => setLabelPosition(val as "top" | "left")}
+                className="flex flex-row gap-4"
+              >
+                <RadioItem value="top" label="Top" />
+                <RadioItem value="left" label="Left" />
+              </RadioGroup>
+            </div>
+            <div className="flex items-center gap-4 pt-6 sm:pt-4">
+              <Checkbox
+                checked={required}
+                onChange={(e) => setRequired(e.target.checked)}
+                label="Required"
+              />
+              <Checkbox
+                checked={helperText}
+                onChange={(e) => setHelperText(e.target.checked)}
+                label="Helper Text"
+              />
+            </div>
           </div>
-          <div className="flex w-full items-center gap-4">
-            <Checkbox
-              checked={required}
-              onChange={(e) => setRequired(e.target.checked)}
-              label="Required"
-            />
-            <Checkbox
-              checked={helperText}
-              onChange={(e) => setHelperText(e.target.checked)}
-              label="Helper Text"
-            />
-          </div>
-        </div>
 
-        {/* Live Preview */}
-        <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5">
-          <Dropdown
-            label="Username"
-            labelPosition={labelPosition}
-            options={basicOptions}
-            placeholder="Select option"
-            required={required}
-            helperText={helperText ? "Please select an option" : undefined}
-          />
-        </div>
-
-        {/* Code Preview */}
-        <CodeBlock
-          ts={codeString}
-          fullCode={`import { Dropdown } from "aer-design";\n\nconst options = [\n  { label: "Option 1", value: "1" },\n  { label: "Option 2", value: "2" },\n  { label: "Option 3", value: "3" },\n];\n\nexport default function Example() {\n  return (\n    ${codeString
-            .split("\n")
-            .map((line) => "    " + line)
-            .join("\n")}\n  );\n}`}
-        />
-      </div>
-    );
-  }
-
-  function ScrollBehaviorExample() {
-    const [behavior, setBehavior] = React.useState<"reposition" | "close">(
-      "reposition"
-    );
-
-    return (
-      <div className="space-y-6 w-full">
-        <div className="flex flex-col items-center gap-x-4 gap-y-2 p-4 bg-aer-muted/20 rounded-lg border border-aer-border">
-          <div className="w-full">
-            <label className="text-sm font-medium text-aer-foreground mb-3 block">
-              Scroll Behavior
-            </label>
-            <RadioGroup
-              value={behavior}
-              onChange={(val) => setBehavior(val as "reposition" | "close")}
-              className="flex flex-row gap-4"
-            >
-              <RadioItem value="reposition" label="Reposition (Follow)" />
-              <RadioItem value="close" label="Close on Scroll" />
-            </RadioGroup>
+          {/* Live Preview */}
+          <div className="flex justify-center p-12 bg-aer-background">
+            <div className="max-w-sm w-full">
+              <Dropdown
+                label="Username"
+                labelPosition={labelPosition}
+                required={required}
+                helperText={helperText ? "Please select an option" : undefined}
+                options={basicOptions}
+                placeholder="Select option"
+              />
+            </div>
           </div>
         </div>
-
-        <div className="p-12 border border-aer-border rounded-lg bg-aer-muted/5 flex flex-col items-center">
-          <p className="text-xs text-aer-muted-foreground mb-4 italic">
-            Open the dropdown and scroll this section or the page
-          </p>
-          <Dropdown
-            scrollBehavior={behavior}
-            options={basicOptions}
-            placeholder="Interaction test..."
-            className="max-w-xs"
-          />
-        </div>
-
-        <CodeBlock
-          ts={`<Dropdown \n  scrollBehavior="${behavior}" \n  options={options} \n/>`}
-          fullCode={`import { Dropdown } from "aer-design";
-import { RadioGroup, RadioItem } from "aer-design";
-import { useState } from "react";
-
-const options = [
-  { label: "Option 1", value: "1" },
-  { label: "Option 2", value: "2" },
-  { label: "Option 3", value: "3" },
-  { label: "Option 4", value: "4" },
-  { label: "Option 5", value: "5" },
-];
-
-export default function ScrollBehaviorExample() {
-  const [behavior, setBehavior] = useState<"reposition" | "close">("reposition");
-
-  return (
-    <div className="space-y-6 w-full">
-      <div className="flex flex-col items-center gap-x-4 gap-y-2 p-4 bg-aer-muted/20 rounded-lg border border-aer-border">
-        <div className="w-full">
-          <label className="text-sm font-medium text-aer-foreground mb-3 block">
-            Scroll Behavior
-          </label>
-          <RadioGroup
-            value={behavior}
-            onChange={(val) => setBehavior(val as "reposition" | "close")}
-            className="flex flex-row gap-4"
-          >
-            <RadioItem value="reposition" label="Reposition (Follow)" />
-            <RadioItem value="close" label="Close on Scroll" />
-          </RadioGroup>
-        </div>
-      </div>
-
-      <div className="p-12 border border-aer-border rounded-lg bg-aer-muted/5 flex flex-col items-center">
-        <p className="text-xs text-aer-muted-foreground mb-4 italic">
-          Open the dropdown and scroll this section or the page
-        </p>
-        <Dropdown
-          scrollBehavior={behavior}
-          options={options}
-          placeholder="Interaction test..."
-          className="max-w-xs"
-        />
-      </div>
-    </div>
-  );
-}`}
-        />
+        <CodeBlock ts={codeString} />
       </div>
     );
   }
@@ -264,36 +177,38 @@ export default function ScrollBehaviorExample() {
   function CustomTemplateExample() {
     return (
       <div className="space-y-6 w-full">
-        <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5">
-          <Dropdown
-            options={basicOptions}
-            placeholder="Custom Item Template"
-            renderOption={({ option, onClick, selected, active }) => (
-              <div
-                onClick={onClick}
-                className={cn(
-                  "flex items-center gap-3 px-3 py-2 cursor-pointer transition-colors",
-                  active
-                    ? "bg-aer-accent text-aer-accent-foreground"
-                    : "hover:bg-aer-accent/50",
-                  selected ? "font-bold text-aer-primary" : ""
-                )}
-              >
+        <div className="flex justify-center p-8 border border-aer-border rounded-lg bg-aer-muted/5">
+          <div className="max-w-sm w-full">
+            <Dropdown
+              options={basicOptions}
+              placeholder="Custom Item Template"
+              renderOption={({ option, onClick, selected, active }) => (
                 <div
+                  onClick={onClick}
                   className={cn(
-                    "w-2 h-2 rounded-full",
-                    selected ? "bg-aer-primary" : "bg-gray-300"
+                    "flex items-center gap-3 px-3 py-2 cursor-pointer transition-colors",
+                    active
+                      ? "bg-aer-accent text-aer-accent-foreground"
+                      : "hover:bg-aer-accent/50",
+                    selected ? "font-bold text-aer-primary" : ""
                   )}
-                />
-                <div className="flex flex-col">
-                  <span>{option.label}</span>
-                  <span className="text-xs text-muted-foreground opacity-70">
-                    Value: {option.value}
-                  </span>
+                >
+                  <div
+                    className={cn(
+                      "w-2 h-2 rounded-full",
+                      selected ? "bg-aer-primary" : "bg-gray-300"
+                    )}
+                  />
+                  <div className="flex flex-col">
+                    <span>{option.label}</span>
+                    <span className="text-xs text-muted-foreground opacity-70">
+                      Value: {option.value}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            )}
-          />
+              )}
+            />
+          </div>
         </div>
         <CodeBlock
           ts={`<Dropdown
@@ -323,6 +238,55 @@ export default function ScrollBehaviorExample() {
     </div>
   )}
 />`}
+        />
+      </div>
+    );
+  }
+
+  function WrapSelectionExample() {
+    const [wrap, setWrap] = React.useState(false);
+    const [values, setValues] = React.useState<string[]>([
+      "1",
+      "2",
+      "3",
+      "long",
+    ]);
+
+    return (
+      <div className="space-y-6">
+        <div className="flex flex-col border rounded-aer-xl bg-aer-muted/5 divide-y divide-aer-border overflow-hidden">
+          {/* Controls */}
+          <div className="flex p-6 bg-aer-muted/50">
+            <div className="flex items-center gap-2">
+              <Checkbox
+                checked={wrap}
+                onChange={(e) => setWrap(e.target.checked)}
+                label={`Enable Text Wrapping: (${wrap ? "true" : "false"})`}
+                className="w-fit"
+              />
+              <div className="text-xs text-aer-muted-foreground">
+                (Note: Height adjusts dynamically to fit content)
+              </div>
+            </div>
+          </div>
+
+          {/* Live Preview */}
+          <div className="flex justify-center p-12 bg-aer-background">
+            <div className="max-w-xs w-full">
+              <Dropdown
+                multiple
+                wrapSelection={wrap}
+                options={basicOptions}
+                value={values}
+                onChange={setValues}
+                placeholder="Select items..."
+              />
+            </div>
+          </div>
+        </div>
+        <CodeBlock
+          ts={`<Dropdown\n  multiple\n  wrapSelection={${wrap}}\n  options={options}\n  value={values}\n  onChange={setValues}\n/>`}
+          fullCode={`import { Dropdown, Checkbox } from "aer-design";\nimport { useState } from "react";\n\nexport default function WrappingExample() {\n  const [wrap, setWrap] = useState(false);\n  const [values, setValues] = useState(["1", "2", "3", "long"]);\n  \n  return (\n    <div className="space-y-4">\n      <div className="flex items-center gap-2">\n        <Checkbox \n          checked={wrap} \n          onChange={(e) => setWrap(e.target.checked)} \n          label="Wrap Selection"\n        />\n      </div>\n      \n      <div className="max-w-xs">\n        <Dropdown\n          multiple\n          wrapSelection={wrap}\n          options={options}\n          value={values}\n          onChange={setValues}\n        />\n      </div>\n    </div>\n  );\n}`}
         />
       </div>
     );
@@ -373,89 +337,31 @@ export default function ScrollBehaviorExample() {
         title="When to Use"
         description="Choose the right dropdown configuration for your use case."
       >
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Single Selection
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use basic dropdown for:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>Country, state, or category selection</li>
-              <li>Status or priority pickers</li>
-              <li>Language or theme selectors</li>
-              <li>Any single-choice selection</li>
-            </ul>
-          </div>
-
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Multi-Select
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                multiple
-              </code>{" "}
-              for:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>Tag or label selection</li>
-              <li>Permission or role assignment</li>
-              <li>Filter selections</li>
-              <li>Multiple category choices</li>
-            </ul>
-          </div>
-
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Large Datasets
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                virtualized
-              </code>{" "}
-              for:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>Lists with 100+ options</li>
-              <li>User or customer selection</li>
-              <li>Product catalogs</li>
-              <li>Performance-critical scenarios</li>
-            </ul>
-          </div>
-
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Searchable Options
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                searchable
-              </code>{" "}
-              for:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>Long option lists</li>
-              <li>User needs to find specific items quickly</li>
-              <li>Autocomplete-style selections</li>
-              <li>Improving accessibility</li>
-            </ul>
-          </div>
-        </div>
+        <UsageGuidelines
+          do={[
+            "Selecting a single item from a list of options",
+            "Multiple selection when checkboxes are needed",
+            "Handling large datasets via virtualization and lazy loading",
+            "Customizing item appearance with templates",
+          ]}
+          dont={[
+            "When there are 3 or fewer options (Use RadioGroup/Tabs instead)",
+            "Displaying non-selectable content (Use Popover instead)",
+            "Situations requiring navigation (Use Menu instead)",
+          ]}
+        />
       </DocSection>
 
       <DocSection title="Basic Usage" id="basic">
-        <div className="max-w-sm space-y-4">
-          <Dropdown options={basicOptions} placeholder="Select an option" />
-          <Dropdown
-            options={basicOptions}
-            disabled
-            placeholder="Disabled Dropdown"
-          />
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-sm w-full space-y-4">
+            <Dropdown options={basicOptions} placeholder="Select an option" />
+            <Dropdown
+              options={basicOptions}
+              disabled
+              placeholder="Disabled Dropdown"
+            />
+          </div>
         </div>
         <CodeBlock
           ts={`const options = [\n  { label: "Option 1", value: "1" },\n  { label: "Option 2", value: "2" },\n  { label: "Disabled Option", value: "4", disabled: true },\n];\n\n<Dropdown options={options} placeholder="Select an option" />`}
@@ -465,22 +371,24 @@ export default function ScrollBehaviorExample() {
       </DocSection>
 
       <DocSection title="Variants" id="variants">
-        <div className="max-w-sm space-y-6">
-          <Dropdown
-            options={basicOptions}
-            variant="outline"
-            placeholder="Outline"
-          />
-          <Dropdown
-            options={basicOptions}
-            variant="filled"
-            placeholder="Filled"
-          />
-          <Dropdown
-            options={basicOptions}
-            variant="underlined"
-            placeholder="Underlined"
-          />
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-sm w-full space-y-6">
+            <Dropdown
+              options={basicOptions}
+              variant="outline"
+              placeholder="Outline"
+            />
+            <Dropdown
+              options={basicOptions}
+              variant="filled"
+              placeholder="Filled"
+            />
+            <Dropdown
+              options={basicOptions}
+              variant="underlined"
+              placeholder="Underlined"
+            />
+          </div>
         </div>
         <CodeBlock
           ts={`<Dropdown variant="outline" placeholder="Outline" />\n<Dropdown variant="filled" placeholder="Filled" />\n<Dropdown variant="underlined" placeholder="Underlined" />`}
@@ -493,14 +401,14 @@ export default function ScrollBehaviorExample() {
         id="aer-variant"
         description="Premium glassmorphism effect for modern dropdowns."
       >
-        <div className="aer-vibrant-container">
+        <div className="aer-vibrant-container flex flex-col items-center justify-center">
           <div className="aer-vibrant-bg-wrapper">
             <div className="aer-vibrant-bg" />
             <div className="aer-vibrant-blob w-40 h-40 bg-sky-500/30 top-1/4 right-1/3" />
             <div className="aer-vibrant-blob w-40 h-40 bg-blue-500/30 bottom-1/4 left-1/3" />
           </div>
 
-          <div className="relative z-10 max-w-sm mx-auto">
+          <div className="relative z-10 max-w-sm w-full mx-auto">
             <Dropdown
               variant="aer"
               options={basicOptions}
@@ -543,30 +451,34 @@ export default function AerDropdownExample() {
       </DocSection>
 
       <DocSection title="Sizes" id="sizes">
-        <div className="max-w-sm space-y-6">
-          <div>
-            <label className="text-sm font-medium mb-1.5 block">Small</label>
-            <Dropdown
-              size="sm"
-              options={basicOptions}
-              placeholder="Small Dropdown"
-            />
-          </div>
-          <div>
-            <label className="text-sm font-medium mb-1.5 block">Default</label>
-            <Dropdown
-              size="default"
-              options={basicOptions}
-              placeholder="Default Dropdown"
-            />
-          </div>
-          <div>
-            <label className="text-sm font-medium mb-1.5 block">Large</label>
-            <Dropdown
-              size="lg"
-              options={basicOptions}
-              placeholder="Large Dropdown"
-            />
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-sm w-full space-y-6">
+            <div>
+              <label className="text-sm font-medium mb-1.5 block">Small</label>
+              <Dropdown
+                size="sm"
+                options={basicOptions}
+                placeholder="Small Dropdown"
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-1.5 block">
+                Default
+              </label>
+              <Dropdown
+                size="default"
+                options={basicOptions}
+                placeholder="Default Dropdown"
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-1.5 block">Large</label>
+              <Dropdown
+                size="lg"
+                options={basicOptions}
+                placeholder="Large Dropdown"
+              />
+            </div>
           </div>
         </div>
         <CodeBlock
@@ -576,18 +488,20 @@ export default function AerDropdownExample() {
       </DocSection>
 
       <DocSection title="Multi-select" id="multi-select">
-        <div className="max-w-sm space-y-4">
-          <Dropdown
-            multiple
-            options={basicOptions}
-            placeholder="Select multiple..."
-          />
-          <Dropdown
-            multiple
-            maxDisplayCount={2}
-            options={basicOptions}
-            placeholder="Max display count (2)"
-          />
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-sm w-full space-y-4">
+            <Dropdown
+              multiple
+              options={basicOptions}
+              placeholder="Select multiple..."
+            />
+            <Dropdown
+              multiple
+              maxDisplayCount={2}
+              options={basicOptions}
+              placeholder="Max display count (2)"
+            />
+          </div>
         </div>
         <CodeBlock
           ts={`<Dropdown multiple options={options} placeholder="Select multiple..." />\n<Dropdown multiple maxDisplayCount={2} options={options} placeholder="Max display count (2)" />`}
@@ -595,19 +509,25 @@ export default function AerDropdownExample() {
         />
       </DocSection>
 
+      <DocSection title="Text Wrapping" id="text-wrapping">
+        <WrapSelectionExample />
+      </DocSection>
+
       <DocSection title="Search & Filter" id="search">
-        <div className="max-w-sm space-y-4">
-          <Dropdown
-            searchable
-            options={[
-              { label: "React", value: "react" },
-              { label: "Vue", value: "vue" },
-              { label: "Angular", value: "angular" },
-              { label: "Svelte", value: "svelte" },
-              { label: "Solid", value: "solid" },
-            ]}
-            placeholder="Search framework..."
-          />
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-sm w-full space-y-4">
+            <Dropdown
+              searchable
+              options={[
+                { label: "React", value: "react" },
+                { label: "Vue", value: "vue" },
+                { label: "Angular", value: "angular" },
+                { label: "Svelte", value: "svelte" },
+                { label: "Solid", value: "solid" },
+              ]}
+              placeholder="Search framework..."
+            />
+          </div>
         </div>
         <CodeBlock
           ts={`<Dropdown searchable options={frameworks} placeholder="Search framework..." />`}
@@ -620,8 +540,10 @@ export default function AerDropdownExample() {
         id="virtualization"
         description="Efficiently render large lists of options."
       >
-        <div className="max-w-sm space-y-4">
-          <VirtualizedExample />
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-sm w-full space-y-4">
+            <VirtualizedExample />
+          </div>
         </div>
         <CodeBlock
           ts={`// 10,000 items\n<Dropdown \n  virtualized \n  searchable \n  options={largeOptions} \n  placeholder="Select from 10k items" \n/>`}
@@ -634,8 +556,10 @@ export default function AerDropdownExample() {
         id="lazy-loading"
         description="Load more items as the user scrolls."
       >
-        <div className="max-w-sm space-y-4">
-          <LazyLoadExample />
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-sm w-full space-y-4">
+            <LazyLoadExample />
+          </div>
         </div>
         <CodeBlock
           ts={`<Dropdown \n  options={items} \n  loading={isLoading} \n  onLoadMore={loadMore} \n  hasMore={hasMore}\n  virtualized\n  placeholder="Scroll to load more"\n/>`}
@@ -648,62 +572,64 @@ export default function AerDropdownExample() {
         id="grouped"
         description="Organize options into logical groups with labels and separators for better UX."
       >
-        <div className="max-w-sm space-y-4">
-          <Dropdown
-            label="Select Category"
-            options={[
-              {
-                type: "group",
-                label: "Fruits",
-                items: [
-                  { label: "Apple", value: "apple" },
-                  { label: "Banana", value: "banana" },
-                  { label: "Orange", value: "orange" },
-                ],
-              },
-              { type: "separator" },
-              {
-                type: "group",
-                label: "Vegetables",
-                items: [
-                  { label: "Carrot", value: "carrot" },
-                  { label: "Lettuce", value: "lettuce" },
-                  { label: "Tomato", value: "tomato" },
-                ],
-              },
-            ]}
-            placeholder="Choose a category..."
-          />
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-sm w-full space-y-4">
+            <Dropdown
+              label="Select Category"
+              options={[
+                {
+                  type: "group",
+                  label: "Fruits",
+                  items: [
+                    { label: "Apple", value: "apple" },
+                    { label: "Banana", value: "banana" },
+                    { label: "Orange", value: "orange" },
+                  ],
+                },
+                { type: "separator" },
+                {
+                  type: "group",
+                  label: "Vegetables",
+                  items: [
+                    { label: "Carrot", value: "carrot" },
+                    { label: "Lettuce", value: "lettuce" },
+                    { label: "Tomato", value: "tomato" },
+                  ],
+                },
+              ]}
+              placeholder="Choose a category..."
+            />
 
-          <Dropdown
-            label="Select Framework"
-            searchable
-            options={[
-              {
-                type: "group",
-                label: "Frontend",
-                items: [
-                  { label: "React", value: "react" },
-                  { label: "Vue", value: "vue" },
-                  { label: "Angular", value: "angular" },
-                  { label: "Svelte", value: "svelte" },
-                ],
-              },
-              { type: "separator" },
-              {
-                type: "group",
-                label: "Backend",
-                items: [
-                  { label: "Node.js", value: "node" },
-                  { label: "Django", value: "django" },
-                  { label: "Laravel", value: "laravel" },
-                ],
-              },
-              { type: "separator" },
-              { label: "Other", value: "other" },
-            ]}
-            placeholder="Search frameworks..."
-          />
+            <Dropdown
+              label="Select Framework"
+              searchable
+              options={[
+                {
+                  type: "group",
+                  label: "Frontend",
+                  items: [
+                    { label: "React", value: "react" },
+                    { label: "Vue", value: "vue" },
+                    { label: "Angular", value: "angular" },
+                    { label: "Svelte", value: "svelte" },
+                  ],
+                },
+                { type: "separator" },
+                {
+                  type: "group",
+                  label: "Backend",
+                  items: [
+                    { label: "Node.js", value: "node" },
+                    { label: "Django", value: "django" },
+                    { label: "Laravel", value: "laravel" },
+                  ],
+                },
+                { type: "separator" },
+                { label: "Other", value: "other" },
+              ]}
+              placeholder="Search frameworks..."
+            />
+          </div>
         </div>
         <CodeBlock
           ts={`const options = [
@@ -765,18 +691,20 @@ export default function GroupedDropdown() {
       </DocSection>
 
       <DocSection title="Clearable" id="clearable">
-        <div className="max-w-sm space-y-4">
-          <Dropdown
-            clearable
-            options={basicOptions}
-            placeholder="Clearable (Single)"
-          />
-          <Dropdown
-            multiple
-            clearable
-            options={basicOptions}
-            placeholder="Clearable (Multi)"
-          />
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-sm w-full space-y-4">
+            <Dropdown
+              clearable
+              options={basicOptions}
+              placeholder="Clearable (Single)"
+            />
+            <Dropdown
+              multiple
+              clearable
+              options={basicOptions}
+              placeholder="Clearable (Multi)"
+            />
+          </div>
         </div>
         <CodeBlock
           ts={`<Dropdown clearable options={options} placeholder="Clearable (Single)" />\n<Dropdown multiple clearable options={options} placeholder="Clearable (Multi)" />`}
@@ -789,49 +717,55 @@ export default function GroupedDropdown() {
       </DocSection>
 
       <DocSection title="Addons & Icons" id="addons-icons">
-        <div className="max-w-sm space-y-6">
-          <div className="space-y-4">
-            <h4 className="text-sm font-medium text-aer-muted-foreground">
-              Icons
-            </h4>
-            <Dropdown
-              startIcon={<User className="w-4 h-4" />}
-              options={basicOptions}
-              placeholder="Start Icon"
-            />
-            <Dropdown
-              endIcon={<Globe className="w-4 h-4" />}
-              options={basicOptions}
-              placeholder="End Icon"
-            />
-          </div>
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-sm w-full space-y-6">
+            <div className="space-y-4">
+              <h4 className="text-sm font-medium text-aer-muted-foreground">
+                Icons
+              </h4>
+              <Dropdown
+                startIcon={<User className="w-4 h-4" />}
+                options={basicOptions}
+                placeholder="Start Icon"
+              />
+              <Dropdown
+                endIcon={<Globe className="w-4 h-4" />}
+                options={basicOptions}
+                placeholder="End Icon"
+              />
+            </div>
 
-          <div className="space-y-4">
-            <h4 className="text-sm font-medium text-aer-muted-foreground">
-              Prefix & Suffix
-            </h4>
-            <Dropdown prefix="US" options={basicOptions} placeholder="Prefix" />
-            <Dropdown
-              suffix="USD"
-              options={basicOptions}
-              placeholder="Suffix"
-            />
-          </div>
+            <div className="space-y-4">
+              <h4 className="text-sm font-medium text-aer-muted-foreground">
+                Prefix & Suffix
+              </h4>
+              <Dropdown
+                prefix="US"
+                options={basicOptions}
+                placeholder="Prefix"
+              />
+              <Dropdown
+                suffix="USD"
+                options={basicOptions}
+                placeholder="Suffix"
+              />
+            </div>
 
-          <div className="space-y-4">
-            <h4 className="text-sm font-medium text-aer-muted-foreground">
-              Addons
-            </h4>
-            <Dropdown
-              addonBefore="https://"
-              options={basicOptions}
-              placeholder="Addon Before"
-            />
-            <Dropdown
-              addonAfter=".com"
-              options={basicOptions}
-              placeholder="Addon After"
-            />
+            <div className="space-y-4">
+              <h4 className="text-sm font-medium text-aer-muted-foreground">
+                Addons
+              </h4>
+              <Dropdown
+                addonBefore="https://"
+                options={basicOptions}
+                placeholder="Addon Before"
+              />
+              <Dropdown
+                addonAfter=".com"
+                options={basicOptions}
+                placeholder="Addon After"
+              />
+            </div>
           </div>
         </div>
         <CodeBlock
@@ -885,29 +819,31 @@ export default function AddonsDemo() {
         id="granular-styling"
         description="Precise control over styling with element-specific className props."
       >
-        <div className="space-y-6 max-w-sm">
-          <div className="space-y-4">
-            <p className="text-sm font-medium text-aer-muted-foreground">
-              className & triggerClassName
-            </p>
-            <Dropdown
-              className="p-4 border rounded-2xl bg-aer-primary/5"
-              triggerClassName="bg-white rounded-full border-2 border-aer-primary"
-              options={basicOptions}
-              placeholder="Custom root and trigger"
-            />
-          </div>
-          <div className="space-y-4">
-            <p className="text-sm font-medium text-aer-muted-foreground">
-              itemClassName & iconClassName
-            </p>
-            <Dropdown
-              itemClassName="hover:bg-sky-500 hover:text-white rounded-none"
-              iconClassName="text-sky-500"
-              startIcon={<User className="w-4 h-4" />}
-              options={basicOptions}
-              placeholder="Custom items and icons"
-            />
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="space-y-6 max-w-sm w-full">
+            <div className="space-y-4">
+              <p className="text-sm font-medium text-aer-muted-foreground">
+                className & triggerClassName
+              </p>
+              <Dropdown
+                className="p-4 border rounded-2xl bg-aer-primary/5"
+                triggerClassName="bg-white rounded-full border-2 border-aer-primary"
+                options={basicOptions}
+                placeholder="Custom root and trigger"
+              />
+            </div>
+            <div className="space-y-4">
+              <p className="text-sm font-medium text-aer-muted-foreground">
+                itemClassName & iconClassName
+              </p>
+              <Dropdown
+                itemClassName="hover:bg-sky-500 hover:text-white rounded-none"
+                iconClassName="text-sky-500"
+                startIcon={<User className="w-4 h-4" />}
+                options={basicOptions}
+                placeholder="Custom items and icons"
+              />
+            </div>
           </div>
         </div>
         <CodeBlock
@@ -947,8 +883,10 @@ export default function GranularStylingDemo() {
       </DocSection>
 
       <DocSection title="Validation" id="validation">
-        <div className="max-w-sm space-y-4">
-          <Dropdown error options={basicOptions} placeholder="Error state" />
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-sm w-full space-y-4">
+            <Dropdown error options={basicOptions} placeholder="Error state" />
+          </div>
         </div>
         <CodeBlock
           ts={`<Dropdown error placeholder="Error state" />`}
@@ -1004,11 +942,52 @@ export default function ValidationExample() {
         id="scroll-behavior"
         description="Control how the dropdown panel reacts when the page or parent container scrolls."
       >
-        <ScrollBehaviorExample />
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5 overflow-hidden">
+          <ScrollBehaviorExample />
+        </div>
+        <CodeBlock
+          ts={`<Dropdown scrollBehavior="reposition" />\n<Dropdown scrollBehavior="close" />`}
+          fullCode={`import { Dropdown } from "aer-design";
+
+const options = [
+  { label: "Option 1", value: "1" },
+  { label: "Option 2", value: "2" },
+];
+
+export default function ScrollDemo() {
+  return (
+    <div className="flex flex-row flex-wrap gap-4 w-full bg-aer-muted/5 p-8 rounded-xl border">
+      <div className="flex-1 space-y-2">
+        <h4 className="text-[10px] font-bold text-aer-muted-foreground uppercase tracking-widest">
+          Reposition (Default)
+        </h4>
+        <Dropdown 
+          scrollBehavior="reposition" 
+          options={options} 
+          placeholder="Stays with the input" 
+        />
+      </div>
+
+      <div className="flex-1 space-y-2">
+        <h4 className="text-[10px] font-bold text-aer-muted-foreground uppercase tracking-widest">
+          Close on Scroll
+        </h4>
+        <Dropdown 
+          scrollBehavior="close" 
+          options={options} 
+          placeholder="Closes when you scroll" 
+        />
+      </div>
+    </div>
+  );
+}`}
+        />
       </DocSection>
 
       <DocSection title="Real World Example" id="real-world">
-        <RealWorldExample />
+        <div className="flex justify-center w-full">
+          <RealWorldExample />
+        </div>
         <div className="mt-4">
           <p className="text-sm text-aer-muted-foreground mb-4">
             A real-world example handling user profile settings with validation.
@@ -1088,8 +1067,35 @@ export default function UserSettings() {
     </div>
   );
 
+  function ScrollBehaviorExample() {
+    return (
+      <div className="flex flex-row flex-wrap gap-4 w-full">
+        <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5 flex-1">
+          <label className="text-sm font-medium mb-2 block text-aer-muted-foreground uppercase tracking-wider text-[10px]">
+            Reposition (Default)
+          </label>
+          <Dropdown
+            scrollBehavior="reposition"
+            options={basicOptions}
+            placeholder="Stays with the input"
+          />
+        </div>
+        <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5 flex-1">
+          <label className="text-sm font-medium mb-2 block text-aer-muted-foreground uppercase tracking-wider text-[10px]">
+            Close on Scroll
+          </label>
+          <Dropdown
+            scrollBehavior="close"
+            options={basicOptions}
+            placeholder="Closes when you scroll"
+          />
+        </div>
+      </div>
+    );
+  }
+
   function RealWorldExample() {
-    const [role, setRole] = React.useState<any>("");
+    const [role, setRole] = React.useState<string>("");
     const [touched, setTouched] = React.useState(false);
 
     const isInvalid = touched && !role;
@@ -1270,6 +1276,13 @@ export default function UserSettings() {
               type: "string",
               default: "-",
               description: "Helper text displayed below the dropdown.",
+            },
+            {
+              prop: "wrapSelection",
+              type: "boolean",
+              default: "false",
+              description:
+                "Whether to wrap selected text instead of truncating it.",
             },
             {
               prop: "variant",
@@ -1604,6 +1617,7 @@ export default function UserSettings() {
               { id: "aer-variant", title: "The Aer Variant" },
               { id: "sizes", title: "Sizes" },
               { id: "multi-select", title: "Multi-select" },
+              { id: "text-wrapping", title: "Text Wrapping" },
               { id: "search", title: "Search & Filter" },
               { id: "virtualization", title: "Virtualization" },
               { id: "lazy-loading", title: "Lazy Loading" },

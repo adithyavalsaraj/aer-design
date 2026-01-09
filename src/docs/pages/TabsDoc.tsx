@@ -11,7 +11,13 @@ import {
   User,
 } from "lucide-react";
 import { useState } from "react";
-import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
+import {
+  ApiTable,
+  CodeBlock,
+  DocSection,
+  DocTabs,
+  UsageGuidelines,
+} from "../components/shared";
 
 function TabsPlayground() {
   const [variant, setVariant] = useState<
@@ -32,140 +38,145 @@ function TabsPlayground() {
   return (
     <div className="flex flex-col gap-6">
       {/* Controls */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6 border rounded-aer-xl bg-aer-muted/5">
-        <div className="space-y-3">
-          <label className="text-sm font-semibold">Variant</label>
-          <div className="flex flex-wrap gap-2">
-            {(["default", "aer", "pills", "underline", "cards"] as const).map(
-              (v) => (
+      <div className="flex flex-col border rounded-aer-xl bg-aer-muted/5 divide-y divide-aer-border">
+        {/* Controls */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
+          <div className="space-y-3">
+            <label className="text-sm font-semibold">Variant</label>
+            <div className="flex flex-wrap gap-2">
+              {(["default", "aer", "pills", "underline", "cards"] as const).map(
+                (v) => (
+                  <button
+                    key={v}
+                    onClick={() => setVariant(v)}
+                    className={`px-3 py-1.5 text-xs font-medium rounded-md border transition-all ${
+                      variant === v
+                        ? "bg-aer-foreground text-aer-background border-aer-foreground"
+                        : "bg-aer-background hover:bg-aer-muted"
+                    }`}
+                  >
+                    {v.charAt(0).toUpperCase() + v.slice(1)}
+                  </button>
+                )
+              )}
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <label className="text-sm font-semibold">Orientation</label>
+            <div className="flex flex-wrap gap-2">
+              {(["horizontal", "vertical"] as const).map((o) => (
                 <button
-                  key={v}
-                  onClick={() => setVariant(v)}
+                  key={o}
+                  onClick={() => setOrientation(o)}
                   className={`px-3 py-1.5 text-xs font-medium rounded-md border transition-all ${
-                    variant === v
+                    orientation === o
                       ? "bg-aer-foreground text-aer-background border-aer-foreground"
                       : "bg-aer-background hover:bg-aer-muted"
                   }`}
                 >
-                  {v.charAt(0).toUpperCase() + v.slice(1)}
+                  {o.charAt(0).toUpperCase() + o.slice(1)}
                 </button>
-              )
-            )}
-          </div>
-        </div>
-
-        <div className="space-y-3">
-          <label className="text-sm font-semibold">Orientation</label>
-          <div className="flex flex-wrap gap-2">
-            {(["horizontal", "vertical"] as const).map((o) => (
-              <button
-                key={o}
-                onClick={() => setOrientation(o)}
-                className={`px-3 py-1.5 text-xs font-medium rounded-md border transition-all ${
-                  orientation === o
-                    ? "bg-aer-foreground text-aer-background border-aer-foreground"
-                    : "bg-aer-background hover:bg-aer-muted"
-                }`}
-              >
-                {o.charAt(0).toUpperCase() + o.slice(1)}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="space-y-3">
-          <label className="text-sm font-semibold">Tab Count (Overflow)</label>
-          <div className="flex flex-wrap gap-2">
-            {[3, 5, 12].map((n) => (
-              <button
-                key={n}
-                onClick={() => setCount(n)}
-                className={`px-3 py-1.5 text-xs font-medium rounded-md border transition-all ${
-                  count === n
-                    ? "bg-aer-foreground text-aer-background border-aer-foreground"
-                    : "bg-aer-background hover:bg-aer-muted"
-                }`}
-              >
-                {n} Tabs
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="space-y-3">
-          <label className="text-sm font-semibold">Features</label>
-          <div className="flex flex-col gap-2">
-            <button
-              onClick={() => setLazy(!lazy)}
-              className={`px-3 py-1.5 text-xs font-medium rounded-md border transition-all text-left ${
-                lazy
-                  ? "bg-aer-foreground text-aer-background border-aer-foreground"
-                  : "bg-aer-background hover:bg-aer-muted"
-              }`}
-            >
-              {lazy ? "✓ Lazy Loading On" : "Lazy Loading Off"}
-            </button>
-            <p className="text-[10px] text-aer-muted-foreground italic">
-              Try setting count to 12 to test scroll arrows.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Preview */}
-      <div
-        className={`p-8 border rounded-aer-xl bg-aer-background relative min-h-[300px] flex transition-all ${
-          variant === "aer" ? "dark bg-zinc-950" : ""
-        }`}
-      >
-        {variant === "aer" && (
-          <div className="absolute inset-0 bg-linear-to-br from-violet-600/10 via-transparent to-blue-600/10 pointer-events-none" />
-        )}
-        <div
-          className={`relative z-10 w-full ${
-            orientation === "horizontal"
-              ? "max-w-xl mx-auto"
-              : "flex h-[250px] max-w-2xl mx-auto"
-          }`}
-        >
-          <Tabs
-            key={`${variant}-${orientation}-${count}`}
-            variant={variant}
-            orientation={orientation}
-            defaultValue="tab1"
-            lazy={lazy}
-            className="w-full"
-          >
-            <TabList className={orientation === "vertical" ? "w-32" : ""}>
-              {tabs.map((t) => (
-                <TabTrigger key={t.value} value={t.value}>
-                  {t.label}
-                </TabTrigger>
-              ))}
-            </TabList>
-            <div
-              className={`flex-1 ${
-                orientation === "horizontal" ? "mt-4" : "ml-4"
-              }`}
-            >
-              {tabs.map((t) => (
-                <TabContent
-                  key={t.value}
-                  value={t.value}
-                  className="p-6 border border-aer-border rounded-lg bg-aer-muted/5 animate-in fade-in slide-in-from-top-1 h-full flex items-center justify-center text-center"
-                >
-                  <div>
-                    <h4 className="font-bold text-aer-foreground mb-2">
-                      {t.label} Activated
-                    </h4>
-                    <p className="text-sm text-aer-muted-foreground">
-                      {t.content}
-                    </p>
-                  </div>
-                </TabContent>
               ))}
             </div>
-          </Tabs>
+          </div>
+
+          <div className="space-y-3">
+            <label className="text-sm font-semibold">
+              Tab Count (Overflow)
+            </label>
+            <div className="flex flex-wrap gap-2">
+              {[3, 5, 12].map((n) => (
+                <button
+                  key={n}
+                  onClick={() => setCount(n)}
+                  className={`px-3 py-1.5 text-xs font-medium rounded-md border transition-all ${
+                    count === n
+                      ? "bg-aer-foreground text-aer-background border-aer-foreground"
+                      : "bg-aer-background hover:bg-aer-muted"
+                  }`}
+                >
+                  {n} Tabs
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <label className="text-sm font-semibold">Features</label>
+            <div className="flex flex-col gap-2">
+              <button
+                onClick={() => setLazy(!lazy)}
+                className={`px-3 py-1.5 text-xs font-medium rounded-md border transition-all text-left ${
+                  lazy
+                    ? "bg-aer-foreground text-aer-background border-aer-foreground"
+                    : "bg-aer-background hover:bg-aer-muted"
+                }`}
+              >
+                {lazy ? "✓ Lazy Loading On" : "Lazy Loading Off"}
+              </button>
+              <p className="text-[10px] text-aer-muted-foreground italic">
+                Try setting count to 12 to test scroll arrows.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Preview */}
+        <div
+          className={`p-8 bg-aer-background relative min-h-[300px] flex transition-all ${
+            variant === "aer" ? "dark bg-zinc-950" : ""
+          }`}
+        >
+          {variant === "aer" && (
+            <div className="absolute inset-0 bg-linear-to-br from-violet-600/10 via-transparent to-blue-600/10 pointer-events-none" />
+          )}
+          <div
+            className={`relative z-10 w-full ${
+              orientation === "horizontal"
+                ? "max-w-xl mx-auto"
+                : "flex h-[250px] max-w-2xl mx-auto"
+            }`}
+          >
+            <Tabs
+              key={`${variant}-${orientation}-${count}`}
+              variant={variant}
+              orientation={orientation}
+              defaultValue="tab1"
+              lazy={lazy}
+              className="w-full"
+            >
+              <TabList className={orientation === "vertical" ? "w-32" : ""}>
+                {tabs.map((t) => (
+                  <TabTrigger key={t.value} value={t.value}>
+                    {t.label}
+                  </TabTrigger>
+                ))}
+              </TabList>
+              <div
+                className={`flex-1 ${
+                  orientation === "horizontal" ? "mt-4" : "ml-4"
+                }`}
+              >
+                {tabs.map((t) => (
+                  <TabContent
+                    key={t.value}
+                    value={t.value}
+                    className="p-6 border border-aer-border rounded-lg bg-aer-muted/5 animate-in fade-in slide-in-from-top-1 h-full flex items-center justify-center text-center"
+                  >
+                    <div>
+                      <h4 className="font-bold text-aer-foreground mb-2">
+                        {t.label} Activated
+                      </h4>
+                      <p className="text-sm text-aer-muted-foreground">
+                        {t.content}
+                      </p>
+                    </div>
+                  </TabContent>
+                ))}
+              </div>
+            </Tabs>
+          </div>
         </div>
       </div>
 
@@ -261,55 +272,23 @@ export function TabsDoc() {
       </DocSection>
 
       <DocSection
-        id="when-to-use"
         title="When to Use"
-        description="Choose the right variant for your context."
+        id="when-to-use"
+        description="Choose the right layout strategy for your navigation."
       >
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Primary Navigation
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                default
-              </code>{" "}
-              or{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                underline
-              </code>{" "}
-              variants for:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>Page-level navigation</li>
-              <li>Switching between major views</li>
-              <li>Content categories</li>
-            </ul>
-          </div>
-
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Feature Switching
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                pills
-              </code>{" "}
-              or{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                cards
-              </code>{" "}
-              variants for:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>Filtering lists or tables</li>
-              <li>Toggling between chart types</li>
-              <li>Settings configuration</li>
-            </ul>
-          </div>
-        </div>
+        <UsageGuidelines
+          do={[
+            "Toggling between related content views in the same context.",
+            "Organizing dashboard modules (e.g., General, Security, Billing).",
+            "Switching between chart types or data representations.",
+            "Filtering large lists into broad categories.",
+          ]}
+          dont={[
+            "Navigating to fundamentally different parts of the application (use Navbar or Sidebar).",
+            "Triggering immediate actions (use Button).",
+            "Displaying sequential steps (use Steps component).",
+          ]}
+        />
       </DocSection>
 
       <DocSection
@@ -522,7 +501,7 @@ import { Sparkles, Code, User } from "lucide-react";
 
 export default function AerTabsExample() {
   return (
-    <div className="relative p-12 bg-zinc-950 rounded-xl overflow-hidden min-h-[400px]">
+    <div className="relative p-8 bg-zinc-950 rounded-xl overflow-hidden min-h-[400px]">
        <div className="absolute inset-0 bg-linear-to-br from-violet-600/20 via-transparent to-blue-600/20" />
        
        <div className="relative z-10 max-w-md mx-auto">

@@ -39,7 +39,7 @@ export const TabTrigger = ({
     if (headless) return "";
 
     const base =
-      "group inline-flex items-center justify-center whitespace-nowrap px-4 py-2 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-aer-ring disabled:pointer-events-none disabled:opacity-50 snap-start";
+      "group inline-flex items-center justify-center whitespace-nowrap px-4 py-2 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-aer-ring cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 snap-start";
 
     switch (variant) {
       case "default":

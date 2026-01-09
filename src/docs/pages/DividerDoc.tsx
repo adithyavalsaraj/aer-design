@@ -5,6 +5,7 @@ import {
   CodeBlock,
   DocSection,
   DocTabs,
+  UsageGuidelines,
 } from "@/docs/components/shared";
 import { cn } from "@/lib/utils";
 import { Settings } from "lucide-react";
@@ -51,25 +52,19 @@ export function DividerDoc() {
 
           {/* 2. When to Use */}
           <DocSection id="when-to-use" title="When to Use">
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="p-4 rounded-aer-md border border-aer-border bg-aer-muted/5">
-                <h4 className="font-bold mb-2">Use it when:</h4>
-                <ul className="text-sm space-y-1 text-aer-muted-foreground">
-                  <li>• Separating items in a list or menu</li>
-                  <li>
-                    • Dividing chapters or major sections in a long document
-                  </li>
-                  <li>• Grouping related fields in a complex form</li>
-                </ul>
-              </div>
-              <div className="p-4 rounded-aer-md border border-aer-border bg-aer-muted/5">
-                <h4 className="font-bold mb-2">Don't use it:</h4>
-                <ul className="text-sm space-y-1 text-aer-muted-foreground">
-                  <li>• When white space alone is sufficient for separation</li>
-                  <li>• To create "box" layouts (use Card instead)</li>
-                </ul>
-              </div>
-            </div>
+            <UsageGuidelines
+              do={[
+                "Separating items in a list or menu",
+                "Dividing chapters or major sections in a long document",
+                "Grouping related fields in a complex form",
+                "Creating clear visual breaks between distinct topics",
+              ]}
+              dont={[
+                "White space alone is sufficient for separation",
+                "Creating 'box' layouts (Use Card instead)",
+                "Over-partitioning content, causing visual clutter",
+              ]}
+            />
           </DocSection>
 
           {/* 3. Basic Usage */}
@@ -232,9 +227,9 @@ export default function VerticalExample() {
             description="The flagship Aer aesthetic featuring glassmorphism and elevated line weight."
           >
             <div className="space-y-4">
-              <div className="p-8 bg-zinc-950 rounded-aer-lg overflow-hidden relative">
-                <div className="absolute inset-0 bg-linear-to-br from-blue-500/10 to-purple-500/10" />
-                <div className="relative space-y-6">
+              <div className="p-8 bg-zinc-950 rounded-aer-lg overflow-hidden relative flex flex-col items-center justify-center">
+                <div className="absolute inset-0 bg-linear-to-br from-cyan-500/10 to-emerald-500/10" />
+                <div className="relative space-y-6 w-full max-w-md">
                   <p className="text-white font-medium">Glassmorphism Flow</p>
                   <Divider
                     className="border-white/20"
@@ -309,26 +304,28 @@ export default function InteractionExample() {
                 Using thickness and color for clear separation in high-density
                 UI.
               </p>
-              <div className="space-y-4 p-4 border rounded-aer-md bg-aer-muted/5">
-                <div className="flex items-center justify-between">
-                  <span className="font-bold text-lg">Order Summary</span>
-                  <Badge status="primary">Step 1 of 3</Badge>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-xs font-bold uppercase text-aer-primary">
-                    Themed Variable
-                  </p>
-                  <Divider thickness="3px" color="var(--primary)" />
-                </div>
-                <div className="space-y-1">
-                  <p className="text-xs font-bold uppercase text-indigo-500">
-                    Raw HSL Color
-                  </p>
-                  <Divider thickness="3px" color="hsl(262 83% 58%)" />
-                </div>
-                <div className="grid grid-cols-2 gap-4 text-sm mt-4">
-                  <div className="text-aer-muted-foreground">Subtotal</div>
-                  <div className="text-right">$129.00</div>
+              <div className="flex justify-center p-6 border rounded-lg bg-aer-muted/5">
+                <div className="space-y-4 p-4 border rounded-aer-md bg-white w-full max-w-sm">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-lg">Order Summary</span>
+                    <Badge status="primary">Step 1 of 3</Badge>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-xs font-bold uppercase text-aer-primary">
+                      Themed Variable
+                    </p>
+                    <Divider thickness="3px" color="var(--primary)" />
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-xs font-bold uppercase text-indigo-500">
+                      Raw HSL Color
+                    </p>
+                    <Divider thickness="3px" color="hsl(262 83% 58%)" />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4 text-sm mt-4">
+                    <div className="text-aer-muted-foreground">Subtotal</div>
+                    <div className="text-right">$129.00</div>
+                  </div>
                 </div>
               </div>
               <CodeBlock
@@ -360,14 +357,16 @@ export default function HighContrastExample() {
               <p className="text-sm text-aer-muted-foreground">
                 Highlighting a section that requires attention.
               </p>
-              <div className="border border-red-500/20 rounded-aer-md p-4 bg-red-500/5">
-                <p className="text-red-500 font-medium mb-4 italic">
-                  Security Check required
-                </p>
-                <Divider color="rgb(239 68 68)" thickness="2px" />
-                <p className="mt-4 text-sm text-aer-muted-foreground">
-                  Please confirm your identity before proceeding.
-                </p>
+              <div className="flex justify-center p-6 border rounded-lg bg-aer-muted/5">
+                <div className="border border-red-500/20 rounded-aer-md p-4 bg-red-500/5 w-full max-w-md">
+                  <p className="text-red-500 font-medium mb-4 italic">
+                    Security Check required
+                  </p>
+                  <Divider color="rgb(239 68 68)" thickness="2px" />
+                  <p className="mt-4 text-sm text-aer-muted-foreground">
+                    Please confirm your identity before proceeding.
+                  </p>
+                </div>
               </div>
               <CodeBlock
                 ts={`<Divider color="rgb(239 68 68)" thickness="2px" />`}
@@ -435,47 +434,49 @@ export default function GranularStylingExample() {
                 An IDE-style Settings Panel with labeled sections and vertical
                 grouping.
               </p>
-              <div className="bg-aer-background border border-aer-border rounded-aer-lg overflow-hidden max-w-2xl">
-                <div className="p-4 bg-aer-muted/30 border-b border-aer-border flex items-center gap-4">
-                  <div className="size-8 rounded-aer-md bg-aer-primary/10 flex items-center justify-center">
-                    <Settings className="size-4 text-aer-primary" />
+              <div className="flex justify-center p-6 border rounded-lg bg-aer-muted/5">
+                <div className="bg-aer-background border border-aer-border rounded-aer-lg overflow-hidden max-w-2xl w-full">
+                  <div className="p-4 bg-aer-muted/30 border-b border-aer-border flex items-center gap-4">
+                    <div className="size-8 rounded-aer-md bg-aer-primary/10 flex items-center justify-center">
+                      <Settings className="size-4 text-aer-primary" />
+                    </div>
+                    <span className="font-bold">Workspace Settings</span>
                   </div>
-                  <span className="font-bold">Workspace Settings</span>
-                </div>
-                <div className="p-6 space-y-6">
-                  <div>
-                    <h4 className="text-xs uppercase font-bold text-aer-muted-foreground mb-4">
-                      General
-                    </h4>
-                    <div className="space-y-4 px-4 py-2 bg-aer-muted/5 rounded-aer-md">
-                      <div className="flex justify-between items-center text-sm">
-                        <span>Theme</span>
-                        <span className="text-aer-primary cursor-pointer hover:underline">
-                          Dark Mode
-                        </span>
-                      </div>
-                      <Divider variant="dashed" />
-                      <div className="flex justify-between items-center text-sm">
-                        <span>Language</span>
-                        <span className="text-aer-primary cursor-pointer hover:underline">
-                          English (US)
-                        </span>
+                  <div className="p-6 space-y-6">
+                    <div>
+                      <h4 className="text-xs uppercase font-bold text-aer-muted-foreground mb-4">
+                        General
+                      </h4>
+                      <div className="space-y-4 px-4 py-2 bg-aer-muted/5 rounded-aer-md">
+                        <div className="flex justify-between items-center text-sm">
+                          <span>Theme</span>
+                          <span className="text-aer-primary cursor-pointer hover:underline">
+                            Dark Mode
+                          </span>
+                        </div>
+                        <Divider variant="dashed" />
+                        <div className="flex justify-between items-center text-sm">
+                          <span>Language</span>
+                          <span className="text-aer-primary cursor-pointer hover:underline">
+                            English (US)
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <Divider labelPlacement="start">
-                    <span className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 bg-aer-primary/10 text-aer-primary rounded-full">
-                      Danger Zone
-                    </span>
-                  </Divider>
-
-                  <div className="space-y-4 px-4 py-2 border border-red-500/20 bg-red-500/5 rounded-aer-md">
-                    <div className="flex justify-between items-center text-sm">
-                      <span className="text-red-500">Reset Workspace</span>
-                      <span className="text-red-500 cursor-pointer hover:underline font-bold">
-                        Reset
+                    <Divider labelPlacement="start">
+                      <span className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 bg-aer-primary/10 text-aer-primary rounded-full">
+                        Danger Zone
                       </span>
+                    </Divider>
+
+                    <div className="space-y-4 px-4 py-2 border border-red-500/20 bg-red-500/5 rounded-aer-md">
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-red-500">Reset Workspace</span>
+                        <span className="text-red-500 cursor-pointer hover:underline font-bold">
+                          Reset
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>

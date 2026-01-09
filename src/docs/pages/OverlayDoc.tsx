@@ -3,7 +3,13 @@ import { Input } from "@/components/Input";
 import { Overlay } from "@/components/Overlay";
 import { Bell, HelpCircle, Settings, Sparkles, User } from "lucide-react";
 import * as React from "react";
-import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
+import {
+  ApiTable,
+  CodeBlock,
+  DocSection,
+  DocTabs,
+  UsageGuidelines,
+} from "../components/shared";
 
 export function OverlayDoc() {
   const [controlledOpen, setControlledOpen] = React.useState(false);
@@ -57,31 +63,19 @@ export function OverlayDoc() {
         id="when-to-use"
         description="Choose the right component for your use case."
       >
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Use Overlay when:
-            </h4>
-            <ul className="text-sm text-aer-muted-foreground space-y-2 list-disc pl-5">
-              <li>You need custom content (forms, cards, etc.)</li>
-              <li>You want full control over positioning</li>
-              <li>You need a backdrop or modal behavior</li>
-              <li>You're building custom popovers or dropdowns</li>
-              <li>You need programmatic control</li>
-            </ul>
-          </div>
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Use Menu/Tooltip instead when:
-            </h4>
-            <ul className="text-sm text-aer-muted-foreground space-y-2 list-disc pl-5">
-              <li>You need a simple menu with items</li>
-              <li>You're showing brief help text</li>
-              <li>You want pre-styled components</li>
-              <li>You don't need custom content</li>
-            </ul>
-          </div>
-        </div>
+        <UsageGuidelines
+          do={[
+            "Creating custom floating panels with rich content (forms, cards, etc.)",
+            "When you need full control over positioning, offsets, and alignments",
+            "Implementing modal-like overlays that need to trap focus",
+            "Building specialized UI patterns like profile cards or complex filters",
+          ]}
+          dont={[
+            "For simple menus with just list items (Use Menu component)",
+            "Showing brief help text on hover (Use Tooltip component)",
+            "When a standard pre-styled component covers the functionality",
+          ]}
+        />
       </DocSection>
 
       <DocSection

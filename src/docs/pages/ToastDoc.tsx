@@ -10,7 +10,13 @@ import {
   X,
 } from "lucide-react";
 import * as React from "react";
-import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
+import {
+  ApiTable,
+  CodeBlock,
+  DocSection,
+  DocTabs,
+  UsageGuidelines,
+} from "../components/shared";
 
 export function ToastDoc() {
   const overview = (
@@ -139,7 +145,7 @@ export function ToastDoc() {
                 </div>
                 <div className="p-4 border rounded-lg bg-aer-muted/5">
                   <h4 className="font-semibold mb-2 flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-purple-500" />
+                    <span className="w-2 h-2 rounded-full bg-cyan-500" />
                     Auto-Injection
                   </h4>
                   <p className="text-sm text-aer-muted-foreground">
@@ -178,32 +184,20 @@ export function ToastDoc() {
         title="When to Use"
         description="Best practices for using toasts vs other feedback mechanisms."
       >
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-green-500" />
-              Use Toasts for
-            </h4>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>Success messages (Saved, Updated, Sent)</li>
-              <li>Non-critical errors (Network retry, Form invalid)</li>
-              <li>System status updates (Download complete)</li>
-              <li>Undo actions within a short window</li>
-            </ul>
-          </div>
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground flex items-center gap-2">
-              <X className="w-4 h-4 text-red-500" />
-              Don't Use Toasts for
-            </h4>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>Critical errors meant to block the user (Use Dialog)</li>
-              <li>Complex forms or inputs (Use Modal/Drawer)</li>
-              <li>Persistent information that must not disappear</li>
-              <li>Lengthy text content</li>
-            </ul>
-          </div>
-        </div>
+        <UsageGuidelines
+          do={[
+            "Providing non-critical status updates (Success, Info)",
+            "Briefly confirming an action (Saved, Updated, Deleted)",
+            "Displaying transient system messages (Downloading, Exporting)",
+            "Offering an 'Undo' option within a short timeframe",
+          ]}
+          dont={[
+            "Communicating critical errors that require immediate attention (Use Dialog)",
+            "Displaying complex information or multi-step processes",
+            "Persistent information that the user must refer back to",
+            "When the user is in the middle of a high-focus flow (avoid interruptions)",
+          ]}
+        />
       </DocSection>
 
       <DocSection
@@ -226,7 +220,7 @@ const showSuccess = () => {
 
 export default function BasicToast() {
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-4 justify-center">
       <Button 
         onClick={() => toast({ 
           title: "Scheduled: Catch up", 
@@ -296,7 +290,7 @@ export default function StackedToasts() {
   const [seed, setSeed] = useState(0);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 items-center">
        <Button onClick={() => setSeed(s => s + 1)}>
          Show Stacked Toast
        </Button>
@@ -341,7 +335,7 @@ export default function ToastVariants() {
   const { toast } = useToast();
 
   return (
-    <div className="flex flex-wrap gap-4">
+    <div className="flex flex-wrap gap-4 justify-center">
       <Button 
         variant="outline" 
         className="text-green-600 border-green-200 hover:bg-green-50"
@@ -454,13 +448,19 @@ export default function AerToastExample() {
         </div>
         <InteractionStatesExample />
         <CodeBlock
-          ts={`// Hover pauses the timer
-// Action button focus states`}
+          ts={`toast({
+  title: "Action Required",
+  description: "Hover me to pause.",
+  action: {
+    label: "Undo",
+    onClick: () => alert("Undo clicked")
+  }
+});`}
           fullCode={`import { Button, toast } from "aer-design";
 
 export default function InteractionDemo() {
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-4 justify-center">
       <Button 
         onClick={() => toast({
            title: "Undo Action",
@@ -501,7 +501,7 @@ export default function InteractionDemo() {
 
 export default function SwipeDemo() {
   return (
-    <div className="flex flex-wrap gap-4">
+    <div className="flex flex-wrap gap-4 justify-center">
       <Button 
         onClick={() => toast({
            title: "Horizontal Swipe",
@@ -541,9 +541,13 @@ export default function TransparencyDemo() {
   const [opacity, setOpacity] = useState(1);
 
   return (
-    <div className="space-y-4">
-      <input
-        type="range"
+    <div className="flex flex-col gap-4 items-center">
+      <div className="flex items-center gap-4">
+        <label className="text-sm font-medium min-w-24">
+          Opacity: {opacity.toFixed(2)}
+        </label>
+        <input
+          type="range"
         min="0"
         max="1"
         step="0.05"
@@ -611,9 +615,9 @@ export default function PositioningExample() {
         <GranularStylingExample />
         <CodeBlock
           ts={`toast({
-  title: "Dark Mode Toast",
-  className: "bg-slate-950 text-white border-slate-800",
-  description: "Custom colors applied via className."
+  title: "Premium Notification",
+  className: "bg-linear-to-r from-cyan-500 to-emerald-500 text-white border-0 shadow-2xl",
+  description: "Vibrant gradient with custom styling."
 });`}
           fullCode={`import { Button, useToast } from "aer-design";
 
@@ -621,13 +625,13 @@ export default function StyledToast() {
   const { toast } = useToast();
 
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-4 justify-center">
       <Button 
         variant="outline"
         onClick={() => toast({
-          title: "Midnight Toast",
-          description: "This toast uses custom Tailwind classes.",
-          className: "bg-slate-950 text-white border-slate-800 shadow-2xl"
+          title: "Premium Notification",
+          description: "This toast uses a vibrant gradient from our color palette.",
+          className: "bg-linear-to-r from-cyan-500 to-emerald-500 text-white border-0 shadow-2xl"
         })}
       >
         Custom Style
@@ -636,6 +640,58 @@ export default function StyledToast() {
   );
 }`}
         />
+
+        <div className="mt-8">
+          <h4 className="font-semibold text-lg mb-4">
+            Standalone Granular Styling
+          </h4>
+          <p className="text-sm text-aer-muted-foreground mb-4">
+            You can use the <code>&lt;Toast /&gt;</code> component directly for
+            full control, passing <code>className</code> for custom styling just
+            like any other element.
+          </p>
+          <StandaloneGranularExample />
+          <CodeBlock
+            ts={`const [show, setShow] = useState(false);
+
+return (
+  <>
+    <Button onClick={() => setShow(true)}>Show Toast</Button>
+    {show && (
+      <Toast 
+        title="Declarative Gradient"
+        description="Rendered directly as a component!"
+        className="bg-linear-to-r from-amber-500 to-orange-600 text-white border-none shadow-lg"
+        onOpenChange={setShow}
+      />
+    )}
+  </>
+);`}
+            fullCode={`import { useState } from "react";
+import { Button, Toast } from "aer-design";
+
+export default function StandaloneStyledToast() {
+  const [show, setShow] = useState(false);
+
+  return (
+    <div className="flex flex-col gap-4 items-center">
+      <Button variant="outline" onClick={() => setShow(!show)}>
+        Toggle Standalone Toast
+      </Button>
+
+      {show && (
+        <Toast
+          title="Declarative Gradient"
+          description="Rendered directly as a component!"
+          className="bg-linear-to-r from-amber-500 to-orange-600 text-white border-none shadow-lg"
+          onOpenChange={setShow}
+        />
+      )}
+    </div>
+  );
+}`}
+          />
+        </div>
       </DocSection>
 
       <DocSection
@@ -988,7 +1044,7 @@ export default function ProfileForm() {
 
 function InteractionStatesExample() {
   return (
-    <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5 flex gap-4">
+    <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5 flex gap-4 justify-center">
       <Button
         onClick={() =>
           toast({
@@ -1009,7 +1065,7 @@ function InteractionStatesExample() {
 
 function SwipeInteractionDemo() {
   return (
-    <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5 flex flex-wrap gap-4">
+    <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5 flex flex-wrap gap-4 justify-center">
       <Button
         variant="outline"
         onClick={() =>
@@ -1063,7 +1119,7 @@ function TransparencyExample() {
   const [opacity, setOpacity] = React.useState(1);
 
   return (
-    <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5 space-y-4">
+    <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5 flex flex-col gap-4 items-center">
       <div className="flex items-center gap-4">
         <label className="text-sm font-medium min-w-24">
           Opacity: {opacity.toFixed(2)}
@@ -1098,7 +1154,7 @@ function StandaloneExample() {
   const [seed, setSeed] = React.useState(0);
 
   return (
-    <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5 flex flex-col gap-4">
+    <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5 flex flex-col gap-4 items-center">
       <div className="flex gap-4 items-center">
         <Button onClick={() => setSeed((s) => s + 1)}>
           Show Stacked Toast
@@ -1123,7 +1179,7 @@ function StandaloneExample() {
 
 function BasicUsageExample() {
   return (
-    <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5 flex gap-4">
+    <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5 flex gap-4 justify-center">
       <Button
         onClick={() =>
           toast({ title: "Hello World", description: "This is a basic toast." })
@@ -1137,7 +1193,7 @@ function BasicUsageExample() {
 
 function VariantsExample() {
   return (
-    <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5 flex flex-wrap gap-4">
+    <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5 flex flex-wrap gap-4 justify-center">
       <Button
         variant="outline"
         className="border-green-500/50 text-green-600 hover:bg-green-50 hover:border-green-600 dark:text-green-400 dark:hover:bg-green-900/20"
@@ -1315,19 +1371,41 @@ function PositioningExample() {
 
 function GranularStylingExample() {
   return (
-    <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5 flex gap-4">
+    <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5 flex gap-4 justify-center">
       <Button
         variant="outline"
         onClick={() =>
           toast({
-            title: "Midnight Toast",
-            description: "This toast uses custom Tailwind classes.",
-            className: "bg-slate-950 text-white border-slate-800 shadow-2xl",
+            title: "Premium Notification",
+            description:
+              "This toast uses a vibrant gradient from our color palette.",
+            className:
+              "bg-linear-to-r from-cyan-500 to-emerald-500 text-white border-0 shadow-2xl",
           })
         }
       >
         Custom Style
       </Button>
+    </div>
+  );
+}
+
+function StandaloneGranularExample() {
+  const [show, setShow] = React.useState(false);
+
+  return (
+    <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5 flex flex-col gap-4 items-center">
+      <Button variant="outline" onClick={() => setShow((prev) => !prev)}>
+        {show ? "Hide" : "Show"} Standalone Custom Toast
+      </Button>
+      {show && (
+        <Toast
+          title="Declarative Gradient"
+          description="This toast is rendered directly as a component with custom classes!"
+          className="bg-linear-to-r from-amber-500 to-orange-600 text-white border-none shadow-[0_0_20px_rgba(245,158,11,0.3)]"
+          onOpenChange={setShow}
+        />
+      )}
     </div>
   );
 }

@@ -16,7 +16,7 @@ export const menuContentVariants = cva(
 );
 
 export const menuItemVariants = cva(
-  "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-aer-muted hover:text-aer-accent-foreground focus-visible:bg-aer-accent data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+  "relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-aer-muted hover:text-aer-accent-foreground focus-visible:bg-aer-accent data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50",
   {
     variants: {
       inset: {

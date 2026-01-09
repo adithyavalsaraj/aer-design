@@ -13,6 +13,10 @@ export type InputProps = Omit<
   suffix?: React.ReactNode;
   addonBefore?: React.ReactNode;
   addonAfter?: React.ReactNode;
+  /** Show clear button when input has value */
+  clearable?: boolean;
+  /** Callback when clear button is clicked */
+  onClear?: () => void;
   /** @deprecated Use className instead - applies to root container */
   containerClassName?: string;
   /** CSS classes for root container (spacing, layout) */
@@ -71,6 +75,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       size: sizeProp,
       placeholder,
       style,
+      clearable,
+      onClear,
+      value,
+      onChange,
       ...props
     },
     ref
@@ -94,6 +102,22 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
     const hasAddon = addonBefore || addonAfter;
     const inputRef = React.useRef<HTMLInputElement>(null);
+
+    // Clear button logic
+    const showClearButton = clearable && value && String(value).length > 0;
+    const handleClear = () => {
+      if (onClear) {
+        onClear();
+      } else if (onChange) {
+        // Simulate native change event
+        const event = {
+          target: { value: "" },
+          currentTarget: { value: "" },
+        } as React.ChangeEvent<HTMLInputElement>;
+        onChange(event);
+      }
+      inputRef.current?.focus();
+    };
 
     // Merge forwarded ref with local ref
     React.useImperativeHandle(ref, () => inputRef.current!);
@@ -191,7 +215,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               !(className || containerClassName)?.includes("p-") &&
               variant !== "underlined" &&
               "px-3",
-            !(className || containerClassName)?.includes("w-") && "w-full",
+            // Use w-full when parent has explicit width, flex-1 otherwise
+            (className || containerClassName)?.includes("w-") ||
+              (className || containerClassName)?.match(/w-\[/)
+              ? "w-full"
+              : "flex-1",
             !hasAddon && variant === "outline" && "rounded-aer-md",
             addonBefore && "border-l-0",
             addonAfter && "border-r-0",
@@ -230,6 +258,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               placeholder={placeholder}
               ref={inputRef}
               style={finalStyle}
+              value={value}
+              onChange={onChange}
               {...props}
             />
           </div>
@@ -239,6 +269,34 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             <span className="text-aer-muted-foreground text-sm font-medium shrink-0 whitespace-nowrap">
               {suffix}
             </span>
+          )}
+          {/* Clear button (if clearable) */}
+          {clearable && showClearButton && (
+            <button
+              type="button"
+              onClick={handleClear}
+              className={cn(
+                "text-aer-muted-foreground hover:text-aer-foreground transition-all shrink-0 rounded hover:bg-aer-muted/50",
+                iconSizes[size],
+                iconClassName
+              )}
+              aria-label="Clear input"
+              tabIndex={-1}
+            >
+              <svg
+                className="w-full h-full"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
           )}
           {endIcon && (
             <span

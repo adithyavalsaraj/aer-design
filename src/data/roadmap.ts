@@ -34,6 +34,19 @@ export const ROADMAP_DATA: ComponentSpec[] = [
     description: "Interactive button component",
   },
   {
+    name: "ButtonGroup",
+    category: "General",
+    status: "Planned",
+    priority: "Medium",
+    description: "Group multiple buttons into a single cohesive unit",
+    features: [
+      "Attached and detached layouts",
+      "Unified variant and size control",
+      "Selection modes (Single/Multiple)",
+      "Icon-only group support",
+    ],
+  },
+  {
     name: "Input",
     version: "v0.12.0",
     category: "Data Entry",
@@ -73,6 +86,20 @@ export const ROADMAP_DATA: ComponentSpec[] = [
       "Grouped Options",
       "Keyboard Navigation",
       "Form Validation",
+    ],
+  },
+  {
+    name: "Autocomplete",
+    version: "v0.14.1",
+    category: "Data Entry",
+    status: "Completed",
+    description: "Smart autocomplete with search",
+    features: [
+      "Local & Remote Search",
+      "Virtualization Support",
+      "Multiple Selection Modes",
+      "Lazy Loading",
+      "Custom Rendering",
     ],
   },
   {
@@ -248,20 +275,6 @@ export const ROADMAP_DATA: ComponentSpec[] = [
       "Action buttons & Keyboard Accessible",
       "Variants (success, error, warning, info, neutral, aer)",
       "Glassmorphism Aer Variant",
-    ],
-  },
-  {
-    name: "Autocomplete",
-    version: "v0.14.1",
-    category: "Data Entry",
-    status: "Completed",
-    description: "Searchable input with suggestion list",
-    features: [
-      "Remote data fetching",
-      "Virtualization & Lazy Loading",
-      "Custom renderers & Grouping",
-      "Multiple selection",
-      "Keyboard navigation",
     ],
   },
 
@@ -479,6 +492,31 @@ export const ROADMAP_DATA: ComponentSpec[] = [
       "Checkbox selection",
       "Search/Filtering",
       "Async loading",
+    ],
+  },
+  {
+    name: "SelectButton",
+    category: "Data Entry",
+    status: "Planned",
+    priority: "High",
+    description: "Multi-option selection interface styled as buttons",
+    features: [
+      "Single and Multiple selection modes",
+      "Icon and Image support for options",
+      "Seamless integration with Aer Variant",
+      "Accessibility (ARIA Radio/Checkbox pattern)",
+    ],
+  },
+  {
+    name: "ToggleButton",
+    category: "Data Entry",
+    status: "Planned",
+    priority: "Medium",
+    description: "Two-state selection component",
+    features: [
+      "Smooth state transitions",
+      "Custom icon state mapping",
+      "Indeterminate state support",
     ],
   },
 
@@ -747,6 +785,44 @@ export const ROADMAP_DATA: ComponentSpec[] = [
       "Image export (PNG/JPG)",
       "Undo/Clear actions",
       "Smooth line interpolation",
+    ],
+  },
+  // --- Aer Innovations ---
+  {
+    name: "VibrantStage",
+    category: "Utilities",
+    status: "Planned",
+    priority: "High",
+    description: "The engine behind Aer's signature glassmorphism",
+    features: [
+      "Declarative animated background blobs",
+      "Mouse-reactive parallax effects",
+      "Optimized GPU-accelerated motion",
+      "Highly configurable speed, scale, and colors",
+    ],
+  },
+  {
+    name: "HotKeyOverlay",
+    category: "Utilities",
+    status: "Planned",
+    priority: "Medium",
+    description: "Visual hotkey discovery layer",
+    features: [
+      "Context-aware shortcut display on modifier hold",
+      "Seamless integration with Shortcut system",
+      "Non-intrusive semi-transparent UI",
+    ],
+  },
+  {
+    name: "StatefulView",
+    category: "Configuration",
+    status: "Planned",
+    priority: "Medium",
+    description: "Declarative UI state persistence system",
+    features: [
+      "Auto-save UI states (sidebar, filters, scroll) to LocalStorage",
+      "Encryption and validation support",
+      "Zero-code persistence for wrapped components",
     ],
   },
 ];

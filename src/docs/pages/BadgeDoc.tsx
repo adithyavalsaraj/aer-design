@@ -1,10 +1,16 @@
 import { Badge } from "@/components/Badge";
 import { Star } from "lucide-react";
-import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
+import {
+  ApiTable,
+  CodeBlock,
+  DocSection,
+  DocTabs,
+  UsageGuidelines,
+} from "../components/shared";
 
 function BasicVariantsExample() {
   return (
-    <div className="flex flex-wrap gap-4 items-center p-6 border rounded-xl bg-aer-muted/5">
+    <div className="flex flex-wrap gap-4 items-center justify-center p-6 border rounded-xl bg-aer-muted/5">
       <Badge variant="filled">Filled</Badge>
       <Badge variant="outline">Outline</Badge>
       <Badge variant="soft">Soft</Badge>
@@ -15,7 +21,7 @@ function BasicVariantsExample() {
 
 function StatusExample() {
   return (
-    <div className="flex flex-wrap gap-4 items-center p-6 border rounded-xl bg-aer-muted/5">
+    <div className="flex flex-wrap gap-4 items-center justify-center p-6 border rounded-xl bg-aer-muted/5">
       <Badge status="default">Default</Badge>
       <Badge status="primary">Primary</Badge>
       <Badge status="success">Success</Badge>
@@ -27,7 +33,7 @@ function StatusExample() {
 
 function SizesExample() {
   return (
-    <div className="flex flex-wrap gap-4 items-center p-6 border rounded-xl bg-aer-muted/5">
+    <div className="flex flex-wrap gap-4 items-center justify-center p-6 border rounded-xl bg-aer-muted/5">
       <Badge size="sm">Small</Badge>
       <Badge size="md">Medium</Badge>
       <Badge size="lg">Large</Badge>
@@ -39,7 +45,7 @@ function AerVariantExample() {
   return (
     <div className="aer-vibrant-container dark">
       <div className="aer-vibrant-bg" />
-      <div className="relative z-10 flex flex-wrap gap-4">
+      <div className="relative z-10 flex flex-wrap gap-4 justify-center">
         <Badge variant="aer" status="primary">
           <Star className="size-3 mr-1" /> Premium
         </Badge>
@@ -109,33 +115,19 @@ export function BadgeDoc() {
         title="When to Use"
         description="Guidelines for choosing the right badge style."
       >
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">Statuses</h4>
-            <p className="text-sm text-aer-muted-foreground">
-              Use status colors to communicate semantic meaning:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground mt-2 space-y-1 list-disc pl-5">
-              <li>Success for positive outcomes (Paid, Active, Done)</li>
-              <li>Warning for pending actions (In Review, Low Stock)</li>
-              <li>Error for critical issues (Failed, Blocked, Overdue)</li>
-              <li>Primary for brand emphasis (New, Featured)</li>
-            </ul>
-          </div>
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Visual Weight
-            </h4>
-            <p className="text-sm text-aer-muted-foreground">
-              Choose variants based on desired prominence:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground mt-2 space-y-1 list-disc pl-5">
-              <li>Filled for high-visibility highlights</li>
-              <li>Soft/Outline for secondary metadata</li>
-              <li>Aer for premium, elevated UI contexts</li>
-            </ul>
-          </div>
-        </div>
+        <UsageGuidelines
+          do={[
+            "Representing dynamic statuses (Paid, Active, Pending)",
+            "Highlighting specific metadata (New, v1.0, Beta)",
+            "Creating count indicators for notifications",
+            "Adding visual emphasis to labels or tags",
+          ]}
+          dont={[
+            "Using badges for primary actions (use Buttons instead)",
+            "Including long sentences within a badge (keep it to 1-2 words)",
+            "Over-using badges in a small area, causing visual noise",
+          ]}
+        />
       </DocSection>
 
       <DocSection
@@ -167,15 +159,15 @@ export function BadgeDoc() {
         title="Custom Usage"
         description="Extending the badge with custom icons or children."
       >
-        <div className="p-6 border rounded-xl bg-aer-muted/5 flex gap-4 overflow-x-auto">
-          <Badge className="bg-linear-to-r from-purple-500 to-pink-500 text-white border-0">
+        <div className="p-6 border rounded-xl bg-aer-muted/5 flex gap-4 overflow-x-auto justify-center">
+          <Badge className="bg-linear-to-r from-cyan-500 to-emerald-500 text-white border-0">
             Gradient
           </Badge>
           <Badge className="border-dashed">Dashed Border</Badge>
         </div>
         <CodeBlock
-          ts={`<Badge className="bg-linear-to-r from-purple-500 to-pink-500 text-white border-0">\n  Gradient\n</Badge>\n<Badge className="border-dashed">Dashed Border</Badge>`}
-          fullCode={`import { Badge } from "aer-design";\n\nexport default function CustomBadges() {\n  return (\n    <div className="flex gap-4">\n      <Badge className="bg-linear-to-r from-purple-500 to-pink-500 text-white border-0 font-extrabold">\n        Premium\n      </Badge>\n      <Badge className="border-dashed border-2 px-4 italic" variant="outline">\n        BETA\n      </Badge>\n    </div>\n  );\n}`}
+          ts={`<Badge className="bg-linear-to-r from-cyan-500 to-emerald-500 text-white border-0">\n  Gradient\n</Badge>\n<Badge className="border-dashed">Dashed Border</Badge>`}
+          fullCode={`import { Badge } from "aer-design";\n\nexport default function CustomBadges() {\n  return (\n    <div className="flex gap-4">\n      <Badge className="bg-linear-to-r from-cyan-500 to-emerald-500 text-white border-0 font-extrabold">\n        Premium\n      </Badge>\n      <Badge className="border-dashed border-2 px-4 italic" variant="outline">\n        BETA\n      </Badge>\n    </div>\n  );\n}`}
         />
       </DocSection>
 
@@ -277,7 +269,7 @@ export function BadgeDoc() {
         title="Interaction States"
         description="Demonstrating visual feedback for various conditions."
       >
-        <div className="flex flex-wrap gap-4 items-center p-6 border rounded-xl bg-aer-muted/5">
+        <div className="flex flex-wrap gap-4 items-center justify-center p-6 border rounded-xl bg-aer-muted/5">
           <Badge className="hover:opacity-80 cursor-help">Hover State</Badge>
           <Badge className="opacity-50 cursor-not-allowed">Disabled</Badge>
         </div>

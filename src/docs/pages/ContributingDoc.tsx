@@ -21,7 +21,7 @@ export function ContributingDoc() {
   return (
     <div className="space-y-12 pb-16" id="hero">
       {/* Hero Section */}
-      <div className="relative overflow-hidden rounded-aer-xl bg-linear-to-br from-green-500/10 via-blue-500/10 to-purple-500/10 p-8 border border-aer-border">
+      <div className="relative overflow-hidden rounded-aer-xl bg-linear-to-br from-green-500/10 via-blue-500/10 to-emerald-500/10 p-8 border border-aer-border">
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-4">
             <div className="size-12 rounded-full bg-aer-primary/10 flex items-center justify-center">
@@ -74,8 +74,8 @@ export function ContributingDoc() {
 
         <Card className="p-6 hover:border-aer-primary/50 transition-colors cursor-pointer">
           <div className="flex items-start gap-3">
-            <div className="size-10 rounded-full bg-purple-500/10 flex items-center justify-center shrink-0">
-              <BookOpen className="size-5 text-purple-500" />
+            <div className="size-10 rounded-full bg-cyan-500/10 flex items-center justify-center shrink-0">
+              <BookOpen className="size-5 text-cyan-500" />
             </div>
             <div>
               <h3 className="font-semibold mb-1">Documentation</h3>
@@ -146,9 +146,9 @@ export function ContributingDoc() {
                   with
                 </p>
               </div>
-              <div className="p-4 rounded-aer-lg bg-purple-500/5 border border-purple-500/20">
+              <div className="p-4 rounded-aer-lg bg-cyan-500/5 border border-cyan-500/20">
                 <div className="flex items-center gap-2 mb-2">
-                  <FileCode className="size-4 text-purple-500" />
+                  <FileCode className="size-4 text-cyan-500" />
                   <span className="font-semibold text-sm">CodeBlock</span>
                 </div>
                 <p className="text-xs text-aer-muted-foreground">

@@ -27,9 +27,9 @@ const cascaderTriggerVariants = cva(
         false: "",
       },
       size: {
-        default: "h-10 text-sm",
-        sm: "h-9 text-xs",
-        lg: "h-11 text-base",
+        default: "min-h-10 text-sm",
+        sm: "min-h-9 text-xs",
+        lg: "min-h-11 text-base",
       },
       isOpen: {
         true: "",
@@ -91,6 +91,7 @@ export function Cascader({
   onBlur,
   matchTriggerWidth = true,
   renderOption,
+  wrapSelection = false,
 }: CascaderProps) {
   const { size: globalSize } = useAerConfig();
   const size = sizeProp || globalSize || "default";
@@ -294,9 +295,21 @@ export function Cascader({
           )}
 
           {/* Display Value / Placeholder */}
-          <div className="relative flex-1 text-left">
+          <div
+            className={cn(
+              "relative flex-1 text-left",
+              wrapSelection ? "whitespace-normal wrap-break-word" : "min-w-0"
+            )}
+          >
             {displayLabel ? (
-              <span className="block truncate">{displayLabel}</span>
+              <span
+                className={cn(
+                  "block",
+                  wrapSelection ? "wrap-break-word" : "truncate"
+                )}
+              >
+                {displayLabel}
+              </span>
             ) : (
               <span className={cn("text-aer-muted-foreground")}>
                 {placeholder}

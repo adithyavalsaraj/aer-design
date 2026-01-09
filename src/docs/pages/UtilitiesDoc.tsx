@@ -132,8 +132,10 @@ export default function App() {
             components and Tailwind utilities (<code>pl-*</code> becomes{" "}
             <code>pr-*</code>, etc.).
           </p>
-          <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5 flex flex-col gap-4">
-            <DemoDirectionToggle />
+          <div className="flex justify-center p-8 border border-aer-border rounded-lg bg-aer-muted/5 w-full">
+            <div className="w-full max-w-lg">
+              <DemoDirectionToggle />
+            </div>
           </div>
           <CodeBlock
             ts={`const { direction, toggleDirection } = useAerConfig();

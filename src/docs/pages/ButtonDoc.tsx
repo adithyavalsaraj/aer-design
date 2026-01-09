@@ -1,7 +1,13 @@
 import { Button } from "@/components/Button";
 import { Download, Mail, Plus, Save, Sparkles, Trash2, X } from "lucide-react";
 import * as React from "react";
-import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
+import {
+  ApiTable,
+  CodeBlock,
+  DocSection,
+  DocTabs,
+  UsageGuidelines,
+} from "../components/shared";
 
 export function ButtonDoc() {
   const overview = (
@@ -43,99 +49,19 @@ export function ButtonDoc() {
         title="When to Use"
         description="Choose the right button variant for your use case."
       >
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Primary Actions
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                default
-              </code>{" "}
-              or{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                aer
-              </code>{" "}
-              variants for:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>Form submissions (Save, Submit, Continue)</li>
-              <li>Primary call-to-action buttons</li>
-              <li>Confirming important actions</li>
-              <li>Hero section CTAs</li>
-            </ul>
-          </div>
-
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Secondary Actions
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                secondary
-              </code>
-              ,{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                outline
-              </code>
-              , or{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                ghost
-              </code>{" "}
-              for:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>Cancel or back actions</li>
-              <li>Secondary options in dialogs</li>
-              <li>Toolbar actions</li>
-              <li>Less prominent interactions</li>
-            </ul>
-          </div>
-
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Destructive Actions
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                destructive
-              </code>{" "}
-              for:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>Delete or remove actions</li>
-              <li>Permanent data changes</li>
-              <li>Actions that cannot be undone</li>
-              <li>Warning confirmations</li>
-            </ul>
-          </div>
-
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Navigation
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                link
-              </code>{" "}
-              or{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                ghost
-              </code>{" "}
-              for:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>In-text navigation links</li>
-              <li>Breadcrumb navigation</li>
-              <li>Subtle navigation options</li>
-              <li>Footer links</li>
-            </ul>
-          </div>
-        </div>
+        <UsageGuidelines
+          do={[
+            "Primary actions like form submissions and main CTAs",
+            "Secondary actions that support the main task",
+            "Destructive actions that require user confirmation",
+            "Navigation tasks where a link-style button is appropriate",
+          ]}
+          dont={[
+            "As a replacement for navigation links (Use Anchor/Link instead)",
+            "Too many primary buttons on a single page",
+            "For purely informational content without an action",
+          ]}
+        />
       </DocSection>
 
       <DocSection
@@ -560,7 +486,7 @@ export default function UserProfileForm() {
   function BasicVariantsExample() {
     return (
       <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5">
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-wrap gap-4 justify-center">
           <Button>Default</Button>
           <Button variant="secondary">Secondary</Button>
           <Button variant="outline">Outline</Button>
@@ -574,7 +500,7 @@ export default function UserProfileForm() {
 
   function AerVariantExample() {
     return (
-      <div className="aer-vibrant-container dark">
+      <div className="aer-vibrant-container dark flex flex-col items-center justify-center">
         <div className="aer-vibrant-bg" />
         <div className="aer-vibrant-blob top-1/3 left-1/4 w-40 h-40 bg-sky-500/30" />
         <div className="aer-vibrant-blob bottom-1/3 right-1/4 w-40 h-40 bg-blue-500/30" />
@@ -591,7 +517,7 @@ export default function UserProfileForm() {
   function IconButtonsExample() {
     return (
       <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5">
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-wrap gap-4 justify-center">
           <Button>
             <Mail className="w-4 h-4 mr-2" />
             Send Email
@@ -622,7 +548,7 @@ export default function UserProfileForm() {
 
     return (
       <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5">
-        <div className="flex gap-4">
+        <div className="flex gap-4 justify-center">
           <Button isLoading={isLoading} onClick={handleClick}>
             {isLoading ? "Submitting..." : "Submit Form"}
           </Button>
@@ -637,7 +563,7 @@ export default function UserProfileForm() {
   function SizesExample() {
     return (
       <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5">
-        <div className="flex items-center flex-wrap gap-4">
+        <div className="flex items-center flex-wrap gap-4 justify-center">
           <Button size="sm">Small</Button>
           <Button>Default</Button>
           <Button size="lg">Large</Button>
@@ -663,7 +589,7 @@ export default function UserProfileForm() {
           />
           I agree to the terms and conditions
         </label>
-        <div className="flex gap-4">
+        <div className="flex gap-4 justify-center">
           <Button disabled={!agreed}>Continue</Button>
           <Button variant="outline" disabled>
             Always Disabled
@@ -702,8 +628,8 @@ export default function UserProfileForm() {
     };
 
     return (
-      <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5">
-        <div className="max-w-md">
+      <div className="p-6 border border-aer-border rounded-lg bg-aer-muted/5 flex justify-center">
+        <div className="max-w-md w-full">
           <h3 className="text-lg font-semibold mb-4 text-aer-foreground">
             Profile Settings
           </h3>
@@ -771,7 +697,7 @@ export default function UserProfileForm() {
 
   function ButtonStylingExample() {
     return (
-      <div className="flex flex-wrap gap-4 items-center">
+      <div className="flex flex-wrap gap-4 items-center justify-center">
         <Button className="rounded-full bg-linear-to-br from-blue-600 to-sky-600 shadow-lg text-white font-medium border-0 px-6">
           Gradient Button
         </Button>

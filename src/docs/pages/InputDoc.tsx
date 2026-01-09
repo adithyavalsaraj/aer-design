@@ -10,7 +10,13 @@ import {
 import { RadioGroup, RadioItem } from "@/components/Radio";
 import { CreditCard, Globe, Search } from "lucide-react";
 import * as React from "react";
-import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
+import {
+  ApiTable,
+  CodeBlock,
+  DocSection,
+  DocTabs,
+  UsageGuidelines,
+} from "../components/shared";
 
 function LabelExample() {
   const [labelPosition, setLabelPosition] = React.useState<"top" | "left">(
@@ -21,44 +27,52 @@ function LabelExample() {
 
   return (
     <div className="space-y-6">
-      {/* Controls */}
-      <div className="flex flex-col items-center gap-x-4 gap-y-2 p-4 bg-aer-muted/20 rounded-lg border border-aer-border">
-        <div className="w-full">
-          <label className="text-sm font-medium text-aer-foreground mb-3 block">
-            Label Position
-          </label>
-          <RadioGroup
-            value={labelPosition}
-            onChange={(val) => setLabelPosition(val as "top" | "left")}
-            className="flex flex-row gap-4"
-          >
-            <RadioItem value="top" label="Top" />
-            <RadioItem value="left" label="Left" />
-          </RadioGroup>
+      {/* Single Card Container */}
+      <div className="flex flex-col border rounded-aer-xl bg-aer-muted/5 divide-y divide-aer-border overflow-hidden">
+        {/* Controls */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-x-6 gap-y-2 p-6 bg-aer-muted/50">
+          <div className="w-full sm:w-auto">
+            <label className="text-sm font-medium text-aer-foreground mb-3 block">
+              Label Position
+            </label>
+            <RadioGroup
+              value={labelPosition}
+              onChange={(val) => setLabelPosition(val as "top" | "left")}
+              orientation="horizontal"
+            >
+              <RadioItem value="top" label="Top" />
+              <RadioItem value="left" label="Left" />
+            </RadioGroup>
+          </div>
+          <div className="flex flex-wrap items-center justify-end gap-4 sm:pt-8">
+            <Checkbox
+              checked={required}
+              onChange={(e) => setRequired(e.target.checked)}
+              label="Required"
+              className="w-fit"
+            />
+            <Checkbox
+              checked={helperText}
+              onChange={(e) => setHelperText(e.target.checked)}
+              label="Helper Text"
+              className="w-fit"
+            />
+          </div>
         </div>
-        <div className="flex w-full items-center gap-4">
-          <Checkbox
-            checked={required}
-            onChange={(e) => setRequired(e.target.checked)}
-            label="Required"
-          />
-          <Checkbox
-            checked={helperText}
-            onChange={(e) => setHelperText(e.target.checked)}
-            label="Helper Text"
-          />
-        </div>
-      </div>
 
-      {/* Example */}
-      <div className="max-w-2xl">
-        <Input
-          label="Username"
-          labelPosition={labelPosition}
-          required={required}
-          helperText={helperText ? "Enter your username" : undefined}
-          placeholder="johndoe"
-        />
+        {/* Example */}
+        <div className="flex justify-center p-12 bg-aer-background">
+          <div className="max-w-md w-full">
+            <Input
+              label="Username"
+              labelPosition={labelPosition}
+              required={required}
+              helperText={helperText ? "Enter your username" : undefined}
+              placeholder="johndoe"
+              className="w-full"
+            />
+          </div>
+        </div>
       </div>
 
       {/* Code */}
@@ -176,72 +190,19 @@ export function InputDoc() {
         title="When to Use"
         description="Choose the right input variant and features for your use case."
       >
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Standard Inputs
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use basic{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                Input
-              </code>{" "}
-              for:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>Name, address, and general text fields</li>
-              <li>Search boxes with icon indicators</li>
-              <li>Simple form inputs without special formatting</li>
-              <li>Custom input types (number, date, etc.)</li>
-            </ul>
-          </div>
-
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Specialized Inputs
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                PasswordInput
-              </code>
-              ,{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                EmailInput
-              </code>
-              , or{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                PhoneInput
-              </code>{" "}
-              for:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>Login and registration forms</li>
-              <li>Password fields with show/hide toggle</li>
-              <li>Email validation with proper formatting</li>
-              <li>Phone numbers with country codes</li>
-            </ul>
-          </div>
-
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Masked Inputs
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use{" "}
-              <code className="text-xs bg-aer-muted px-1.5 py-0.5 rounded">
-                MaskedInput
-              </code>{" "}
-              for:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>Credit card numbers (#### #### #### ####)</li>
-              <li>Dates and times (DD/MM/YYYY, HH:MM)</li>
-              <li>Phone numbers with specific formats</li>
-              <li>Custom patterns (SSN, license plates, etc.)</li>
-            </ul>
-          </div>
-        </div>
+        <UsageGuidelines
+          do={[
+            "Standard text collection like names, addresses, or identifiers",
+            "Search functionality using icons and clear buttons",
+            "Specialized data like emails, passwords, or phone numbers",
+            "Formatted data collection using pattern masks (credit cards, dates)",
+          ]}
+          dont={[
+            "Long-form multi-line text (use Textarea instead)",
+            "Selecting from a predefined list (use Dropdown or Autocomplete)",
+            "Simple yes/no toggles (use Checkbox or Switch)",
+          ]}
+        />
       </DocSection>
 
       <DocSection
@@ -249,9 +210,11 @@ export function InputDoc() {
         id="basic"
         description="Simple text inputs for common use cases."
       >
-        <div className="max-w-sm space-y-4">
-          <Input placeholder="Enter your full name" />
-          <Input disabled placeholder="Account restricted" />
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-sm w-full space-y-4">
+            <Input placeholder="Enter your full name" />
+            <Input disabled placeholder="Account restricted" />
+          </div>
         </div>
         <CodeBlock
           ts={`<Input placeholder="Enter your full name" />\n<Input disabled placeholder="Account restricted" />`}
@@ -265,22 +228,24 @@ export function InputDoc() {
         id="variants"
         description="Three distinct visual styles for different design aesthetics."
       >
-        <div className="max-w-sm space-y-6">
-          <div>
-            <label className="text-sm font-medium mb-1.5 block">
-              Outline (Default)
-            </label>
-            <Input variant="outline" placeholder="Outline Style" />
-          </div>
-          <div>
-            <label className="text-sm font-medium mb-1.5 block">Filled</label>
-            <Input variant="filled" placeholder="Filled Style" />
-          </div>
-          <div>
-            <label className="text-sm font-medium mb-1.5 block">
-              Underlined
-            </label>
-            <Input variant="underlined" placeholder="Underlined Style" />
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-sm w-full space-y-6">
+            <div>
+              <label className="text-sm font-medium mb-1.5 block">
+                Outline (Default)
+              </label>
+              <Input variant="outline" placeholder="Outline Style" />
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-1.5 block">Filled</label>
+              <Input variant="filled" placeholder="Filled Style" />
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-1.5 block">
+                Underlined
+              </label>
+              <Input variant="underlined" placeholder="Underlined Style" />
+            </div>
           </div>
         </div>
         <CodeBlock
@@ -294,12 +259,12 @@ export function InputDoc() {
         id="aer-variant"
         description="Premium glassmorphism effect for modern, high-end interfaces."
       >
-        <div className="aer-vibrant-container dark">
+        <div className="aer-vibrant-container dark flex flex-col items-center justify-center">
           <div className="aer-vibrant-bg" />
           <div className="aer-vibrant-blob w-40 h-40 bg-sky-500/30 top-1/4 left-1/3" />
           <div className="aer-vibrant-blob w-40 h-40 bg-blue-500/30 bottom-1/4 right-1/3" />
 
-          <div className="relative z-10 max-w-sm mx-auto space-y-4">
+          <div className="relative z-10 max-w-sm w-full mx-auto space-y-4">
             <Input
               variant="aer"
               placeholder="Premium glassmorphism input"
@@ -350,22 +315,34 @@ export default function AerInputExample() {
         id="sizes"
         description="Three size options to fit different layouts and use cases."
       >
-        <div className="max-w-sm space-y-6">
-          <div>
-            <label className="text-sm font-medium mb-1.5 block">Small</label>
-            <Input size="sm" placeholder="Small Input" startIcon={<Search />} />
-          </div>
-          <div>
-            <label className="text-sm font-medium mb-1.5 block">Default</label>
-            <Input
-              size="default"
-              placeholder="Default Input"
-              startIcon={<Search />}
-            />
-          </div>
-          <div>
-            <label className="text-sm font-medium mb-1.5 block">Large</label>
-            <Input size="lg" placeholder="Large Input" startIcon={<Search />} />
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-sm w-full space-y-6">
+            <div>
+              <label className="text-sm font-medium mb-1.5 block">Small</label>
+              <Input
+                size="sm"
+                placeholder="Small Input"
+                startIcon={<Search />}
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-1.5 block">
+                Default
+              </label>
+              <Input
+                size="default"
+                placeholder="Default Input"
+                startIcon={<Search />}
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-1.5 block">Large</label>
+              <Input
+                size="lg"
+                placeholder="Large Input"
+                startIcon={<Search />}
+              />
+            </div>
           </div>
         </div>
         <CodeBlock
@@ -379,10 +356,12 @@ export default function AerInputExample() {
         id="specialized"
         description="Pre-configured inputs for email, password, and phone with built-in features."
       >
-        <div className="max-w-sm space-y-4">
-          <PasswordInput placeholder="Enter password" />
-          <EmailInput placeholder="johndoe@aer-design.com" />
-          <PhoneInput placeholder="+1 (555) 000-0000" />
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-sm w-full space-y-4">
+            <PasswordInput placeholder="Enter password" />
+            <EmailInput placeholder="johndoe@aer-design.com" />
+            <PhoneInput placeholder="+1 (555) 000-0000" />
+          </div>
         </div>
         <CodeBlock
           ts={`<PasswordInput placeholder="Enter password" />\n<EmailInput placeholder="johndoe@aer-design.com" />\n<PhoneInput placeholder="+1 (555) 000-0000" />`}
@@ -395,13 +374,15 @@ export default function AerInputExample() {
         id="masking"
         description="Pattern-based masking for formatted data."
       >
-        <div className="max-w-sm space-y-4">
-          <MaskedInput
-            mask="#### #### #### ####"
-            startIcon={<CreditCard />}
-            placeholder="Card Number"
-          />
-          <MaskedInput mask="## / ## / ####" placeholder="DD / MM / YYYY" />
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-sm w-full space-y-4">
+            <MaskedInput
+              mask="#### #### #### ####"
+              startIcon={<CreditCard />}
+              placeholder="Card Number"
+            />
+            <MaskedInput mask="## / ## / ####" placeholder="DD / MM / YYYY" />
+          </div>
         </div>
         <CodeBlock
           ts={`<MaskedInput mask="#### #### #### ####" startIcon={<CreditCard />} />\n<MaskedInput mask="## / ## / ####" placeholder="DD / MM / YYYY" />`}
@@ -422,15 +403,17 @@ export default function AerInputExample() {
         id="icons"
         description="Enhanced visibility for contextual information."
       >
-        <div className="max-w-sm space-y-4">
-          <Input startIcon={<Search />} placeholder="Search components..." />
-          <Input prefix="https://" placeholder="yourdomain.com" />
-          <Input
-            startIcon={<Globe />}
-            prefix="https://"
-            placeholder="portfolio.design"
-          />
-          <Input prefix="aer-design-workspace-" placeholder="my-team-id" />
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-sm w-full space-y-4">
+            <Input startIcon={<Search />} placeholder="Search components..." />
+            <Input prefix="https://" placeholder="yourdomain.com" />
+            <Input
+              startIcon={<Globe />}
+              prefix="https://"
+              placeholder="portfolio.design"
+            />
+            <Input prefix="aer-design-workspace-" placeholder="my-team-id" />
+          </div>
         </div>
         <CodeBlock
           ts={`<Input startIcon={<Search />} placeholder="Search..." />\n<Input prefix="https://" placeholder="yourdomain.com" />\n<Input \n  startIcon={<Globe />} \n  prefix="https://" \n  placeholder="portfolio.design" \n/>\n<Input prefix="aer-design-workspace-" placeholder="my-team-id" />`}
@@ -443,16 +426,18 @@ export default function AerInputExample() {
         id="addons"
         description="Attached elements like buttons or fixed text."
       >
-        <div className="max-w-sm space-y-4">
-          <Input addonBefore="https://" placeholder="aer-design.com" />
-          <Input
-            placeholder="sk_live_51P..."
-            addonAfter={
-              <Button variant="ghost" size="sm" className="h-7 px-2">
-                Regenerate
-              </Button>
-            }
-          />
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-sm w-full space-y-4">
+            <Input addonBefore="https://" placeholder="aer-design.com" />
+            <Input
+              placeholder="sk_live_51P..."
+              addonAfter={
+                <Button variant="ghost" size="sm" className="h-7 px-2">
+                  Regenerate
+                </Button>
+              }
+            />
+          </div>
         </div>
         <CodeBlock
           ts={`<Input addonBefore="https://" placeholder="aer-design.com" />\n<Input \n  placeholder="sk_live..." \n  addonAfter={<Button variant="ghost" size="sm">Regenerate</Button>} \n/>`}
@@ -465,35 +450,37 @@ export default function AerInputExample() {
         id="granular-styling"
         description="Precise control over styling with element-specific className props."
       >
-        <div className="max-w-sm space-y-6">
-          <div className="space-y-2">
-            <p className="text-sm font-medium text-aer-muted-foreground">
-              className - Root container (spacing/layout)
-            </p>
-            <Input
-              className="mb-4 w-full"
-              placeholder="Spacing and layout"
-              startIcon={<Search />}
-            />
-          </div>
-          <div className="space-y-2">
-            <p className="text-sm font-medium text-aer-muted-foreground">
-              inputClassName - Input element (text styling)
-            </p>
-            <Input
-              inputClassName="text-lg font-bold text-sky-600"
-              placeholder="Custom text styling"
-            />
-          </div>
-          <div className="space-y-2">
-            <p className="text-sm font-medium text-aer-muted-foreground">
-              iconClassName - Icon containers
-            </p>
-            <Input
-              startIcon={<Search />}
-              iconClassName="text-emerald-500"
-              placeholder="Custom icon color"
-            />
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-sm w-full space-y-6">
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-aer-muted-foreground">
+                className - Root container (spacing/layout)
+              </p>
+              <Input
+                className="mb-4 w-full"
+                placeholder="Spacing and layout"
+                startIcon={<Search />}
+              />
+            </div>
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-aer-muted-foreground">
+                inputClassName - Input element (text styling)
+              </p>
+              <Input
+                inputClassName="text-lg font-bold text-sky-600"
+                placeholder="Custom text styling"
+              />
+            </div>
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-aer-muted-foreground">
+                iconClassName - Icon containers
+              </p>
+              <Input
+                startIcon={<Search />}
+                iconClassName="text-emerald-500"
+                placeholder="Custom icon color"
+              />
+            </div>
           </div>
         </div>
         <CodeBlock
@@ -539,9 +526,11 @@ export default function GranularStyling() {
         id="validation"
         description="Error states and validation feedback for form inputs."
       >
-        <div className="max-w-sm space-y-4">
-          <Input placeholder="Error toggle" error />
-          <Input placeholder="With valid state" />
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-sm w-full space-y-4">
+            <Input placeholder="Error toggle" error />
+            <Input placeholder="With valid state" />
+          </div>
         </div>
         <CodeBlock
           ts={`<Input placeholder="Invalid input" error />`}
@@ -587,27 +576,29 @@ export default function GranularStyling() {
     const isInvalid = touched && value.trim().length === 0;
 
     return (
-      <div className="max-w-sm space-y-1.5 p-6 border rounded-aer-xl bg-aer-muted/5">
-        <label className="text-sm font-medium text-aer-foreground flex items-center gap-1">
-          Full Name <span className="text-red-500 font-bold">*</span>
-        </label>
-        <Input
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          onBlur={() => setTouched(true)}
-          error={isInvalid}
-          placeholder="e.g. John Doe"
-        />
-        <div className="h-4">
-          {isInvalid && (
-            <span className="text-xs text-red-500 font-medium animate-in slide-in-from-top-1 fade-in duration-200 block">
-              Full Name is required
-            </span>
-          )}
-        </div>
-        <div className="pt-2 text-xs text-aer-muted-foreground font-mono">
-          Status: {isInvalid ? "Error" : "Valid"} • Touched:{" "}
-          {touched ? "Yes" : "No"}
+      <div className="flex justify-center w-full">
+        <div className="max-w-sm w-full space-y-1.5 p-8 border rounded-aer-xl bg-aer-muted/5">
+          <label className="text-sm font-medium text-aer-foreground flex items-center gap-1">
+            Full Name <span className="text-red-500 font-bold">*</span>
+          </label>
+          <Input
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            onBlur={() => setTouched(true)}
+            error={isInvalid}
+            placeholder="e.g. John Doe"
+          />
+          <div className="h-4">
+            {isInvalid && (
+              <span className="text-xs text-red-500 font-medium animate-in slide-in-from-top-1 fade-in duration-200 block">
+                Full Name is required
+              </span>
+            )}
+          </div>
+          <div className="pt-2 text-xs text-aer-muted-foreground font-mono">
+            Status: {isInvalid ? "Error" : "Valid"} • Touched:{" "}
+            {touched ? "Yes" : "No"}
+          </div>
         </div>
       </div>
     );

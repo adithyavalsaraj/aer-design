@@ -11,7 +11,13 @@ import {
   User,
 } from "lucide-react";
 import * as React from "react";
-import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
+import {
+  ApiTable,
+  CodeBlock,
+  DocSection,
+  DocTabs,
+  UsageGuidelines,
+} from "../components/shared";
 
 export function TooltipDoc() {
   function ScrollBehaviorExample() {
@@ -21,38 +27,41 @@ export function TooltipDoc() {
 
     return (
       <div className="space-y-6 w-full">
-        <div className="flex flex-col items-center gap-x-4 gap-y-2 p-4 bg-aer-muted/20 rounded-lg border border-aer-border">
-          <div className="w-full">
-            <label className="text-sm font-medium text-aer-foreground mb-3 block">
+        <div className="flex flex-col items-center justify-center p-8 gap-8 border border-aer-border rounded-lg bg-aer-muted/5">
+          <div className="flex flex-col items-center gap-4 w-full max-w-md text-center">
+            <label className="text-sm font-medium text-aer-foreground">
               Scroll Behavior
             </label>
             <RadioGroup
               value={behavior}
               onChange={(val) => setBehavior(val as "reposition" | "close")}
-              className="flex flex-row gap-4"
+              orientation="horizontal"
+              className="justify-center"
             >
               <RadioItem value="reposition" label="Reposition (Follow)" />
               <RadioItem value="close" label="Close on Scroll" />
             </RadioGroup>
           </div>
-        </div>
 
-        <div className="p-12 border border-aer-border rounded-lg bg-aer-muted/5 flex flex-col items-center">
-          <p className="text-xs text-aer-muted-foreground mb-4 italic">
-            Open the tooltip and scroll this section or the page
-          </p>
-          <Tooltip
-            scrollBehavior={behavior}
-            content="Context follows on scroll!"
-            className="max-w-xs"
-          >
-            <Button variant="outline">Interactive test</Button>
-          </Tooltip>
+          <div className="w-full h-px bg-aer-border/50" />
+
+          <div className="flex flex-col items-center p-4">
+            <p className="text-xs text-aer-muted-foreground mb-4 italic">
+              Open the tooltip and scroll this section or the page
+            </p>
+            <Tooltip
+              scrollBehavior={behavior}
+              content="Context follows on scroll!"
+              className="max-w-xs"
+            >
+              <Button variant="outline">Interactive test</Button>
+            </Tooltip>
+          </div>
         </div>
 
         <CodeBlock
           ts={`<Tooltip \n  scrollBehavior="${behavior}" \n  content="..."\n>\n  <Button>...</Button>\n</Tooltip>`}
-          fullCode={`import { Tooltip, Button, RadioGroup, RadioItem } from "aer-design";\nimport { useState } from "react";\n\nexport default function TooltipScrollBehavior() {\n  const [behavior, setBehavior] = useState<"reposition" | "close">("close");\n\n  return (\n    <div className="space-y-6 w-full">\n      <div className="flex flex-col items-center gap-x-4 gap-y-2 p-4 bg-aer-muted/20 rounded-lg border border-aer-border">\n        <div className="w-full text-left">\n          <label className="text-sm font-medium text-aer-foreground mb-3 block">\n            Scroll Behavior\n          </label>\n          <RadioGroup\n            value={behavior}\n            onChange={(val) => setBehavior(val as "reposition" | "close")}\n            className="flex flex-row gap-4"\n          >\n            <RadioItem value="reposition" label="Reposition (Follow)" />\n            <RadioItem value="close" label="Close on Scroll" />\n          </RadioGroup>\n        </div>\n      </div>\n\n      <div className="p-12 border border-aer-border rounded-lg bg-aer-muted/5 flex flex-col items-center">\n        <p className="text-xs text-aer-muted-foreground mb-4 italic">\n          Open the tooltip and scroll this section or the page\n        </p>\n        <Tooltip\n          scrollBehavior={behavior}\n          content="Context follows on scroll!"\n          className="max-w-xs"\n        >\n          <Button variant="outline">Interactive test</Button>\n        </Tooltip>\n      </div>\n    </div>\n  );\n}`}
+          fullCode={`import { Tooltip, Button, RadioGroup, RadioItem } from "aer-design";\nimport { useState } from "react";\n\nexport default function TooltipScrollBehavior() {\n  const [behavior, setBehavior] = useState<"reposition" | "close">("close");\n\n  return (\n    <div className="space-y-6 w-full">\n      <div className="flex flex-col items-center justify-center p-8 gap-8 border border-aer-border rounded-lg bg-aer-muted/5">\n        <div className="flex flex-col items-center gap-4 w-full max-w-md text-center">\n          <label className="text-sm font-medium text-aer-foreground">\n            Scroll Behavior\n          </label>\n          <RadioGroup\n            value={behavior}\n            onChange={(val) => setBehavior(val as "reposition" | "close")}\n            orientation="horizontal"\n            className="justify-center"\n          >\n            <RadioItem value="reposition" label="Reposition (Follow)" />\n            <RadioItem value="close" label="Close on Scroll" />\n          </RadioGroup>\n        </div>\n\n        <div className="w-full h-px bg-aer-border/50" />\n\n        <div className="flex flex-col items-center p-4">\n          <p className="text-xs text-aer-muted-foreground mb-4 italic">\n            Open the tooltip and scroll this section or the page\n          </p>\n          <Tooltip\n            scrollBehavior={behavior}\n            content="Context follows on scroll!"\n            className="max-w-xs"\n          >\n            <Button variant="outline">Interactive test</Button>\n          </Tooltip>\n        </div>\n      </div>\n    </div>\n  );\n}`}
         />
       </div>
     );
@@ -99,32 +108,21 @@ export function TooltipDoc() {
         id="when-to-use"
         description="Best practices for tooltip usage."
       >
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Use tooltips when:
-            </h4>
-            <ul className="text-sm text-aer-muted-foreground space-y-2 list-disc pl-5">
-              <li>Providing brief, supplementary information</li>
-              <li>Explaining icon-only buttons or controls</li>
-              <li>Showing keyboard shortcuts</li>
-              <li>Displaying truncated text in full</li>
-              <li>Adding context to form fields</li>
-            </ul>
-          </div>
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Avoid tooltips when:
-            </h4>
-            <ul className="text-sm text-aer-muted-foreground space-y-2 list-disc pl-5">
-              <li>Information is critical to task completion</li>
-              <li>Content is lengthy or complex (use popover instead)</li>
-              <li>On mobile devices (use click trigger or alternatives)</li>
-              <li>Repeating visible label text</li>
-              <li>Containing interactive elements</li>
-            </ul>
-          </div>
-        </div>
+        <UsageGuidelines
+          do={[
+            "Providing brief, supplementary information",
+            "Explaining icon-only buttons or controls",
+            "Showing keyboard shortcuts",
+            "Displaying truncated text in full",
+            "Adding context to form fields without clutter",
+          ]}
+          dont={[
+            "Information critical to task completion",
+            "Lengthy or complex content (Use Popover instead)",
+            "On mobile devices where hover isn't possible",
+            "Repeating visible label text",
+          ]}
+        />
       </DocSection>
 
       <DocSection
@@ -208,7 +206,7 @@ export default function TooltipVariants() {
         title="The Aer Variant"
         description="Our signature glassmorphism effect for premium interfaces."
       >
-        <div className="aer-vibrant-container p-24">
+        <div className="aer-vibrant-container p-8">
           <div className="aer-vibrant-bg-wrapper">
             <div className="aer-vibrant-bg" />
             <div className="aer-vibrant-blob top-1/2 left-1/3 w-32 h-32 bg-sky-500/30" />
@@ -328,7 +326,7 @@ export default function TooltipPositioning() {
         id="alignment"
         description="Align tooltips relative to the trigger element."
       >
-        <div className="flex flex-col gap-4 p-8 border border-aer-border rounded-lg bg-aer-muted/5">
+        <div className="flex flex-col items-center gap-4 p-8 border border-aer-border rounded-lg bg-aer-muted/5">
           <Tooltip content="Start aligned" side="bottom" align="start">
             <Button variant="outline" className="w-48">
               Align Start
@@ -384,7 +382,7 @@ export default function TooltipAlignment() {
         id="trigger"
         description="Control how tooltips are activated."
       >
-        <div className="flex flex-wrap items-center gap-4 p-8 border border-aer-border rounded-lg bg-aer-muted/5">
+        <div className="flex flex-wrap items-center justify-center gap-4 p-8 border border-aer-border rounded-lg bg-aer-muted/5">
           <Tooltip content="Hover to see this tooltip" trigger="hover">
             <Button variant="outline">Hover Trigger</Button>
           </Tooltip>

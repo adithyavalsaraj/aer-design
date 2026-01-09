@@ -1,6 +1,12 @@
 import { Textarea } from "@/components/Textarea";
 import * as React from "react";
-import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
+import {
+  ApiTable,
+  CodeBlock,
+  DocSection,
+  DocTabs,
+  UsageGuidelines,
+} from "../components/shared";
 
 export function TextareaDoc() {
   const overview = (
@@ -43,41 +49,26 @@ export function TextareaDoc() {
         title="When to Use"
         description="Guidance on when to use a Textarea versus other inputs."
       >
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Long Form Content
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use Textarea for inputs expected to exceed a single line:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>Comments and feedback forms</li>
-              <li>Bio or description fields</li>
-              <li>Support ticket details</li>
-              <li>Address inputs</li>
-            </ul>
-          </div>
-
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Fixed Height
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use the `rows` prop or `min-h-*` classes to set initial size:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>When you want to encourage detailed responses</li>
-              <li>To prevent layout shifts during input</li>
-              <li>To align with other large form elements</li>
-            </ul>
-          </div>
-        </div>
+        <UsageGuidelines
+          do={[
+            "Comments, feedback, or review sections",
+            "Long-form bios, descriptions, or articles",
+            "Detailed support ticket descriptions",
+            "Complex data entry like addresses or multi-line notes",
+          ]}
+          dont={[
+            "Single-line inputs (use Input instead)",
+            "Brief data points like usernames, emails, or phone numbers",
+            "Purely numeric data entry",
+          ]}
+        />
       </DocSection>
 
       <DocSection title="Basic Usage" id="basic">
-        <div className="max-w-xl">
-          <Textarea placeholder="Type your message here..." />
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-xl w-full">
+            <Textarea placeholder="Type your message here..." />
+          </div>
         </div>
         <CodeBlock
           ts={`<Textarea placeholder="Type your message here..." />`}
@@ -86,22 +77,24 @@ export function TextareaDoc() {
       </DocSection>
 
       <DocSection title="Variants" id="variants">
-        <div className="max-w-xl space-y-6">
-          <div>
-            <label className="text-sm font-medium mb-1.5 block">
-              Outline (Default)
-            </label>
-            <Textarea placeholder="Outline Style" />
-          </div>
-          <div>
-            <label className="text-sm font-medium mb-1.5 block">Filled</label>
-            <Textarea variant="filled" placeholder="Filled Style" />
-          </div>
-          <div>
-            <label className="text-sm font-medium mb-1.5 block">
-              Underlined
-            </label>
-            <Textarea variant="underlined" placeholder="Underlined Style" />
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-xl w-full space-y-6">
+            <div>
+              <label className="text-sm font-medium mb-1.5 block">
+                Outline (Default)
+              </label>
+              <Textarea placeholder="Outline Style" />
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-1.5 block">Filled</label>
+              <Textarea variant="filled" placeholder="Filled Style" />
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-1.5 block">
+                Underlined
+              </label>
+              <Textarea variant="underlined" placeholder="Underlined Style" />
+            </div>
           </div>
         </div>
         <CodeBlock
@@ -145,18 +138,22 @@ export function TextareaDoc() {
       </DocSection>
 
       <DocSection title="Sizes" id="sizes">
-        <div className="max-w-xl space-y-4">
-          <div>
-            <label className="text-sm font-medium mb-1.5 block">Small</label>
-            <Textarea size="sm" placeholder="Small textarea" />
-          </div>
-          <div>
-            <label className="text-sm font-medium mb-1.5 block">Default</label>
-            <Textarea size="default" placeholder="Default textarea" />
-          </div>
-          <div>
-            <label className="text-sm font-medium mb-1.5 block">Large</label>
-            <Textarea size="lg" placeholder="Large textarea" />
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-xl w-full space-y-4">
+            <div>
+              <label className="text-sm font-medium mb-1.5 block">Small</label>
+              <Textarea size="sm" placeholder="Small textarea" />
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-1.5 block">
+                Default
+              </label>
+              <Textarea size="default" placeholder="Default textarea" />
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-1.5 block">Large</label>
+              <Textarea size="lg" placeholder="Large textarea" />
+            </div>
           </div>
         </div>
         <CodeBlock
@@ -166,21 +163,23 @@ export function TextareaDoc() {
       </DocSection>
 
       <DocSection title="Label" id="label">
-        <div className="max-w-xl space-y-6">
-          <Textarea label="Feedback" placeholder="Type your feedback..." />
-          <Textarea
-            label="Description"
-            labelPosition="left"
-            labelWidth="120px"
-            placeholder="Enter description"
-            className="min-h-[120px]"
-          />
-          <Textarea
-            label="Comments"
-            required
-            helperText="Please provide detailed comments"
-            placeholder="Your comments..."
-          />
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-xl w-full space-y-6">
+            <Textarea label="Feedback" placeholder="Type your feedback..." />
+            <Textarea
+              label="Description"
+              labelPosition="left"
+              labelWidth="120px"
+              placeholder="Enter description"
+              className="min-h-[120px]"
+            />
+            <Textarea
+              label="Comments"
+              required
+              helperText="Please provide detailed comments"
+              placeholder="Your comments..."
+            />
+          </div>
         </div>
         <CodeBlock
           ts={`<Textarea label="Feedback" placeholder="Type your feedback..." />\n\n<Textarea \n  label="Description" \n  labelPosition="left" \n  labelWidth="120px"\n  placeholder="Enter description" \n  className="min-h-[120px]" \n/>\n\n<Textarea \n  label="Comments" \n  required \n  helperText="Please provide detailed comments"\n  placeholder="Your comments..." \n/>`}
@@ -192,24 +191,26 @@ export function TextareaDoc() {
         id="granular-styling"
         description="Precise control over styling with element-specific className props."
       >
-        <div className="max-w-sm space-y-6">
-          <div className="space-y-2">
-            <p className="text-sm font-medium text-aer-muted-foreground">
-              className - Root container (spacing/layout)
-            </p>
-            <Textarea
-              className="mb-4 w-full"
-              placeholder="Spacing and layout"
-            />
-          </div>
-          <div className="space-y-2">
-            <p className="text-sm font-medium text-aer-muted-foreground">
-              textareaClassName - Textarea element (text styling)
-            </p>
-            <Textarea
-              textareaClassName="text-lg font-bold text-sky-600"
-              placeholder="Custom text styling"
-            />
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-sm w-full space-y-6">
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-aer-muted-foreground">
+                className - Root container (spacing/layout)
+              </p>
+              <Textarea
+                className="mb-4 w-full"
+                placeholder="Spacing and layout"
+              />
+            </div>
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-aer-muted-foreground">
+                textareaClassName - Textarea element (text styling)
+              </p>
+              <Textarea
+                textareaClassName="text-lg font-bold text-sky-600"
+                placeholder="Custom text styling"
+              />
+            </div>
           </div>
         </div>
         <CodeBlock
@@ -238,8 +239,10 @@ export default function GranularStyling() {
       </DocSection>
 
       <DocSection title="Validation" id="validation">
-        <div className="max-w-xl">
-          <Textarea placeholder="Error state" error />
+        <div className="flex justify-center p-8 border rounded-lg bg-aer-muted/5">
+          <div className="max-w-xl w-full">
+            <Textarea placeholder="Error state" error />
+          </div>
         </div>
         <CodeBlock
           ts={`<Textarea placeholder="Error state" error />`}
@@ -294,7 +297,7 @@ export default function ValidationExample() {
     const isInvalid = touched && value.trim().length < 10;
 
     return (
-      <div className="max-w-xl space-y-1.5 p-6 border rounded-aer-xl bg-aer-muted/5">
+      <div className="max-w-xl w-full space-y-1.5 p-8 border rounded-aer-xl bg-aer-muted/5 mx-auto">
         <label className="text-sm font-medium text-aer-foreground flex items-center gap-1">
           Description <span className="text-red-500 font-bold">*</span>
         </label>

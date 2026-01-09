@@ -6,13 +6,15 @@ import { formatShortcut, MODIFIER_KEYS, normalizeKey } from "./utils";
 
 export interface ShortcutRecorderProps {
   actionId: string;
-  className?: string;
+  className?: string; // Styles the interactive button
+  rootClassName?: string; // Styles the outer wrapper
   placeholder?: string;
 }
 
 export const ShortcutRecorder: React.FC<ShortcutRecorderProps> = ({
   actionId,
   className,
+  rootClassName,
   placeholder = "Click to record shortcut",
 }) => {
   const { shortcuts, updateShortcut, resetShortcut } = useShortcutContext();
@@ -93,7 +95,9 @@ export const ShortcutRecorder: React.FC<ShortcutRecorderProps> = ({
   const hasShortcut = effectiveKeys.length > 0;
 
   return (
-    <div className={cn("relative inline-flex items-center group", className)}>
+    <div
+      className={cn("relative inline-flex items-center group", rootClassName)}
+    >
       <button
         ref={buttonRef}
         type="button"
@@ -105,7 +109,8 @@ export const ShortcutRecorder: React.FC<ShortcutRecorderProps> = ({
           isRecording
             ? "border-aer-primary ring-2 ring-aer-primary/20 text-aer-primary bg-aer-primary/5"
             : "border-aer-border bg-aer-background hover:bg-aer-muted text-aer-foreground",
-          !hasShortcut && !isRecording && "text-aer-muted-foreground italic"
+          !hasShortcut && !isRecording && "text-aer-muted-foreground italic",
+          className
         )}
       >
         {displayValue || placeholder}

@@ -12,6 +12,7 @@ interface RadioGroupContextValue {
   disabled?: boolean;
   error?: boolean | string;
   size?: "sm" | "default" | "lg";
+  orientation?: "vertical" | "horizontal";
 }
 
 const RadioGroupContext = React.createContext<RadioGroupContextValue>({});
@@ -27,6 +28,7 @@ export interface RadioGroupProps
   disabled?: boolean;
   error?: boolean | string;
   size?: "sm" | "default" | "lg";
+  orientation?: "vertical" | "horizontal";
 }
 
 const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(
@@ -40,6 +42,7 @@ const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(
       disabled,
       error,
       size,
+      orientation = "vertical",
       children,
       ...props
     },
@@ -65,12 +68,19 @@ const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(
           disabled,
           error,
           size,
+          orientation,
         }}
       >
         <div
           ref={ref}
-          className={cn("grid gap-2", className)}
+          className={cn(
+            orientation === "horizontal"
+              ? "flex flex-wrap gap-4"
+              : "grid gap-2",
+            className
+          )}
           role="radiogroup"
+          aria-orientation={orientation}
           {...props}
         >
           {children}
@@ -87,7 +97,7 @@ RadioGroup.displayName = "RadioGroup";
 // --- Radio Item Styling ---
 
 const radioItemVariants = cva(
-  "group flex w-full cursor-pointer relative transition-all duration-200 outline-none gap-3",
+  "group flex cursor-pointer relative transition-all duration-200 outline-none gap-3",
   {
     variants: {
       labelPosition: {
@@ -189,6 +199,7 @@ const RadioItem = React.forwardRef<HTMLInputElement, RadioItemProps>(
     const isChecked = context.value === value;
     const isDisabled = disabled || context.disabled;
     const isVertical = labelPosition === "top" || labelPosition === "bottom";
+    const isGroupHorizontal = context.orientation === "horizontal";
 
     const sizeStyles = {
       sm: {
@@ -219,6 +230,7 @@ const RadioItem = React.forwardRef<HTMLInputElement, RadioItemProps>(
         className={cn(
           radioItemVariants({ labelPosition, align, variant }),
           isDisabled && "cursor-not-allowed opacity-50",
+          !isGroupHorizontal ? "w-full" : "w-auto py-0",
           className
         )}
       >

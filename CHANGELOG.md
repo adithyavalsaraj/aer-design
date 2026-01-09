@@ -2,7 +2,31 @@
 
 All notable changes to the Aer Design project will be documented in this file.
 
-## [v0.14.1] - 2026-01-09
+## [v0.14.2] - 2026-01-10
+
+### Bug Fixes
+
+- **Autocomplete**: Fixed a critical selection regression where the input would blur and close the dropdown before the option click event could be processed.
+- **Tooltip**: Fixed `click` trigger behavior to correctly close when clicking outside the tooltip content.
+- **Dropdown & Cascader**: Fixed the implementation of the `wrapSelection` prop to correctly toggle white-space wrapping in the selection display.
+- **Dropdown Documentation**: Resolved severe JSX syntax errors in `DropdownDoc.tsx` which caused page crashes and restored missing `ScrollBehaviorExample` code.
+- **Documentation Lints**: Resolved TypeScript prop-type errors for the `UsageGuidelines` component across multiple pages.
+
+### Documentation Standardization
+
+- **Usage Guidelines**: Rolled out the standardized `UsageGuidelines` component across all 27 core components to provide clear "Do" and "Don't" usage patterns.
+- **Aer Variant Pro Tips**: Added component-specific "Pro Tips" for the glassmorphism "Aer Variant" to all documentation pages, providing guidance on optimal background usage.
+- **Roadmap**: Synchronized `ROADMAP.md` and `COMPONENT_STANDARDS.md` with the latest project vision and component data.
+
+### New Planned Components
+
+- **Roadmap Updates**: Added `SelectButton`, `ToggleButton`, and `ButtonGroup` to the project pipeline.
+- **Innovation Proposals**: Introduced several "Aer Innovations" to the roadmap:
+  - **VibrantStage**: A premium motion engine for mouse-reactive background effects.
+  - **HotKeyOverlay**: A visual discovery layer for keyboard shortcuts.
+  - **StatefulView**: A declarative UI state persistence system.
+
+---
 
 ### Enhancements
 

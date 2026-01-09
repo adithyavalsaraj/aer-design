@@ -4,6 +4,7 @@ import {
   CodeBlock,
   DocSection,
   DocTabs,
+  UsageGuidelines,
 } from "@/docs/components/shared";
 
 export function SkeletonDoc() {
@@ -48,25 +49,19 @@ export function SkeletonDoc() {
 
           {/* 2. When to Use */}
           <DocSection id="when-to-use" title="When to Use">
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="p-4 rounded-aer-md border border-aer-border bg-aer-muted/5">
-                <h4 className="font-bold mb-2 text-sm">Use it when:</h4>
-                <ul className="text-xs space-y-1 text-aer-muted-foreground">
-                  <li>• Content takes more than 300ms to load</li>
-                  <li>• You want to avoid jarring layout jumps</li>
-                  <li>• Displaying complex data like lists or cards</li>
-                </ul>
-              </div>
-              <div className="p-4 rounded-aer-md border border-aer-border bg-aer-muted/5">
-                <h4 className="font-bold mb-2 text-sm">Don't use it:</h4>
-                <ul className="text-xs space-y-1 text-aer-muted-foreground">
-                  <li>• For static content that is already available</li>
-                  <li>
-                    • When a simple Spinner or Progress Bar is more appropriate
-                  </li>
-                </ul>
-              </div>
-            </div>
+            <UsageGuidelines
+              do={[
+                "Content takes longer than 300ms to load",
+                "Maintaining page layout to prevent jarring shifts",
+                "Displaying complex structures like lists, cards, or profile headers",
+                "Improving perceived performance during data fetching",
+              ]}
+              dont={[
+                "Static content that is already available synchronously",
+                "When a simple Spinner or Progress Bar is more appropriate (e.g., small buttons)",
+                "For instantaneous transitions",
+              ]}
+            />
           </DocSection>
 
           {/* 3. Basic Usage */}
@@ -490,7 +485,7 @@ export default function GranularExample() {
 
 export default function SocialPostSkeleton() {
   return (
-    <div className="p-12 bg-aer-muted/5">
+    <div className="p-8 bg-aer-muted/5">
       <div className="max-w-sm mx-auto bg-aer-background border border-aer-border rounded-2xl p-6 shadow-sm space-y-6">
         <div className="flex items-center gap-4">
           <Skeleton variant="circular" className="w-12 h-12" />

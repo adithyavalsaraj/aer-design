@@ -1,6 +1,12 @@
 import { RadioGroup, RadioItem } from "@/components/Radio";
 import * as React from "react";
-import { ApiTable, CodeBlock, DocSection, DocTabs } from "../components/shared";
+import {
+  ApiTable,
+  CodeBlock,
+  DocSection,
+  DocTabs,
+  UsageGuidelines,
+} from "../components/shared";
 
 export function RadioDoc() {
   const [flavor, setFlavor] = React.useState("vanilla");
@@ -45,56 +51,29 @@ export function RadioDoc() {
         title="When to Use"
         description="Guidance on when to use Radio buttons versus other selection controls."
       >
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Few Options (&lt; 5)
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use Radio buttons when you have a small list of options and want
-              them all visible:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>Shipping speed (Standard, Express, Overnight)</li>
-              <li>Size selection (S, M, L, XL)</li>
-              <li>Yes/No questions</li>
-            </ul>
-          </div>
-
-          <div className="p-4 border border-aer-border rounded-lg bg-aer-muted/5">
-            <h4 className="font-semibold mb-3 text-aer-foreground">
-              Rich Comparisons
-            </h4>
-            <p className="text-sm text-aer-muted-foreground mb-3">
-              Use `variant="card"` when options need explanations or visual
-              weight:
-            </p>
-            <ul className="text-sm text-aer-muted-foreground space-y-1 list-disc pl-5">
-              <li>Subscription tiers (features, price)</li>
-              <li>Payment methods (Icon + Name)</li>
-              <li>Layout options (Grid vs List)</li>
-            </ul>
-          </div>
-
-          <div className="md:col-span-2 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
-            <h4 className="font-semibold mb-2 text-blue-700 dark:text-blue-400">
-              Radio vs Dropdown
-            </h4>
-            <p className="text-sm text-blue-700/80 dark:text-blue-400/80">
-              If you have more than 5-7 options, consider using a{" "}
-              <strong>Dropdown</strong> (Select) to save screen space. Radio
-              buttons are best when users need to compare options side-by-side.
-            </p>
-          </div>
-        </div>
+        <UsageGuidelines
+          do={[
+            "Selecting a single option from a small set (< 5 items).",
+            "Comparing options side-by-side with visual weight.",
+            "SaaS pricing plans or subscription tiers (Card variant).",
+            "Critical choices where all options must be visible immediately.",
+          ]}
+          dont={[
+            "Large sets of options (use Dropdown or Autocomplete).",
+            "Multiple selection (use Checkbox).",
+            "Situations with very limited screen space.",
+          ]}
+        />
       </DocSection>
 
       <DocSection title="Basic Usage" id="basic">
-        <RadioGroup value={flavor} onChange={setFlavor}>
-          <RadioItem value="vanilla" label="Vanilla" />
-          <RadioItem value="chocolate" label="Chocolate" />
-          <RadioItem value="strawberry" label="Strawberry" />
-        </RadioGroup>
+        <div className="flex justify-center p-8 border border-aer-border rounded-lg bg-aer-muted/5">
+          <RadioGroup value={flavor} onChange={setFlavor}>
+            <RadioItem value="vanilla" label="Vanilla" />
+            <RadioItem value="chocolate" label="Chocolate" />
+            <RadioItem value="strawberry" label="Strawberry" />
+          </RadioGroup>
+        </div>
         <div className="mt-4 p-2 bg-aer-muted rounded text-sm font-mono border inline-block">
           Selected: {flavor}
         </div>
@@ -109,27 +88,32 @@ export function RadioDoc() {
         id="cards"
         description="Create powerful selection interfaces with the card variant."
       >
-        <RadioGroup defaultValue="pro" className="grid gap-4 md:grid-cols-3">
-          <RadioItem
-            variant="card"
-            value="free"
-            label="Free Tier"
-            description="Up to 3 projects"
-          />
-          <RadioItem
-            variant="card"
-            value="pro"
-            label="Pro Tier"
-            description="Unlimited projects"
-          />
-          <RadioItem
-            variant="card"
-            value="cnt"
-            label="Enterprise"
-            description="Custom solutions"
-            disabled
-          />
-        </RadioGroup>
+        <div className="flex justify-center p-8 border border-aer-border rounded-lg bg-aer-muted/5 w-full">
+          <RadioGroup
+            defaultValue="pro"
+            className="grid gap-4 md:grid-cols-3 w-full max-w-3xl"
+          >
+            <RadioItem
+              variant="card"
+              value="free"
+              label="Free Tier"
+              description="Up to 3 projects"
+            />
+            <RadioItem
+              variant="card"
+              value="pro"
+              label="Pro Tier"
+              description="Unlimited projects"
+            />
+            <RadioItem
+              variant="card"
+              value="cnt"
+              label="Enterprise"
+              description="Custom solutions"
+              disabled
+            />
+          </RadioGroup>
+        </div>
         <CodeBlock
           ts={`<RadioGroup defaultValue="pro" className="grid grid-cols-3 gap-4">\n  <RadioItem variant="card" value="free" label="Free" description="..." />\n  <RadioItem variant="card" value="pro" label="Pro" description="..." />\n  <RadioItem variant="card" value="ent" label="Enterprise" disabled />\n</RadioGroup>`}
           fullCode={`import { RadioGroup, RadioItem } from "aer-design";\n\nexport default function CardSelection() {\n  return (\n    <RadioGroup defaultValue="pro" className="grid gap-4 md:grid-cols-3">\n      <RadioItem variant="card" value="free" label="Free" description="3 Projects" />\n      <RadioItem variant="card" value="pro" label="Pro" description="Unlimited" />\n      <RadioItem variant="card" value="ent" label="Enterprise" description="Custom" disabled />\n    </RadioGroup>\n  );\n}`}
@@ -156,31 +140,32 @@ export function RadioDoc() {
           </div>
         </div>
         <CodeBlock
-          ts={`<RadioGroup variant="aer" defaultValue="1">\n  <RadioItem value="1" label="Premium selection" />\n  <RadioItem value="2" label="Glassmorphism" />\n</RadioGroup>`}
-          fullCode={`import { RadioGroup, RadioItem } from "aer-design";\n\nexport default function AerRadio() {\n  return (\n    <div className="relative flex items-center justify-center p-16 bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">\n      <div className="absolute inset-0 bg-linear-to-br from-sky-600/20 via-transparent to-blue-600/20" />\n      \n      <div className="relative z-10">\n        <RadioGroup variant="aer" defaultValue="1" className="space-y-4">\n          <RadioItem value="1" label="Premium selection" />\n          <RadioItem value="2" label="Glassmorphism effect" />\n        </RadioGroup>\n      </div>\n    </div>\n  );\n}`}
+          ts={`<RadioGroup variant="aer" value={flavor} onChange={setFlavor}>\n  <RadioItem value="v" label="Vanilla" />\n  ...\n</RadioGroup>`}
+          fullCode={`import { RadioGroup, RadioItem } from "aer-design";\nimport { useState } from "react";\n\nexport default function AerRadioExample() {\n  const [value, setValue] = useState("v");\n  return (\n    <div className="relative p-12 bg-zinc-950 rounded-xl overflow-hidden min-h-[200px] flex items-center justify-center">\n      <div className="absolute inset-0 bg-linear-to-br from-cyan-600/20 via-transparent to-blue-600/20" />\n      \n      <div className="relative z-10">\n        <RadioGroup variant="aer" value={value} onChange={setValue} className="flex gap-6">\n          <RadioItem value="v" label="Vanilla" />\n          <RadioItem value="c" label="Chocolate" />\n          <RadioItem value="s" label="Strawberry" />\n        </RadioGroup>\n      </div>\n    </div>\n  );\n}`}
         />
         <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
           <p className="text-sm text-blue-700 dark:text-blue-400">
-            <strong>Pro tip:</strong> The Aer variant for Radio buttons is
-            perfect for elective choices in high-end onboarding flows or
-            preference menus. It works best on dark or colorful backgrounds,
-            where the glassmorphism effect provides a tactile, "floating" feel
-            that makes selection feel more interactive.
+            <strong>Pro tip:</strong> The Aer variant for Radio buttons is ideal
+            for high-end selection UIs. It pairs perfectly with cards or vibrant
+            backgrounds, where the subtle glass refraction emphasizes user
+            choice without cluttering the interface.
           </p>
         </div>
       </DocSection>
 
       <DocSection title="Sizes" id="sizes">
-        <div className="flex items-start gap-x-8">
-          <RadioGroup size="sm" defaultValue="1">
-            <RadioItem value="1" label="Small Radio" />
-          </RadioGroup>
-          <RadioGroup size="default" defaultValue="1">
-            <RadioItem value="1" label="Default Radio" />
-          </RadioGroup>
-          <RadioGroup size="lg" defaultValue="1">
-            <RadioItem value="1" label="Large Radio" />
-          </RadioGroup>
+        <div className="flex justify-center p-8 border border-aer-border rounded-lg bg-aer-muted/5">
+          <div className="flex items-start gap-x-8">
+            <RadioGroup size="sm" defaultValue="1">
+              <RadioItem value="1" label="Small Radio" />
+            </RadioGroup>
+            <RadioGroup size="default" defaultValue="1">
+              <RadioItem value="1" label="Default Radio" />
+            </RadioGroup>
+            <RadioGroup size="lg" defaultValue="1">
+              <RadioItem value="1" label="Large Radio" />
+            </RadioGroup>
+          </div>
         </div>
         <CodeBlock
           ts={`<RadioGroup size="sm">\n  <RadioItem value="1" label="Small" />\n</RadioGroup>`}
@@ -189,30 +174,62 @@ export function RadioDoc() {
       </DocSection>
 
       <DocSection
-        title="Layout Variants"
+        title="Layout Orientation"
         id="layout"
-        description="Radio items can be positioned and aligned just like checkboxes."
+        description="Switch between vertical (stacked) and horizontal (inline) layouts using the orientation prop."
       >
-        <RadioGroup
-          defaultValue="right"
-          className="grid grid-cols-2 gap-8 md:grid-cols-4"
-        >
-          <RadioItem
-            value="right"
-            label="Right (Default)"
-            labelPosition="right"
-          />
-          <RadioItem value="left" label="Left Side" labelPosition="left" />
-          <RadioItem value="top" label="Top Label" labelPosition="top" />
-          <RadioItem
-            value="bottom"
-            label="Bottom Label"
-            labelPosition="bottom"
-          />
-        </RadioGroup>
+        <OrientationExample />
         <CodeBlock
-          ts={`<RadioGroup className="grid grid-cols-4">\n  <RadioItem label="Right" labelPosition="right" />\n  <RadioItem label="Left" labelPosition="left" />\n</RadioGroup>`}
-          fullCode={`import { RadioGroup, RadioItem } from "aer-design";\n\nexport default function Layouts() {\n  return (\n    <RadioGroup defaultValue="right" className="grid grid-cols-2 gap-8">\n      <RadioItem value="right" label="Right" labelPosition="right" />\n      <RadioItem value="left" label="Left" labelPosition="left" />\n      <RadioItem value="top" label="Top" labelPosition="top" />\n      <RadioItem value="bottom" label="Bottom" labelPosition="bottom" />\n    </RadioGroup>\n  );\n}`}
+          ts={`const [orientation, setOrientation] = useState<"horizontal" | "vertical">("horizontal");
+
+<RadioGroup
+  orientation={orientation}
+  value={orientation}
+  onChange={(v) => setOrientation(v as "horizontal" | "vertical")}
+>
+  <RadioItem value="horizontal" label="Horizontal" />
+  <RadioItem value="vertical" label="Vertical" />
+</RadioGroup>`}
+          fullCode={`import { RadioGroup, RadioItem } from "aer-design";
+import { useState } from "react";
+
+export default function OrientationExample() {
+  const [orientation, setOrientation] = useState<"horizontal" | "vertical">("horizontal");
+
+  return (
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col border rounded-aer-xl bg-aer-muted/5 divide-y divide-aer-border overflow-hidden">
+        {/* Controls */}
+        <div className="p-6 bg-aer-muted/50">
+          <label className="text-sm font-medium text-aer-foreground mb-3 block">
+            Orientation
+          </label>
+          <RadioGroup
+            value={orientation}
+            onChange={(v) => setOrientation(v as "horizontal" | "vertical")}
+            className="flex flex-row gap-4"
+          >
+            <RadioItem value="horizontal" label="Horizontal" />
+            <RadioItem value="vertical" label="Vertical" />
+          </RadioGroup>
+        </div>
+
+        {/* Preview */}
+        <div className="flex items-center justify-center p-12 bg-aer-background min-h-[200px]">
+          <RadioGroup
+            orientation={orientation}
+            defaultValue="1"
+            className="p-4 border rounded-lg bg-aer-muted/10 border-dashed"
+          >
+            <RadioItem value="1" label="Option One" />
+            <RadioItem value="2" label="Option Two" />
+            <RadioItem value="3" label="Option Three" />
+          </RadioGroup>
+        </div>
+      </div>
+    </div>
+  );
+}`}
         />
       </DocSection>
 
@@ -221,31 +238,33 @@ export function RadioDoc() {
         id="alignment"
         description="Align radio buttons against complex content."
       >
-        <RadioGroup
-          defaultValue="1"
-          className="bg-aer-muted/5 p-6 rounded-aer-xl border space-y-4"
-        >
-          <RadioItem
-            value="1"
-            align="start"
-            label="Start Aligned"
-            description="The radio button stays at the top, even with this very long description text that wraps to a second line."
-          />
-          <div className="h-px bg-aer-border/50" />
-          <RadioItem
-            value="2"
-            align="center"
-            label="Center Aligned"
-            description="Best for short, balanced text."
-          />
-          <div className="h-px bg-aer-border/50" />
-          <RadioItem
-            value="3"
-            align="end"
-            label="End Aligned"
-            description="Aligns to the bottom of the container."
-          />
-        </RadioGroup>
+        <div className="flex justify-center p-8 border border-aer-border rounded-lg bg-aer-muted/5">
+          <RadioGroup
+            defaultValue="1"
+            className="bg-aer-muted/5 p-6 rounded-aer-xl border space-y-4 w-full max-w-sm"
+          >
+            <RadioItem
+              value="1"
+              align="start"
+              label="Start Aligned"
+              description="The radio button stays at the top, even with this very long description text that wraps to a second line."
+            />
+            <div className="h-px bg-aer-border/50" />
+            <RadioItem
+              value="2"
+              align="center"
+              label="Center Aligned"
+              description="Best for short, balanced text."
+            />
+            <div className="h-px bg-aer-border/50" />
+            <RadioItem
+              value="3"
+              align="end"
+              label="End Aligned"
+              description="Aligns to the bottom of the container."
+            />
+          </RadioGroup>
+        </div>
         <CodeBlock
           ts={`<RadioGroup defaultValue="1" className="space-y-4">\n  <RadioItem align="start" label="Start" description="..." />\n  <RadioItem align="center" label="Center" description="..." />\n  <RadioItem align="end" label="End" description="..." />\n</RadioGroup>`}
           fullCode={`import { RadioGroup, RadioItem } from "aer-design";\n\nexport default function Alignment() {\n  return (\n    <RadioGroup defaultValue="1" className="space-y-4">\n      <RadioItem value="1" align="start" label="Start" description="Top aligned text" />\n      <RadioItem value="2" align="center" label="Center" description="Center aligned text" />\n      <RadioItem value="3" align="end" label="End" description="Bottom aligned text" />\n    </RadioGroup>\n  );\n}`}
@@ -257,31 +276,33 @@ export function RadioDoc() {
         id="granular-styling"
         description="Precise control over styling with element-specific className props."
       >
-        <div className="space-y-6 max-w-sm">
-          <div className="space-y-2">
-            <p className="text-sm font-medium text-aer-muted-foreground">
-              className - Root container (spacing)
-            </p>
-            <RadioGroup>
-              <RadioItem
-                className="mb-4 p-4 border rounded-xl bg-aer-primary/5"
-                value="1"
-                label="Spaced and styled container"
-              />
-            </RadioGroup>
-          </div>
-          <div className="space-y-2">
-            <p className="text-sm font-medium text-aer-muted-foreground">
-              radioClassName - Custom indicator
-            </p>
-            <RadioGroup>
-              <RadioItem
-                radioClassName="border-sky-600 text-sky-600 peer-checked:bg-sky-600 peer-checked:text-white"
-                dotClassName="bg-current"
-                value="1"
-                label="Sky radio with white dot"
-              />
-            </RadioGroup>
+        <div className="flex justify-center p-8 border border-aer-border rounded-lg bg-aer-muted/5">
+          <div className="space-y-6 max-w-sm w-full">
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-aer-muted-foreground">
+                className - Root container (spacing)
+              </p>
+              <RadioGroup>
+                <RadioItem
+                  className="mb-4 p-4 border rounded-xl bg-aer-primary/5"
+                  value="1"
+                  label="Spaced and styled container"
+                />
+              </RadioGroup>
+            </div>
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-aer-muted-foreground">
+                radioClassName - Custom indicator
+              </p>
+              <RadioGroup>
+                <RadioItem
+                  radioClassName="border-sky-600 text-sky-600 peer-checked:bg-sky-600 peer-checked:text-white"
+                  dotClassName="bg-current"
+                  value="1"
+                  label="Sky radio with white dot"
+                />
+              </RadioGroup>
+            </div>
           </div>
         </div>
         <CodeBlock
@@ -291,14 +312,16 @@ export function RadioDoc() {
       </DocSection>
 
       <DocSection title="Validation" id="validation">
-        <RadioGroup
-          defaultValue="1"
-          error="Please make a selection to proceed."
-        >
-          <RadioItem value="1" label="Option One" />
-          <RadioItem value="2" label="Option Two" />
-          <RadioItem value="3" label="Option Three" />
-        </RadioGroup>
+        <div className="flex justify-center p-8 border border-aer-border rounded-lg bg-aer-muted/5">
+          <RadioGroup
+            defaultValue="1"
+            error="Please make a selection to proceed."
+          >
+            <RadioItem value="1" label="Option One" />
+            <RadioItem value="2" label="Option Two" />
+            <RadioItem value="3" label="Option Three" />
+          </RadioGroup>
+        </div>
         <CodeBlock
           ts={`<RadioGroup error="Please make a selection">\n  <RadioItem value="1" label="Option 1" />\n  <RadioItem value="2" label="Option 2" />\n</RadioGroup>`}
           fullCode={`import { RadioGroup, RadioItem } from "aer-design";\n\nexport default function Validation() {\n  return (\n    <RadioGroup error="Selection required">\n      <RadioItem value="1" label="Option 1" />\n      <RadioItem value="2" label="Option 2" />\n    </RadioGroup>\n  );\n}`}
@@ -306,7 +329,9 @@ export function RadioDoc() {
       </DocSection>
 
       <DocSection title="Real World Example" id="real-world-validation">
-        <RealWorldExample />
+        <div className="flex justify-center p-8 border border-aer-border rounded-lg bg-aer-muted/5">
+          <RealWorldExample />
+        </div>
         <CodeBlock
           ts={`const [value, setValue] = useState("");\nconst [touched, setTouched] = useState(false);\nconst isInvalid = touched && !value;\n\n<RadioGroup \n  error={isInvalid ? "Please select a plan" : undefined}\n  value={value}\n  onChange={(val) => {\n    setValue(val);\n    setTouched(true);\n  }}\n>\n  <RadioItem value="free" label="Free Tier" required />\n  <RadioItem value="pro" label="Pro Tier" required />\n</RadioGroup>`}
           fullCode={`import { RadioGroup, RadioItem } from "aer-design";\nimport { useState } from "react";\n\nexport default function PlanSelection() {\n  const [value, setValue] = useState("");\n  const [touched, setTouched] = useState(false);\n  const isInvalid = touched && !value;\n\n  return (\n    <div className="max-w-md space-y-4 p-6 border rounded-xl">\n      <RadioGroup \n        error={isInvalid ? "Please select a plan" : undefined}\n        value={value}\n        onChange={(val) => {\n          setValue(val);\n          setTouched(true);\n        }}\n      >\n        <RadioItem value="free" label="Free Tier" required />\n        <RadioItem value="pro" label="Pro Tier" required />\n      </RadioGroup>\n    </div>\n  );\n}`}
@@ -314,6 +339,43 @@ export function RadioDoc() {
       </DocSection>
     </div>
   );
+
+  function OrientationExample() {
+    const [orientation, setOrientation] = React.useState<
+      "horizontal" | "vertical"
+    >("horizontal");
+
+    return (
+      <div className="flex flex-col border rounded-aer-xl bg-aer-muted/5 divide-y divide-aer-border overflow-hidden">
+        {/* Controls */}
+        <div className="p-6 bg-aer-muted/50">
+          <label className="text-sm font-medium text-aer-foreground mb-3 block">
+            Orientation
+          </label>
+          <RadioGroup
+            value={orientation}
+            onChange={(v) => setOrientation(v as "horizontal" | "vertical")}
+            className="flex flex-row gap-4"
+          >
+            <RadioItem value="horizontal" label="Horizontal" />
+            <RadioItem value="vertical" label="Vertical" />
+          </RadioGroup>
+        </div>
+
+        {/* Preview */}
+        <div className="flex items-center justify-center p-12 bg-aer-background min-h-[200px]">
+          <RadioGroup
+            orientation={orientation}
+            defaultValue="1"
+            className="p-4 border rounded-lg bg-aer-muted/10 border-dashed"
+          >
+            <RadioItem value="1" label="Horizontal" />
+            <RadioItem value="2" label="Vertical" />
+          </RadioGroup>
+        </div>
+      </div>
+    );
+  }
 
   function RealWorldExample() {
     const [value, setValue] = React.useState("");
@@ -414,7 +476,8 @@ export function RadioDoc() {
               prop: "orientation",
               type: "'horizontal' | 'vertical'",
               default: "'vertical'",
-              description: "Layout direction (affects keyboard navigation).",
+              description:
+                "Layout direction. Vertical stacks items, horizontal places them inline.",
             },
             {
               prop: "disabled",
@@ -660,7 +723,7 @@ export function RadioDoc() {
               { id: "cards", title: "Card Selection" },
               { id: "aer-variant", title: "The Aer Variant" },
               { id: "sizes", title: "Sizes" },
-              { id: "layout", title: "Layout Variants" },
+              { id: "layout", title: "Layout Orientation" },
               { id: "alignment", title: "Vertical Alignment" },
               { id: "granular-styling", title: "Granular Styling" },
               { id: "validation", title: "Validation" },
